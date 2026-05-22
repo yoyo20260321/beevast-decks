@@ -214,3 +214,62 @@
 .tpl-presenter-mode-reveal .mt-l { margin-top: 32px; }
 .tpl-presenter-mode-reveal .mt-s { margin-top: 10px; }
 .tpl-presenter-mode-reveal .tc { text-align: center; }
+
+/* ============= Mobile / narrow viewport ============= */
+@media (max-width: 768px) {
+  .tpl-presenter-mode-reveal .slide {
+    padding: 56px 18px 64px;
+  }
+  .tpl-presenter-mode-reveal .h1 {
+    font-size: clamp(26px, 7vw, 36px);
+    line-height: 1.2;
+    margin: 0 0 14px 0;
+  }
+  .tpl-presenter-mode-reveal .h2 {
+    font-size: clamp(20px, 5.5vw, 28px);
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+  }
+  .tpl-presenter-mode-reveal .lede { font-size: 15px; line-height: 1.55; }
+  .tpl-presenter-mode-reveal .kicker { font-size: 11px; margin: 0 0 12px 0; }
+  /* Collapse multi-column grids to single column */
+  .tpl-presenter-mode-reveal .grid { gap: 12px; }
+  .tpl-presenter-mode-reveal .grid.g2,
+  .tpl-presenter-mode-reveal .grid.g3 { grid-template-columns: 1fr; }
+  /* Cards: tighter padding, smaller text */
+  .tpl-presenter-mode-reveal .card { padding: 14px 16px; border-radius: 10px; }
+  .tpl-presenter-mode-reveal .card h4 { font-size: 15px; margin: 0 0 8px 0; }
+  .tpl-presenter-mode-reveal .card .dim { font-size: 12.5px; line-height: 1.55; }
+  /* Agenda + rule + feature rows: stack icon above content on phone */
+  .tpl-presenter-mode-reveal .agenda-row,
+  .tpl-presenter-mode-reveal .rule-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+  .tpl-presenter-mode-reveal .rule-row .num { font-size: 20px; }
+  .tpl-presenter-mode-reveal .rule-row b { font-size: 15px; }
+  .tpl-presenter-mode-reveal .rule-row .dim { font-size: 13px; }
+  .tpl-presenter-mode-reveal .agenda-row .t { font-size: 14px; }
+  .tpl-presenter-mode-reveal .agenda-row .d { font-size: 11px; }
+  .tpl-presenter-mode-reveal .feature-row { padding: 10px 0; }
+  .tpl-presenter-mode-reveal .feature-row b { font-size: 14px; }
+  .tpl-presenter-mode-reveal .feature-row .dim { font-size: 12.5px; }
+  /* Code blocks: shrink + horizontal scroll for long paths */
+  .tpl-presenter-mode-reveal .code-block {
+    font-size: 11.5px;
+    line-height: 1.65;
+    padding: 12px 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  /* Speaker chip: smaller */
+  .tpl-presenter-mode-reveal .speaker { margin-top: 18px; gap: 10px; }
+  .tpl-presenter-mode-reveal .speaker .av { width: 32px; height: 32px; }
+  .tpl-presenter-mode-reveal .speaker b { font-size: 14px; }
+  .tpl-presenter-mode-reveal .speaker span { font-size: 11.5px; }
+  /* Tables / wide content inside cards → horizontal scroll fallback */
+  .tpl-presenter-mode-reveal .card table { display: block; overflow-x: auto; max-width: 100%; }
+}

@@ -129,6 +129,73 @@
   margin: 2px;
 }
 
+/* ============== Mobile / narrow viewport (deck-local classes) ============== */
+@media (max-width: 768px) {
+  /* Global: never let any text push beyond viewport */
+  .tpl-presenter-mode-reveal .slide,
+  .tpl-presenter-mode-reveal .slide * {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .tpl-presenter-mode-reveal .slide { max-width: 100vw; }
+  .tpl-presenter-mode-reveal .kicker { white-space: normal; line-height: 1.5; }
+
+  .arch-layer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .arch-layer * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+  .arch-layer .lvl { font-size: 13px; padding: 1px 6px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 20%, transparent); }
+  .arch-layer .pkg { font-size: 10.5px; }
+  .arch-layer b { font-size: 13.5px; line-height: 1.3; }
+  .arch-layer .dim { font-size: 11px; line-height: 1.4; }
+
+  .crosscut { grid-template-columns: 1fr; gap: 6px; margin-top: 10px; }
+  .crosscut .tag { font-size: 11px; padding: 6px 10px; overflow-wrap: anywhere; }
+
+  .compare-grid { grid-template-columns: 1fr; gap: 10px; }
+  .compare-grid > div { padding: 12px 14px; }
+  .compare-grid > div h4 { font-size: 14px; }
+  .compare-grid > div .dim { font-size: 12px; line-height: 1.5; }
+  .compare-grid .row { padding: 4px 0; flex-wrap: wrap; gap: 4px; }
+  .compare-grid .k { font-size: 11px; }
+  .compare-grid .v { font-size: 11px; }
+
+  .flow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .flow .arr { transform: rotate(90deg); font-size: 18px; padding: 2px 0; }
+  .flow .box { padding: 10px 12px; }
+  .flow .box b { font-size: 13px; }
+  .flow .box .dim { font-size: 10.5px; }
+
+  .takeaway {
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .bullets-tight li {
+    padding: 6px 0 6px 18px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .bullets-tight li .dim { font-size: 11.5px; margin-left: 4px; }
+
+  .repo-pill { font-size: 10.5px; padding: 4px 10px; margin: 1px; }
+}
+
 /* mobile / touch device navigation (skill runtime.js 只绑 keyboard, 手机翻不动 → 这里补) */
 .mobile-nav {
   position: fixed;
