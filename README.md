@@ -10,6 +10,8 @@
 
 | [`/v3-architecture-talk/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk/) | (在这一行写说明) | 2026-05-22 |
 
+| [`/last30d-ai-agent/`](https://yoyo20260321.github.io/beevast-decks/last30d-ai-agent/) | (在这一行写说明) | 2026-05-22 |
+
 ## 怎么加新 deck
 
 1. 把 `index.html`（含相对 `assets/*` 也行）扔到 `<slug>/` 目录
