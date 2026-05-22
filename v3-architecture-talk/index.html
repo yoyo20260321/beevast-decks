@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-themes="tokyo-night,dracula,catppuccin-mocha,nord,corporate-clean">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BeeVast V3 五层架构 · 技术分享</title>
+<link rel="stylesheet" href="_assets/fonts.css">
+<link rel="stylesheet" href="_assets/base.css">
+<link rel="stylesheet" id="theme-link" href="_assets/themes/tokyo-night.css">
+<link rel="stylesheet" href="_assets/animations/animations.css">
+<link rel="stylesheet" href="_templates/full-decks/presenter-mode-reveal/style.css">
+<style>
+/* 本 deck 专属微调 */
+.arch-layer {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 22px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 10px;
+}
+.arch-layer .lvl { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); }
+.arch-layer b { display: block; font-size: 17px; }
+.arch-layer .dim { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.arch-layer .pkg { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
+
+.crosscut {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.crosscut .tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 12px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.compare-grid > div {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  background: var(--surface);
+}
+.compare-grid > div h4 { margin: 0 0 8px 0; font-size: 16px; }
+.compare-grid > div .dim { color: var(--text-2); font-size: 13px; line-height: 1.6; margin: 4px 0; }
+.compare-grid .pos { border-top: 3px solid var(--good); }
+.compare-grid .neg { border-top: 3px solid var(--bad); }
+.compare-grid .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--border); }
+.compare-grid .row:last-child { border-bottom: none; }
+.compare-grid .k { color: var(--text-3); font-size: 12px; }
+.compare-grid .v { font-family: var(--font-mono); font-size: 12px; color: var(--text-1); }
+
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr 24px 1fr;
+  gap: 0;
+  align-items: center;
+  margin-top: 16px;
+}
+.flow .box {
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--surface);
+  text-align: center;
+}
+.flow .box b { font-size: 15px; display: block; margin-bottom: 4px; }
+.flow .box .dim { font-size: 11px; color: var(--text-3); }
+.flow .arr {
+  color: var(--accent);
+  font-size: 22px;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.takeaway {
+  border-left: 4px solid var(--accent);
+  padding: 12px 18px;
+  background: var(--surface-2);
+  margin-top: 16px;
+  border-radius: 0 8px 8px 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.takeaway b { color: var(--accent); }
+
+.bullets-tight { list-style: none; padding: 0; margin: 0; }
+.bullets-tight li {
+  padding: 8px 0 8px 22px;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+.bullets-tight li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.bullets-tight li .dim { color: var(--text-3); font-size: 13px; margin-left: 6px; }
+
+.repo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin: 2px;
+}
+
+/* mobile / touch device navigation (skill runtime.js 只绑 keyboard, 手机翻不动 → 这里补) */
+.mobile-nav {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: none;
+  gap: 12px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.mobile-nav button {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav button:active { background: rgba(255, 255, 255, 0.2); }
+.mobile-nav .pageinfo {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0 10px;
+  min-width: 56px;
+  justify-content: center;
+}
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  .mobile-nav { display: inline-flex; }
+}
+</style>
+</head>
+<body class="tpl-presenter-mode-reveal">
+<div class="deck">
+
+  <!-- ============ 1. COVER ============ -->
+  <section class="slide" data-title="Cover">
+    <p class="kicker">// tech sharing · internal</p>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up">BeeVast <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">V3 五层架构</span></h1>
+    <p class="lede mt-m">代码 / Agent / Skill / Memory / 产品化 —— 五个分层 + 五个核心创新</p>
+    <div class="speaker">
+      <div class="av"></div>
+      <div><b>BaiWeiGang (bwg)</b><span>内部技术分享 · ~30 min · 按 S 进演讲者视图</span></div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#beevast #v3 #五层架构 #rfc-0013-0016</span>
+      <span class="slide-number" data-current="1" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>大家好，今天给团队分享我们 BeeVast <strong>V3 架构</strong>。这是过去 1 个月落地的工作，跨好几个 RFC——0013 / 0014 / 0015 / 0016 —— 今天<em>用一份 deck 串起来</em>讲清楚。</p>
+      <p>这份 deck 本身就是用我们昨天刚收编的 <code>html-ppt</code> skill 做的。我现在按了 <strong>S</strong>，我的屏幕上能看到 4 张卡片：当前页、下一页、逐字稿、计时器。所以你们会看到我讲得比较稳，不是因为我背得熟，是因为我在偷看屏幕。</p>
+      <p>今天 30 分钟，分两大块——<strong>五个核心架构创新</strong> + <strong>五层架构逐层细节</strong>。中间有不清楚直接打断。Let's go.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 2. WHY V3 ============ -->
+  <section class="slide" data-title="Why V3">
+    <p class="kicker">// part 01 · why</p>
+    <h2 class="h2">V2 撑不住了 —— V3 要解的是<span class="accent">协作</span>和<span class="accent">产品化</span></h2>
+    <div class="compare-grid mt-l">
+      <div class="neg">
+        <h4>❌ V2 痛点</h4>
+        <div class="row"><span class="k">代码 ↔ Agent 目录</span><span class="v">耦合</span></div>
+        <div class="row"><span class="k">多人 worktree 协作</span><span class="v">memory 各自一份</span></div>
+        <div class="row"><span class="k">skill / subagent 配置</span><span class="v">硬编码进代码</span></div>
+        <div class="row"><span class="k">产品边界</span><span class="v">主脑 / 站点混杂</span></div>
+        <div class="row"><span class="k">客户部署</span><span class="v">copy-paste 教程</span></div>
+      </div>
+      <div class="pos">
+        <h4>✅ V3 目标</h4>
+        <div class="row"><span class="k">分离</span><span class="v">workdir 共享 · worktree 独立</span></div>
+        <div class="row"><span class="k">协作</span><span class="v">memory 单仓 · 多人沉淀</span></div>
+        <div class="row"><span class="k">编排</span><span class="v">agent.toml 可配置</span></div>
+        <div class="row"><span class="k">分层</span><span class="v">packages → products 平行</span></div>
+        <div class="row"><span class="k">部署</span><span class="v">tarball + 一键 install</span></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>先讲为什么要做 V3。V2 跑了一段时间，<strong>不是性能不够，是协作和产品化撑不住</strong>。</p>
+      <p>左边五条是 V2 的核心痛点。最扎眼的两条：<em>memory 各自一份</em>——bwg 在 worktree A 教过 agent 的事，到 worktree B 就忘了；<em>skill / subagent 硬编码</em>——加一个 skill 要改代码 commit push 上线。</p>
+      <p>右边是 V3 的对应解。<strong>workdir 共享 / worktree 独立</strong>这条是核心——后面有整整一页讲。<strong>tarball + 一键 install</strong> 是产品化的入口，客户机一行命令装好。</p>
+      <p>所以 V3 解的不是"跑得更快"，是<strong>"3 个开发者 + N 个客户 + 多产品"</strong>这件事跑得起来。下面进总览图。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3. ARCHITECTURE OVERVIEW ============ -->
+  <section class="slide" data-title="Architecture Overview">
+    <p class="kicker">// part 02 · big picture</p>
+    <h2 class="h2">五层 + 三大横切</h2>
+    <div class="mt-m">
+      <div class="arch-layer"><span class="lvl">L3</span><div><b>Gateway</b><div class="dim">WS / Feishu / WeCom / DingTalk → InboundEnvelope (统一封装)</div></div><span class="pkg">@beevast/gateway</span></div>
+      <div class="arch-layer"><span class="lvl">L2</span><div><b>Session Conductor</b><div class="dim">conversation-bridge · routeKey 路由 · queue depth · 错误归类</div></div><span class="pkg">products/master-brain</span></div>
+      <div class="arch-layer"><span class="lvl">L1</span><div><b>Agent Runner</b><div class="dim">BeevastRuntime + ConversationManager + AcpAgent + spawn claude</div></div><span class="pkg">@beevast/acp-runtime</span></div>
+      <div class="arch-layer"><span class="lvl">L0</span><div><b>Agent Loader</b><div class="dim">agent.toml → workdir 投影 + workdir-lock (多 profile 并发)</div></div><span class="pkg">@beevast/agent-loader</span></div>
+      <div class="arch-layer"><span class="lvl">L4</span><div><b>Renderer</b><div class="dim">流式 chunk → channel-aware OutboundChunk → L3.sendStream</div></div><span class="pkg">@beevast/renderer</span></div>
+    </div>
+    <div class="crosscut">
+      <div class="tag">Launch Profile · TOML · env overlay</div>
+      <div class="tag">SystemEventBus · 5 层可观测 · SQLite sink</div>
+      <div class="tag">Memory · 独立仓 · auto-pull/push</div>
+    </div>
+    <aside class="notes">
+      <p>这是我们五层架构的<strong>总览</strong>。从下往上看更顺：</p>
+      <p><strong>L3 Gateway</strong> 拿到 IM 平台的原始 frame，转成统一的 <code>InboundEnvelope</code>。<strong>L2 Session Conductor</strong> 拿 envelope 按 routeKey 路由到对应会话。<strong>L1 Agent Runner</strong> 才是真正跑 claude 子进程的层。<strong>L0 Agent Loader</strong> 是横向支撑——它把 agent.toml 投影成 workdir。<strong>L4 Renderer</strong> 反向，把流式输出 chunk 推回 L3 发出去。</p>
+      <p>下面那三个横切——Launch Profile / SystemEventBus / Memory——是<em>整条链路都用得到</em>的基础设施，不属于任何单层。</p>
+      <p>注意每层右边的包名——L0/L1/L4 是 <code>@beevast/</code> npm package（多 product 共享），L2/L3 是 products/master-brain 自己的代码。<strong>共享下沉 vs 产品定制</strong>这条线后面 #8 会专门讲。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 4. INNOVATION #1 — Agent workdir ≠ Code worktree ============ -->
+  <section class="slide" data-title="Agent workdir vs Code worktree">
+    <p class="kicker">// part 03 · innovation #1</p>
+    <h2 class="h2">Agent workdir <span class="accent">≠</span> Code worktree</h2>
+    <p class="lede">两个目录、两条生命周期、绝不合并。</p>
+    <div class="compare-grid mt-l">
+      <div class="pos">
+        <h4>🟢 Agent workdir（共享）</h4>
+        <p class="dim">路径：<code>~/.beevast/products/master-brain/envs/&lt;env&gt;/workdir/</code></p>
+        <p class="dim">承载：AGENTS.md / .agents / .claude / memory（全是 symlink）</p>
+        <p class="dim">隔离：env 内<strong>所有 chat 共享</strong></p>
+        <p class="dim">作用：claude ACP child 的 spawn cwd · system prompt · memory 单源</p>
+      </div>
+      <div class="pos">
+        <h4>🟢 Code worktree（隔离）</h4>
+        <p class="dim">路径：<code>~/git/beevast-trees/&lt;bot&gt;-&lt;hash8&gt;/</code></p>
+        <p class="dim">承载：完整 monorepo + 独立分支</p>
+        <p class="dim">隔离：每个 chat（routeKey）<strong>各一份</strong></p>
+        <p class="dim">作用：真改代码 / git commit / 多任务并行不撞</p>
+      </div>
+    </div>
+    <div class="takeaway"><b>双隔离 + 双共享：</b>workdir 共享 → memory/skill 跨 chat 一致；worktree 隔离 → 多任务 git 不污染。<b>envelope.code_workdir</b> 告诉 agent 代码在哪、<b>ACP child cwd</b> 始终是固定 agent workdir。</div>
+    <aside class="notes">
+      <p>这是 V3 最容易踩坑的地方，我自己上周就刚踩过——这页是<strong>核心创新一</strong>。</p>
+      <p>左边 Agent workdir：路径在 <code>envs/dev/workdir/</code>，里面全是<em>软链接</em>——AGENTS.md / .agents / .claude / memory，统统指向 shared 仓。这个目录是<strong>所有 chat 共享的</strong>。你在 chat X 让 agent 写下经验，chat Y 立刻读得到，跨 worktree 一致。</p>
+      <p>右边 Code worktree：路径在 <code>~/git/beevast-trees/feishu-dev-bwg-ec71c6cb/</code> 这种带 chat_id 哈希的目录，<strong>每个 chat 一份</strong>。你在 chat X 改 feat-A、在 chat Y 改 fix-B，互不污染。</p>
+      <p>下面那个底框是<em>容易讲错的</em>——很多人会把两个目录搞混。一句话：<strong>agent 跑在哪是 workdir、改的代码在哪是 worktree</strong>。两个永不重合（prod 例外，prod 没有 per-session worktree）。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5. INNOVATION #2 — Configurable Agent Orchestration ============ -->
+  <section class="slide" data-title="Configurable Orchestration">
+    <p class="kicker">// part 03 · innovation #2</p>
+    <h2 class="h2">可配置的 Agent 编排 —— <span class="accent">agent.toml</span></h2>
+    <p class="lede">agent 能力（skill / subagent / rules / memory / permissions）全配置驱动，不进代码。</p>
+    <div class="code-block mt-m" style="font-size:14px"><span class="comment"># ~/.beevast/shared/agents/master-brain/agent.toml</span>
+[agent]
+name = <span class="cmd">"master-brain"</span>
+agents_md = <span class="cmd">"./AGENTS.md"</span>
+
+[mount.skills]
+sources = [
+  <span class="cmd">"shared://skills/ops/master-brain-deploy"</span>,
+  <span class="cmd">"shared://skills/ops/snapshot"</span>,
+  <span class="cmd">"shared://skills/deliverable/html-ppt"</span>,      <span class="comment"># ← 昨天刚加</span>
+  <span class="cmd">"plugin://superpowers-dev/brainstorming"</span>,
+]
+
+[mount.subagents]
+extends = [ <span class="cmd">"shared://subagents/_packs/essential"</span> ]
+
+[mount.memory]
+source = <span class="cmd">"memory://agents/master-brain"</span>
+auto_pull = <span class="flag">true</span>
+auto_push = <span class="flag">true</span>
+
+[permissions]
+template = <span class="cmd">"admin-full"</span></div>
+    <aside class="notes">
+      <p>核心创新二——<strong>可配置编排</strong>。这是 master-brain agent 的 spec 文件，三十几行的 TOML 就把 agent 的能力定死了。</p>
+      <p>看 <code>[mount.skills]</code> 这一段——agent 能用哪些 skill 全列在这里。<strong>scheme 三种</strong>：<code>shared://</code> 是 beevast-shared 仓里的、<code>plugin://</code> 是 Claude Code 插件市场的、<code>project://</code> 是当前 monorepo 的。我昨天加 html-ppt skill，<em>只动了这一行</em>——不改代码、不重启 bot、跑一次 project-agent 命令立刻生效。</p>
+      <p>下面 <code>[mount.subagents]</code> 用 <code>extends</code> 引一个 starter pack，加几个特定的。<code>[mount.memory]</code> 配独立仓 + auto-pull/push。<code>[permissions]</code> 走模板。<strong>所有动作都是声明式的</strong>，不写 if/else。</p>
+      <p>V2 时这套全埋在代码里，加一个 skill 要 commit + PR + 重启。V3 改 toml + 跑一行命令。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 6. INNOVATION #3 — Shared Assets ============ -->
+  <section class="slide" data-title="Shared Repo">
+    <p class="kicker">// part 03 · innovation #3</p>
+    <h2 class="h2">Shared 资源单源 —— <span class="accent">beevast-shared</span> 仓</h2>
+    <div class="grid g2 mt-m">
+      <div>
+        <p class="lede" style="font-size:17px">agent 定义 / skill / subagent / rules / 模板 —— 全部抽到独立仓库。</p>
+        <ul class="bullets-tight mt-m">
+          <li><b>一处更新，全 worktree 自动同步</b><span class="dim">（软链而非拷贝）</span></li>
+          <li><b>跟代码解耦</b><span class="dim">（不需要等代码 PR 合）</span></li>
+          <li><b>跨产品复用</b><span class="dim">（master-brain / weimao 共享同一套 ops skill）</span></li>
+          <li><b>多人并行无冲突</b><span class="dim">（worktree 各跑各的代码，shared 资源同步）</span></li>
+        </ul>
+      </div>
+      <div class="code-block" style="font-size:13px"><span class="comment"># 投影机制（agent-loader）</span>
+$ ls -la envs/dev/workdir/.claude/skills/
+master-brain-deploy <span class="flag">→</span> ~/.beevast/shared/skills/ops/...
+snapshot            <span class="flag">→</span> ~/.beevast/shared/skills/ops/...
+html-ppt            <span class="flag">→</span> ~/.beevast/shared/skills/deliverable/...
+brainstorming       <span class="flag">→</span> ~/.claude/plugins/.../brainstorming
+
+<span class="comment"># 改 shared skill 后</span>
+$ pnpm tsx products/master-brain/src/bin/<span class="cmd">project-agent</span>.ts \
+    --workdir ~/.beevast/products/master-brain/envs/dev/workdir \
+    --agent master-brain
+<span class="cmd">[project-agent] ✓ projection complete</span></div>
+    </div>
+    <aside class="notes">
+      <p>核心创新三——<strong>shared 资源抽成独立仓</strong>。这件事的杀手锏在<em>并行开发的 worktree 也能保持一致</em>。</p>
+      <p>左边四条收益。最有体感的是<strong>跨产品复用</strong>——master-brain 用的 ops skill，weimao 也能用，<em>不需要 fork 一份</em>。所有产品都从 <code>~/.beevast/shared/</code> 投影。</p>
+      <p>右边是真实命令。<code>.claude/skills/</code> 目录里每个 skill 都是<strong>软链</strong>，不是拷贝。所以你改 shared 仓里的 skill 文件，<em>不需要重启任何 bot</em>，下一次 agent 读 SKILL.md 时就拿到新版。</p>
+      <p>下面那个 <code>project-agent</code> 命令是<em>幂等</em>的——可以反复跑，跑完所有 worktree 都对齐到 shared 仓最新状态。我昨天加 html-ppt skill 就是跑了这一行命令。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7. INNOVATION #4 — Memory Repo ============ -->
+  <section class="slide" data-title="Memory Repo">
+    <p class="kicker">// part 03 · innovation #4</p>
+    <h2 class="h2">Memory 独立仓 —— 向<span class="accent">知识库</span>演进</h2>
+    <div class="flow mt-l">
+      <div class="box"><b>当前</b><div class="dim">git 仓<br>~/git/beevast-memory</div></div>
+      <div class="arr">→</div>
+      <div class="box"><b>auto-sync</b><div class="dim">agent.toml<br>auto_pull/push</div></div>
+      <div class="arr">→</div>
+      <div class="box"><b>未来</b><div class="dim">独立知识库<br>+ 向量检索</div></div>
+    </div>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🟢 协作场景</h4>
+        <p class="dim">多位开发者在不同 worktree 跟 agent 对话 → 所有 memory 落在<strong>同一个仓</strong>。bwg 教过的事，Tim / lll / ydl 的 agent 自动读得到。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔵 演进方向</h4>
+        <p class="dim">短期：单 git 仓 + auto pull/push。中期：加向量检索（语义召回 + 减少 prompt token）。长期：独立知识库服务 + 团队订阅。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>核心创新四——<strong>Memory 独立仓</strong>。这条乍看跟 shared 仓很像，但语义完全不同。</p>
+      <p>Shared 仓是<em>团队预定义资产</em>——skill / rules 这些事先准备好的东西。Memory 仓是<em>agent 运行时沉淀</em>——每次跟我对话学到的偏好、踩过的坑、项目状态。每个 agent 都有 auto-pull / auto-push，session 启动拉一次、关键时间点 push 一次。</p>
+      <p>下面左边讲<strong>协作价值</strong>——这是当前最大的红利。bwg 教 agent 的事（比如<em>飞书消息格式紧凑</em>），到 Tim 那边的 agent 也能读到，<strong>团队共享认知</strong>。</p>
+      <p>右边讲未来——现在是 git 仓 + auto-sync，下一步加<em>向量检索</em>，agent 不用每次塞 100KB memory，按相关度召回最近的 5 条就行。长期可能拆成独立服务，多团队订阅。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 8. INNOVATION #5 — Productization + Packaging ============ -->
+  <section class="slide" data-title="Productization">
+    <p class="kicker">// part 03 · innovation #5</p>
+    <h2 class="h2">产品化分层 + 客户打包</h2>
+    <div class="mt-m" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+      <div>
+        <h4 style="font-size:15px;color:var(--text-3);margin:0 0 10px 0;font-family:var(--font-mono)">monorepo 分层</h4>
+        <div class="arch-layer"><span class="lvl">P</span><div><b>products/</b><div class="dim">master-brain / weimao / website ... 平行不互依赖</div></div><span class="pkg">products/*</span></div>
+        <div class="arch-layer"><span class="lvl">T</span><div><b>tools/</b><div class="dim">beevast-cli (dispatcher) · pack-v3</div></div><span class="pkg">tools/*</span></div>
+        <div class="arch-layer"><span class="lvl">S</span><div><b>services/</b><div class="dim">agent-bridge / ws-server (共享 service)</div></div><span class="pkg">services/*</span></div>
+        <div class="arch-layer"><span class="lvl">L</span><div><b>packages/</b><div class="dim">acp-runtime · gateway · renderer · launch-profile ...</div></div><span class="pkg">packages/*</span></div>
+      </div>
+      <div>
+        <h4 style="font-size:15px;color:var(--text-3);margin:0 0 10px 0;font-family:var(--font-mono)">客户机一键装</h4>
+        <div class="code-block" style="font-size:13px"><span class="comment"># 1) 打包（发版机器）</span>
+$ pnpm tsx scripts/<span class="cmd">pack-v3</span>.ts
+  → master-brain-v3-0.3.0.tar.gz
+
+<span class="comment"># 2) 客户机安装</span>
+$ ~/.beevast/bin/<span class="cmd">beevast</span> install \
+    master-brain --env prod \
+    --version 0.3.0
+
+<span class="comment"># 3) 写凭证（RFC 0015）</span>
+$ pnpm tsx scripts/<span class="cmd">bots</span>.ts add \
+    feishu v3-master \
+    appId=... appSecret=...
+
+<span class="comment"># 4) 启动</span>
+$ beevast <span class="cmd">start</span> master-brain \
+    --env prod \
+    --profile feishu-master-brain</div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>核心创新五——<strong>产品化分层 + 客户打包</strong>。</p>
+      <p>左边讲<strong>分层</strong>。最底下 <code>packages/</code> 是<em>公共下沉的 npm 包</em>，acp-runtime / gateway / renderer 这些跨产品共用。<code>services/</code> 是共享 service。<code>tools/</code> 是 CLI（dispatcher / packer）。<code>products/</code> 在最上层——master-brain / weimao / website 之间<em>平行不互依赖</em>，但都<em>可以依赖下游 packages</em>。这条规则保证产品边界清晰，不会出现"主脑里 import 了官网代码"这种乱搞。</p>
+      <p>右边讲<strong>打包流程</strong>。<code>pack-v3</code> 把 dist + launch profiles 打 tarball。客户机上 <code>beevast install</code> 拉 tarball 解压。然后 <code>bots.ts add</code> 写凭证（昨天刚把 RFC 0015 文档统一了），最后 <code>beevast start</code> 跑起来。<strong>四条命令客户机就跑起来了</strong>，不需要客户懂 monorepo / pnpm / workspace 这些。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 9. L3 + L2 ============ -->
+  <section class="slide" data-title="L3 Gateway + L2 Session Conductor">
+    <p class="kicker">// part 04 · layer detail · L3 + L2</p>
+    <h2 class="h2">L3 Gateway · L2 Session Conductor</h2>
+    <div class="flow mt-m">
+      <div class="box"><b>IM Frame</b><div class="dim">feishu / wecom<br>/ ws / dingtalk</div></div>
+      <div class="arr">→</div>
+      <div class="box"><b>InboundEnvelope</b><div class="dim">L3 归一化<br>+ traceId(UUIDv7)</div></div>
+      <div class="arr">→</div>
+      <div class="box"><b>BrainHandleInput</b><div class="dim">L2 routeKey 路由<br>+ queue depth</div></div>
+    </div>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4 class="blue">L3 · @beevast/gateway</h4>
+        <p class="dim"><strong>WsAdapter</strong> / <strong>ChannelBridgeAdapter</strong>（包 V2 feishu/wecom 不重写）</p>
+        <p class="dim">发 <code>inbound.received</code> / <code>outbound.sent</code> 事件</p>
+        <p class="dim">每条消息有<strong>稳定 traceId</strong>，全链路可追</p>
+      </div>
+      <div class="card card-accent">
+        <h4 class="green">L2 · conversation-bridge</h4>
+        <p class="dim">routeKey 模板可配置（默认 <code>${platform}:${chat_id}</code>）</p>
+        <p class="dim">维护 ConversationManager 句柄、emit <code>routeKey.touched</code></p>
+        <p class="dim">把 L1 抛的失败分类成 <strong>L1Error</strong>（user-facing / retry / fatal）</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>进入<strong>第二大块</strong>——五层逐层细节。先讲 L3 和 L2，因为它们是入口。</p>
+      <p>上面那张流程图：IM 平台原始 frame 进 L3 → 归一化成 <code>InboundEnvelope</code>（自带 UUIDv7 traceId）→ L2 按 routeKey 把它路到对应会话。</p>
+      <p>左边 L3 Gateway。两个 adapter：<strong>WsAdapter</strong> 给 ws transport 用，<strong>ChannelBridgeAdapter</strong> 是个"包装层"——它把 V2 已经写好的 feishu / wecom / dingtalk 代码包起来不重写，这条原则<em>救了我们大量工时</em>，feishu 那 1200 多行卡片渲染逻辑没动一个字。</p>
+      <p>右边 L2 Session Conductor。routeKey 是<strong>会话标识符</strong>，默认 platform:chat_id，可以在 profile 里改模板。最值得提的是<strong>L1Error 归类</strong>——L1 抛出的所有错误都被归到三类：用户能看到的、可以重试的、致命的，<em>L4 据此决定要不要发给用户</em>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10. L1 ============ -->
+  <section class="slide" data-title="L1 Agent Runner">
+    <p class="kicker">// part 04 · layer detail · L1</p>
+    <h2 class="h2">L1 · Agent Runner <span class="accent">(核心)</span></h2>
+    <div class="code-block mt-m" style="font-size:14px">1 bot daemon (Node process)
+  └─ <span class="cmd">ConversationManager</span> <span class="comment">// LRU map: routeKey → entry, max 1000, 30min idle evict</span>
+       └─ ConversationEntry (per routeKey, lazy on first inbound)
+            └─ 1 <span class="cmd">AcpAgent</span>
+                 └─ spawn 1 个 <span class="cmd">claude-agent-acp</span> 子进程
+                      └─ 内含 1 个 ACP session
+                            └─ cwd = <span class="flag">envs/&lt;env&gt;/workdir/</span>  <span class="comment">// 固定 agent workdir!</span></div>
+    <ul class="bullets-tight mt-m">
+      <li><b>LRU + idle evict</b><span class="dim">：保活高频会话、清掉超时的、磁盘 + token 不爆</span></li>
+      <li><b>per-routeKey 隔离</b><span class="dim">：每个 chat 独占一个 claude 子进程 + ACP session</span></li>
+      <li><b>resume 逻辑</b><span class="dim">：acp-sessions.json 持久化 routeKey → sessionId，重启续上</span></li>
+      <li><b>token / cost 事件</b><span class="dim">：每个 turn 结束发 <code>token.usage</code> + <code>cost.accrued</code></span></li>
+    </ul>
+    <aside class="notes">
+      <p>L1 是<strong>整个 V3 最关键的一层</strong>，今天讲细一点。</p>
+      <p>看上面这个嵌套结构。一个 bot daemon 进程内含一个 <strong>ConversationManager</strong>——它是个 LRU map，key 是 routeKey，最多 1000 个 entry，30 分钟没活动的会被 evict。每个 entry 里有<em>一个 AcpAgent</em>，AcpAgent 又 spawn<em>一个独立的 claude-agent-acp 子进程</em>。所以同一个 bot 下不同 chat <strong>是真物理隔离</strong>——不同进程、不同 session、不同 cwd。</p>
+      <p>注意最底下那行——<code>cwd = envs/&lt;env&gt;/workdir/</code>，<strong>固定 agent workdir</strong>。这就是回到 #4 那页讲的——不管哪个 chat，ACP child 的 cwd 都是同一个共享 workdir，memory 才能跨 chat 一致。</p>
+      <p>四个 bullet：LRU + idle 控资源、隔离防串、resume 撑重启、cost 事件给可观测。<strong>这一层做对了，后面 7 个开发者并行跑都不会乱</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11. L0 + L4 + Launch Profile ============ -->
+  <section class="slide" data-title="L0 + L4 + Launch Profile">
+    <p class="kicker">// part 04 · layer detail · L0 + L4 + Launch Profile</p>
+    <h2 class="h2">L0 Loader · L4 Renderer · Launch Profile</h2>
+    <div class="grid g3 mt-m">
+      <div class="card card-accent">
+        <h4 class="purple">L0 · Agent Loader</h4>
+        <p class="dim">agent.toml → 投影到 workdir（symlink）</p>
+        <p class="dim"><strong>workdir-lock</strong> 用 <code>lockSuffix=profile.meta.name</code> → 4 个 channel profile<em>并发共享同一 workdir</em></p>
+        <p class="dim">校验 + dry-run + force overwrite</p>
+      </div>
+      <div class="card card-accent">
+        <h4 class="orange">L4 · Renderer</h4>
+        <p class="dim">RuntimeEventEnvelope 流（text_chunk / tool_call / turn_end）</p>
+        <p class="dim"><strong>channel-aware</strong>：feishu 走 ProcessCardRenderer（streaming PATCH 卡片）、ws 走真 streaming、wechat 走 buffer</p>
+        <p class="dim">role-aware：admin 看完整 trace、普通用户看精简</p>
+      </div>
+      <div class="card card-accent">
+        <h4 class="blue">Launch Profile</h4>
+        <p class="dim">profile TOML <code>extends</code> 链 + <code>[env.&lt;label&gt;]</code> overlay</p>
+        <p class="dim">凭证<strong>不进 profile</strong>，从 bots.json 反查注入（RFC 0015）</p>
+        <p class="dim">limits / permissions / routing 全配置驱动</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>剩下三块一起讲，因为它们都是<em>支撑性的横切</em>。</p>
+      <p>左边 <strong>L0 Agent Loader</strong>——把 agent.toml 投影成 workdir 软链。<em>最关键的设计</em>是 workdir-lock 加了 <code>lockSuffix</code>，比如 lockSuffix 用 profile 名（feishu-dev-bwg）—— 4 个 channel profile 同时跑同一个 master-brain workdir 不会撞锁，<strong>多 IM 并发是这里解的</strong>。</p>
+      <p>中间 <strong>L4 Renderer</strong>——把 L1 流出来的事件按平台特性渲染。feishu 走<em>流式 patch 卡片</em>那条路径，ws 走<em>真 SSE</em>，wechat 没法流式只能 buffer 整段发。这层把<em>渠道差异</em>封掉，L1 不用管。</p>
+      <p>右边 <strong>Launch Profile</strong>——一个 bot 的所有配置在这里。注意凭证<em>从不进 profile</em>，profile 只写 appId 这种公开 ID，secret 在加载阶段从 bots.json 反查注入，这就是昨天我们刚统一文档的 <strong>RFC 0015</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12. TAKEAWAYS + Q&A ============ -->
+  <section class="slide" data-title="Takeaways">
+    <p class="kicker">// part 05 · takeaways + Q&amp;A</p>
+    <h2 class="h2">五个创新 · 一句话总结</h2>
+    <ul class="bullets-tight mt-l" style="font-size:17px">
+      <li><b>① 双隔离 + 双共享</b><span class="dim">workdir 共享 memory · worktree 隔离代码</span></li>
+      <li><b>② 配置驱动</b><span class="dim">agent.toml 决定 agent 能力，不进代码</span></li>
+      <li><b>③ Shared 单源</b><span class="dim">一处更新 · 全 worktree 自动同步</span></li>
+      <li><b>④ Memory 独立仓</b><span class="dim">协作沉淀 · 向独立知识库演进</span></li>
+      <li><b>⑤ 产品化分层 + 一键装</b><span class="dim">packages/products 平行 · 4 条命令客户机跑起来</span></li>
+    </ul>
+    <div class="takeaway mt-l">
+      <b>核心 RFC：</b>0013（五层架构）· 0014（build & deploy）· 0015（凭证统一）· 0016（per-session worktree + agent workdir 修正）<br>
+      <b>核心仓库：</b><span class="repo-pill">beevast</span><span class="repo-pill">beevast-shared</span><span class="repo-pill">beevast-memory</span><span class="repo-pill">beevast-releases</span>
+    </div>
+    <div class="speaker mt-l">
+      <div class="av"></div>
+      <div><b>Q&amp;A · 留 5 分钟问答</b><span>有问题直接问 · 也可以飞书继续 ping bwg</span></div>
+    </div>
+    <aside class="notes">
+      <p>收尾。今天讲的五个创新，一句话各一句：</p>
+      <p>第一，<strong>双隔离双共享</strong>——workdir 共享让 memory 跨 chat 一致，worktree 隔离让代码不互撞。第二，<strong>配置驱动</strong>——agent 能力在 toml 里，不再写代码 commit。第三，<strong>shared 单源</strong>——一处更新全 worktree 自动同步。第四，<strong>memory 独立仓</strong>——团队认知集中沉淀，向知识库演进。第五，<strong>产品化 + 一键装</strong>——客户四条命令跑起来。</p>
+      <p>下面那个底框列了 4 个核心 RFC 和 4 个仓库，回去想再查的<em>从这里查起就够</em>。RFC 0013 是五层架构总图，0014 / 0015 / 0016 是这两周刚落的。</p>
+      <p>OK 留 5 分钟问答。有不清楚的现在说，或者会后飞书继续问也行。<strong>谢谢大家。</strong></p>
+    </aside>
+  </section>
+
+</div>
+
+<!-- mobile-only nav (skill runtime 没绑 touch / on-screen 按钮, 这里补) -->
+<div class="mobile-nav" aria-hidden="false">
+  <button id="mnav-prev" aria-label="prev slide">‹</button>
+  <span class="pageinfo" id="mnav-page">1/12</span>
+  <button id="mnav-next" aria-label="next slide">›</button>
+</div>
+
+<script src="_assets/runtime.js"></script>
+<script>
+// Phone / tablet pagination — runtime.js 只绑 keyboard。
+// 1) 横向 swipe → 转发成 ArrowLeft / ArrowRight 让 runtime.js 处理
+// 2) 屏幕下方 ‹ › 按钮兜底（窄屏 / 触屏自动显示）
+// 3) 同步页码显示
+(function() {
+  function dispatchArrow(key) {
+    document.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+  }
+
+  // Touch swipe handler
+  let sx = 0, sy = 0, st = 0;
+  const SWIPE_MIN = 40;
+  const SWIPE_MAX_T_MS = 800;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) return;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    st = Date.now();
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!st) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx;
+    const dy = t.clientY - sy;
+    const dt = Date.now() - st;
+    st = 0;
+    if (dt > SWIPE_MAX_T_MS) return;
+    if (Math.abs(dx) < SWIPE_MIN) return;
+    if (Math.abs(dx) < Math.abs(dy) * 1.3) return; // 垂直手势优先（滚动）
+    dispatchArrow(dx < 0 ? 'ArrowRight' : 'ArrowLeft');
+  }, { passive: true });
+
+  // Mobile nav buttons
+  const prev = document.getElementById('mnav-prev');
+  const next = document.getElementById('mnav-next');
+  const info = document.getElementById('mnav-page');
+  if (prev) prev.addEventListener('click', function () { dispatchArrow('ArrowLeft'); });
+  if (next) next.addEventListener('click', function () { dispatchArrow('ArrowRight'); });
+
+  // Sync page indicator. runtime.js 切页只改 .is-active class, 没事件。
+  // 注意：runtime 还把所有 slide 克隆到 .mini-slide (O 键 overview 用)，
+  // 所以只数 .deck > .slide 直接子元素。
+  function realSlides() {
+    return document.querySelectorAll('.deck > .slide');
+  }
+  function syncPage() {
+    const slides = realSlides();
+    const total = slides.length;
+    let cur = 0;
+    slides.forEach(function (s, i) { if (s.classList.contains('is-active')) cur = i; });
+    if (info) info.textContent = (cur + 1) + '/' + total;
+  }
+  syncPage();
+  const obs = new MutationObserver(syncPage);
+  realSlides().forEach(function (s) {
+    obs.observe(s, { attributes: true, attributeFilter: ['class'] });
+  });
+})();
+</script>
+</body>
+</html>
