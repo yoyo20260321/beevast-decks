@@ -8,6 +8,8 @@
 |---|---|---|
 | [`/cost-analysis-2026-05-22/`](https://yoyo20260321.github.io/beevast-decks/cost-analysis-2026-05-22/) | Master Brain 4 天用量分析（按天 × 按 bot） | 2026-05-22 |
 
+| [`/v3-architecture-talk/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk/) | (在这一行写说明) | 2026-05-22 |
+
 ## 怎么加新 deck
 
 1. 把 `index.html`（含相对 `assets/*` 也行）扔到 `<slug>/` 目录
