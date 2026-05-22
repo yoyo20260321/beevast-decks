@@ -956,5 +956,40 @@
     window.addEventListener('hashchange', fromHash);
     fromHash();
     go(idx);
+
+    // ============= Mobile / touch navigation (auto-injected) =============
+    // touch swipe + on-screen floating ‹ N/T › nav, visible on narrow viewport
+    // or coarse pointer. Opt out with <html data-no-mobile-nav>.
+    if (!document.documentElement.hasAttribute('data-no-mobile-nav')) {
+      let sx=0,sy=0,st=0; const SWIPE_MIN=40, SWIPE_MAX_T=800;
+      document.addEventListener('touchstart', function(e){
+        if (e.touches.length!==1) return;
+        sx=e.touches[0].clientX; sy=e.touches[0].clientY; st=Date.now();
+      }, {passive:true});
+      document.addEventListener('touchend', function(e){
+        if (!st) return;
+        const t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy, dt=Date.now()-st;
+        st=0;
+        if (dt>SWIPE_MAX_T) return;
+        if (Math.abs(dx)<SWIPE_MIN) return;
+        if (Math.abs(dx)<Math.abs(dy)*1.3) return;
+        go(dx<0 ? idx+1 : idx-1);
+      }, {passive:true});
+
+      if (!document.querySelector('.mobile-nav')) {
+        const nav = document.createElement('div');
+        nav.className = 'mobile-nav';
+        nav.innerHTML = '<button class="mnav-prev" aria-label="prev">‹</button>'
+          + '<span class="mnav-page">'+(idx+1)+'/'+total+'</span>'
+          + '<button class="mnav-next" aria-label="next">›</button>';
+        document.body.appendChild(nav);
+        const info = nav.querySelector('.mnav-page');
+        nav.querySelector('.mnav-prev').addEventListener('click', function(){ go(idx-1); info.textContent=(idx+1)+'/'+total; });
+        nav.querySelector('.mnav-next').addEventListener('click', function(){ go(idx+1); info.textContent=(idx+1)+'/'+total; });
+        // Sync indicator on hash / keyboard navigation too.
+        new MutationObserver(function(){ info.textContent=(idx+1)+'/'+total; })
+          .observe(document.querySelector('.deck'), {subtree:true, attributes:true, attributeFilter:['class']});
+      }
+    }
   });
 })();
