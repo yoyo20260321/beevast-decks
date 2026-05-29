@@ -422,12 +422,13 @@
     <h2 class="h2">从用户消息到 agent 回复 —— <span class="accent">启动期 3 跳 · 运行期 8 跳</span></h2>
     <p class="lede">同一张图看完: 启动期 license/注册 (虚线 A/B/C) + 运行期消息处理 (实线 ①-⑧)。</p>
     <div style="margin-top:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px">
-      <svg viewBox="0 0 1100 600" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;font-family:var(--font-mono, monospace)" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 1100 720" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;font-family:var(--font-mono, monospace)" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
           <marker id="ar-boot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffb86b"/></marker>
           <marker id="ar-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#60d394"/></marker>
           <marker id="ar-runtime" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bb9af7"/></marker>
+          <marker id="ar-llm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f7768e"/></marker>
         </defs>
         <!-- USERS row -->
         <g>
@@ -490,6 +491,40 @@
         <path d="M430,460 L430,518" stroke="#bb9af7" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ar-runtime)"/>
         <path d="M700,460 L700,518" stroke="#bb9af7" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ar-runtime)"/>
         <text x="190" y="495" font-size="10" fill="#bb9af7">spawn ACP child</text>
+        <!-- LLM row — 大模型 (实际 inference 调谁) -->
+        <g>
+          <text x="40" y="615" font-size="11" fill="#a9b1d6">LLM · 大模型 (ACP child 经 provider SDK 调; 单 child 可切多模型)</text>
+          <rect x="40" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="92" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">opus</text>
+          <text x="92" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">Anthropic</text>
+          <rect x="155" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="207" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">sonnet</text>
+          <text x="207" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">Anthropic</text>
+          <rect x="270" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="322" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">gpt-5</text>
+          <text x="322" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">OpenAI</text>
+          <rect x="385" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="437" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">deepseek</text>
+          <text x="437" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">DeepSeek</text>
+          <rect x="500" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="552" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">glm-4.6</text>
+          <text x="552" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">智谱 ZhipuAI</text>
+          <rect x="615" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="667" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">kimi-k2</text>
+          <text x="667" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">月之暗面</text>
+          <rect x="730" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="782" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">minimax</text>
+          <text x="782" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">MiniMax</text>
+          <rect x="845" y="630" width="105" height="60" rx="10" fill="#2d2433" stroke="#f7768e" stroke-width="1.5"/>
+          <text x="897" y="655" font-size="12" font-weight="700" fill="#f7768e" text-anchor="middle">qwen-3</text>
+          <text x="897" y="675" font-size="9" fill="#a9b1d6" text-anchor="middle">阿里通义</text>
+        </g>
+        <!-- Arrows: runtime → LLM (claude → 主要走 anthropic; codex → openai/openai-like; cursor → any) -->
+        <!-- 从 3 个 runtime 底部分别打散 fan-out 到 LLM 行 -->
+        <path d="M160,584 L160,628" stroke="#f7768e" stroke-width="1" stroke-dasharray="2 3" fill="none" marker-end="url(#ar-llm)"/>
+        <path d="M430,584 L430,628" stroke="#f7768e" stroke-width="1" stroke-dasharray="2 3" fill="none" marker-end="url(#ar-llm)"/>
+        <path d="M700,584 L700,628" stroke="#f7768e" stroke-width="1" stroke-dasharray="2 3" fill="none" marker-end="url(#ar-llm)"/>
+        <text x="220" y="608" font-size="10" fill="#f7768e">inference (provider SDK · 可切换)</text>
         <!-- BEEKEEPER (right column) -->
         <rect x="880" y="220" width="180" height="200" rx="12" fill="#1a1b26" stroke="#ffb86b" stroke-width="2"/>
         <text x="970" y="248" font-size="14" font-weight="700" fill="#ffb86b" text-anchor="middle">beekeeper</text>
