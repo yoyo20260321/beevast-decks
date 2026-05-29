@@ -422,11 +422,12 @@
     <h2 class="h2">从用户消息到 agent 回复 —— <span class="accent">启动期 3 跳 · 运行期 8 跳</span></h2>
     <p class="lede">同一张图看完: 启动期 license/注册 (虚线 A/B/C) + 运行期消息处理 (实线 ①-⑧)。</p>
     <div style="margin-top:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px">
-      <svg viewBox="0 0 1100 500" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;font-family:var(--font-mono, monospace)" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 1100 600" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;font-family:var(--font-mono, monospace)" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
           <marker id="ar-boot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffb86b"/></marker>
           <marker id="ar-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#60d394"/></marker>
+          <marker id="ar-runtime" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bb9af7"/></marker>
         </defs>
         <!-- USERS row -->
         <g>
@@ -468,6 +469,27 @@
           <text x="700" y="427" font-size="10" fill="#a9b1d6" text-anchor="middle">profile=rpc-ops</text>
           <text x="700" y="443" font-size="10" fill="#a9b1d6" text-anchor="middle">…</text>
         </g>
+        <!-- AGENT RUNTIME row (claude / codex / cursor — ACP child) -->
+        <g>
+          <text x="40" y="505" font-size="11" fill="#a9b1d6">Agent Runtime · ACP child (一进程一 agent · spawn 真正跑模型的 CLI)</text>
+          <rect x="40" y="520" width="240" height="64" rx="10" fill="#24283b" stroke="#bb9af7" stroke-width="2"/>
+          <text x="160" y="546" font-size="13" font-weight="700" fill="#bb9af7" text-anchor="middle">claude</text>
+          <text x="160" y="564" font-size="10" fill="#a9b1d6" text-anchor="middle">@agentclientprotocol/claude-agent-acp</text>
+          <text x="160" y="578" font-size="9" fill="#a9b1d6" text-anchor="middle">主用 · sonnet / opus / haiku</text>
+          <rect x="310" y="520" width="240" height="64" rx="10" fill="#24283b" stroke="#bb9af7" stroke-width="2"/>
+          <text x="430" y="546" font-size="13" font-weight="700" fill="#bb9af7" text-anchor="middle">codex</text>
+          <text x="430" y="564" font-size="10" fill="#a9b1d6" text-anchor="middle">@openai/codex (ACP 适配)</text>
+          <text x="430" y="578" font-size="9" fill="#a9b1d6" text-anchor="middle">OpenAI 系 · 跨 provider 可切</text>
+          <rect x="580" y="520" width="240" height="64" rx="10" fill="#24283b" stroke="#bb9af7" stroke-width="2"/>
+          <text x="700" y="546" font-size="13" font-weight="700" fill="#bb9af7" text-anchor="middle">cursor</text>
+          <text x="700" y="564" font-size="10" fill="#a9b1d6" text-anchor="middle">cursor-agent (ACP 适配)</text>
+          <text x="700" y="578" font-size="9" fill="#a9b1d6" text-anchor="middle">Anysphere 系 · 同协议接入</text>
+        </g>
+        <!-- Arrows: agent rpc → runtime (spawn ACP child) -->
+        <path d="M160,460 L160,518" stroke="#bb9af7" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ar-runtime)"/>
+        <path d="M430,460 L430,518" stroke="#bb9af7" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ar-runtime)"/>
+        <path d="M700,460 L700,518" stroke="#bb9af7" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ar-runtime)"/>
+        <text x="190" y="495" font-size="10" fill="#bb9af7">spawn ACP child</text>
         <!-- BEEKEEPER (right column) -->
         <rect x="880" y="220" width="180" height="200" rx="12" fill="#1a1b26" stroke="#ffb86b" stroke-width="2"/>
         <text x="970" y="248" font-size="14" font-weight="700" fill="#ffb86b" text-anchor="middle">beekeeper</text>
