@@ -129,6 +129,41 @@
   margin: 2px;
 }
 
+/* ========= Topology diagram (2026-05 拓扑修订 — RFC 0027/0028/0029) ========= */
+.topology { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 14px; }
+.topology .t-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.topology .t-box {
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  text-align: center;
+  min-width: 110px;
+  position: relative;
+}
+.topology .t-box b { display: block; font-size: 14px; line-height: 1.25; }
+.topology .t-box .dim { font-size: 11px; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+.topology .t-box .pkg { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-top: 4px; }
+.topology .t-box.client { background: color-mix(in srgb, var(--text-3) 12%, transparent); border-color: var(--border); }
+.topology .t-box.product.main { border-left: 3px solid var(--accent); padding-left: 18px; }
+.topology .t-box.product.agent { border-left: 3px solid var(--good, #60d394); }
+.topology .t-box.product.ca { border-left: 3px solid #ffb86b; background: color-mix(in srgb, #ffb86b 8%, var(--surface)); }
+.topology .t-box .badge {
+  display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 10px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent);
+}
+.topology .t-arr { color: var(--accent); font-family: var(--font-mono); font-size: 12px; padding: 2px 0; }
+.topology .t-arr.aside { color: #ffb86b; font-size: 11px; }
+@media (max-width: 768px) {
+  .topology { gap: 6px; margin-top: 10px; }
+  .topology .t-box { padding: 8px 10px; min-width: 0; flex: 1 1 calc(50% - 6px); }
+  .topology .t-box b { font-size: 12.5px; }
+  .topology .t-box .dim { font-size: 10.5px; }
+  .topology .t-box .pkg { font-size: 9.5px; }
+  .topology .t-arr { font-size: 11px; }
+}
+
 /* ============== Mobile / narrow viewport (deck-local classes) ============== */
 @media (max-width: 768px) {
   /* Global: never let any text push beyond viewport */
@@ -258,7 +293,7 @@
     </div>
     <div class="deck-footer">
       <span class="mono">#beevast #v3 #五层架构 #rfc-0013-0016</span>
-      <span class="slide-number" data-current="1" data-total="12"></span>
+      <span class="slide-number" data-current="1" data-total="15"></span>
     </div>
     <aside class="notes">
       <p>大家好，今天给团队分享我们 BeeVast <strong>V3 架构</strong>。这是过去 1 个月落地的工作，跨好几个 RFC——0013 / 0014 / 0015 / 0016 —— 今天<em>用一份 deck 串起来</em>讲清楚。</p>
@@ -302,22 +337,151 @@
     <p class="kicker">// part 02 · big picture</p>
     <h2 class="h2">五层 + 三大横切</h2>
     <div class="mt-m">
-      <div class="arch-layer"><span class="lvl">L3</span><div><b>Gateway</b><div class="dim">WS / Feishu / WeCom / DingTalk → InboundEnvelope (统一封装)</div></div><span class="pkg">@beevast/gateway</span></div>
-      <div class="arch-layer"><span class="lvl">L2</span><div><b>Session Conductor</b><div class="dim">conversation-bridge · routeKey 路由 · queue depth · 错误归类</div></div><span class="pkg">products/master-brain</span></div>
+      <div class="arch-layer"><span class="lvl">L3</span><div><b>Gateway</b> <span class="badge" style="display:inline-block;margin-left:6px;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent)">2026-05 拆产品</span><div class="dim">WS / Feishu / WeCom / DingTalk / WeChat → InboundEnvelope · 渠道与 agent 解耦 (RFC 0027)</div></div><span class="pkg">@beevast/im-gateway</span></div>
+      <div class="arch-layer"><span class="lvl">L2</span><div><b>Session Conductor</b><div class="dim">routeKey = platform:chat:agent:bot · 一进程一 agent · RPC `/brain/prompt`</div></div><span class="pkg">products/master-brain · rpc</span></div>
       <div class="arch-layer"><span class="lvl">L1</span><div><b>Agent Runner</b><div class="dim">BeevastRuntime + ConversationManager + AcpAgent + spawn claude</div></div><span class="pkg">@beevast/acp-runtime</span></div>
       <div class="arch-layer"><span class="lvl">L0</span><div><b>Agent Loader</b><div class="dim">agent.toml → workdir 投影 + workdir-lock (多 profile 并发)</div></div><span class="pkg">@beevast/agent-loader</span></div>
       <div class="arch-layer"><span class="lvl">L4</span><div><b>Renderer</b><div class="dim">流式 chunk → channel-aware OutboundChunk → L3.sendStream</div></div><span class="pkg">@beevast/renderer</span></div>
     </div>
     <div class="crosscut">
-      <div class="tag">Launch Profile · TOML · env overlay</div>
-      <div class="tag">SystemEventBus · 5 层可观测 · SQLite sink</div>
-      <div class="tag">Memory · 独立仓 · auto-pull/push</div>
+      <div class="tag">gatekeeper · 权限闸 · RFC 0028</div>
+      <div class="tag">beekeeper · 中心 license · RFC 0029</div>
+      <div class="tag">Launch Profile · SystemEventBus · Memory</div>
     </div>
     <aside class="notes">
       <p>这是我们五层架构的<strong>总览</strong>。从下往上看更顺：</p>
       <p><strong>L3 Gateway</strong> 拿到 IM 平台的原始 frame，转成统一的 <code>InboundEnvelope</code>。<strong>L2 Session Conductor</strong> 拿 envelope 按 routeKey 路由到对应会话。<strong>L1 Agent Runner</strong> 才是真正跑 claude 子进程的层。<strong>L0 Agent Loader</strong> 是横向支撑——它把 agent.toml 投影成 workdir。<strong>L4 Renderer</strong> 反向，把流式输出 chunk 推回 L3 发出去。</p>
       <p>下面那三个横切——Launch Profile / SystemEventBus / Memory——是<em>整条链路都用得到</em>的基础设施，不属于任何单层。</p>
       <p>注意每层右边的包名——L0/L1/L4 是 <code>@beevast/</code> npm package（多 product 共享），L2/L3 是 products/master-brain 自己的代码。<strong>共享下沉 vs 产品定制</strong>这条线后面 #8 会专门讲。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3b. PRODUCT TOPOLOGY (RFC 0027/0028/0029 拓扑修订) ============ -->
+  <section class="slide" data-title="Product Topology">
+    <p class="kicker">// part 02b · 2026-05 新拓扑</p>
+    <h2 class="h2">渠道与 agent <span class="accent">解耦</span> —— 4 个独立产品协作</h2>
+    <p class="lede">原 master-brain bot 一把抓的局面拆掉；RFC 0027/0028/0029 之后渠道、调度、权限、license 各自独立产品。</p>
+    <div class="topology">
+      <div class="t-row">
+        <div class="t-box client">飞书</div>
+        <div class="t-box client">企微</div>
+        <div class="t-box client">钉钉</div>
+        <div class="t-box client">微信</div>
+        <div class="t-box client">Web / 桌面</div>
+      </div>
+      <div class="t-arr">↓ inbound</div>
+      <div class="t-box product main">
+        <b>im-gateway</b><span class="badge">新</span>
+        <div class="dim">渠道接入 · 一 IM bot 一进程 · 路由到 N agent</div>
+        <div class="pkg">@beevast/im-gateway</div>
+      </div>
+      <div class="t-arr">↓ /authz · /brain/prompt</div>
+      <div class="t-box product main">
+        <b>gatekeeper</b><span class="badge">RFC 0028</span>
+        <div class="dim">单企业 IAM/RBAC · 权限/可见 agent 真相源 · 控制台</div>
+        <div class="pkg">@beevast/gatekeeper</div>
+      </div>
+      <div class="t-arr">↓ /brain/prompt (SSE)</div>
+      <div class="t-row">
+        <div class="t-box product agent">
+          <b>master-brain rpc</b>
+          <div class="dim">master-brain agent · 一进程一 agent</div>
+        </div>
+        <div class="t-box product agent">
+          <b>analyst rpc</b>
+          <div class="dim">analyst agent · 独立端口</div>
+        </div>
+        <div class="t-box product agent">
+          <b>ops rpc</b>
+          <div class="dim">ops agent · 独立 skill/memory</div>
+        </div>
+      </div>
+      <div class="t-arr aside">↑ 所有 agent 内嵌 beekeeper 公钥, 自验签 license</div>
+      <div class="t-box product ca">
+        <b>beekeeper</b><span class="badge">RFC 0029</span>
+        <div class="dim">中心化 license CA · Ed25519 私钥, 客户机不下发 · 全网唯一</div>
+        <div class="pkg">@beevast/beekeeper</div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>这是过去两周拓扑的<strong>重大变化</strong>，也是要重点讲的一页。原来一个 master-brain bot 一把抓——既接 IM、又跑 agent、license 也自己读自己。现在拆成 4 个产品。</p>
+      <p><strong>im-gateway</strong>：以前 IM 接入耦合在 master-brain 里，现在抽出独立 product。一个 IM bot 一个 im-gateway 进程，挂在企业 gatekeeper 上往后转发。新加渠道不动 master-brain。</p>
+      <p><strong>gatekeeper</strong>：每个企业部署一套（on-prem），是「用户↔可见 agent」「license 履约」的真相源，自带控制台。RFC 0028。</p>
+      <p><strong>master-brain / analyst / ops rpc</strong>：一进程一 agent，各自启 profile，各自挂 RPC 端口。im-gateway 经 gatekeeper 路由到对应 agent 的 RPC。</p>
+      <p><strong>beekeeper</strong>：中心化 license CA。客户机不下发私钥，只下发签名后的 license 文本——这是 RFC 0029 的信任锚。</p>
+      <p>关键: <strong>"产品" 这个词承载的是边界</strong>。打包、部署、升级、命名空间各自独立。某一个挂了不连累全局。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3c. UNIFIED AUTH GATE (RFC 0027 + 0028) ============ -->
+  <section class="slide" data-title="Unified Auth Gate">
+    <p class="kicker">// part 02c · RFC 0027 + 0028 拓扑修订</p>
+    <h2 class="h2">鉴权闸<span class="accent">下沉</span>到 agent RPC —— 唯一入口</h2>
+    <p class="lede">从"每个渠道各自调闸"改成"agent RPC 自带闸"。新渠道接入零改造、漏不掉。</p>
+    <div class="compare-grid">
+      <div class="neg">
+        <h4>🔴 老路径 · 边缘鉴权</h4>
+        <p class="dim">飞书 bot → 自己调 gatekeeper</p>
+        <p class="dim">钉钉 bot → 自己调 gatekeeper</p>
+        <p class="dim">web / 桌面 → 自己调 gatekeeper</p>
+        <p class="dim"><b>问题：</b>新渠道接入<em>必须记得加</em>这一步；漏一个就漏鉴权、漏统计、漏埋点。</p>
+        <p class="dim"><b>安全口子：</b>桌面端若直连 agent RPC 之前不经鉴权（仅 loopback 拦着）。</p>
+      </div>
+      <div class="pos">
+        <h4>🟢 新路径 · 统一闸</h4>
+        <p class="dim">所有渠道 → im-gateway / web 前端</p>
+        <p class="dim">→ 转发到 agent RPC <code>/brain/prompt</code></p>
+        <p class="dim">→ RPC 处理前调 gatekeeper resolve<br>　 + fire-and-forget 埋点 /authz/usage</p>
+        <p class="dim"><b>优势：</b>新渠道接入零改造；任何客户端走 RPC 都被鉴权 + 统计。</p>
+        <p class="dim"><b>边缘瘦身：</b>web/dispatcher 的 resolve 退化为<em>列出可见 agent</em>给下拉框，不再做强制。</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <b>唯一入口 = 唯一防护点。</b>认人 + 鉴权 + 埋点统一在 agent RPC 闸一处实现，新渠道接入不会漏。<code>POST /authz/usage</code> 落 gatekeeper <code>usage_events</code>，控制台「数据」tab 聚合显示活跃自然人/会话/调用。
+    </div>
+    <aside class="notes">
+      <p>RFC 0027 + 0028 联动的核心修订: <strong>鉴权执行点</strong>从边缘下沉到 agent RPC <code>/brain/prompt</code>。</p>
+      <p>这是 bwg 2026-05-26 复盘后定的方向，不是 RFC 原计划。原计划在每个渠道（web 前端 / IM dispatcher）各自调 gatekeeper 判权限。改完后<strong>整条链路只剩一个执行点</strong>。</p>
+      <p>RPC 收到 prompt 前先调 gatekeeper <code>resolve(platform, channelUserId)</code>，校验「本 agent 是否对该用户可见 + license 是否有效」，命中后回填解析后的自然人身份注入 runtime（给 agent 记喜好），不通过 403 直接拒。</p>
+      <p>顺手解决一个安全漏洞：桌面端 ws-server 之前直连 agent RPC 不经 gatekeeper，仅靠 loopback 拦。现在统一过闸。</p>
+      <p>边缘的 resolve 退化为<strong>纯展示用途</strong>：列出用户可见的 agent 填下拉框，不再强制。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3d. ANTI-FORGE TRUST MODEL (RFC 0029) ============ -->
+  <section class="slide" data-title="License + Anti-Forge">
+    <p class="kicker">// part 02d · RFC 0029 信任模型</p>
+    <h2 class="h2">beekeeper —— License 中心 + <span class="accent">防伪造</span>信任锚</h2>
+    <p class="lede">on-prem 客户有 root → 可以改配置指向伪造 gatekeeper。唯一伪造不了的 = beekeeper Ed25519 签名。</p>
+    <div class="compare-grid">
+      <div class="pos">
+        <h4>📜 gatekeeper · 运营 / 软</h4>
+        <p class="dim">持 credential 连 beekeeper</p>
+        <p class="dim">激活 / 刷新 / 缓存 / 离线宽限</p>
+        <p class="dim">控制台展示 + 软限 IAM 操作</p>
+        <p class="dim">N 个 agent 不该各自连 beekeeper, 集中在这</p>
+        <p class="dim"><b>客户能控制 → 不当裁决者</b></p>
+      </div>
+      <div class="pos">
+        <h4>⚖️ agent RPC 闸 · 裁决 / 硬</h4>
+        <p class="dim">不直连 beekeeper</p>
+        <p class="dim"><b>内嵌公钥</b>自验签 license 原文</p>
+        <p class="dim">硬执行 agents_enabled / 到期(+宽限) / 吊销暂停</p>
+        <p class="dim">信 gatekeeper, 但要求"真 gk"证明</p>
+        <p class="dim"><b>信任锚 = beekeeper 私钥的 Ed25519 签名</b></p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <b>三道防护:</b> ① agent 内嵌公钥<em>自验签</em> license — 客户伪造 license 直接挡 ② gatekeeper 出示 beekeeper 签发的<em>身份证书</em>证明"真 gk" — 防 url 替换 ③ 异常事件上报中心 + <em>黑名单</em>拉黑伪造源 — 防长期渗透。
+    </div>
+    <aside class="notes">
+      <p>RFC 0029 解决一个尖锐问题: <strong>客户机有 root，把 agent 的 <code>[gatekeeper] url</code> 指向自己伪造的 gatekeeper 怎么办?</strong></p>
+      <p>伪造 gatekeeper 可以一律返回「license 有效 + 所有 agent 可见」，绕过<strong>席位 / agents 白名单 / 到期 / 吊销</strong>这些商业边界。这是 on-prem 部署的天生威胁。</p>
+      <p>解法 = <strong>分工 + 三道防护</strong>：</p>
+      <p>左边 <strong>gatekeeper（软）</strong>：留运营功能——连中心、缓存、离线宽限、给企业管理员看 dashboard。但<strong>不让它当裁决者</strong>。它的结论 agent 不全信。</p>
+      <p>右边 <strong>agent（硬）</strong>：内嵌 beekeeper 公钥，<strong>自己验签 license 原文</strong>，硬执行 agents_enabled / 到期 / 吊销。这是裁决权所在。</p>
+      <p>三道防护逐层挡：① agent 验签挡<em>伪造 license</em> ② gatekeeper 出示 beekeeper 签发的身份证书挡 <em>url 替换</em> ③ 异常上报 + 中心黑名单挡<em>长期渗透</em>。</p>
+      <p>核心理念: <strong>客户伪造不了 Ed25519 签名</strong>——所有硬执行都锚在签名上，不锚在某个可被客户控制的服务的结论上。</p>
     </aside>
   </section>
 
@@ -592,9 +756,12 @@ $ beevast <span class="cmd">start</span> master-brain \
       <li><b>③ Shared 单源</b><span class="dim">一处更新 · 全 worktree 自动同步</span></li>
       <li><b>④ Memory 独立仓</b><span class="dim">协作沉淀 · 向独立知识库演进</span></li>
       <li><b>⑤ 产品化分层 + 一键装</b><span class="dim">packages/products 平行 · 4 条命令客户机跑起来</span></li>
+      <li><b>⑥ 渠道与 agent 解耦</b><span class="dim">im-gateway 独立 · 一进程一 agent · routeKey 区分 (RFC 0027)</span></li>
+      <li><b>⑦ 鉴权闸下沉</b><span class="dim">agent RPC 唯一入口 · 新渠道零改造 (RFC 0028)</span></li>
+      <li><b>⑧ License 防伪造</b><span class="dim">beekeeper 私钥签名 · agent 内嵌公钥自验签 (RFC 0029)</span></li>
     </ul>
     <div class="takeaway mt-l">
-      <b>核心 RFC：</b>0013（五层架构）· 0014（build & deploy）· 0015（凭证统一）· 0016（per-session worktree + agent workdir 修正）<br>
+      <b>核心 RFC：</b>0013（五层）· 0014（build/deploy）· 0015（凭证统一）· 0016（per-session worktree）· <b>0027</b>（多 agent + im-gateway）· <b>0028</b>（gatekeeper 权限闸）· <b>0029</b>（beekeeper license 中心）<br>
       <b>核心仓库：</b><span class="repo-pill">beevast</span><span class="repo-pill">beevast-shared</span><span class="repo-pill">beevast-memory</span><span class="repo-pill">beevast-releases</span>
     </div>
     <div class="speaker mt-l">
