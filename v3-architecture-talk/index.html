@@ -293,7 +293,7 @@
     </div>
     <div class="deck-footer">
       <span class="mono">#beevast #v3 #五层架构 #rfc-0013-0016</span>
-      <span class="slide-number" data-current="1" data-total="15"></span>
+      <span class="slide-number" data-current="1" data-total="16"></span>
     </div>
     <aside class="notes">
       <p>大家好，今天给团队分享我们 BeeVast <strong>V3 架构</strong>。这是过去 1 个月落地的工作，跨好几个 RFC——0013 / 0014 / 0015 / 0016 —— 今天<em>用一份 deck 串起来</em>讲清楚。</p>
@@ -410,6 +410,155 @@
       <p><strong>master-brain / analyst / ops rpc</strong>：一进程一 agent，各自启 profile，各自挂 RPC 端口。im-gateway 经 gatekeeper 路由到对应 agent 的 RPC。</p>
       <p><strong>beekeeper</strong>：中心化 license CA。客户机不下发私钥，只下发签名后的 license 文本——这是 RFC 0029 的信任锚。</p>
       <p>关键: <strong>"产品" 这个词承载的是边界</strong>。打包、部署、升级、命名空间各自独立。某一个挂了不连累全局。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3b.5 DATA FLOW (启动期 + 运行期) ============ -->
+  <section class="slide" data-title="Data Flow">
+    <p class="kicker">// part 02b.5 · 数据流转大图</p>
+    <h2 class="h2">从用户消息到 agent 回复 —— <span class="accent">启动期 3 跳 · 运行期 8 跳</span></h2>
+    <p class="lede">同一张图看完: 启动期 license/注册 (虚线 A/B/C) + 运行期消息处理 (实线 ①-⑧)。</p>
+    <div style="margin-top:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px">
+      <svg viewBox="0 0 980 600" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;font-family:var(--font-mono, monospace)" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
+          <marker id="ar-boot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffb86b"/></marker>
+          <marker id="ar-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#60d394"/></marker>
+        </defs>
+        <!-- USERS row (top) -->
+        <g>
+          <rect x="40" y="10" width="120" height="44" rx="8" fill="#3b4261" stroke="#565f89"/>
+          <text x="100" y="32" font-size="13" fill="#e0e2f0" text-anchor="middle">Web · 桌面</text>
+          <text x="100" y="46" font-size="10" fill="#a9b1d6" text-anchor="middle">ws-server</text>
+          <rect x="180" y="10" width="120" height="44" rx="8" fill="#3b4261" stroke="#565f89"/>
+          <text x="240" y="32" font-size="13" fill="#e0e2f0" text-anchor="middle">飞书</text>
+          <rect x="320" y="10" width="120" height="44" rx="8" fill="#3b4261" stroke="#565f89"/>
+          <text x="380" y="32" font-size="13" fill="#e0e2f0" text-anchor="middle">企微</text>
+          <rect x="460" y="10" width="120" height="44" rx="8" fill="#3b4261" stroke="#565f89"/>
+          <text x="520" y="32" font-size="13" fill="#e0e2f0" text-anchor="middle">钉钉</text>
+          <rect x="600" y="10" width="120" height="44" rx="8" fill="#3b4261" stroke="#565f89"/>
+          <text x="660" y="32" font-size="13" fill="#e0e2f0" text-anchor="middle">微信</text>
+          <text x="380" y="74" font-size="11" fill="#a9b1d6" text-anchor="middle">用户从任一渠道发起会话</text>
+        </g>
+        <!-- IM-GATEWAY box -->
+        <rect x="40" y="100" width="680" height="78" rx="10" fill="#1a1b26" stroke="#7aa2f7" stroke-width="2"/>
+        <text x="380" y="125" font-size="15" font-weight="700" fill="#7aa2f7" text-anchor="middle">im-gateway</text>
+        <text x="380" y="145" font-size="11" fill="#a9b1d6" text-anchor="middle">渠道接入 · /agents · /use &lt;id&gt; · /bind &lt;code&gt;</text>
+        <text x="380" y="162" font-size="11" fill="#a9b1d6" text-anchor="middle">按 chat 持久化 agent 选择, 转发到对应 RPC</text>
+        <!-- GATEKEEPER box -->
+        <rect x="40" y="220" width="680" height="100" rx="10" fill="#1a1b26" stroke="#7aa2f7" stroke-width="2"/>
+        <text x="380" y="245" font-size="15" font-weight="700" fill="#7aa2f7" text-anchor="middle">gatekeeper</text>
+        <text x="380" y="265" font-size="11" fill="#a9b1d6" text-anchor="middle">单企业 IAM/RBAC · 认人 · 可见 agent 集 · agent 目录</text>
+        <text x="380" y="283" font-size="11" fill="#a9b1d6" text-anchor="middle">/authz/resolve · /authz/agents · /authz/usage · /authz/register</text>
+        <text x="380" y="305" font-size="11" fill="#ffb86b" text-anchor="middle">⌛ 周期: 持 credential refresh license + report 心跳</text>
+        <!-- AGENT row -->
+        <g>
+          <rect x="40" y="360" width="220" height="70" rx="10" fill="#1a1b26" stroke="#60d394" stroke-width="2"/>
+          <text x="150" y="385" font-size="14" font-weight="700" fill="#60d394" text-anchor="middle">master-brain rpc</text>
+          <text x="150" y="403" font-size="10" fill="#a9b1d6" text-anchor="middle">profile=rpc · /brain/prompt</text>
+          <text x="150" y="418" font-size="10" fill="#a9b1d6" text-anchor="middle">spawn claude ACP child</text>
+          <rect x="280" y="360" width="220" height="70" rx="10" fill="#1a1b26" stroke="#60d394" stroke-width="2"/>
+          <text x="390" y="385" font-size="14" font-weight="700" fill="#60d394" text-anchor="middle">analyst rpc</text>
+          <text x="390" y="403" font-size="10" fill="#a9b1d6" text-anchor="middle">profile=rpc-analyst</text>
+          <text x="390" y="418" font-size="10" fill="#a9b1d6" text-anchor="middle">独立 skill / memory</text>
+          <rect x="520" y="360" width="200" height="70" rx="10" fill="#1a1b26" stroke="#60d394" stroke-width="2"/>
+          <text x="620" y="385" font-size="14" font-weight="700" fill="#60d394" text-anchor="middle">ops rpc</text>
+          <text x="620" y="403" font-size="10" fill="#a9b1d6" text-anchor="middle">profile=rpc-ops</text>
+          <text x="620" y="418" font-size="10" fill="#a9b1d6" text-anchor="middle">…</text>
+        </g>
+        <!-- BEEKEEPER (right column, callout) -->
+        <rect x="780" y="190" width="170" height="160" rx="12" fill="#1a1b26" stroke="#ffb86b" stroke-width="2"/>
+        <text x="865" y="215" font-size="14" font-weight="700" fill="#ffb86b" text-anchor="middle">beekeeper</text>
+        <text x="865" y="232" font-size="10" fill="#a9b1d6" text-anchor="middle">License CA · 中心</text>
+        <text x="865" y="250" font-size="10" fill="#a9b1d6" text-anchor="middle">Ed25519 私钥</text>
+        <text x="865" y="278" font-size="11" fill="#ffb86b" text-anchor="middle">/v1/activate</text>
+        <text x="865" y="298" font-size="11" fill="#ffb86b" text-anchor="middle">/v1/refresh</text>
+        <text x="865" y="318" font-size="11" fill="#ffb86b" text-anchor="middle">/v1/report</text>
+        <text x="865" y="340" font-size="9" fill="#a9b1d6" text-anchor="middle">全网仅 1 个中心</text>
+        <!-- RUNTIME ARROWS (solid blue) -->
+        <!-- ① user → im-gateway -->
+        <path d="M380,60 L380,98" stroke="#7aa2f7" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <circle cx="395" cy="80" r="11" fill="#7aa2f7"/>
+        <text x="395" y="84" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">①</text>
+        <!-- ② im-gateway → gatekeeper resolve -->
+        <path d="M250,180 L250,218" stroke="#7aa2f7" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <circle cx="265" cy="200" r="11" fill="#7aa2f7"/>
+        <text x="265" y="204" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">②</text>
+        <text x="280" y="200" font-size="10" fill="#a9b1d6">resolve · 取 principal + visible agents</text>
+        <!-- ③ gatekeeper → im-gateway (catalog/agents back) -->
+        <path d="M520,218 L520,180" stroke="#60d394" stroke-width="2" fill="none" marker-end="url(#ar-ret)"/>
+        <circle cx="535" cy="200" r="11" fill="#60d394"/>
+        <text x="535" y="204" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">③</text>
+        <text x="430" y="200" font-size="10" fill="#a9b1d6" text-anchor="end">回 agents + license 状态</text>
+        <!-- ④ im-gateway 内部 选 agent -->
+        <!-- ⑤ im-gateway → agent rpc /brain/prompt -->
+        <path d="M150,320 L150,358" stroke="#7aa2f7" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <circle cx="135" cy="340" r="11" fill="#7aa2f7"/>
+        <text x="135" y="344" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">④</text>
+        <text x="100" y="346" font-size="10" fill="#a9b1d6" text-anchor="end">POST /brain/prompt</text>
+        <!-- ⑤ agent rpc → gatekeeper (authorize 二次校验 + usage 埋点) -->
+        <path d="M260,395 C 280,395 300,330 380,320" stroke="#7aa2f7" stroke-width="1.5" stroke-dasharray="2 3" fill="none" marker-end="url(#ar)"/>
+        <circle cx="300" cy="370" r="11" fill="#7aa2f7"/>
+        <text x="300" y="374" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">⑤</text>
+        <text x="320" y="370" font-size="10" fill="#a9b1d6">authorize + /authz/usage 埋点</text>
+        <!-- ⑥ agent process (内部, label only) -->
+        <circle cx="475" cy="395" r="11" fill="#7aa2f7"/>
+        <text x="475" y="399" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">⑥</text>
+        <text x="490" y="399" font-size="10" fill="#a9b1d6">claude 处理</text>
+        <!-- ⑦ SSE 回流 agent → im-gateway -->
+        <path d="M620,360 C 620,260 720,210 720,178" stroke="#60d394" stroke-width="2" fill="none" marker-end="url(#ar-ret)"/>
+        <circle cx="690" cy="280" r="11" fill="#60d394"/>
+        <text x="690" y="284" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">⑦</text>
+        <text x="700" y="270" font-size="10" fill="#a9b1d6">SSE 流式 chunk</text>
+        <!-- ⑧ im-gateway → user (回渠道) -->
+        <path d="M380,98 L380,62" stroke="#60d394" stroke-width="2" fill="none" marker-end="url(#ar-ret)"/>
+        <circle cx="365" cy="80" r="11" fill="#60d394"/>
+        <text x="365" y="84" font-size="11" font-weight="700" fill="#1a1b26" text-anchor="middle">⑧</text>
+        <text x="335" y="84" font-size="10" fill="#a9b1d6" text-anchor="end">渲染卡片回原渠道</text>
+
+        <!-- BOOT ARROWS (dashed orange) -->
+        <!-- A. agent boot → gatekeeper register -->
+        <path d="M150,360 L150,322" stroke="#ffb86b" stroke-width="1.5" stroke-dasharray="4 4" fill="none" marker-end="url(#ar-boot)"/>
+        <text x="80" y="345" font-size="11" font-weight="700" fill="#ffb86b">A·</text>
+        <text x="95" y="346" font-size="10" fill="#ffb86b">register + heartbeat</text>
+        <!-- B. im-gateway boot → gatekeeper (fetch agent catalog) -->
+        <path d="M650,178 L650,220" stroke="#ffb86b" stroke-width="1.5" stroke-dasharray="4 4" fill="none" marker-end="url(#ar-boot)"/>
+        <text x="660" y="200" font-size="11" font-weight="700" fill="#ffb86b">B·</text>
+        <text x="675" y="200" font-size="10" fill="#ffb86b">/authz/agents 取目录</text>
+        <!-- C. gatekeeper → beekeeper (activate / refresh / report) -->
+        <path d="M720,260 L780,260" stroke="#ffb86b" stroke-width="1.5" stroke-dasharray="4 4" fill="none" marker-end="url(#ar-boot)"/>
+        <text x="735" y="253" font-size="11" font-weight="700" fill="#ffb86b">C·</text>
+        <text x="745" y="253" font-size="10" fill="#ffb86b">activate / refresh</text>
+        <path d="M780,290 L720,290" stroke="#60d394" stroke-width="1.5" stroke-dasharray="4 4" fill="none" marker-end="url(#ar-ret)"/>
+        <text x="725" y="305" font-size="10" fill="#60d394" text-anchor="middle">签名 license</text>
+
+        <!-- Legend bottom -->
+        <g transform="translate(40, 460)">
+          <text x="0" y="0" font-size="12" font-weight="700" fill="#7aa2f7">启动期 (虚线 · A/B/C)</text>
+          <text x="0" y="18" font-size="11" fill="#a9b1d6"><tspan fill="#ffb86b" font-weight="700">A</tspan> agent profile-start → POST /authz/register (公钥+rpcUrl), 状态 active 或 pending (审批制)</text>
+          <text x="0" y="34" font-size="11" fill="#a9b1d6"><tspan fill="#ffb86b" font-weight="700">B</tspan> im-gateway 启动后 GET /authz/agents 取在线 agent 目录, 周期刷新</text>
+          <text x="0" y="50" font-size="11" fill="#a9b1d6"><tspan fill="#ffb86b" font-weight="700">C</tspan> gatekeeper 启动 → /v1/activate (持激活码) → 取 license; 周期 /v1/refresh + /v1/report (用量心跳)</text>
+        </g>
+        <g transform="translate(40, 530)">
+          <text x="0" y="0" font-size="12" font-weight="700" fill="#7aa2f7">运行期 (实线 · ①-⑧)</text>
+          <text x="0" y="18" font-size="11" fill="#a9b1d6"><tspan fill="#7aa2f7" font-weight="700">①</tspan> 用户消息入站 →<tspan fill="#7aa2f7" font-weight="700"> ②</tspan> im-gateway 调 gatekeeper resolve →<tspan fill="#60d394" font-weight="700"> ③</tspan> 回 principal + visible agents + license 状态</text>
+          <text x="0" y="34" font-size="11" fill="#a9b1d6"><tspan fill="#7aa2f7" font-weight="700">④</tspan> im-gateway 按 chat 选定 agent (或 /use 切换), POST /brain/prompt →<tspan fill="#7aa2f7" font-weight="700"> ⑤</tspan> RPC 闸再调 gatekeeper 校验+埋点 →<tspan fill="#7aa2f7" font-weight="700"> ⑥</tspan> claude 处理</text>
+          <text x="0" y="50" font-size="11" fill="#a9b1d6"><tspan fill="#60d394" font-weight="700">⑦</tspan> agent SSE 流式回 chunk →<tspan fill="#60d394" font-weight="700"> ⑧</tspan> im-gateway 渲染对应渠道卡片回用户</text>
+        </g>
+      </svg>
+    </div>
+    <aside class="notes">
+      <p>这一页把<strong>从用户消息到 agent 回复</strong>的完整链路一次性讲清楚。重点在于看清<strong>启动期</strong>和<strong>运行期</strong>各自做了什么。</p>
+      <p><strong>启动期</strong>有 3 跳，图上虚线 A/B/C：</p>
+      <p>A — 每个 agent profile-start 起来后会调 gatekeeper <code>/authz/register</code> 注册自己（带公钥 + rpcUrl），首次默认 pending 等 admin 批准；已批准则 active；之后周期心跳保活。这就是 RFC 0027 §审批制。</p>
+      <p>B — im-gateway 启动后调 gatekeeper <code>/authz/agents</code> 拿到所有在线 agent 的目录（含 rpcUrl 映射），后续每来一条消息都会再校一遍。</p>
+      <p>C — gatekeeper 启动会调 beekeeper <code>/v1/activate</code> 用激活码换 license + credential；之后周期 <code>/v1/refresh</code> 保持 license 新鲜，<code>/v1/report</code> 上报用量心跳。</p>
+      <p><strong>运行期</strong>是 8 跳，图上实线 ①-⑧：</p>
+      <p>① 用户从任一渠道发消息 → ② im-gateway 调 gatekeeper resolve 拿 principalId + 可见 agent 集 + license 状态 → ③ 回来。</p>
+      <p>④ im-gateway 按 per-chat 选定的 agent（或 /use 切换的）转发到对应 RPC <code>/brain/prompt</code>。</p>
+      <p>⑤ RPC 鉴权闸<strong>再次</strong>调 gatekeeper resolve 二次校验 + 同步 fire-and-forget 调 <code>/authz/usage</code> 埋点。</p>
+      <p>⑥ 进 BeevastRuntime → claude ACP child 处理 → ⑦ 把 RuntimeEvent 通过 SSE 流式回给 im-gateway → ⑧ im-gateway 用对应渠道的 Renderer 渲染（飞书 patch 卡片 / web SSE / 微信 buffer 整段）发回原渠道。</p>
+      <p>关键观察: <strong>用户感知不到中间这 5 层</strong>，整个链路对用户透明；但任何一层异常都能定位（gatekeeper 不通 = 拒鉴权 / beekeeper 不通 = 离线宽限 / agent RPC 不通 = "助手不在线"）。</p>
     </aside>
   </section>
 
