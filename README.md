@@ -8,7 +8,8 @@
 |---|---|---|
 | [`/cost-analysis-2026-05-22/`](https://yoyo20260321.github.io/beevast-decks/cost-analysis-2026-05-22/) | Master Brain 4 天用量分析（按天 × 按 bot） | 2026-05-22 |
 
-| [`/v3-architecture-talk/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk/) | V3 五层架构 · 技术分享（含 RFC 0027/0028/0029 拓扑修订：im-gateway / gatekeeper / beekeeper 产品矩阵） | 2026-05-29 |
+| [`/v3-architecture-talk/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk/) | **v2 · 最新** — V3 五层架构 + RFC 0027/0028/0029 拓扑修订（im-gateway / gatekeeper / beekeeper 产品矩阵） | 2026-05-29 |
+| [`/v3-architecture-talk-v1/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk-v1/) | 归档 v1 — V3 五层架构初版（仅 RFC 0013-0016） | 2026-05-22 |
 
 | [`/last30d-ai-agent/`](https://yoyo20260321.github.io/beevast-decks/last30d-ai-agent/) | (在这一行写说明) | 2026-05-22 |
 
