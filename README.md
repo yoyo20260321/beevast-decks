@@ -12,6 +12,7 @@
 | [`/v3-architecture-talk-v1/`](https://yoyo20260321.github.io/beevast-decks/v3-architecture-talk-v1/) | 归档 v1 — V3 五层架构初版（仅 RFC 0013-0016） | 2026-05-22 |
 
 | [`/last30d-ai-agent/`](https://yoyo20260321.github.io/beevast-decks/last30d-ai-agent/) | (在这一行写说明) | 2026-05-22 |
+| [`/weimao-mid-mgmt-2026q2/`](https://yoyo20260321.github.io/beevast-decks/weimao-mid-mgmt-2026q2/) | 威贸电子 中层管理者汇报 — 数智化进展 + AI 化必要性 + 中层关键动作（10 页 + 逐字稿，presenter mode） | 2026-06-01 |
 
 ## 怎么加新 deck
 
