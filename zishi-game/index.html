@@ -179,25 +179,33 @@ const PETS = [
 
 let stars = +(localStorage.getItem("zishi_stars") || 0);
 
-// ===== 语音 =====
-let zhVoice = null;
-function pickVoice(){
-  const vs = speechSynthesis.getVoices();
-  zhVoice = vs.find(v=>/zh[-_]CN/i.test(v.lang)) || vs.find(v=>/zh/i.test(v.lang)) || null;
+// ===== 语音：预录音频文件 (m4a)，不依赖设备 TTS，任何浏览器/webview 都能放 =====
+const audioCache = {};
+function clip(name){
+  let a = audioCache[name];
+  if(!a){ a = new Audio("audio/"+name+".m4a"); a.preload="auto"; audioCache[name]=a; }
+  return a;
 }
-if (typeof speechSynthesis !== "undefined"){
-  pickVoice();
-  speechSynthesis.onvoiceschanged = pickVoice;
+// 顺序播放一串音频；打断上一串
+let playToken = 0;
+function playSeq(names){
+  const my = ++playToken;
+  // 停掉所有在放的
+  Object.values(audioCache).forEach(a=>{ try{a.pause(); a.currentTime=0;}catch(e){} });
+  let i = 0;
+  function next(){
+    if(my!==playToken || i>=names.length) return;
+    const a = clip(names[i]); i++;
+    a.currentTime = 0;
+    a.onended = next;
+    const p = a.play();
+    if(p && p.catch) p.catch(()=>{ /* 被拦截则跳过 */ });
+  }
+  next();
 }
-function say(text, rate=0.8){
-  try{
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "zh-CN"; u.rate = rate; u.pitch = 1.1;
-    if (zhVoice) u.voice = zhVoice;
-    speechSynthesis.speak(u);
-  }catch(e){}
-}
+function play(name){ playSeq([name]); }
+// 预热：把所有音频对象建好
+function warmAudio(){ ["hao","feed_ask","mole_ask","praise","bonk","retry","nope"].forEach(clip); for(let i=0;i<10;i++){clip("char_"+i);clip("word_"+i);} }
 
 // ===== 导航 =====
 const screens = {};
@@ -213,9 +221,9 @@ function show(id){
   if(id==="home")  renderHome();
 }
 document.querySelectorAll("[data-go]").forEach(b=>{
-  b.addEventListener("click", ()=>{ say("好！"); show(b.dataset.go); });
+  b.addEventListener("click", ()=>{ play("hao"); show(b.dataset.go); });
 });
-backBtn.addEventListener("click", ()=>{ speechSynthesis.cancel(); show("home"); });
+backBtn.addEventListener("click", ()=>{ playToken++; show("home"); });
 
 // ===== 星星 / 宠物 =====
 function updateStars(){ document.getElementById("starCount").textContent = stars; }
@@ -236,12 +244,12 @@ function renderHome(){
 
 // ===== 奖励弹层 =====
 const rewardEl = document.getElementById("reward");
-function showReward(txt, cb){
+function showReward(txt, cb, clips){
   document.getElementById("rewardTxt").textContent = txt;
   rewardEl.classList.add("show");
   addStar(1);
-  say(txt);
-  setTimeout(()=>{ rewardEl.classList.remove("show"); cb && cb(); }, 1100);
+  if(clips) playSeq(clips);
+  setTimeout(()=>{ rewardEl.classList.remove("show"); cb && cb(); }, 1200);
 }
 
 // ===== 学一学 =====
@@ -252,10 +260,10 @@ function renderLearn(){
   document.getElementById("learnHanzi").textContent = c.z;
   document.getElementById("learnPinyin").textContent = c.p;
   document.getElementById("learnWord").textContent = c.w;
-  say(c.z + "。" + c.w, 0.75);
+  play("word_" + learnIdx);
 }
-document.getElementById("learnHanzi").addEventListener("click", ()=> say(CHARS[learnIdx].z, 0.7));
-document.getElementById("learnSpeak").addEventListener("click", ()=> say(CHARS[learnIdx].z + "，" + CHARS[learnIdx].w, 0.75));
+document.getElementById("learnHanzi").addEventListener("click", ()=> play("char_" + learnIdx));
+document.getElementById("learnSpeak").addEventListener("click", ()=> play("word_" + learnIdx));
 document.getElementById("learnPrev").addEventListener("click", ()=>{ learnIdx=(learnIdx-1+CHARS.length)%CHARS.length; renderLearn(); });
 document.getElementById("learnNext").addEventListener("click", ()=>{ learnIdx=(learnIdx+1)%CHARS.length; renderLearn(); });
 
@@ -266,7 +274,8 @@ function pickN(arr, n, exclude){ return shuffle(arr.filter(x=>x!==exclude)).slic
 // ===== 喂小动物（看图选字）=====
 const ANIMALS = ["🐰","🐱","🐶","🐼","🐵","🦊","🐯","🐸"];
 function newFeed(){
-  const target = CHARS[Math.floor(Math.random()*CHARS.length)];
+  const ti = Math.floor(Math.random()*CHARS.length);
+  const target = CHARS[ti];
   document.getElementById("feedAnimal").textContent = ANIMALS[Math.floor(Math.random()*ANIMALS.length)];
   document.getElementById("feedPic").textContent = target.pic;
   const distract = pickN(CHARS, 3, target);
@@ -274,29 +283,31 @@ function newFeed(){
   const box = document.getElementById("feedChoices");
   box.innerHTML = "";
   opts.forEach(c=>{
+    const ci = CHARS.indexOf(c);
     const b = document.createElement("button");
     b.className = "choice"; b.textContent = c.z;
     b.addEventListener("click", ()=>{
       if(b.classList.contains("right")||b.classList.contains("wrong")) return;
       if(c.z===target.z){
         b.classList.add("right");
-        showReward("真棒！这是“"+target.z+"”", newFeed);
+        showReward("真棒！这是“"+target.z+"”", newFeed, ["praise","char_"+ti]);
       } else {
         b.classList.add("wrong");
-        say("再想想，小动物想要“"+target.z+"”");
+        playSeq(["retry","char_"+ti]);
         setTimeout(()=>b.classList.remove("wrong"), 500);
       }
     });
     box.appendChild(b);
   });
-  say("小动物想要哪个字呀？", 0.85);
+  playSeq(["feed_ask","char_"+ti]);
 }
 
 // ===== 打地鼠（听音辨字）=====
-let moleTarget = null, moleTimer = null;
+let moleTarget = null, moleTimer = null, moleTi = 0;
 function newMole(){
   clearInterval(moleTimer);
-  moleTarget = CHARS[Math.floor(Math.random()*CHARS.length)];
+  moleTi = Math.floor(Math.random()*CHARS.length);
+  moleTarget = CHARS[moleTi];
   document.getElementById("molePrompt").textContent = "拍出 “"+moleTarget.z+"” 字！🔨";
   const grid = document.getElementById("moleGrid");
   grid.innerHTML = "";
@@ -315,14 +326,15 @@ function newMole(){
       if(m.textContent===moleTarget.z){
         m.classList.add("bonk");
         clearInterval(moleTimer);
-        showReward("打中啦！“"+moleTarget.z+"”", newMole);
+        showReward("打中啦！“"+moleTarget.z+"”", newMole, ["bonk","char_"+moleTi]);
       } else {
-        say("不对哦，要打“"+moleTarget.z+"”");
+        playSeq(["nope","char_"+moleTi]);
         m.classList.remove("up");
       }
     });
   }
   holes.forEach(bindMole);
+  document.getElementById("moleSpeak").onclick = ()=> playSeq(["mole_ask","char_"+moleTi]);
   // 地鼠循环冒头
   function tick(){
     holes.forEach(m=>m.classList.remove("up"));
@@ -333,8 +345,8 @@ function newMole(){
     const labels = shuffle([moleTarget, ...others]);
     chosen.forEach((m,i)=>{ m.textContent = labels[i].z; m.classList.add("up"); });
   }
-  say("拍出 " + moleTarget.z + " 字！", 0.85);
-  setTimeout(tick, 400);
+  playSeq(["mole_ask","char_"+moleTi]);
+  setTimeout(tick, 600);
   moleTimer = setInterval(tick, 1700);
 }
 
@@ -342,9 +354,9 @@ function newMole(){
 const observer = new MutationObserver(()=>{ if(!screens.mole.classList.contains("active")) clearInterval(moleTimer); });
 observer.observe(screens.mole, { attributes:true, attributeFilter:["class"] });
 
-// ===== 启动：首次点击解锁语音（iOS 需用户手势）=====
+// ===== 启动：首次触摸预热音频（移动端需用户手势才能播放）=====
 let unlocked = false;
-function unlock(){ if(unlocked) return; unlocked=true; say(" "); }
+function unlock(){ if(unlocked) return; unlocked=true; warmAudio(); const a=clip("hao"); a.play().then(()=>{a.pause();a.currentTime=0;}).catch(()=>{}); }
 document.body.addEventListener("touchstart", unlock, { once:true });
 document.body.addEventListener("click", unlock, { once:true });
 
