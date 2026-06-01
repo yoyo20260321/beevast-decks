@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>认字小游戏</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
+  html,body { height:100%; overflow:hidden; font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+  body {
+    background:linear-gradient(160deg,#a8e6ff 0%,#fff4d6 60%,#ffd9ec 100%);
+    display:flex; align-items:center; justify-content:center;
+    touch-action:manipulation;
+  }
+  #app { width:100%; height:100%; position:relative; }
+  .screen { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:24px; }
+  .screen.active { display:flex; }
+
+  /* 顶栏：星星 + 宠物 */
+  .topbar { position:absolute; top:0; left:0; right:0; height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; z-index:10; }
+  .stars { font-size:30px; font-weight:800; color:#ff8c00; background:rgba(255,255,255,.7); border-radius:40px; padding:6px 18px; box-shadow:0 4px 0 rgba(0,0,0,.08); }
+  .backbtn { font-size:34px; background:rgba(255,255,255,.7); border:none; border-radius:50%; width:56px; height:56px; box-shadow:0 4px 0 rgba(0,0,0,.08); }
+
+  /* 主页 */
+  .title { font-size:56px; font-weight:900; color:#ff5b8a; text-shadow:2px 3px 0 #fff; margin-bottom:8px; }
+  .subtitle { font-size:24px; color:#5a7; margin-bottom:34px; }
+  .menu { display:flex; flex-direction:column; gap:22px; width:min(460px,86%); }
+  .bigbtn {
+    border:none; border-radius:30px; padding:28px; font-size:34px; font-weight:800; color:#fff;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); display:flex; align-items:center; justify-content:center; gap:16px;
+    transition:transform .08s, box-shadow .08s;
+  }
+  .bigbtn:active { transform:translateY(5px); box-shadow:0 2px 0 rgba(0,0,0,.18); }
+  .b-learn { background:linear-gradient(135deg,#56d364,#33b24f); }
+  .b-feed  { background:linear-gradient(135deg,#ffb14e,#ff8c00); }
+  .b-mole  { background:linear-gradient(135deg,#5ab8ff,#2a8bff); }
+  .pet { font-size:90px; margin-bottom:6px; filter:drop-shadow(0 6px 4px rgba(0,0,0,.12)); }
+
+  /* 学一学 */
+  .card {
+    background:#fff; border-radius:36px; box-shadow:0 10px 30px rgba(0,0,0,.12);
+    width:min(520px,90%); padding:30px 20px 24px; display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .pic { font-size:120px; line-height:1; }
+  .hanzi { font-size:170px; font-weight:900; color:#333; line-height:1; }
+  .pinyin { font-size:40px; color:#ff8c00; font-weight:700; letter-spacing:1px; }
+  .word { font-size:30px; color:#888; }
+  .hint { font-size:22px; color:#aaa; margin-top:6px; }
+  .navrow { display:flex; gap:26px; margin-top:28px; }
+  .navbtn { font-size:40px; border:none; background:#fff; border-radius:50%; width:84px; height:84px; box-shadow:0 5px 0 rgba(0,0,0,.12); }
+  .navbtn:active { transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.12); }
+  .navbtn.speak { background:#ffe680; width:96px; height:96px; font-size:46px; }
+
+  /* 喂小动物 */
+  .game-prompt { font-size:26px; color:#666; margin-bottom:8px; font-weight:700; }
+  .animal { font-size:120px; margin-bottom:6px; }
+  .bubble { background:#fff; border-radius:28px; padding:14px 22px; font-size:90px; box-shadow:0 6px 16px rgba(0,0,0,.1); margin-bottom:26px; position:relative; }
+  .bubble:after { content:""; position:absolute; bottom:-16px; left:50%; transform:translateX(-50%); border:14px solid transparent; border-top-color:#fff; }
+  .choices { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; width:min(560px,94%); }
+  .choice {
+    background:#fff; border:none; border-radius:26px; width:118px; height:118px; font-size:74px; font-weight:900; color:#333;
+    box-shadow:0 6px 0 rgba(0,0,0,.12); transition:transform .08s;
+  }
+  .choice:active { transform:translateY(4px); box-shadow:0 2px 0 rgba(0,0,0,.12); }
+  .choice.right { background:#b6f5c0; animation:pop .4s; }
+  .choice.wrong { background:#ffc7c7; animation:shake .4s; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.25)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+
+  /* 打地鼠 */
+  .moles { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; width:min(540px,94%); margin-top:10px; }
+  .hole {
+    background:rgba(120,80,50,.25); border-radius:50%; aspect-ratio:1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mole-char {
+    position:absolute; bottom:-100%; width:84%; height:84%; border-radius:50%;
+    background:linear-gradient(135deg,#c98a5e,#a86a3e); color:#fff; font-size:64px; font-weight:900;
+    display:flex; align-items:center; justify-content:center; transition:bottom .25s; border:none;
+  }
+  .mole-char.up { bottom:8%; }
+  .mole-char.bonk { background:#7cc97c; }
+
+  /* 奖励弹层 */
+  .reward { position:absolute; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; z-index:50; }
+  .reward.show { display:flex; }
+  .reward-box { background:#fff; border-radius:36px; padding:40px 50px; text-align:center; animation:pop .5s; }
+  .reward-star { font-size:120px; }
+  .reward-txt { font-size:34px; font-weight:800; color:#ff8c00; margin-top:10px; }
+
+  .grow { position:absolute; bottom:18px; left:0; right:0; text-align:center; font-size:20px; color:#777; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <button class="backbtn" id="backBtn" style="visibility:hidden">🏠</button>
+    <div class="stars">⭐ <span id="starCount">0</span></div>
+  </div>
+
+  <!-- 主页 -->
+  <div class="screen active" id="home">
+    <div class="pet" id="homePet">🥚</div>
+    <div class="title">认字啦</div>
+    <div class="subtitle" id="petStatus">收集星星，孵化小宠物！</div>
+    <div class="menu">
+      <button class="bigbtn b-learn" data-go="learn">📖 学一学</button>
+      <button class="bigbtn b-feed"  data-go="feed">🐰 喂小动物</button>
+      <button class="bigbtn b-mole"  data-go="mole">🔨 打地鼠</button>
+    </div>
+  </div>
+
+  <!-- 学一学 -->
+  <div class="screen" id="learn">
+    <div class="card">
+      <div class="pic" id="learnPic">☀️</div>
+      <div class="hanzi" id="learnHanzi">日</div>
+      <div class="pinyin" id="learnPinyin">rì</div>
+      <div class="word" id="learnWord">太阳</div>
+      <div class="hint">点中间的字，听它怎么念 👆</div>
+    </div>
+    <div class="navrow">
+      <button class="navbtn" id="learnPrev">◀</button>
+      <button class="navbtn speak" id="learnSpeak">🔊</button>
+      <button class="navbtn" id="learnNext">▶</button>
+    </div>
+  </div>
+
+  <!-- 喂小动物 -->
+  <div class="screen" id="feed">
+    <div class="game-prompt">把字喂给小动物 🍽️</div>
+    <div class="animal" id="feedAnimal">🐰</div>
+    <div class="bubble" id="feedPic">☀️</div>
+    <div class="choices" id="feedChoices"></div>
+  </div>
+
+  <!-- 打地鼠 -->
+  <div class="screen" id="mole">
+    <div class="game-prompt" id="molePrompt">拍出 “日” 字！🔨</div>
+    <button class="navbtn speak" id="moleSpeak" style="margin-bottom:6px">🔊</button>
+    <div class="moles" id="moleGrid"></div>
+  </div>
+
+  <!-- 奖励 -->
+  <div class="reward" id="reward">
+    <div class="reward-box">
+      <div class="reward-star">⭐</div>
+      <div class="reward-txt" id="rewardTxt">真棒！+1 颗星</div>
+    </div>
+  </div>
+
+  <div class="grow" id="growTip"></div>
+</div>
+
+<script>
+// ===== 字库：人教版一上 识字表，象形好配图的 10 个 =====
+const CHARS = [
+  { z:"日", p:"rì",  w:"太阳", pic:"☀️" },
+  { z:"月", p:"yuè", w:"月亮", pic:"🌙" },
+  { z:"水", p:"shuǐ",w:"喝水", pic:"💧" },
+  { z:"火", p:"huǒ", w:"火苗", pic:"🔥" },
+  { z:"山", p:"shān",w:"大山", pic:"⛰️" },
+  { z:"木", p:"mù",  w:"树木", pic:"🌳" },
+  { z:"人", p:"rén", w:"人们", pic:"🧍" },
+  { z:"口", p:"kǒu", w:"嘴巴", pic:"👄" },
+  { z:"天", p:"tiān",w:"天空", pic:"☁️" },
+  { z:"花", p:"huā", w:"花朵", pic:"🌸" },
+];
+
+// 宠物成长：按星星数
+const PETS = [
+  { at:0,  emoji:"🥚", name:"收集星星，孵化小宠物！" },
+  { at:5,  emoji:"🐣", name:"小鸡破壳啦！继续加油～" },
+  { at:12, emoji:"🐤", name:"小鸡长大一点了！" },
+  { at:22, emoji:"🐥", name:"毛茸茸的小鸡！" },
+  { at:35, emoji:"🐔", name:"养成大公鸡！你太厉害啦！" },
+];
+
+let stars = +(localStorage.getItem("zishi_stars") || 0);
+
+// ===== 语音 =====
+let zhVoice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  zhVoice = vs.find(v=>/zh[-_]CN/i.test(v.lang)) || vs.find(v=>/zh/i.test(v.lang)) || null;
+}
+if (typeof speechSynthesis !== "undefined"){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function say(text, rate=0.8){
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "zh-CN"; u.rate = rate; u.pitch = 1.1;
+    if (zhVoice) u.voice = zhVoice;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ===== 导航 =====
+const screens = {};
+document.querySelectorAll(".screen").forEach(s=>screens[s.id]=s);
+const backBtn = document.getElementById("backBtn");
+function show(id){
+  Object.values(screens).forEach(s=>s.classList.remove("active"));
+  screens[id].classList.add("active");
+  backBtn.style.visibility = (id==="home") ? "hidden" : "visible";
+  if(id==="learn") renderLearn();
+  if(id==="feed")  newFeed();
+  if(id==="mole")  newMole();
+  if(id==="home")  renderHome();
+}
+document.querySelectorAll("[data-go]").forEach(b=>{
+  b.addEventListener("click", ()=>{ say("好！"); show(b.dataset.go); });
+});
+backBtn.addEventListener("click", ()=>{ speechSynthesis.cancel(); show("home"); });
+
+// ===== 星星 / 宠物 =====
+function updateStars(){ document.getElementById("starCount").textContent = stars; }
+function addStar(n=1){
+  stars += n; localStorage.setItem("zishi_stars", stars); updateStars();
+}
+function currentPet(){
+  let p = PETS[0];
+  for(const x of PETS){ if(stars>=x.at) p=x; }
+  return p;
+}
+function renderHome(){
+  const p = currentPet();
+  document.getElementById("homePet").textContent = p.emoji;
+  document.getElementById("petStatus").textContent = p.name;
+  updateStars();
+}
+
+// ===== 奖励弹层 =====
+const rewardEl = document.getElementById("reward");
+function showReward(txt, cb){
+  document.getElementById("rewardTxt").textContent = txt;
+  rewardEl.classList.add("show");
+  addStar(1);
+  say(txt);
+  setTimeout(()=>{ rewardEl.classList.remove("show"); cb && cb(); }, 1100);
+}
+
+// ===== 学一学 =====
+let learnIdx = 0;
+function renderLearn(){
+  const c = CHARS[learnIdx];
+  document.getElementById("learnPic").textContent = c.pic;
+  document.getElementById("learnHanzi").textContent = c.z;
+  document.getElementById("learnPinyin").textContent = c.p;
+  document.getElementById("learnWord").textContent = c.w;
+  say(c.z + "。" + c.w, 0.75);
+}
+document.getElementById("learnHanzi").addEventListener("click", ()=> say(CHARS[learnIdx].z, 0.7));
+document.getElementById("learnSpeak").addEventListener("click", ()=> say(CHARS[learnIdx].z + "，" + CHARS[learnIdx].w, 0.75));
+document.getElementById("learnPrev").addEventListener("click", ()=>{ learnIdx=(learnIdx-1+CHARS.length)%CHARS.length; renderLearn(); });
+document.getElementById("learnNext").addEventListener("click", ()=>{ learnIdx=(learnIdx+1)%CHARS.length; renderLearn(); });
+
+// ===== 工具 =====
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function pickN(arr, n, exclude){ return shuffle(arr.filter(x=>x!==exclude)).slice(0,n); }
+
+// ===== 喂小动物（看图选字）=====
+const ANIMALS = ["🐰","🐱","🐶","🐼","🐵","🦊","🐯","🐸"];
+function newFeed(){
+  const target = CHARS[Math.floor(Math.random()*CHARS.length)];
+  document.getElementById("feedAnimal").textContent = ANIMALS[Math.floor(Math.random()*ANIMALS.length)];
+  document.getElementById("feedPic").textContent = target.pic;
+  const distract = pickN(CHARS, 3, target);
+  const opts = shuffle([target, ...distract]);
+  const box = document.getElementById("feedChoices");
+  box.innerHTML = "";
+  opts.forEach(c=>{
+    const b = document.createElement("button");
+    b.className = "choice"; b.textContent = c.z;
+    b.addEventListener("click", ()=>{
+      if(b.classList.contains("right")||b.classList.contains("wrong")) return;
+      if(c.z===target.z){
+        b.classList.add("right");
+        showReward("真棒！这是“"+target.z+"”", newFeed);
+      } else {
+        b.classList.add("wrong");
+        say("再想想，小动物想要“"+target.z+"”");
+        setTimeout(()=>b.classList.remove("wrong"), 500);
+      }
+    });
+    box.appendChild(b);
+  });
+  say("小动物想要哪个字呀？", 0.85);
+}
+
+// ===== 打地鼠（听音辨字）=====
+let moleTarget = null, moleTimer = null;
+function newMole(){
+  clearInterval(moleTimer);
+  moleTarget = CHARS[Math.floor(Math.random()*CHARS.length)];
+  document.getElementById("molePrompt").textContent = "拍出 “"+moleTarget.z+"” 字！🔨";
+  const grid = document.getElementById("moleGrid");
+  grid.innerHTML = "";
+  const holes = [];
+  for(let i=0;i<6;i++){
+    const hole = document.createElement("div");
+    hole.className = "hole";
+    const m = document.createElement("button");
+    m.className = "mole-char";
+    hole.appendChild(m); grid.appendChild(hole);
+    holes.push(m);
+  }
+  function bindMole(m){
+    m.addEventListener("click", ()=>{
+      if(!m.classList.contains("up")) return;
+      if(m.textContent===moleTarget.z){
+        m.classList.add("bonk");
+        clearInterval(moleTimer);
+        showReward("打中啦！“"+moleTarget.z+"”", newMole);
+      } else {
+        say("不对哦，要打“"+moleTarget.z+"”");
+        m.classList.remove("up");
+      }
+    });
+  }
+  holes.forEach(bindMole);
+  // 地鼠循环冒头
+  function tick(){
+    holes.forEach(m=>m.classList.remove("up"));
+    const upCount = 2 + Math.floor(Math.random()*2); // 2-3 只
+    const chosen = shuffle(holes).slice(0, upCount);
+    // 保证至少一只是目标字
+    const others = pickN(CHARS, chosen.length-1, moleTarget);
+    const labels = shuffle([moleTarget, ...others]);
+    chosen.forEach((m,i)=>{ m.textContent = labels[i].z; m.classList.add("up"); });
+  }
+  say("拍出 " + moleTarget.z + " 字！", 0.85);
+  setTimeout(tick, 400);
+  moleTimer = setInterval(tick, 1700);
+}
+
+// 离开打地鼠停计时
+const observer = new MutationObserver(()=>{ if(!screens.mole.classList.contains("active")) clearInterval(moleTimer); });
+observer.observe(screens.mole, { attributes:true, attributeFilter:["class"] });
+
+// ===== 启动：首次点击解锁语音（iOS 需用户手势）=====
+let unlocked = false;
+function unlock(){ if(unlocked) return; unlocked=true; say(" "); }
+document.body.addEventListener("touchstart", unlock, { once:true });
+document.body.addEventListener("click", unlock, { once:true });
+
+renderHome();
+updateStars();
+</script>
+</body>
+</html>
