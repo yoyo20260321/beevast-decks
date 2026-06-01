@@ -90,10 +90,24 @@
   .reward-txt { font-size:34px; font-weight:800; color:#ff8c00; margin-top:10px; }
 
   .grow { position:absolute; bottom:18px; left:0; right:0; text-align:center; font-size:20px; color:#777; }
+
+  /* 开场遮罩 */
+  #startMask { position:absolute; inset:0; z-index:100; background:linear-gradient(160deg,#ffd9ec,#a8e6ff);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; }
+  #startMask .big { font-size:64px; font-weight:900; color:#ff5b8a; text-shadow:2px 3px 0 #fff; }
+  #startMask .go { font-size:36px; font-weight:800; color:#fff; background:linear-gradient(135deg,#56d364,#33b24f);
+    border-radius:30px; padding:26px 60px; box-shadow:0 7px 0 rgba(0,0,0,.18); animation:bounce 1s infinite; }
+  #startMask .tip { font-size:22px; color:#666; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 </style>
 </head>
 <body>
 <div id="app">
+  <div id="startMask">
+    <div class="big">认字啦 🦁</div>
+    <div class="go">👆 点这里开始</div>
+    <div class="tip">（会响一声，记得开音量）</div>
+  </div>
   <div class="topbar">
     <button class="backbtn" id="backBtn" style="visibility:hidden">🏠</button>
     <div class="stars">⭐ <span id="starCount">0</span></div>
@@ -179,33 +193,25 @@ const PETS = [
 
 let stars = +(localStorage.getItem("zishi_stars") || 0);
 
-// ===== 语音：预录音频文件 (m4a)，不依赖设备 TTS，任何浏览器/webview 都能放 =====
-const audioCache = {};
-function clip(name){
-  let a = audioCache[name];
-  if(!a){ a = new Audio("audio/"+name+".m4a"); a.preload="auto"; audioCache[name]=a; }
-  return a;
-}
-// 顺序播放一串音频；打断上一串
+// ===== 语音：单一 audio 元素切 src，只需一次手势解锁，webview 友好 =====
+const player = new Audio();
+player.preload = "auto";
 let playToken = 0;
+let queue = [];
+function url(name){ return "audio/"+name+".m4a"; }
+player.addEventListener("ended", ()=>{
+  if(queue.length){ player.src = url(queue.shift()); player.play().catch(()=>{}); }
+});
 function playSeq(names){
-  const my = ++playToken;
-  // 停掉所有在放的
-  Object.values(audioCache).forEach(a=>{ try{a.pause(); a.currentTime=0;}catch(e){} });
-  let i = 0;
-  function next(){
-    if(my!==playToken || i>=names.length) return;
-    const a = clip(names[i]); i++;
-    a.currentTime = 0;
-    a.onended = next;
-    const p = a.play();
-    if(p && p.catch) p.catch(()=>{ /* 被拦截则跳过 */ });
-  }
-  next();
+  ++playToken;
+  queue = names.slice(1);
+  try{ player.pause(); }catch(e){}
+  player.src = url(names[0]);
+  const p = player.play();
+  if(p && p.catch) p.catch(()=>{});
 }
 function play(name){ playSeq([name]); }
-// 预热：把所有音频对象建好
-function warmAudio(){ ["hao","feed_ask","mole_ask","praise","bonk","retry","nope"].forEach(clip); for(let i=0;i<10;i++){clip("char_"+i);clip("word_"+i);} }
+function warmAudio(){ /* 单元素无需预热 */ }
 
 // ===== 导航 =====
 const screens = {};
@@ -354,11 +360,15 @@ function newMole(){
 const observer = new MutationObserver(()=>{ if(!screens.mole.classList.contains("active")) clearInterval(moleTimer); });
 observer.observe(screens.mole, { attributes:true, attributeFilter:["class"] });
 
-// ===== 启动：首次触摸预热音频（移动端需用户手势才能播放）=====
-let unlocked = false;
-function unlock(){ if(unlocked) return; unlocked=true; warmAudio(); const a=clip("hao"); a.play().then(()=>{a.pause();a.currentTime=0;}).catch(()=>{}); }
-document.body.addEventListener("touchstart", unlock, { once:true });
-document.body.addEventListener("click", unlock, { once:true });
+// ===== 开场遮罩：用一次明确手势解锁音频 + 有声确认 =====
+const startMask = document.getElementById("startMask");
+function unlock(){
+  player.src = url("hao");
+  player.play().then(()=>{ startMask.style.display="none"; })
+               .catch(()=>{ startMask.style.display="none"; });
+}
+startMask.addEventListener("click", unlock);
+startMask.addEventListener("touchstart", (e)=>{ e.preventDefault(); unlock(); }, {passive:false});
 
 renderHome();
 updateStars();
