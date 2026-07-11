@@ -342,7 +342,14 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
 .cap-shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);background:var(--bg-3);box-shadow:var(--shadow-lg)}
 .cap-shot::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:var(--bg-2);border-bottom:1px solid var(--border);z-index:2}
 .cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:11px;letter-spacing:4px;z-index:3}
-.cap-shot img{display:block;width:100%;height:auto;margin-top:32px}
+.cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite}
+.cap:nth-child(2) .cap-shot img{animation-delay:-3s}
+.cap:nth-child(3) .cap-shot img{animation-delay:-6s}
+.cap:nth-child(4) .cap-shot img{animation-delay:-9s}
+.cap:nth-child(5) .cap-shot img{animation-delay:-2s}
+.cap:nth-child(6) .cap-shot img{animation-delay:-5s}
+@keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@media(prefers-reduced-motion:reduce){.cap-shot img{animation:none}}
 @media(max-width:860px){
   .cap,.cap:nth-child(even){grid-template-columns:1fr;gap:22px;margin-bottom:64px}
   .cap:nth-child(even) .cap-text{order:0}
