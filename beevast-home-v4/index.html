@@ -329,6 +329,28 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
 /* ===== reveal animation ===== */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
 .reveal.in{opacity:1;transform:translateY(0)}
+
+/* ===== CAPABILITY GALLERY ===== */
+.gallery{max-width:1180px;margin:0 auto;padding:8px 0}
+.cap{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:center;margin-bottom:104px}
+.cap:nth-child(even){grid-template-columns:1.15fr 0.85fr}
+.cap:nth-child(even) .cap-text{order:2}
+.cap-text{padding:8px 0}
+.cap-num{font-family:'JetBrains Mono','Inter',monospace;font-size:13px;font-weight:800;color:var(--primary);letter-spacing:2px;margin-bottom:14px}
+.cap-text h3{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:clamp(22px,2.4vw,32px);font-weight:900;color:var(--text);letter-spacing:-0.5px;margin-bottom:14px;line-height:1.3}
+.cap-text p{font-size:16px;color:var(--text-2);line-height:1.75}
+.cap-shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);background:var(--bg-3);box-shadow:var(--shadow-lg)}
+.cap-shot::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:var(--bg-2);border-bottom:1px solid var(--border);z-index:2}
+.cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:11px;letter-spacing:4px;z-index:3}
+.cap-shot img{display:block;width:100%;height:auto;margin-top:32px}
+@media(max-width:860px){
+  .cap,.cap:nth-child(even){grid-template-columns:1fr;gap:22px;margin-bottom:64px}
+  .cap:nth-child(even) .cap-text{order:0}
+}
+/* ===== CTA STRIP ===== */
+.cta-strip{text-align:center;padding:48px 24px}
+.cta-strip .lead{font-size:18px;color:var(--text-2);max-width:640px;margin:0 auto 28px;line-height:1.75}
+.cta-strip .phone{font-size:15px;color:var(--text-3);margin-top:22px}
 </style>
 </head>
 <body>
@@ -340,10 +362,7 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
     <span class="name">群蜂云枢<span class="sub">BeeVast</span></span>
   </a>
   <div class="nav-links">
-    <a href="#solutions">产品方案</a>
-    <a href="#cases">案例</a>
-    <a href="#security">安全</a>
-    <a href="#pricing">价格</a>
+    <a href="#capabilities">产品能力</a>
     <a href="#contact" class="nav-cta">免费试用</a>
   </div>
 </nav>
@@ -362,7 +381,7 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
         申请 30 天免费 POC
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
-      <a href="#solutions" class="btn-secondary">了解产品方案</a>
+      <a href="#capabilities" class="btn-secondary">看看能干什么</a>
     </div>
     <div class="hero-stats">
       <div class="stat-item">
@@ -385,165 +404,76 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
   </div>
 </section>
 
-<!-- CUSTOMERS -->
-<section class="customers">
-  <div class="container">
-    <div class="customers-label">服务中的客户与场景</div>
-    <div class="customers-grid">
-      <div class="customer-cell">威贸电子 · 电子制造</div>
-      <div class="customer-cell">盈和国际物流 · 跨境物流</div>
-      <div class="customer-cell">跨境电商 · 全链路</div>
-      <div class="customer-cell">智能客服 · 多语种</div>
-      <div class="customer-cell">内容运营 · 文蜂</div>
-      <div class="customer-cell">制造业 · 工艺跟单</div>
-    </div>
-  </div>
-</section>
-
-<!-- SOLUTIONS (Q01 三件套) -->
-<section id="solutions">
+<!-- CAPABILITY GALLERY -->
+<section id="capabilities">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">SOLUTIONS · 三件套</div>
-      <h2 class="section-title reveal">我们交付什么？</h2>
-      <p class="section-desc reveal">不是单个 AI 助手，是一支跑得起来的 AI 团队 — 三件套同时落地。</p>
+      <div class="section-tag reveal">CAPABILITIES</div>
+      <h2 class="section-title reveal">数字员工，能干什么</h2>
+      <p class="section-desc reveal">不是聊天框，是能调业务系统、跑流程、守红线的 AI 团队。下面都是真实运行界面。</p>
     </div>
-    <div class="solutions-grid">
-      <div class="solution-card reveal">
-        <div class="sol-num">01</div>
-        <div class="sol-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <h3>企业专属工作台</h3>
-        <p>每个客户独立部署的协同空间，对接钉钉 / 飞书 / 企微。</p>
+    <div class="gallery">
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">01 · 对话即工作</div>
+          <h3>说一句话，把活干了</h3>
+          <p>自然语言驱动：调订单 / 库存 / 客户数据、出报价、写文档、查轨迹——不用记系统怎么点。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字员工对话" loading="lazy"></div>
       </div>
-      <div class="solution-card reveal">
-        <div class="sol-num">02</div>
-        <div class="sol-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 3v6M15 3v6M9 15v6M15 15v6M3 9h6M3 15h6M15 9h6M15 15h6"/></svg></div>
-        <h3>AI 引擎基建</h3>
-        <p>多模型架构底座，Claude / GPT / 国产 / 开源任选，数据物理不出企业。</p>
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">02 · 一支 AI 团队</div>
+          <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
+          <p>一个平台多个岗位数字员工，各司其职、共享记忆，像一支真的团队。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-team.png" alt="多岗位数字员工名册" loading="lazy"></div>
       </div>
-      <div class="solution-card reveal">
-        <div class="sol-num">03</div>
-        <div class="sol-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="17" cy="7" r="3"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg></div>
-        <h3>AI 数字员工</h3>
-        <p>把岗位经验蒸馏成可复制的 AI 员工，销售 / 客服 / 财务 / 运营多岗协同。</p>
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">03 · 企业知识库</div>
+          <h3>SOP / 合同 / 手册，问谁谁会</h3>
+          <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-kb.png" alt="企业知识库" loading="lazy"></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- CASES (Q04 实战案例) -->
-<section id="cases" class="section-soft">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-tag reveal">CASES · 真实战绩</div>
-      <h2 class="section-title reveal">不只是 Demo，是已经在跑的产线</h2>
-      <p class="section-desc reveal">数字员工已在制造、跨境物流企业私有化部署并日常使用。下面是公开可讲的真实落地。</p>
-    </div>
-
-    <!-- 案例 1: 威贸电子（真实已上线） -->
-    <div class="case reveal">
-      <div class="case-head">
-        <span class="case-tag">电子制造 · 已上线</span>
-        <h3>威贸电子 · 数字员工体系</h3>
-        <p>主脑 + 数字员工整套<strong>私有化部署</strong>于企业内网，接通订单 / BOM / 客户等业务系统，企微日常在用。</p>
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">04 · 自动化场景</div>
+          <h3>到点自己跑，不用人盯</h3>
+          <p>每日行情、定期对账、月度报表——定时数字员工自动执行，结果推送到企微 / 飞书。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-auto.png" alt="自动化定时任务" loading="lazy"></div>
       </div>
-    </div>
-
-    <!-- 案例 2: 文蜂 -->
-    <div class="case reveal">
-      <div class="case-head">
-        <span class="case-tag">内容运营 · 自身实战</span>
-        <h3>文蜂 · 公众号运营数字员工</h3>
-        <p>我们用自己的产品运营自己的公众号 — 选题 / 撰稿 / 配图 / 发布 / 复盘全流程，人工只做监审。</p>
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">05 · 管理控制台</div>
+          <h3>用量、链路、审计，一目了然</h3>
+          <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-console.png" alt="管理控制台数据大盘" loading="lazy"></div>
       </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ADVANTAGES (Q02) -->
-<section id="advantages">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-tag reveal">CORE ADVANTAGES</div>
-      <h2 class="section-title reveal">为什么是 BeeVast，不是别人？</h2>
-      <p class="section-desc reveal">「安全 × 可控 × 复用 × 灵活」+ 持续进化的工程沉淀。</p>
-    </div>
-    <div class="adv-grid">
-      <div class="adv-card reveal">
-        <div class="adv-code">A1</div>
-        <h3>私有化部署</h3>
-        <p>整套跑在企业本地或专属云，不依赖外部 SaaS。</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-code">A2</div>
-        <h3>数据不上云</h3>
-        <p>业务数据物理不出企业，敏感字段先脱敏。</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-code">A3</div>
-        <h3>角色蒸馏与复用</h3>
-        <p>岗位经验蒸馏成可复用 AI 员工，Skill 库越积越值钱。</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-code">A4</div>
-        <h3>模型自由度</h3>
-        <p>多模型架构，Claude / 国产自由切换，不锁死厂商。</p>
+      <div class="cap reveal">
+        <div class="cap-text">
+          <div class="cap-num">06 · 审批门</div>
+          <h3>敏感操作，人来拍板</h3>
+          <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行——风险可控。</p>
+        </div>
+        <div class="cap-shot"><img src="shots/cap-approval.png" alt="审批门 人在环中" loading="lazy"></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="contact">
-  <div class="contact-grid">
-    <div class="contact-info reveal">
-      <h2>寻找先进企业<br><span class="accent">共赴 AI 未来</span></h2>
-      <p>提交需求，48 小时内 1v1 专属顾问回访。30 天 POC 免费，先帮你跑通一个场景再谈续费。</p>
-      <div class="contact-method">
-        <div class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div>
-        <div class="text">
-          <div class="title">商务咨询</div>
-          <div class="val">189 - 6801 - 8043</div>
-        </div>
-      </div>
-      <div class="contact-method">
-        <div class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div class="text">
-          <div class="title">客户成功经理</div>
-          <div class="val">仲文（工作日 9:00 – 19:00）</div>
-        </div>
-      </div>
-    </div>
-    <form class="contact-form reveal" onsubmit="event.preventDefault();alert('已收到，48 小时内客户成功经理 1v1 回访。');">
-      <h3>申请 30 天 POC 免费试用</h3>
-      <p class="form-sub"><strong>限时</strong>专属顾问 1v1 服务 · 48 小时内回访</p>
-      <div class="form-row">
-        <div class="form-field"><label>姓名 *</label><input type="text" required placeholder="请输入称呼"></div>
-        <div class="form-field"><label>电话 *</label><input type="tel" required placeholder="11 位手机号"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field"><label>公司名称 *</label><input type="text" required placeholder="贵司全称"></div>
-        <div class="form-field"><label>职务</label><input type="text" placeholder="选填"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field full"><label>感兴趣的场景</label>
-          <select>
-            <option>跨境电商 · 上架 / 本地化 / 情报 / 经营</option>
-            <option>智能客服</option>
-            <option>内容运营自动化</option>
-            <option>制造业 · 工艺 / 排产 / 跟单</option>
-            <option>销售自动化</option>
-            <option>其他（请在下方说明）</option>
-          </select>
-        </div>
-      </div>
-      <button class="btn-primary" type="submit">
-        申请免费 POC
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </button>
-      <p class="form-note">提交即同意《使用协议》与《隐私政策》，您的信息仅用于本次需求对接，绝不外发。</p>
-    </form>
+<section id="contact" class="section-soft">
+  <div class="container cta-strip">
+    <h2 class="section-title reveal" style="margin-bottom:16px">先跑通一个场景，再谈付费</h2>
+    <p class="lead reveal">私有化部署 · 数据不出企业 · 多模型自由切换。可免费 POC，先帮你跑通一个核心场景，再谈订阅。</p>
+    <a href="tel:18968018043" class="btn-primary reveal">商务咨询 189-6801-8043
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <div class="phone reveal">客户成功 · 仲文（工作日 9:00–19:00）· 一对一报价</div>
   </div>
 </section>
 
@@ -558,20 +488,19 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(217,119,87,0.
       <p>群蜂云枢（杭州）智能科技有限公司 — 为企业构建 AI 新质生产力。</p>
     </div>
     <div>
-      <h5>产品</h5>
+      <h5>能力</h5>
       <ul>
-        <li><a href="#solutions">企业工作台</a></li>
-        <li><a href="#solutions">AI 引擎基建</a></li>
-        <li><a href="#solutions">AI 数字员工</a></li>
-        <li><a href="#cases">已落地案例</a></li>
+        <li><a href="#capabilities">数字员工</a></li>
+        <li><a href="#capabilities">企业知识库</a></li>
+        <li><a href="#capabilities">自动化场景</a></li>
+        <li><a href="#capabilities">管理控制台</a></li>
       </ul>
     </div>
     <div>
       <h5>资源</h5>
       <ul>
-        <li><a href="#security">数据安全</a></li>
-        <li><a href="#pricing">价格方案</a></li>
         <li><a href="#contact">免费 POC</a></li>
+        <li><a href="#contact">商务咨询</a></li>
       </ul>
     </div>
     <div>
