@@ -358,6 +358,41 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
 .reveal.in{opacity:1;transform:translateY(0)}
 
+/* ===== ROLE / SCENARIO (场景应用) ===== */
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.role-card{padding:30px 28px;background:#FFFFFF;border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.role-card:hover{transform:translateY(-4px);border-color:var(--border-glow);box-shadow:var(--shadow-lg);background:rgba(234,162,48,0.03)}
+.role-card h3{font-size:var(--fs-xl);font-weight:800;color:var(--text);margin-bottom:14px}
+.role-metric{display:flex;align-items:baseline;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.role-metric-num{font-size:var(--fs-stat);font-weight:900;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;letter-spacing:-1px}
+.role-metric-label{font-size:var(--fs-xs);color:var(--text-2);font-weight:600}
+.role-card p{font-size:var(--fs-sm);color:var(--text-2);line-height:1.7}
+.cap-abilities{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:52px}
+.cap-ab{padding:20px 14px;background:#FFFFFF;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;transition:all .25s}
+.cap-ab:hover{border-color:var(--border-glow);transform:translateY(-2px)}
+.cap-ab strong{display:block;font-size:var(--fs-md);font-weight:800;color:var(--primary);margin-bottom:6px}
+.cap-ab span{font-size:var(--fs-xs);color:var(--text-2);line-height:1.5;display:block}
+@media(max-width:900px){.role-grid{grid-template-columns:repeat(2,1fr)}.cap-abilities{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:540px){.role-grid{grid-template-columns:1fr}.cap-abilities{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== CASE STUDY (客户案例) ===== */
+.case-study{background:#FFFFFF;border:1px solid var(--border-glow);border-radius:var(--radius);overflow:hidden;backdrop-filter:blur(10px);box-shadow:var(--shadow)}
+.case-study-head{padding:36px 38px 26px}
+.case-study-head h3{font-size:var(--fs-xl);font-weight:800;color:var(--text);margin:10px 0 12px}
+.case-pain{font-size:var(--fs-base);color:var(--text-2);line-height:1.75}
+.case-study-body{display:grid;grid-template-columns:0.9fr 1.1fr;gap:0;border-top:1px solid var(--border)}
+.case-metric{padding:32px 38px;background:linear-gradient(135deg,rgba(234,162,48,0.08),rgba(234,162,48,0.04));border-right:1px solid var(--border)}
+.case-metric-num{font-size:var(--fs-3xl);font-weight:900;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;letter-spacing:-1.5px;margin-bottom:12px}
+.case-metric-label{font-size:var(--fs-sm);color:var(--text-2);line-height:1.6}
+.case-metric-label small{display:block;margin-top:6px;font-size:var(--fs-xs);color:var(--text-3)}
+.case-deliver{padding:32px 38px}
+.case-deliver h4{font-size:var(--fs-xs);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:14px;font-family:'JetBrains Mono','Inter',monospace}
+.case-deliver ul{list-style:none;padding:0}
+.case-deliver li{font-size:var(--fs-sm);color:var(--text);padding:6px 0;padding-left:22px;position:relative;line-height:1.6}
+.case-deliver li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:var(--primary)}
+.case-foot{padding:18px 38px;background:var(--bg-2);border-top:1px solid var(--border);font-size:var(--fs-xs);color:var(--text-3);line-height:1.6}
+@media(max-width:860px){.case-study-body{grid-template-columns:1fr}.case-metric{border-right:none;border-bottom:1px solid var(--border)}}
+
 /* ===== CAPABILITY GALLERY ===== */
 .gallery{max-width:1180px;margin:0 auto;padding:8px 0}
 .cap{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:center;margin-bottom:104px}
@@ -396,7 +431,11 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
     <span class="logo"><img src="assets/logo.jpg" alt="群蜂云枢 BeeVast"></span>
   </a>
   <div class="nav-links">
-    <a href="#capabilities">产品能力</a>
+    <a href="#products">核心产品</a>
+    <a href="#scenarios">场景应用</a>
+    <a href="#why">为什么选我们</a>
+    <a href="#cases">客户案例</a>
+    <a href="#process">合作流程</a>
     <a href="#contact" class="nav-cta">免费试用</a>
   </div>
 </nav>
@@ -446,6 +485,106 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
         <div class="stat-num">已上线</div>
         <div class="stat-label">制造 / 跨境物流客户</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- 核心产品 -->
+<section id="products">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">PRODUCTS</div>
+      <h2 class="section-title reveal">核心产品 · <span class="accent">三件套</span></h2>
+      <p class="section-desc reveal">从员工提效，到知识沉淀，再到业务协同增长——一套覆盖岗位、知识、场景的 AI 新质生产力。</p>
+    </div>
+    <div class="solutions-grid">
+      <div class="solution-card reveal">
+        <div class="sol-num">01 / 岗位</div>
+        <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>岗位数智助手</h3>
+        <p>让每位员工拥有 AI 协作伙伴，把企业经验、制度规范与最佳实践融入日常工作，更高效、更稳定地交付。</p>
+        <ul>
+          <li>自动处理文档 / 表格 / 邮件 / PDF</li>
+          <li>按企业 SOP 执行，减少遗漏与偏差</li>
+          <li>沉淀优秀员工经验，新人快速上手</li>
+          <li>连接 ERP / CRM / MES 协同工作</li>
+        </ul>
+      </div>
+      <div class="solution-card reveal">
+        <div class="sol-num">02 / 知识</div>
+        <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <h3>企业知识大脑</h3>
+        <p>让企业知识真正被看见、被找到、被使用，构建统一可信的知识中枢，为员工和智能体提供准确支撑。</p>
+        <ul>
+          <li>统一管理制度 / 产品 / 项目 / 技术知识</li>
+          <li>答案基于企业资料生成，可追溯来源</li>
+          <li>知识实时更新，无需频繁重训</li>
+          <li>持续积累组织经验，形成长期资产</li>
+        </ul>
+      </div>
+      <div class="solution-card reveal">
+        <div class="sol-num">03 / 场景</div>
+        <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg></div>
+        <h3>场景智能体</h3>
+        <p>让 AI 从回答问题走向协同完成业务，打通知识、流程、系统与人员，构建面向场景的智能运营能力。</p>
+        <ul>
+          <li>多智能体协同处理复杂业务流程</li>
+          <li>贯通 ERP / CRM / MES / OA 系统</li>
+          <li>基于业务规则与知识持续优化</li>
+          <li>人机协同，效率与质量双提升</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 场景应用 -->
+<section id="scenarios" class="section-soft">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">SCENARIOS</div>
+      <h2 class="section-title reveal">场景应用 · <span class="accent">开箱即用</span></h2>
+      <p class="section-desc reveal">覆盖关键岗位的数智助手 Agent，先用起来再深度定制。</p>
+    </div>
+    <div class="role-grid">
+      <div class="role-card reveal">
+        <h3>销售数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">80%</span><span class="role-metric-label">报价周期平均缩短</span></div>
+        <p>自动解析图纸、拆解 BOM、匹配历史项目与工艺规则，辅助销售快速生成报价方案。</p>
+      </div>
+      <div class="role-card reveal">
+        <h3>客服数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">7×24</span><span class="role-metric-label">全天候服务响应</span></div>
+        <p>自动处理产品咨询、订单查询和知识问答，复杂问题无缝协同人工。</p>
+      </div>
+      <div class="role-card reveal">
+        <h3>采购数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">50%</span><span class="role-metric-label">采购协同效率提升</span></div>
+        <p>自动询价、比价、订单跟踪与供应商管理，让采购聚焦供应链优化。</p>
+      </div>
+      <div class="role-card reveal">
+        <h3>HR 数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">3×</span><span class="role-metric-label">招聘处理效率提升</span></div>
+        <p>自动筛选简历、安排面试、生成分析报告，HR 聚焦人才评估与组织发展。</p>
+      </div>
+      <div class="role-card reveal">
+        <h3>财务数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">90%</span><span class="role-metric-label">重复录入自动完成</span></div>
+        <p>自动完成票据识别、凭证录入、报表汇总与数据核对，加快经营分析。</p>
+      </div>
+      <div class="role-card reveal">
+        <h3>法务数智助手</h3>
+        <div class="role-metric"><span class="role-metric-num">70%</span><span class="role-metric-label">审查时间缩短</span></div>
+        <p>自动审查合同条款、风险识别、制度比对与合规辅助，降低合同风险。</p>
+      </div>
+    </div>
+    <div class="cap-abilities reveal">
+      <div class="cap-ab"><strong>对话</strong><span>多轮对话 · 上下文记忆 · 一线随问随答</span></div>
+      <div class="cap-ab"><strong>工单</strong><span>自动分派 · 优先级 · 售后闭环</span></div>
+      <div class="cap-ab"><strong>合同</strong><span>条款比对 · 风险标注 · 电子签</span></div>
+      <div class="cap-ab"><strong>数据</strong><span>自动报表 · 异常告警 · 趋势预测</span></div>
+      <div class="cap-ab"><strong>审批</strong><span>流程编排 · 多级审批 · 人在环中</span></div>
+      <div class="cap-ab"><strong>调度</strong><span>任务排程 · 异常重排 · 资源分配</span></div>
     </div>
   </div>
 </section>
@@ -506,6 +645,124 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
           <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行——风险可控。</p>
         </div>
         <div class="cap-shot"><img src="shots/cap-approval.png" alt="审批门 人在环中" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 为什么选我们 -->
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">WHY US</div>
+      <h2 class="section-title reveal">不是供应商，是<span class="accent">你的 AI 团队</span></h2>
+      <p class="section-desc reveal">安全 · 可控 · 复用 · 灵活——持续进化的工程沉淀。</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-card reveal">
+        <div class="adv-code">安全</div>
+        <h3>私有化部署</h3>
+        <p>Agent + 知识库整套跑企业本地或专属云，不依赖外部 SaaS，断网可用。</p>
+      </div>
+      <div class="adv-card reveal">
+        <div class="adv-code">可控</div>
+        <h3>数据不上云</h3>
+        <p>业务数据物理不出企业网络，敏感字段先脱敏再传模型，零数据外流。</p>
+      </div>
+      <div class="adv-card reveal">
+        <div class="adv-code">复用</div>
+        <h3>角色蒸馏与复用</h3>
+        <p>把岗位经验蒸馏成可复制数智助手，跨部门、跨企业的技能库反复用。</p>
+      </div>
+      <div class="adv-card reveal">
+        <div class="adv-code">灵活</div>
+        <h3>模型自由度</h3>
+        <p>底层多模型架构，Claude / GPT / 国产 / 开源 平滑切换，不锁死单家厂商。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 客户案例 -->
+<section id="cases" class="section-soft">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">CASE</div>
+      <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
+      <p class="section-desc reveal">首家客户已跑通——数智助手在真实业务里运转，数据已脱敏。</p>
+    </div>
+    <div class="case-study reveal">
+      <div class="case-study-head">
+        <span class="case-tag">制造业 · 首家客户</span>
+        <h3>某电子线束 / 连接器制造企业</h3>
+        <p class="case-pain"><strong>痛点：</strong>报价依赖老师傅看图纸拆物料、查历史、估工时，单单约 2 小时，经验集中在少数人手里。</p>
+      </div>
+      <div class="case-study-body">
+        <div class="case-metric">
+          <div class="case-metric-num">2h → 8min</div>
+          <div class="case-metric-label">报价流程单据处理耗时<small>口径：从拿到图纸到产出一份结构化报价单</small></div>
+        </div>
+        <div class="case-deliver">
+          <h4>交付内容（私有化部署 · 数据不出企业）</h4>
+          <ul>
+            <li>企业专属工作台，按部门分权登录</li>
+            <li>6 个岗位数智助手：销售 / 工程 / 采购 / 财务 / 行政 / 办公</li>
+            <li>企业知识大脑 + 使用统计看板</li>
+            <li>图纸 / PDF → 识别规格 → 拆 BOM → 匹配历史 → 估工时成本 → 对话内产出报价单</li>
+          </ul>
+        </div>
+      </div>
+      <p class="case-foot">销售报价为已验证的标杆能力，其余岗位助手按企业节奏陆续深化。报价提速为该场景实测口径，不代表所有业务环节；长期投入产出随使用数据积累后如实披露。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 合作流程 -->
+<section id="process">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">PROCESS</div>
+      <h2 class="section-title reveal">合作流程 · <span class="accent">三阶段陪跑</span></h2>
+      <p class="section-desc reveal">从需求到价值，陪伴企业实现 AI 转型——岗位数智助手免费用 1 个月。</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-grid">
+        <div class="timeline-step reveal">
+          <div class="timeline-num">01</div>
+          <div class="timeline-time">推荐起步</div>
+          <h4>问诊</h4>
+          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">找到最有价值的 AI 场景</p>
+          <ul>
+            <li>企业现状调研</li>
+            <li>数智化成熟度评估</li>
+            <li>场景价值分析</li>
+            <li>AI 实施路线规划</li>
+          </ul>
+        </div>
+        <div class="timeline-step reveal">
+          <div class="timeline-num">02</div>
+          <div class="timeline-time">免费用 1 个月</div>
+          <h4>共建</h4>
+          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">打造首个可见价值的 AI 应用</p>
+          <ul>
+            <li>场景需求梳理</li>
+            <li>企业知识整合</li>
+            <li>BeeWork (Agent) 搭建部署</li>
+            <li>驻场培训 + 专属顾问</li>
+          </ul>
+        </div>
+        <div class="timeline-step reveal">
+          <div class="timeline-num">03</div>
+          <div class="timeline-time">持续进化</div>
+          <h4>重塑</h4>
+          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">构建持续创新能力</p>
+          <ul>
+            <li>标杆案例复制</li>
+            <li>AI 人才培养</li>
+            <li>场景智能体矩阵</li>
+            <li>持续价值运营</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
