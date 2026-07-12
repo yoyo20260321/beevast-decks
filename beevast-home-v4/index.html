@@ -81,7 +81,19 @@ nav.scrolled{background:rgba(255,255,255,0.92);border-bottom-color:var(--border-
 @media(max-width:768px){
   nav{padding:0 20px}
   .nav-links a:not(.nav-cta){display:none}
+  .nav-dropdown{display:none}
 }
+/* nav dropdown · 更多 */
+.nav-dropdown{position:relative}
+.nav-dd-trigger{background:none;border:none;font:inherit;color:var(--text-2);font-size:var(--fs-sm);font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:color .2s;padding:0}
+.nav-dd-trigger:hover{color:var(--primary)}
+.nav-dd-trigger .caret{font-size:10px;transition:transform .2s}
+.nav-dropdown:hover .nav-dd-trigger .caret,.nav-dropdown:focus-within .nav-dd-trigger .caret{transform:rotate(180deg)}
+.nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(6px);min-width:200px;background:#FFFFFF;border:1px solid var(--border-glow);border-radius:12px;box-shadow:var(--shadow-lg);padding:8px;display:flex;flex-direction:column;gap:2px;opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;z-index:200}
+.nav-dd-menu::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
+.nav-dropdown:hover .nav-dd-menu,.nav-dropdown:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.nav-dd-menu a{padding:9px 14px;border-radius:8px;font-size:var(--fs-sm);color:var(--text-2);white-space:nowrap;transition:background .2s,color .2s}
+.nav-dd-menu a:hover{background:rgba(234,162,48,0.08);color:var(--primary)}
 
 /* ===== HERO ===== */
 .hero{position:relative;padding:160px 24px 120px;overflow:hidden}
@@ -432,10 +444,16 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
   </a>
   <div class="nav-links">
     <a href="#products">核心产品</a>
-    <a href="#scenarios">场景应用</a>
-    <a href="#why">为什么选我们</a>
     <a href="#cases">客户案例</a>
-    <a href="#process">合作流程</a>
+    <span class="nav-dropdown">
+      <button type="button" class="nav-dd-trigger">更多 <span class="caret">▾</span></button>
+      <span class="nav-dd-menu">
+        <a href="#scenarios">场景应用</a>
+        <a href="#capabilities">数字员工能干什么</a>
+        <a href="#why">为什么选我们</a>
+        <a href="#process">合作流程</a>
+      </span>
+    </span>
     <a href="#contact" class="nav-cta">免费试用</a>
   </div>
 </nav>
@@ -538,8 +556,42 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
   </div>
 </section>
 
+<!-- 客户案例 -->
+<section id="cases" class="section-soft">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag reveal">CASE</div>
+      <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
+      <p class="section-desc reveal">首家客户已跑通——数智助手在真实业务里运转，数据已脱敏。</p>
+    </div>
+    <div class="case-study reveal">
+      <div class="case-study-head">
+        <span class="case-tag">制造业 · 首家客户</span>
+        <h3>某电子线束 / 连接器制造企业</h3>
+        <p class="case-pain"><strong>痛点：</strong>报价依赖老师傅看图纸拆物料、查历史、估工时，单单约 2 小时，经验集中在少数人手里。</p>
+      </div>
+      <div class="case-study-body">
+        <div class="case-metric">
+          <div class="case-metric-num">2h → 8min</div>
+          <div class="case-metric-label">报价流程单据处理耗时<small>口径：从拿到图纸到产出一份结构化报价单</small></div>
+        </div>
+        <div class="case-deliver">
+          <h4>交付内容（私有化部署 · 数据不出企业）</h4>
+          <ul>
+            <li>企业专属工作台，按部门分权登录</li>
+            <li>6 个岗位数智助手：销售 / 工程 / 采购 / 财务 / 行政 / 办公</li>
+            <li>企业知识大脑 + 使用统计看板</li>
+            <li>图纸 / PDF → 识别规格 → 拆 BOM → 匹配历史 → 估工时成本 → 对话内产出报价单</li>
+          </ul>
+        </div>
+      </div>
+      <p class="case-foot">销售报价为已验证的标杆能力，其余岗位助手按企业节奏陆续深化。报价提速为该场景实测口径，不代表所有业务环节；长期投入产出随使用数据积累后如实披露。</p>
+    </div>
+  </div>
+</section>
+
 <!-- 场景应用 -->
-<section id="scenarios" class="section-soft">
+<section id="scenarios">
   <div class="container">
     <div class="section-head">
       <div class="section-tag reveal">SCENARIOS</div>
@@ -590,7 +642,7 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
 </section>
 
 <!-- CAPABILITY GALLERY -->
-<section id="capabilities">
+<section id="capabilities" class="section-soft">
   <div class="container">
     <div class="section-head">
       <div class="section-tag reveal">CAPABILITIES</div>
@@ -683,42 +735,8 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
   </div>
 </section>
 
-<!-- 客户案例 -->
-<section id="cases" class="section-soft">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-tag reveal">CASE</div>
-      <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
-      <p class="section-desc reveal">首家客户已跑通——数智助手在真实业务里运转，数据已脱敏。</p>
-    </div>
-    <div class="case-study reveal">
-      <div class="case-study-head">
-        <span class="case-tag">制造业 · 首家客户</span>
-        <h3>某电子线束 / 连接器制造企业</h3>
-        <p class="case-pain"><strong>痛点：</strong>报价依赖老师傅看图纸拆物料、查历史、估工时，单单约 2 小时，经验集中在少数人手里。</p>
-      </div>
-      <div class="case-study-body">
-        <div class="case-metric">
-          <div class="case-metric-num">2h → 8min</div>
-          <div class="case-metric-label">报价流程单据处理耗时<small>口径：从拿到图纸到产出一份结构化报价单</small></div>
-        </div>
-        <div class="case-deliver">
-          <h4>交付内容（私有化部署 · 数据不出企业）</h4>
-          <ul>
-            <li>企业专属工作台，按部门分权登录</li>
-            <li>6 个岗位数智助手：销售 / 工程 / 采购 / 财务 / 行政 / 办公</li>
-            <li>企业知识大脑 + 使用统计看板</li>
-            <li>图纸 / PDF → 识别规格 → 拆 BOM → 匹配历史 → 估工时成本 → 对话内产出报价单</li>
-          </ul>
-        </div>
-      </div>
-      <p class="case-foot">销售报价为已验证的标杆能力，其余岗位助手按企业节奏陆续深化。报价提速为该场景实测口径，不代表所有业务环节；长期投入产出随使用数据积累后如实披露。</p>
-    </div>
-  </div>
-</section>
-
 <!-- 合作流程 -->
-<section id="process">
+<section id="process" class="section-soft">
   <div class="container">
     <div class="section-head">
       <div class="section-tag reveal">PROCESS</div>
@@ -769,7 +787,7 @@ footer ul li a:hover{color:var(--primary);text-shadow:0 0 8px rgba(234,162,48,0.
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="section-soft">
+<section id="contact">
   <div class="container cta-strip">
     <h2 class="section-title reveal" style="margin-bottom:16px">先跑通一个场景，再谈付费</h2>
     <p class="lead reveal">私有化部署 · 数据不出企业 · 多模型自由切换。可免费 POC，先帮你跑通一个核心场景，再谈订阅。</p>
