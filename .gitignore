@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# 视频源文件（官网只用 promo.mp4，mov 源文件不进 Pages 仓库）
+*.mov
+
+# secrets
+.env
+*.env.local
