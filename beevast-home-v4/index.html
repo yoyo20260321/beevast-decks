@@ -99,13 +99,13 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 44px）。
+   nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 48px）。
    footer：SVG 字标 .logo-svg（深底白字，高 30px，viewBox 保持比例禁止拉伸）。 */
 .logo-svg{display:block;height:30px;width:auto}
 .logo-svg .mark{transition:transform .4s}
 a.nav-brand:hover .logo-svg .mark{transform:rotate(-6deg) scale(1.04)}
 .logo-svg text{font-family:'Inter','Noto Sans SC',sans-serif}
-.logo-head{display:block;height:44px;width:auto;transition:transform .4s}
+.logo-head{display:block;height:48px;width:auto;transition:transform .4s}
 a.nav-brand:hover .logo-head{transform:scale(1.04)}
 
 /* ===== NAV ===== */
@@ -129,7 +129,7 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 }
 
 /* ===== HERO (深 navy) ===== */
-.hero{background:var(--navy);color:#fff;padding:104px var(--pad-x) 64px;overflow:hidden}
+.hero{background:var(--navy);color:#fff;padding:84px var(--pad-x) 52px;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.16) 0%,rgba(234,162,48,0.05) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
 @keyframes hero-glow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
@@ -159,13 +159,13 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.5);margin-top:16px;letter-spacing:0.3px}
 
 /* ===== SECTIONS BASE ===== */
-section{padding:76px var(--pad-x)}
+section{padding:56px var(--pad-x)}
 .container{max-width:1200px;margin:0 auto}
 .section-tag{display:inline-block;padding:7px 16px;border-radius:999px;background:rgba(234,162,48,0.08);border:1px solid var(--border-glow);font-size:var(--fs-xs);color:var(--primary);font-weight:700;letter-spacing:2px;margin-bottom:18px;text-transform:uppercase;font-family:'JetBrains Mono','Inter',monospace}
 .section-title{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-h2);font-weight:900;color:var(--text);letter-spacing:-1px;margin-bottom:16px;line-height:1.2}
 .section-title .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:var(--fs-base);color:var(--text-2);max-width:680px;line-height:1.75}
-.section-head{text-align:center;margin-bottom:48px}
+.section-head{text-align:center;margin-bottom:34px}
 .section-head .section-desc{margin:0 auto}
 .section-soft{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .section-navy{background:var(--navy);color:#fff;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
@@ -284,29 +284,37 @@ a,button{touch-action:manipulation}
 @media(max-width:900px){.adv-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:540px){.adv-grid{grid-template-columns:1fr}}
 
-/* ===== PROCESS ===== */
-.timeline{position:relative;padding:20px 0}
-.timeline::before{content:'';position:absolute;top:56px;left:5%;right:5%;height:2px;background:linear-gradient(90deg,var(--primary),var(--primary-2));z-index:0;box-shadow:0 0 12px rgba(234,162,48,0.4)}
-.timeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1}
-.timeline-step{text-align:center;padding:0 12px}
-.timeline-num{width:52px;height:52px;border-radius:50%;background:var(--bg);border:2px solid var(--primary);color:var(--primary);font-family:'JetBrains Mono','Inter',monospace;font-weight:800;font-size:var(--fs-md);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;box-shadow:0 0 0 6px var(--bg),var(--glow-cyan)}
-.timeline-time{display:inline-block;padding:4px 12px;border-radius:999px;background:rgba(234,162,48,0.08);border:1px solid var(--border-glow);color:var(--primary);font-size:var(--fs-xs);font-weight:700;margin-bottom:12px;font-family:'JetBrains Mono','Inter',monospace}
-.timeline-step h4{font-size:var(--fs-md);font-weight:800;color:var(--text);margin-bottom:12px}
-.timeline-step ul{list-style:none;padding:0;text-align:left;display:inline-block}
-.timeline-step ul li{font-size:var(--fs-xs);color:var(--text-2);padding:4px 0;padding-left:16px;position:relative}
-.timeline-step ul li::before{content:'›';position:absolute;left:0;top:3px;color:var(--primary);font-weight:900;font-size:var(--fs-sm)}
-@media(max-width:900px){.timeline::before{display:none}.timeline-grid{grid-template-columns:1fr;gap:32px}}
+/* ===== PROCESS（服务流程·合作路径，growclaw 三卡） ===== */
+.pc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;position:relative}
+.pc-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 26px;position:relative;transition:transform .2s ease,box-shadow .2s ease}
+.pc-card:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(10,10,24,.10)}
+.pc-feat{background:#FFFBF3;border:2px solid #D97706;box-shadow:0 14px 36px rgba(217,119,6,.12)}
+.pc-feat:hover{box-shadow:0 20px 44px rgba(217,119,6,.20)}
+.pc-badge{position:absolute;top:-13px;left:26px;background:#D97706;color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px}
+.pc-head{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+.pc-num{width:44px;height:44px;border-radius:13px;font-size:var(--fs-md);font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.pc-card h3{font-size:21px;font-weight:800;color:var(--text);margin:0}
+.pc-lead{font-size:var(--fs-sm);color:var(--text-2);margin:0 0 20px;line-height:1.6}
+.pc-list{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px}
+.pc-list li{display:flex;align-items:center;gap:10px;font-size:var(--fs-sm);color:var(--text);font-weight:500}
+.pc-ck{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:800}
+.pc-deliver{font-size:11px;font-weight:700;letter-spacing:.08em;color:#9a9aa2;margin:0 0 10px;text-transform:uppercase}
+.pc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pc-tag{padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600}
+.pc-foot{margin-top:2px;padding:13px 16px;border-radius:12px;font-size:var(--fs-sm);font-weight:700;text-align:center;display:block;text-decoration:none}
+@media(max-width:900px){.pc-grid{grid-template-columns:1fr}}
 
 /* ===== FAQ ===== */
-.faq-list{max-width:880px;margin:0 auto}
-.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;transition:border-color .2s}
+.faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:1120px;margin:0 auto;align-items:start}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
 .faq-item[open]{border-color:var(--border-glow);box-shadow:var(--shadow)}
-.faq-item summary{padding:22px 28px;font-size:var(--fs-md);font-weight:700;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-item summary{padding:16px 20px;font-size:var(--fs-md);font-weight:700;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .faq-item summary::-webkit-details-marker{display:none}
-.faq-item summary .q-ico{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(234,162,48,0.10);color:var(--primary);display:flex;align-items:center;justify-content:center;transition:transform .25s}
+.faq-item summary .q-ico{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(234,162,48,0.10);color:var(--primary);display:flex;align-items:center;justify-content:center;transition:transform .25s}
 .faq-item[open] summary .q-ico{transform:rotate(45deg)}
-.faq-item summary .q-ico svg{width:14px;height:14px;stroke-width:2.5}
-.faq-a{padding:0 28px 22px 28px;font-size:var(--fs-sm);color:var(--text-2);line-height:1.8}
+.faq-item summary .q-ico svg{width:13px;height:13px;stroke-width:2.5}
+.faq-a{padding:0 20px 16px 20px;font-size:var(--fs-sm);color:var(--text-2);line-height:1.7}
+@media(max-width:760px){.faq-list{grid-template-columns:1fr}}
 
 /* footer / cta-final 样式已移至页脚 .bv-foot 内联 style（growclaw 风格，见文末） */
 
@@ -343,10 +351,6 @@ a,button{touch-action:manipulation}
   <div class="nav-links">
     <a href="#products">核心产品</a>
     <a href="#scenarios">场景应用</a>
-    <a href="#cases">客户案例</a>
-    <a href="#why">为什么选我们</a>
-    <a href="#process">合作流程</a>
-    <a href="#faq">常见问题</a>
   </div>
   <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -682,51 +686,78 @@ a,button{touch-action:manipulation}
   </div>
 </section>
 
-<!-- 合作流程 -->
+<!-- 合作流程（服务流程·合作路径，growclaw 风格三卡） -->
 <section id="process" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <h2 class="section-title reveal">合作流程 · <span class="accent">三阶段落地</span></h2>
-      <p class="section-desc reveal">从需求到价值，陪伴企业实现 AI 转型--岗位数智助手免费用 1 个月。</p>
+      <span class="reveal" style="display:inline-block;padding:7px 18px;background:var(--grad-cyber);color:#1C1A17;border-radius:999px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.05em;margin-bottom:18px">服务流程 · 合作路径</span>
+      <h2 class="section-title reveal">从需求到价值，陪伴企业实现 <span class="accent">AI 转型</span></h2>
+      <p class="section-desc reveal">三阶段陪跑 · 先用起来再深度定制 — 岗位数智助手免费用 1 个月</p>
     </div>
-    <div class="timeline">
-      <div class="timeline-grid">
-        <div class="timeline-step reveal">
-          <div class="timeline-num">01</div>
-          <div class="timeline-time">推荐起步</div>
-          <h4>诊断</h4>
-          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">识别高价值 AI 场景</p>
-          <ul>
-            <li>企业现状调研</li>
-            <li>数智化成熟度评估</li>
-            <li>场景价值分析</li>
-            <li>AI 实施路线规划</li>
-          </ul>
+    <div class="pc-grid reveal">
+      <!-- 问诊 -->
+      <div class="pc-card">
+        <div class="pc-head">
+          <span class="pc-num" style="background:#EEF2FF;color:#5A7FD6">01</span>
+          <h3>问诊</h3>
         </div>
-        <div class="timeline-step reveal">
-          <div class="timeline-num">02</div>
-          <div class="timeline-time">免费用 1 个月</div>
-          <h4>共建</h4>
-          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">交付首个可见价值的 AI 应用</p>
-          <ul>
-            <li>场景需求梳理</li>
-            <li>企业知识整合</li>
-            <li>数字员工搭建部署</li>
-            <li>驻场培训 + 专属顾问</li>
-          </ul>
+        <p class="pc-lead">帮助企业找到最有价值的 AI 场景</p>
+        <ul class="pc-list">
+          <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>企业现状调研</li>
+          <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>数智化成熟度评估</li>
+          <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>场景价值分析</li>
+          <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>AI 实施路线规划</li>
+        </ul>
+        <div class="pc-deliver">交付成果</div>
+        <div class="pc-tags">
+          <span class="pc-tag" style="background:#EEF2FF;color:#3B5BDB">AI 诊断报告</span>
+          <span class="pc-tag" style="background:#EEF2FF;color:#3B5BDB">场景机会地图</span>
+          <span class="pc-tag" style="background:#EEF2FF;color:#3B5BDB">路线图</span>
         </div>
-        <div class="timeline-step reveal">
-          <div class="timeline-num">03</div>
-          <div class="timeline-time">持续进化</div>
-          <h4>深化</h4>
-          <p style="font-size:var(--fs-sm);color:var(--text-2);margin-bottom:14px">构建持续创新能力</p>
-          <ul>
-            <li>标杆案例复制</li>
-            <li>AI 人才培养</li>
-            <li>场景智能体矩阵</li>
-            <li>持续价值运营</li>
-          </ul>
+        <div class="pc-foot" style="background:#F5F7FF;color:#3B5BDB">明确从哪里开始，避免 AI 试错</div>
+      </div>
+      <!-- 共建（推荐起步） -->
+      <div class="pc-card pc-feat">
+        <span class="pc-badge">推荐起步</span>
+        <div class="pc-head">
+          <span class="pc-num" style="background:#FEF3C7;color:#D97706">02</span>
+          <h3>共建</h3>
         </div>
+        <p class="pc-lead">打造企业首个可见价值的 AI 应用</p>
+        <ul class="pc-list">
+          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>场景需求梳理</li>
+          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>企业知识整合</li>
+          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>数字员工搭建部署</li>
+          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>驻场培训 + 专属顾问</li>
+        </ul>
+        <div class="pc-deliver">交付成果</div>
+        <div class="pc-tags">
+          <span class="pc-tag" style="background:#FEF3C7;color:#B45309">岗位数智助手</span>
+          <span class="pc-tag" style="background:#FEF3C7;color:#B45309">企业知识大脑</span>
+          <span class="pc-tag" style="background:#FEF3C7;color:#B45309">场景 Agent</span>
+        </div>
+        <a href="tel:18968018043" class="pc-foot" style="background:#D97706;color:#fff">免费用 1 个月</a>
+      </div>
+      <!-- 重塑 -->
+      <div class="pc-card">
+        <div class="pc-head">
+          <span class="pc-num" style="background:#ECFDF5;color:#2F9E5F">03</span>
+          <h3>重塑</h3>
+        </div>
+        <p class="pc-lead">构建企业持续创新能力</p>
+        <ul class="pc-list">
+          <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>标杆案例复制</li>
+          <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>辅助 AI 人才培养</li>
+          <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>场景智能体矩阵建设</li>
+          <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>持续价值运营</li>
+        </ul>
+        <div class="pc-deliver">交付成果</div>
+        <div class="pc-tags">
+          <span class="pc-tag" style="background:#ECFDF5;color:#258753">企业级 AgentOS</span>
+          <span class="pc-tag" style="background:#ECFDF5;color:#258753">AI 运营体系</span>
+          <span class="pc-tag" style="background:#ECFDF5;color:#258753">创新机制</span>
+        </div>
+        <div class="pc-foot" style="background:#F0FDF4;color:#258753">从单点应用迈向智能体组织</div>
       </div>
     </div>
   </div>
@@ -741,7 +772,7 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">先回答你最关心的几个问题，没覆盖到的直接问客户经理。</p>
     </div>
     <div class="faq-list">
-      <details class="faq-item reveal" open>
+      <details class="faq-item reveal">
         <summary>数据真的不出企业吗？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
         <div class="faq-a">是的。整套 Agent + 知识库跑在企业本地或专属云，业务数据物理不出企业网络，敏感字段先脱敏再传模型，断网仍可用。这是和公有云 SaaS 的根本区别。</div>
       </details>
