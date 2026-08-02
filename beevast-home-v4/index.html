@@ -11,12 +11,12 @@
 <meta property="og:site_name" content="群蜂云枢 BeeVast">
 <meta property="og:title" content="群蜂云枢 BeeVast - 让每个企业都有自己的 AI 团队">
 <meta property="og:description" content="私有化部署的 AI 数字员工 - 岗位数智助手 / 企业知识大脑 / 场景智能体。数据不出企业，多模型自由，30 天免费 POC。">
-<meta property="og:image" content="assets/promo-poster.jpg">
+<meta property="og:image" content="https://beevast.com/assets/promo-poster.jpg">
 <meta property="og:url" content="https://beevast.com/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="群蜂云枢 BeeVast - 让每个企业都有自己的 AI 团队">
 <meta name="twitter:description" content="私有化部署的 AI 数字员工，数据不出企业，30 天免费 POC。">
-<meta name="twitter:image" content="assets/promo-poster.jpg">
+<meta name="twitter:image" content="https://beevast.com/assets/promo-poster.jpg">
 <link rel="canonical" href="https://beevast.com/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M18 2 L32 10 L32 26 L18 34 L4 26 L4 10 Z' fill='%23EAA230'/%3E%3Cpath d='M18 11 L24 14.5 L24 21.5 L18 25 L12 21.5 L12 14.5 Z' fill='%230B1220'/%3E%3Ccircle cx='18' cy='18' r='3' fill='%23EAA230'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.font.im" crossorigin>
@@ -99,8 +99,8 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   唯一 SVG 字标，统一高度：nav 30px / footer 28px。
-   用 viewBox 保持比例，禁止拉伸；安全留白由 .logo padding 控制。 */
+   nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 38px）。
+   footer：SVG 字标 .logo-svg（深底白字，高 30px，viewBox 保持比例禁止拉伸）。 */
 .logo-svg{display:block;height:30px;width:auto}
 .logo-svg .mark{transition:transform .4s}
 a.nav-brand:hover .logo-svg .mark{transform:rotate(-6deg) scale(1.04)}
