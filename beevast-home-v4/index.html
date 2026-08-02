@@ -254,12 +254,17 @@ section{padding:110px var(--pad-x)}
 @media(max-width:900px){.role-grid{grid-template-columns:repeat(2,1fr)}.cap-abilities{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:540px){.role-grid{grid-template-columns:1fr}.cap-abilities{grid-template-columns:repeat(2,1fr)}}
 
-/* ===== CAPABILITY GALLERY ===== */
-.gallery{max-width:1180px;margin:0 auto;padding:8px 0}
-.cap{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:center;margin-bottom:104px}
-.cap:nth-child(even){grid-template-columns:1.15fr 0.85fr}
-.cap:nth-child(even) .cap-text{order:2}
-.cap-text{padding:8px 0}
+/* ===== CAPABILITY SWITCHER ===== */
+.cap-switcher{max-width:1180px;margin:0 auto;padding:8px 0}
+.cap-tabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:36px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cap-tabs::-webkit-scrollbar{display:none}
+.cap-tab{flex:0 0 auto;scroll-snap-align:start;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s,background .2s}
+.cap-tab:hover{border-color:var(--border-glow);color:var(--text)}
+.cap-tab.active{background:var(--grad-cyber);color:#1C1A17;border-color:#EAA230;font-weight:800;box-shadow:var(--glow-cyan)}
+.cap-stage{position:relative}
+.cap-panel{display:none;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
+.cap-panel.active{display:grid;animation:capFade .4s ease-out}
+@keyframes capFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .cap-num{font-family:'JetBrains Mono','Inter',monospace;font-size:var(--fs-xs);font-weight:800;color:var(--primary);letter-spacing:2px;margin-bottom:14px}
 .cap-text h3{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-h3);font-weight:900;color:var(--text);letter-spacing:-0.5px;margin-bottom:14px;line-height:1.3}
 .cap-text p{font-size:var(--fs-base);color:var(--text-2);line-height:1.75}
@@ -267,14 +272,9 @@ section{padding:110px var(--pad-x)}
 .cap-shot::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:var(--bg-2);border-bottom:1px solid var(--border);z-index:2}
 .cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
 .cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite}
-.cap:nth-child(2) .cap-shot img{animation-delay:-3s}
-.cap:nth-child(3) .cap-shot img{animation-delay:-6s}
-.cap:nth-child(4) .cap-shot img{animation-delay:-9s}
-.cap:nth-child(5) .cap-shot img{animation-delay:-2s}
-.cap:nth-child(6) .cap-shot img{animation-delay:-5s}
 @keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@media(prefers-reduced-motion:reduce){.cap-shot img,.hero::before,.hero-badge .dot,body::after{animation:none}}
-@media(max-width:860px){.cap,.cap:nth-child(even){grid-template-columns:1fr;gap:22px;margin-bottom:64px}.cap:nth-child(even) .cap-text{order:0}}
+@media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after{animation:none}}
+@media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
 
 /* ===== CASES ===== */
 .case-study{background:#fff;border:1px solid var(--border-glow);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px}
@@ -480,7 +480,7 @@ footer ul li a:hover{color:var(--primary)}
   <div class="trust-label">已助行业客户落地 · 数据脱敏</div>
   <div class="trust-grid">
     <div class="trust-cell reveal">
-      <div class="tc-name">威贸电子</div>
+      <div class="tc-name">某制造企业</div>
       <div class="tc-ind">制造业 · 报价 SOP</div>
     </div>
     <div class="trust-cell reveal">
@@ -662,54 +662,64 @@ footer ul li a:hover{color:var(--primary)}
       <h2 class="section-title reveal">数字员工，能干什么</h2>
       <p class="section-desc reveal">不是聊天框，是能调业务系统、跑流程、守红线的 AI 团队。下面都是真实运行界面。</p>
     </div>
-    <div class="gallery">
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">01 · 对话即工作</div>
-          <h3>说一句话，把活干了</h3>
-          <p>自然语言驱动：调订单 / 库存 / 客户数据、出报价、写文档、查轨迹--不用记系统怎么点。</p>
-        </div>
-        <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字员工对话" loading="lazy"></div>
+    <div class="cap-switcher reveal">
+      <div class="cap-tabs" role="tablist" aria-label="数字员工能力">
+        <button class="cap-tab active" role="tab" aria-selected="true" data-i="0">01 对话即工作</button>
+        <button class="cap-tab" role="tab" aria-selected="false" data-i="1">02 一支 AI 团队</button>
+        <button class="cap-tab" role="tab" aria-selected="false" data-i="2">03 企业知识库</button>
+        <button class="cap-tab" role="tab" aria-selected="false" data-i="3">04 自动化场景</button>
+        <button class="cap-tab" role="tab" aria-selected="false" data-i="4">05 管理控制台</button>
+        <button class="cap-tab" role="tab" aria-selected="false" data-i="5">06 审批门</button>
       </div>
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">02 · 一支 AI 团队</div>
-          <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
-          <p>一个平台多个岗位数字员工，各司其职、共享记忆，像一支真的团队。</p>
+      <div class="cap-stage">
+        <div class="cap-panel active" data-i="0">
+          <div class="cap-text">
+            <div class="cap-num">01 · 对话即工作</div>
+            <h3>说一句话，把活干了</h3>
+            <p>自然语言驱动：调订单 / 库存 / 客户数据、出报价、写文档、查轨迹--不用记系统怎么点。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字员工对话" loading="lazy"></div>
         </div>
-        <div class="cap-shot"><img src="shots/cap-team.png" alt="多岗位数字员工名册" loading="lazy"></div>
-      </div>
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">03 · 企业知识库</div>
-          <h3>SOP / 合同 / 手册，问谁谁会</h3>
-          <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
+        <div class="cap-panel" data-i="1">
+          <div class="cap-text">
+            <div class="cap-num">02 · 一支 AI 团队</div>
+            <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
+            <p>一个平台多个岗位数字员工，各司其职、共享记忆，像一支真的团队。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-team.png" alt="多岗位数字员工名册" loading="lazy"></div>
         </div>
-        <div class="cap-shot"><img src="shots/cap-kb.png" alt="企业知识库" loading="lazy"></div>
-      </div>
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">04 · 自动化场景</div>
-          <h3>到点自己跑，不用人盯</h3>
-          <p>每日行情、定期对账、月度报表--定时数字员工自动执行，结果推送到企微 / 飞书。</p>
+        <div class="cap-panel" data-i="2">
+          <div class="cap-text">
+            <div class="cap-num">03 · 企业知识库</div>
+            <h3>SOP / 合同 / 手册，问谁谁会</h3>
+            <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-kb.png" alt="企业知识库" loading="lazy"></div>
         </div>
-        <div class="cap-shot"><img src="shots/cap-auto.png" alt="自动化定时任务" loading="lazy"></div>
-      </div>
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">05 · 管理控制台</div>
-          <h3>用量、链路、审计，一目了然</h3>
-          <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
+        <div class="cap-panel" data-i="3">
+          <div class="cap-text">
+            <div class="cap-num">04 · 自动化场景</div>
+            <h3>到点自己跑，不用人盯</h3>
+            <p>每日行情、定期对账、月度报表--定时数字员工自动执行，结果推送到企微 / 飞书。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-auto.png" alt="自动化定时任务" loading="lazy"></div>
         </div>
-        <div class="cap-shot"><img src="shots/cap-console.png" alt="管理控制台数据大盘" loading="lazy"></div>
-      </div>
-      <div class="cap reveal">
-        <div class="cap-text">
-          <div class="cap-num">06 · 审批门</div>
-          <h3>敏感操作，人来拍板</h3>
-          <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行--风险可控。</p>
+        <div class="cap-panel" data-i="4">
+          <div class="cap-text">
+            <div class="cap-num">05 · 管理控制台</div>
+            <h3>用量、链路、审计，一目了然</h3>
+            <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-console.png" alt="管理控制台数据大盘" loading="lazy"></div>
         </div>
-        <div class="cap-shot"><img src="shots/cap-approval.png" alt="审批门 人在环中" loading="lazy"></div>
+        <div class="cap-panel" data-i="5">
+          <div class="cap-text">
+            <div class="cap-num">06 · 审批门</div>
+            <h3>敏感操作，人来拍板</h3>
+            <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行--风险可控。</p>
+          </div>
+          <div class="cap-shot"><img src="shots/cap-approval.png" alt="审批门 人在环中" loading="lazy"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -727,7 +737,7 @@ footer ul li a:hover{color:var(--primary)}
     <div class="case-study reveal">
       <div class="case-study-head">
         <div class="case-tags"><span class="case-tag">制造业</span><span class="case-tag">报价 SOP</span></div>
-        <h3>威贸电子 · 连接器制造</h3>
+        <h3>某制造企业 · 连接器制造</h3>
         <p><strong>痛点：</strong>报价依赖老师傅看图纸拆物料、查历史、估工时，单单约 2 小时，经验集中在少数人手里。</p>
       </div>
       <div class="case-study-body">
@@ -1074,6 +1084,25 @@ if (navToggle && navEl) {
     navEl.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
   }));
+}
+
+// capability tab switcher
+const capTabs = document.querySelectorAll('.cap-tab');
+const capPanels = document.querySelectorAll('.cap-panel');
+const capTabList = document.querySelector('.cap-tabs');
+function selectCap(i) {
+  capTabs.forEach((t, idx) => { const on = idx === i; t.classList.toggle('active', on); t.setAttribute('aria-selected', on); });
+  capPanels.forEach((p, idx) => p.classList.toggle('active', idx === i));
+}
+capTabs.forEach((t, idx) => t.addEventListener('click', () => selectCap(idx)));
+if (capTabList) {
+  capTabList.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const cur = Array.from(capTabs).findIndex(t => t.classList.contains('active'));
+    const next = e.key === 'ArrowRight' ? (cur + 1) % capTabs.length : (cur - 1 + capTabs.length) % capTabs.length;
+    capTabs[next].focus();
+    selectCap(next);
+  });
 }
 </script>
 
