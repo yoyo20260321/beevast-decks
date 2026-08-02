@@ -105,7 +105,7 @@ section,nav,footer{position:relative;z-index:1}
 .logo-svg .mark{transition:transform .4s}
 a.nav-brand:hover .logo-svg .mark{transform:rotate(-6deg) scale(1.04)}
 .logo-svg text{font-family:'Inter','Noto Sans SC',sans-serif}
-.logo-head{display:block;height:38px;width:auto;transition:transform .4s}
+.logo-head{display:block;height:39px;width:auto;transition:transform .4s}
 a.nav-brand:hover .logo-head{transform:scale(1.04)}
 
 /* ===== NAV ===== */
@@ -114,17 +114,14 @@ nav.scrolled{background:rgba(255,255,255,0.94);border-bottom-color:var(--border-
 .nav-brand{display:flex;align-items:center;gap:10px;font-weight:800}
 .nav-links{display:flex;gap:28px;align-items:center}
 .nav-links a{color:var(--text-2);font-size:var(--fs-sm);font-weight:500;transition:color .2s;position:relative}
-.nav-links a:not(.nav-cta):hover{color:var(--primary)}
-.nav-cta{padding:9px 22px;border-radius:8px;background:var(--grad-cyber);color:#1C1A17;font-size:var(--fs-sm);font-weight:800;transition:all .2s;border:1px solid #EAA230;box-shadow:var(--glow-cyan)}
-.nav-cta:hover{transform:translateY(-1px);background:#F2B85C;box-shadow:0 0 0 3px rgba(234,162,48,0.2),var(--glow-cyan),0 8px 24px rgba(234,162,48,0.35)}
+.nav-links a:hover{color:var(--primary)}
 .nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;border:none;background:transparent;padding:0;border-radius:8px;cursor:pointer}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s;margin:0 auto}
 .nav-toggle:hover{background:var(--bg-2)}
 @media(max-width:860px){
 .nav-toggle{display:flex}
 .nav-links{position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-glow);box-shadow:0 16px 40px rgba(0,0,0,0.08);padding:8px var(--pad-x) 16px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .25s,opacity .25s}
-.nav-links a:not(.nav-cta){display:block;width:100%;padding:14px 0;font-size:var(--fs-md);border-bottom:1px solid var(--border)}
-.nav-links a.nav-cta{margin-top:12px;text-align:center}
+.nav-links a{display:block;width:100%;padding:14px 0;font-size:var(--fs-md);border-bottom:1px solid var(--border)}
 nav.open .nav-links{transform:translateY(0);opacity:1;pointer-events:auto}
 nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 nav.open .nav-toggle span:nth-child(2){opacity:0}
@@ -386,7 +383,6 @@ footer ul li a:hover{color:var(--primary)}
     <a href="#scenarios">场景应用</a>
     <a href="#cases">客户案例</a>
     <a href="#faq">FAQ</a>
-    <a href="#contact" class="nav-cta">预约 Demo</a>
   </div>
   <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
     <span></span><span></span><span></span>
