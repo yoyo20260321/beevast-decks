@@ -256,9 +256,9 @@ section{padding:110px var(--pad-x)}
 
 /* ===== CAPABILITY SWITCHER ===== */
 .cap-switcher{max-width:1180px;margin:0 auto;padding:8px 0}
-.cap-tabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:36px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cap-tabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:36px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
 .cap-tabs::-webkit-scrollbar{display:none}
-.cap-tab{flex:0 0 auto;scroll-snap-align:start;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s,background .2s}
+.cap-tab{flex:0 0 auto;scroll-snap-align:start;min-height:44px;display:inline-flex;align-items:center;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:color .2s,border-color .2s,background .2s}
 .cap-tab:hover{border-color:var(--border-glow);color:var(--text)}
 .cap-tab.active{background:var(--grad-cyber);color:#1C1A17;border-color:#EAA230;font-weight:800;box-shadow:var(--glow-cyan)}
 .cap-stage{position:relative}
@@ -275,6 +275,9 @@ section{padding:110px var(--pad-x)}
 @keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 @media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after{animation:none}}
 @media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
+.cap-panel:not(.active) .cap-shot img{animation:none}
+a,button{touch-action:manipulation}
+@media(max-width:640px){section{padding:64px var(--pad-x)}.hero{padding:104px var(--pad-x) 72px}.section-head{margin-bottom:40px}.trust{padding:48px var(--pad-x)}}
 
 /* ===== CASES ===== */
 .case-study{background:#fff;border:1px solid var(--border-glow);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px}
@@ -436,10 +439,6 @@ footer ul li a:hover{color:var(--primary)}
       <span class="hero-chip"><span class="dotc"></span>场景智能体</span>
     </div>
     <div class="hero-actions reveal in">
-      <a href="#contact" class="btn-primary">
-        申请 30 天免费 POC
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
       <a href="#capabilities" class="btn-secondary">看看能干什么</a>
     </div>
     <div class="hero-video reveal in">
@@ -486,10 +485,6 @@ footer ul li a:hover{color:var(--primary)}
     <div class="trust-cell reveal">
       <div class="tc-name">winvynee</div>
       <div class="tc-ind">跨境电商 · 女装</div>
-    </div>
-    <div class="trust-cell reveal">
-      <div class="tc-name">群蜂智能</div>
-      <div class="tc-ind">内部培训 · 学情</div>
     </div>
   </div>
   <div class="cert-row reveal">
@@ -686,7 +681,7 @@ footer ul li a:hover{color:var(--primary)}
             <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
             <p>一个平台多个岗位数字员工，各司其职、共享记忆，像一支真的团队。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-team.png" alt="多岗位数字员工名册" loading="lazy"></div>
+          <div class="cap-shot"><img data-src="shots/cap-team.png" alt="多岗位数字员工名册"></div>
         </div>
         <div class="cap-panel" data-i="2">
           <div class="cap-text">
@@ -694,7 +689,7 @@ footer ul li a:hover{color:var(--primary)}
             <h3>SOP / 合同 / 手册，问谁谁会</h3>
             <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-kb.png" alt="企业知识库" loading="lazy"></div>
+          <div class="cap-shot"><img data-src="shots/cap-kb.png" alt="企业知识库"></div>
         </div>
         <div class="cap-panel" data-i="3">
           <div class="cap-text">
@@ -702,7 +697,7 @@ footer ul li a:hover{color:var(--primary)}
             <h3>到点自己跑，不用人盯</h3>
             <p>每日行情、定期对账、月度报表--定时数字员工自动执行，结果推送到企微 / 飞书。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-auto.png" alt="自动化定时任务" loading="lazy"></div>
+          <div class="cap-shot"><img data-src="shots/cap-auto.png" alt="自动化定时任务"></div>
         </div>
         <div class="cap-panel" data-i="4">
           <div class="cap-text">
@@ -710,7 +705,7 @@ footer ul li a:hover{color:var(--primary)}
             <h3>用量、链路、审计，一目了然</h3>
             <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-console.png" alt="管理控制台数据大盘" loading="lazy"></div>
+          <div class="cap-shot"><img data-src="shots/cap-console.png" alt="管理控制台数据大盘"></div>
         </div>
         <div class="cap-panel" data-i="5">
           <div class="cap-text">
@@ -718,7 +713,7 @@ footer ul li a:hover{color:var(--primary)}
             <h3>敏感操作，人来拍板</h3>
             <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行--风险可控。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-approval.png" alt="审批门 人在环中" loading="lazy"></div>
+          <div class="cap-shot"><img data-src="shots/cap-approval.png" alt="审批门 人在环中"></div>
         </div>
       </div>
     </div>
@@ -731,7 +726,7 @@ footer ul li a:hover{color:var(--primary)}
     <div class="section-head">
       <div class="section-tag reveal">CASES</div>
       <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
-      <p class="section-desc reveal">3 家标杆客户已跑通--数字员工在真实业务里运转，数据已脱敏。</p>
+      <p class="section-desc reveal">2 家标杆客户已跑通--数字员工在真实业务里运转，数据已脱敏。</p>
     </div>
 
     <div class="case-study reveal">
@@ -796,38 +791,6 @@ footer ul li a:hover{color:var(--primary)}
         </div>
       </div>
       <p class="case-foot">换算：1.5 人 × 24 工作日/月 = 36 人天/月。已获客户授权引用。</p>
-    </div>
-
-    <div class="case-study reveal">
-      <div class="case-study-head">
-        <div class="case-tags"><span class="case-tag">企业培训</span><span class="case-tag">学情管理</span></div>
-        <h3>群蜂智能 · 内部培训</h3>
-        <p><strong>痛点：</strong>课程分发、学情跟踪、答疑重复，运营人力被琐事占用。</p>
-      </div>
-      <div class="case-study-body">
-        <div class="case-col before">
-          <h4>Before</h4>
-          <ul>
-            <li>课程手动分发、催学</li>
-            <li>学情统计靠表格汇总</li>
-            <li>重复答疑占大量时间</li>
-          </ul>
-        </div>
-        <div class="case-col after">
-          <h4>After</h4>
-          <ul>
-            <li>教学数字员工自动分发与提醒</li>
-            <li>学情看板实时生成</li>
-            <li>常见问题自动答疑，释放运营</li>
-          </ul>
-        </div>
-        <div class="case-col roi">
-          <h4>回本周期</h4>
-          <div class="roi-big">8 人天</div>
-          <div class="roi-label">月节省人力<br>内部标杆场景</div>
-        </div>
-      </div>
-      <p class="case-foot">群蜂智能内部场景，自家标杆。新增客户引用需书面授权。</p>
     </div>
   </div>
 </section>
@@ -1093,6 +1056,10 @@ const capTabList = document.querySelector('.cap-tabs');
 function selectCap(i) {
   capTabs.forEach((t, idx) => { const on = idx === i; t.classList.toggle('active', on); t.setAttribute('aria-selected', on); });
   capPanels.forEach((p, idx) => p.classList.toggle('active', idx === i));
+  const img = capPanels[i] && capPanels[i].querySelector('img');
+  if (img && img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (capTabs[i]) capTabs[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
 }
 capTabs.forEach((t, idx) => t.addEventListener('click', () => selectCap(idx)));
 if (capTabList) {
