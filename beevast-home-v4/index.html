@@ -134,11 +134,11 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 .hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.16) 0%,rgba(234,162,48,0.05) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
 @keyframes hero-glow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
-.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:999px;background:rgba(234,162,48,0.10);border:1px solid rgba(234,162,48,0.35);font-size:var(--fs-xs);color:#F2B85C;font-weight:600;margin-bottom:30px;backdrop-filter:blur(10px)}
 .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(234,162,48,0.2),0 0 12px var(--primary);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-display);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:26px;max-width:900px}
+.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-display);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:26px}
 .hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero .lead{font-size:var(--fs-lg);color:rgba(255,255,255,0.74);max-width:680px;line-height:1.75;margin-bottom:34px}
 .hero .lead strong{color:#fff;background:linear-gradient(180deg,transparent 60%,rgba(234,162,48,0.22) 60%);padding:0 4px}
@@ -152,7 +152,7 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow-cyan),0 16px 40px rgba(234,162,48,0.4)}
 .btn-secondary{padding:13px 30px;border-radius:10px;background:rgba(255,255,255,0.06);color:#fff;font-size:var(--fs-sm);font-weight:600;border:1px solid var(--border-navy);transition:all .25s;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(10px)}
 .btn-secondary:hover{border-color:rgba(234,162,48,0.5);background:rgba(234,162,48,0.10);color:#F2B85C}
-.hero-video{max-width:980px;margin:0 auto 52px;position:relative;z-index:1}
+.hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:#000;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
 .hero-video-frame::before{content:'';position:absolute;top:0;left:0;right:0;height:34px;background:var(--navy-2);border-bottom:1px solid rgba(255,255,255,0.08);z-index:2}
 .hero-video-frame::after{content:'● ● ●';position:absolute;top:9px;left:16px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
@@ -161,13 +161,6 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 .vid-sound:hover{background:rgba(20,19,15,0.82)}
 .vid-sound svg{width:14px;height:14px}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.5);margin-top:16px;letter-spacing:0.3px}
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:980px;margin:0 auto;padding:34px 28px;border-radius:var(--radius);background:rgba(255,255,255,0.04);border:1px solid var(--border-navy);backdrop-filter:blur(20px);position:relative}
-.hero-stats::before{content:'';position:absolute;inset:-1px;border-radius:var(--radius);padding:1px;background:linear-gradient(135deg,rgba(234,162,48,0.5),transparent 40%,transparent 60%,rgba(234,162,48,0.5));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-.stat-item{text-align:center;position:relative}
-.stat-item:not(:last-child)::after{content:'';position:absolute;right:-12px;top:20%;bottom:20%;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.16),transparent)}
-.stat-num{font-family:'Inter',sans-serif;font-size:var(--fs-stat);font-weight:800;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;letter-spacing:-1px}
-.stat-label{font-size:var(--fs-xs);color:rgba(255,255,255,0.6);letter-spacing:0.3px}
-@media(max-width:640px){.hero-stats{grid-template-columns:repeat(2,1fr);gap:18px;padding:24px}.stat-item:nth-child(2)::after{display:none}}
 
 /* ===== SECTIONS BASE ===== */
 section{padding:92px var(--pad-x)}
@@ -185,9 +178,8 @@ section{padding:92px var(--pad-x)}
 .section-navy .section-tag{background:rgba(234,162,48,0.10);border-color:rgba(234,162,48,0.30)}
 
 /* ===== TRUST（资质带） ===== */
-.trust{padding:36px var(--pad-x);border-bottom:1px solid var(--border);background:#fff}
-.cert-row{max-width:980px;margin:0 auto;padding:18px 28px;background:linear-gradient(135deg,rgba(234,162,48,0.06),rgba(234,162,48,0.03));border:1px solid var(--border-glow);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px 28px}
-.cert-item{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:600;color:var(--text)}
+.hero-trust{max-width:1200px;margin:64px auto 0;padding-top:28px;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 32px;position:relative;z-index:1}
+.cert-item{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:600;color:rgba(255,255,255,0.78)}
 .cert-item svg{width:16px;height:16px;color:var(--primary)}
 
 /* ===== SOLUTIONS (深) ===== */
@@ -261,7 +253,8 @@ section{padding:92px var(--pad-x)}
 @media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
 .cap-panel:not(.active) .cap-shot img{animation:none}
 a,button{touch-action:manipulation}
-@media(max-width:640px){section{padding:64px var(--pad-x)}.hero{padding:104px var(--pad-x) 72px}.section-head{margin-bottom:40px}.trust{padding:28px var(--pad-x)}}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:40px}}
+@media(max-width:640px){section{padding:64px var(--pad-x)}.hero{padding:104px var(--pad-x) 72px}.section-head{margin-bottom:40px}.hero-trust{gap:12px 20px}}
 
 /* ===== CASES ===== */
 .case-study{background:#fff;border:1px solid var(--border-glow);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px}
@@ -407,20 +400,22 @@ footer ul li a:hover{color:var(--primary)}
   </button>
 </nav>
 
-<!-- HERO（深 navy · 一句话企业价值） -->
+<!-- HERO（深 navy · 整合首屏：文案 + 视频 + 资质带） -->
 <section class="hero" id="top">
   <div class="hero-grid-bg"></div>
   <div class="hero-inner">
-    <div class="hero-badge reveal in">
-      <span class="dot"></span>
-      为企业交付可落地业务的 AI 数字员工
-    </div>
-    <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
-    <p class="lead reveal in">不止是更聪明的聊天框，而是能调用业务系统、执行流程、守住合规红线的<strong>数字员工</strong>。私有化部署，<strong>数据不出企业</strong>，先跑通一个核心场景，再谈订阅。</p>
-    <div class="hero-chips reveal in">
-      <span class="hero-chip"><span class="dotc"></span>岗位数智助手</span>
-      <span class="hero-chip"><span class="dotc"></span>企业知识大脑</span>
-      <span class="hero-chip"><span class="dotc"></span>场景智能体</span>
+    <div class="hero-copy">
+      <div class="hero-badge reveal in">
+        <span class="dot"></span>
+        为企业交付可落地业务的 AI 数字员工
+      </div>
+      <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
+      <p class="lead reveal in">能调用业务系统、执行流程、守住合规红线的<strong>数字员工</strong>。私有化部署，<strong>数据不出企业</strong>。</p>
+      <div class="hero-chips reveal in">
+        <span class="hero-chip"><span class="dotc"></span>岗位数智助手</span>
+        <span class="hero-chip"><span class="dotc"></span>企业知识大脑</span>
+        <span class="hero-chip"><span class="dotc"></span>场景智能体</span>
+      </div>
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
@@ -434,34 +429,13 @@ footer ul li a:hover{color:var(--primary)}
       </div>
       <div class="hero-video-cap">1 分钟了解 · 数字员工的业务实景</div>
     </div>
-    <div class="hero-stats reveal in">
-      <div class="stat-item">
-        <div class="stat-num">私有化</div>
-        <div class="stat-label">数据不出企业</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">全渠道</div>
-        <div class="stat-label">企微 / 钉钉 / 飞书</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">多模型</div>
-        <div class="stat-label">Claude / 国产任选</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">5-8 天</div>
-        <div class="stat-label">首个场景上线</div>
-      </div>
-    </div>
   </div>
-</section>
-
-<!-- 客户信任墙 -->
-<section class="trust">
-  <div class="cert-row reveal">
+  <div class="hero-trust reveal in">
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>私有化部署</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>数据不出企业</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/></svg>全链路审计可追溯</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>多模型自由切换</span>
+    <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a9 9 0 1 1-9-9"/><path d="M21 4v7h-7"/></svg>全渠道 企微 / 钉钉 / 飞书</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>创始团队：阿里蚂蚁 · 字节跳动 · 浙大浙商</span>
   </div>
 </section>
