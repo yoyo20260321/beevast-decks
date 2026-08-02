@@ -115,7 +115,19 @@ nav.scrolled{background:rgba(255,255,255,0.94);border-bottom-color:var(--border-
 .nav-links a:not(.nav-cta):hover{color:var(--primary)}
 .nav-cta{padding:9px 22px;border-radius:8px;background:var(--grad-cyber);color:#1C1A17;font-size:var(--fs-sm);font-weight:800;transition:all .2s;border:1px solid #EAA230;box-shadow:var(--glow-cyan)}
 .nav-cta:hover{transform:translateY(-1px);background:#F2B85C;box-shadow:0 0 0 3px rgba(234,162,48,0.2),var(--glow-cyan),0 8px 24px rgba(234,162,48,0.35)}
-@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}.nav-dropdown{display:none}}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;border:none;background:transparent;padding:0;border-radius:8px;cursor:pointer}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s;margin:0 auto}
+.nav-toggle:hover{background:var(--bg-2)}
+@media(max-width:860px){
+.nav-toggle{display:flex}
+.nav-links{position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-glow);box-shadow:0 16px 40px rgba(0,0,0,0.08);padding:8px var(--pad-x) 16px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .25s,opacity .25s}
+.nav-links a:not(.nav-cta){display:block;width:100%;padding:14px 0;font-size:var(--fs-md);border-bottom:1px solid var(--border)}
+.nav-links a.nav-cta{margin-top:12px;text-align:center}
+nav.open .nav-links{transform:translateY(0);opacity:1;pointer-events:auto}
+nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+nav.open .nav-toggle span:nth-child(2){opacity:0}
+nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
 
 /* ===== HERO (深 navy) ===== */
 .hero{background:var(--navy);color:#fff;padding:140px var(--pad-x) 110px;overflow:hidden}
@@ -261,7 +273,7 @@ section{padding:110px var(--pad-x)}
 .cap:nth-child(5) .cap-shot img{animation-delay:-2s}
 .cap:nth-child(6) .cap-shot img{animation-delay:-5s}
 @keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@media(prefers-reduced-motion:reduce){.cap-shot img{animation:none}.hero::before,.orb{animation:none}}
+@media(prefers-reduced-motion:reduce){.cap-shot img,.hero::before,.hero-badge .dot,body::after{animation:none}}
 @media(max-width:860px){.cap,.cap:nth-child(even){grid-template-columns:1fr;gap:22px;margin-bottom:64px}.cap:nth-child(even) .cap-text{order:0}}
 
 /* ===== CASES ===== */
@@ -403,6 +415,9 @@ footer ul li a:hover{color:var(--primary)}
     <a href="#faq">FAQ</a>
     <a href="#contact" class="nav-cta">预约 Demo</a>
   </div>
+  <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO（深 navy · 一句话企业价值） -->
@@ -1046,6 +1061,20 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+// mobile nav toggle
+const navToggle = document.querySelector('.nav-toggle');
+const navEl = document.getElementById('nav');
+if (navToggle && navEl) {
+  navToggle.addEventListener('click', () => {
+    const open = navEl.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  navEl.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    navEl.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+}
 </script>
 
 </body>
