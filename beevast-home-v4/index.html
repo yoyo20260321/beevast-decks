@@ -99,7 +99,7 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 38px）。
+   nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 44px）。
    footer：SVG 字标 .logo-svg（深底白字，高 30px，viewBox 保持比例禁止拉伸）。 */
 .logo-svg{display:block;height:30px;width:auto}
 .logo-svg .mark{transition:transform .4s}
@@ -195,20 +195,7 @@ section{padding:76px var(--pad-x)}
 .solution-card ul{margin-top:14px;padding-left:0;list-style:none}
 .solution-card ul li{font-size:var(--fs-sm);color:rgba(255,255,255,0.82);padding:5px 0;padding-left:22px;position:relative}
 .solution-card ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--primary)}
-/* vs 通用 AI 对比卡 */
-.compare-wrap{margin-top:48px;border-radius:var(--radius);border:1px solid var(--border-navy);overflow:hidden;background:var(--navy-2)}
-.compare-head{padding:20px 28px;background:rgba(234,162,48,0.06);border-bottom:1px solid var(--border-navy);font-size:var(--fs-sm);font-weight:700;color:#fff;display:flex;align-items:center;gap:10px}
-.compare-head .pill{font-size:var(--fs-xs);padding:3px 10px;border-radius:6px;background:var(--grad-cyber);color:#1C1A17;font-family:'JetBrains Mono',monospace;font-weight:800}
-.compare-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr}
-.compare-cell{padding:20px 24px;border-bottom:1px solid var(--border-navy);border-right:1px solid var(--border-navy);font-size:var(--fs-sm);color:rgba(255,255,255,0.82);line-height:1.6}
-.compare-cell:nth-child(3n){border-right:none}
-.compare-cell.h{font-family:'JetBrains Mono','Inter',monospace;font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;background:rgba(255,255,255,0.03)}
-.compare-cell.h.us{color:var(--primary);background:rgba(234,162,48,0.08)}
-.compare-cell.dim{color:rgba(255,255,255,0.5)}
-.compare-cell.us{color:#fff;font-weight:600}
-.compare-cell.key{font-weight:700;color:rgba(255,255,255,0.92)}
-.compare-grid > .compare-cell:nth-last-child(-n+3){border-bottom:none}
-@media(max-width:780px){.solutions-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}.compare-cell{border-right:none}.compare-cell.h{display:none}.compare-cell.key{background:rgba(234,162,48,0.06);color:var(--primary)}}
+@media(max-width:780px){.solutions-grid{grid-template-columns:1fr}}
 
 /* ===== SCENARIOS ===== */
 .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -321,32 +308,7 @@ a,button{touch-action:manipulation}
 .faq-item summary .q-ico svg{width:14px;height:14px;stroke-width:2.5}
 .faq-a{padding:0 28px 22px 28px;font-size:var(--fs-sm);color:var(--text-2);line-height:1.8}
 
-/* ===== CTA (深) ===== */
-.cta-final{background:var(--navy);color:#fff;text-align:center;overflow:hidden}
-.cta-final::before{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(234,162,48,0.14) 0%,transparent 60%);pointer-events:none}
-.cta-final h2{font-family:'Noto Serif SC',serif;font-size:var(--fs-h2);font-weight:900;margin-bottom:18px;letter-spacing:-1px;position:relative}
-.cta-final h2 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cta-final .lead{font-size:var(--fs-md);color:rgba(255,255,255,0.74);max-width:640px;margin:0 auto 32px;line-height:1.75;position:relative}
-.cta-final .hero-actions{justify-content:center;margin-bottom:24px}
-.cta-final .phone{font-size:var(--fs-sm);color:rgba(255,255,255,0.6);position:relative}
-
-/* ===== FOOTER ===== */
-footer{background:#0E0C08;color:var(--text-2);padding:64px var(--pad-x) 28px;font-size:var(--fs-xs);position:relative;overflow:hidden}
-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),var(--primary-2),transparent);opacity:.6}
-.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:32px}
-.footer-brand .nav-brand .name{color:#fff}
-.footer-brand .logo-svg{height:28px}
-.footer-brand p{margin-top:14px;color:var(--text-3);line-height:1.7;max-width:280px}
-footer h5{color:#fff;font-size:var(--fs-xs);font-weight:700;margin-bottom:14px;letter-spacing:2px;text-transform:uppercase;font-family:'JetBrains Mono','Inter',monospace}
-footer ul{list-style:none;padding:0}
-footer ul li{padding:6px 0}
-footer ul li a{color:var(--text-3);transition:color .2s;display:inline-flex;align-items:center;gap:6px}
-footer ul li a:hover{color:var(--primary)}
-.footer-bottom{max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--border-navy);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--text-3);font-size:var(--fs-xs);font-family:'JetBrains Mono','Inter',monospace}
-.footer-bottom a{color:var(--text-3);transition:color .2s}
-.footer-bottom a:hover{color:var(--primary)}
-@media(max-width:980px){.footer-inner{grid-template-columns:1fr 1fr 1fr;gap:28px}.footer-brand{grid-column:1/-1}}
-@media(max-width:560px){.footer-inner{grid-template-columns:1fr 1fr}}
+/* footer / cta-final 样式已移至页脚 .bv-foot 内联 style（growclaw 风格，见文末） */
 
 /* ===== reveal animation (stagger) ===== */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
@@ -480,31 +442,6 @@ footer ul li a:hover{color:var(--primary)}
         <p class="sol-fit"><span>适合</span>智能报价、订单交付、采购协同、品质管理等场景</p>
       </div>
     </div>
-
-    <!-- vs 通用 AI 对比 -->
-    <div class="compare-wrap reveal">
-      <div class="compare-head"><span class="pill">VS</span>通用 AI vs 群蜂云枢数字员工</div>
-      <div class="compare-grid">
-        <div class="compare-cell h">能力维度</div>
-        <div class="compare-cell h dim">通用 AI</div>
-        <div class="compare-cell h us">群蜂云枢</div>
-        <div class="compare-cell key">能否独立执行</div>
-        <div class="compare-cell dim">只给建议，需人工跟进</div>
-        <div class="compare-cell us">独立完成：审批、回复、录入</div>
-        <div class="compare-cell key">数据归属</div>
-        <div class="compare-cell dim">上传到公有云</div>
-        <div class="compare-cell us">私有化，不出企业</div>
-        <div class="compare-cell key">企业知识</div>
-        <div class="compare-cell dim">通用知识，易答错</div>
-        <div class="compare-cell us">基于企业专属知识，带来源</div>
-        <div class="compare-cell key">系统对接</div>
-        <div class="compare-cell dim">仅对话</div>
-        <div class="compare-cell us">直连 ERP / CRM / OA 执行流程</div>
-        <div class="compare-cell key">权限与审计</div>
-        <div class="compare-cell dim">无</div>
-        <div class="compare-cell us">分级可见 + 全链路可追溯</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -563,7 +500,6 @@ footer ul li a:hover{color:var(--primary)}
 <section id="capabilities" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">CAPABILITIES</div>
       <h2 class="section-title reveal">数字员工 · 能力一览</h2>
       <p class="section-desc reveal">以下均为真实运行界面，覆盖对话、协作、知识、自动化等核心能力。</p>
     </div>
@@ -634,7 +570,6 @@ footer ul li a:hover{color:var(--primary)}
 <section id="cases" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">CASES</div>
       <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
       <p class="section-desc reveal">2 家标杆客户已跑通--数字员工在真实业务里运转，数据已脱敏。</p>
     </div>
@@ -749,7 +684,6 @@ footer ul li a:hover{color:var(--primary)}
 <section id="process" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">PROCESS</div>
       <h2 class="section-title reveal">合作流程 · <span class="accent">三阶段落地</span></h2>
       <p class="section-desc reveal">从需求到价值，陪伴企业实现 AI 转型--岗位数智助手免费用 1 个月。</p>
     </div>
@@ -833,26 +767,29 @@ footer ul li a:hover{color:var(--primary)}
   </div>
 </section>
 
-<!-- CTA（深 navy） -->
-<section id="contact" class="cta-final">
-  <div class="container">
-    <h2 class="reveal">先验证场景价值，<span class="accent">再谈付费</span></h2>
-    <p class="lead reveal">私有化部署 · 数据不出企业 · 多模型自由切换。可免费 POC，先跑通一个核心场景，再谈订阅。</p>
-    <div class="hero-actions reveal">
-      <a href="tel:18968018043" class="btn-primary">预约 Demo · 189-6801-8043
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#cases" class="btn-secondary">看真实案例</a>
-    </div>
-    <div class="phone reveal">客户成功 · 仲文（工作日 9:00–19:00）· 一对一报价</div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast">
+<!-- FOOTER（growclaw 风格：品牌 + 导航 + 联系，深底；独立 CTA 段已并入此页脚） -->
+<footer class="bv-foot">
+  <style>
+    .bv-foot{background:var(--navy);border-top:1px solid var(--border-navy);padding:56px var(--pad-x) 24px;color:rgba(255,255,255,0.6);font-size:var(--fs-xs)}
+    .bv-foot a{color:rgba(255,255,255,0.62);text-decoration:none;transition:color .15s}
+    .bv-foot a:hover{color:var(--primary)}
+    .bv-foot-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;align-items:start}
+    .bv-foot-brand .logo-svg{height:30px}
+    .bv-foot-brand p{margin:14px 0 0;line-height:1.7;max-width:340px}
+    .bv-foot-brand .tag{color:rgba(255,255,255,0.68);font-size:var(--fs-sm)}
+    .bv-foot-brand .sub{color:rgba(255,255,255,0.42)}
+    .bv-foot-lbl{font-size:var(--fs-xs);font-weight:700;letter-spacing:.16em;color:rgba(255,255,255,0.38);margin:0 0 13px;text-transform:uppercase;font-family:'JetBrains Mono','Inter',monospace}
+    .bv-foot-nav{display:flex;flex-direction:column;gap:10px;font-size:var(--fs-sm);line-height:1.2}
+    .bv-foot-tel{display:inline-flex;align-items:center;gap:7px;font-size:var(--fs-lg);font-weight:700;color:#fff;letter-spacing:.02em}
+    .bv-foot-tel svg{flex:none;color:var(--primary)}
+    .bv-foot-note{font-size:var(--fs-xs);line-height:1.7;color:rgba(255,255,255,0.42);margin:9px 0 0}
+    .bv-foot-bar{border-top:1px solid var(--border-navy);max-width:1200px;margin:28px auto 0;padding-top:16px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.4);font-family:'JetBrains Mono','Inter',monospace}
+    @media(max-width:860px){.bv-foot-grid{grid-template-columns:1fr 1fr;gap:30px 28px}.bv-foot-brand{grid-column:1/-1}}
+    @media(max-width:520px){.bv-foot-grid{grid-template-columns:1fr;gap:26px}}
+  </style>
+  <div class="bv-foot-grid">
+    <div class="bv-foot-brand">
+      <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
         <svg class="logo-svg" viewBox="0 0 200 40" role="img" aria-label="群蜂云枢 BeeVast">
           <g class="mark" transform="translate(2,2)">
             <path d="M18 2 L32 10 L32 26 L18 34 L4 26 L4 10 Z" fill="url(#logoGrad)"/>
@@ -862,49 +799,25 @@ footer ul li a:hover{color:var(--primary)}
           <text x="46" y="27" font-size="22" font-weight="800" fill="#FFFFFF">BeeVast</text>
         </svg>
       </a>
-      <p>群蜂云枢（杭州）智能科技有限公司 - 为企业构建可落地的 AI 业务能力，交付承担真实业务的数字员工。</p>
+      <p class="tag">让每个企业都有自己的 AI 团队</p>
+      <p class="sub">数智助手 · 企业知识大脑 · 场景智能体解决方案</p>
     </div>
     <div>
-      <h5>产品</h5>
-      <ul>
-        <li><a href="#products">岗位数智助手</a></li>
-        <li><a href="#products">企业知识大脑</a></li>
-        <li><a href="#products">场景智能体</a></li>
-        <li><a href="#capabilities">管理控制台</a></li>
-      </ul>
+      <div class="bv-foot-lbl">导航</div>
+      <nav class="bv-foot-nav"><a href="#products">核心产品</a><a href="#scenarios">场景应用</a><a href="#why">为什么选我们</a><a href="#cases">客户案例</a><a href="#process">合作流程</a></nav>
     </div>
     <div>
-      <h5>方案</h5>
-      <ul>
-        <li><a href="#scenarios">制造业</a></li>
-        <li><a href="#scenarios">跨境电商</a></li>
-        <li><a href="#scenarios">企业培训</a></li>
-        <li><a href="#cases">客户案例</a></li>
-      </ul>
-    </div>
-    <div>
-      <h5>资源</h5>
-      <ul>
-        <li><a href="#contact">免费 POC</a></li>
-        <li><a href="#contact">预约 Demo</a></li>
-        <li><a href="#faq">常见问题</a></li>
-        <li><a href="#capabilities">产品演示</a></li>
-      </ul>
-    </div>
-    <div>
-      <h5>合规与联系</h5>
-      <ul>
-        <li><a href="#why">数据安全</a></li>
-        <li><a href="#why">权限与审计</a></li>
-        <li>商务：189-6801-8043</li>
-        <li>仲文（客户成功）</li>
-      </ul>
+      <div class="bv-foot-lbl">联系我们</div>
+      <a href="tel:18968018043" class="bv-foot-tel">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.33 1.85.56 2.81.69A2 2 0 0 1 22 16.92z"/></svg>
+        189-6801-8043
+      </a>
+      <p class="bv-foot-note">工作日 9:00–18:00 · 咨询产品与合作</p>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 群蜂云枢（杭州）智能科技有限公司</span>
-    <span><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备2026038133号</a></span>
-    <span>创始团队 · 阿里蚂蚁 · 字节跳动 · 浙大浙商</span>
+  <div class="bv-foot-bar">
+    <span>© 2026 群蜂智能 · 群蜂云枢（杭州）智能科技有限公司</span>
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备2026038133号</a>
   </div>
 </footer>
 
