@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>群蜂云枢 BeeVast - 让每个企业都有自己的 AI 团队 | 私有化数字员工</title>
+<title>群蜂云枢 BeeVast - 让每个企业都有自己的 AI 团队 | 私有化数字助理</title>
 <meta name="description" content="群蜂云枢 BeeVast 为企业交付可落地业务的 AI 智能体 - 三件套：岗位数智助手 / 企业知识大脑 / 场景智能体。私有化部署 · 数据不出企业 · 多模型自由 · 可免费 POC。已助制造、跨境等行业客户落地。">
 <meta name="keywords" content="数字员工,AI 数字员工,企业 AI,私有化部署,知识大脑,场景智能体,岗位数智助手,数据不出企业,多模型,BeeVast,群蜂云枢">
 <meta name="author" content="群蜂云枢（杭州）智能科技有限公司">
@@ -46,9 +46,9 @@
   "@type": "FAQPage",
   "mainEntity": [
     {"@type":"Question","name":"数据真的不出企业吗？","acceptedAnswer":{"@type":"Answer","text":"整套 Agent + 知识库跑在企业本地或专属云，业务数据物理不出企业网络，敏感字段先脱敏再传模型，断网仍可用。"}},
-    {"@type":"Question","name":"部署需要多久？","acceptedAnswer":{"@type":"Answer","text":"先免费 POC 跑通一个核心场景，首个场景平均 5-8 天上线，岗位数智助手免费用 1 个月。"}},
+    {"@type":"Question","name":"部署需要多久？","acceptedAnswer":{"@type":"Answer","text":"先免费 POC 跑通一个核心场景，首个场景平均 5-8 天上线，数字助理免费体验 1 个月。"}},
     {"@type":"Question","name":"支持哪些模型？","acceptedAnswer":{"@type":"Answer","text":"底层多模型架构，Claude / GPT / 国产 / 开源可平滑切换，不锁死单家厂商。"}},
-    {"@type":"Question","name":"能对接我们现有的 ERP / CRM 吗？","acceptedAnswer":{"@type":"Answer","text":"可以。已贯通 ERP / CRM / MES / OA，数字员工可直接调业务系统、执行流程、守红线。"}}
+    {"@type":"Question","name":"能对接我们现有的 ERP / CRM 吗？","acceptedAnswer":{"@type":"Answer","text":"可以。已贯通 ERP / CRM / MES / OA，数字助理可直接调业务系统、执行流程、守红线。"}}
   ]
 }
 </script>
@@ -175,7 +175,7 @@ section{padding:56px var(--pad-x)}
 
 /* ===== SOLUTIONS (深) ===== */
 .solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.solution-card{padding:28px 24px;background:var(--navy-2);border:1px solid var(--border-navy);border-radius:var(--radius);transition:all .35s;position:relative;overflow:hidden}
+.solution-card{display:flex;flex-direction:column;padding:28px 24px;background:var(--navy-2);border:1px solid var(--border-navy);border-radius:var(--radius);transition:all .35s;position:relative;overflow:hidden}
 .solution-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,0.4);background:var(--navy-3)}
 .sol-num{font-family:'JetBrains Mono','Inter',monospace;font-size:var(--fs-xs);font-weight:700;color:var(--primary);letter-spacing:3px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .sol-num::before{content:'';width:24px;height:1px;background:linear-gradient(90deg,var(--primary),transparent)}
@@ -183,7 +183,7 @@ section{padding:56px var(--pad-x)}
 .sol-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(234,162,48,0.18),rgba(234,162,48,0.08));border:1px solid rgba(234,162,48,0.3);display:flex;align-items:center;justify-content:center;flex:none;color:var(--primary)}
 .sol-icon svg{width:22px;height:22px;stroke-width:2}
 .solution-card h3{font-size:var(--fs-xl);font-weight:800;margin:0;color:#fff}
-.sol-value{margin:4px 0 0;padding:10px 14px;border-left:2px solid var(--primary);background:rgba(234,162,48,0.06);color:#fff;font-size:var(--fs-sm);font-weight:600;line-height:1.6;border-radius:0 8px 8px 0}
+.sol-value{margin:auto 0 0;padding:10px 14px;border-left:2px solid var(--primary);background:rgba(234,162,48,0.06);color:#fff;font-size:var(--fs-sm);font-weight:600;line-height:1.6;border-radius:0 8px 8px 0}
 .sol-desc{margin:0 0 14px;font-size:var(--fs-sm);color:rgba(255,255,255,0.72);line-height:1.65}
 .solution-card ul{margin-top:14px;padding-left:0;list-style:none}
 .solution-card ul li{font-size:var(--fs-sm);color:rgba(255,255,255,0.82);padding:5px 0;padding-left:22px;position:relative}
@@ -552,7 +552,7 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">以下均为真实运行界面，覆盖对话、协作、知识、自动化等核心能力。</p>
     </div>
     <div class="cap-switcher reveal">
-      <div class="cap-tabs" role="tablist" aria-label="数字员工能力">
+      <div class="cap-tabs" role="tablist" aria-label="数字助理能力">
         <button class="cap-tab active" role="tab" aria-selected="true" data-i="0">01 对话即工作</button>
         <button class="cap-tab" role="tab" aria-selected="false" data-i="1">02 一支 AI 团队</button>
         <button class="cap-tab" role="tab" aria-selected="false" data-i="2">03 企业知识库</button>
@@ -567,15 +567,15 @@ a,button{touch-action:manipulation}
             <h3>一句话发起，自动执行</h3>
             <p>自然语言驱动：调订单 / 库存 / 客户数据、出报价、写文档、查轨迹--不用记系统怎么点。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字员工对话" loading="lazy"></div>
+          <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字助理对话" loading="lazy"></div>
         </div>
         <div class="cap-panel" data-i="1">
           <div class="cap-text">
             <div class="cap-num">02 · 一支 AI 团队</div>
             <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
-            <p>一个平台多个岗位数字员工，各司其职、共享记忆，像一支真的团队。</p>
+            <p>一个平台多个岗位数字助理，各司其职、共享记忆，像一支真的团队。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-team.png" alt="多岗位数字员工名册"></div>
+          <div class="cap-shot"><img data-src="shots/cap-team.png" alt="多岗位数字助理名册"></div>
         </div>
         <div class="cap-panel" data-i="2">
           <div class="cap-text">
@@ -589,7 +589,7 @@ a,button{touch-action:manipulation}
           <div class="cap-text">
             <div class="cap-num">04 · 自动化场景</div>
             <h3>按计划执行，无需值守</h3>
-            <p>每日行情、定期对账、月度报表--定时数字员工自动执行，结果推送到企微 / 飞书。</p>
+            <p>每日行情、定期对账、月度报表--定时数字助理自动执行，结果推送到企微 / 飞书。</p>
           </div>
           <div class="cap-shot"><img data-src="shots/cap-auto.png" alt="自动化定时任务"></div>
         </div>
@@ -605,7 +605,7 @@ a,button{touch-action:manipulation}
           <div class="cap-text">
             <div class="cap-num">06 · 审批把关</div>
             <h3>敏感操作，人工确认</h3>
-            <p>退款、改价、对外发文等动作，数字员工先提交审批，人工批准后才执行--风险可控。</p>
+            <p>退款、改价、对外发文等动作，数字助理先提交审批，人工批准后才执行--风险可控。</p>
           </div>
           <div class="cap-shot"><img data-src="shots/cap-approval.png" alt="审批把关 人在环"></div>
         </div>
@@ -672,7 +672,7 @@ a,button{touch-action:manipulation}
         <div class="case-col after">
           <h4>After</h4>
           <ul>
-            <li>客服数字员工 7×24 在线</li>
+            <li>客服数字助理 7×24 在线</li>
             <li>首响 30 秒内，复杂问题转人工</li>
             <li>按店铺 SOP 统一话术与退换规则</li>
           </ul>
@@ -769,7 +769,7 @@ a,button{touch-action:manipulation}
         <ul class="pc-list">
           <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>场景需求梳理</li>
           <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>企业知识整合</li>
-          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>数字员工搭建部署</li>
+          <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>数字助理搭建部署</li>
           <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>驻场培训 + 专属顾问</li>
         </ul>
         <div class="pc-deliver">交付成果</div>
@@ -778,7 +778,7 @@ a,button{touch-action:manipulation}
           <span class="pc-tag" style="background:#FEF3C7;color:#B45309">企业知识大脑</span>
           <span class="pc-tag" style="background:#FEF3C7;color:#B45309">场景 Agent</span>
         </div>
-        <a href="tel:18968018043" class="pc-foot" style="background:#D97706;color:#fff">免费用 1 个月</a>
+        <a href="tel:18968018043" class="pc-foot" style="background:#D97706;color:#fff">数字助理免费体验</a>
       </div>
       <!-- 重塑 -->
       <div class="pc-card">
@@ -819,7 +819,7 @@ a,button{touch-action:manipulation}
       </details>
       <details class="faq-item reveal">
         <summary>部署需要多久？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <div class="faq-a">先免费 POC 跑通一个核心场景，首个场景平均 5-8 天上线，岗位数智助手免费用 1 个月。不为了卖而卖，跑出价值再谈订阅。</div>
+        <div class="faq-a">先免费 POC 跑通一个核心场景，首个场景平均 5-8 天上线，数字助理免费体验 1 个月。不为了卖而卖，跑出价值再谈订阅。</div>
       </details>
       <details class="faq-item reveal">
         <summary>支持哪些模型？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
@@ -827,7 +827,7 @@ a,button{touch-action:manipulation}
       </details>
       <details class="faq-item reveal">
         <summary>能对接我们现有的 ERP / CRM 吗？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <div class="faq-a">可以。已贯通 ERP / CRM / MES / OA 等常见业务系统，数字员工可直接调业务系统、执行流程、守红线，不用人工搬数据。</div>
+        <div class="faq-a">可以。已贯通 ERP / CRM / MES / OA 等常见业务系统，数字助理可直接调业务系统、执行流程、守红线，不用人工搬数据。</div>
       </details>
       <details class="faq-item reveal">
         <summary>需要专人维护吗？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
@@ -835,7 +835,7 @@ a,button{touch-action:manipulation}
       </details>
       <details class="faq-item reveal">
         <summary>怎么收费？<span class="q-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <div class="faq-a">先免费 POC 跑通核心场景，验证价值后再谈订阅；岗位数智助手免费用 1 个月。具体按场景与岗位规模定制，一对一报价。</div>
+        <div class="faq-a">先免费 POC 跑通核心场景，验证价值后再谈订阅；数字助理免费体验 1 个月。具体按场景与岗位规模定制，一对一报价。</div>
       </details>
     </div>
   </div>
