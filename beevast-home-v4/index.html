@@ -111,6 +111,10 @@ nav.scrolled{background:rgba(255,255,255,0.94);border-bottom-color:var(--border-
 .nav-links{display:flex;gap:28px;align-items:center}
 .nav-links a{color:var(--text-2);font-size:var(--fs-sm);font-weight:500;transition:color .2s;position:relative}
 .nav-links a:hover{color:var(--primary)}
+.nav-links a.active{color:var(--primary)}
+.nav-links a.active::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--grad-cyber);border-radius:2px}
+.nav-cta{padding:8px 18px;border-radius:999px;background:var(--grad-cyber);color:#1C1A17;font-weight:800;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{color:#1C1A17;transform:translateY(-1px);box-shadow:0 6px 16px rgba(234,162,48,0.35)}
 .nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;border:none;background:transparent;padding:0;border-radius:8px;cursor:pointer}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s;margin:0 auto}
 .nav-toggle:hover{background:var(--bg-2)}
@@ -118,11 +122,15 @@ nav.scrolled{background:rgba(255,255,255,0.94);border-bottom-color:var(--border-
 .nav-toggle{display:flex}
 .nav-links{position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-glow);box-shadow:0 16px 40px rgba(0,0,0,0.08);padding:8px var(--pad-x) 16px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .25s,opacity .25s}
 .nav-links a{display:block;width:100%;padding:14px 0;font-size:var(--fs-md);border-bottom:1px solid var(--border)}
+.nav-links a.active::after{display:none}
+.nav-cta{display:block;text-align:center;margin-top:10px;border-radius:10px}
+.nav-cta:hover{transform:none}
 nav.open .nav-links{transform:translateY(0);opacity:1;pointer-events:auto}
 nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 nav.open .nav-toggle span:nth-child(2){opacity:0}
 nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 }
+section[id]{scroll-margin-top:84px}
 
 /* ===== HERO (深 navy) ===== */
 .hero{background:var(--navy);color:#fff;padding:84px var(--pad-x) 52px;overflow:hidden}
@@ -135,13 +143,6 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-display);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:26px}
 .hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
-.btn-primary{padding:14px 30px;border-radius:10px;background:var(--grad-cyber);color:#1C1A17;font-size:var(--fs-sm);font-weight:800;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px;box-shadow:var(--glow-cyan),0 8px 24px rgba(234,162,48,0.25);position:relative;overflow:hidden}
-.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transition:left .6s}
-.btn-primary:hover::before{left:100%}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow-cyan),0 16px 40px rgba(234,162,48,0.4)}
-.btn-secondary{padding:13px 30px;border-radius:10px;background:rgba(255,255,255,0.06);color:#fff;font-size:var(--fs-sm);font-weight:600;border:1px solid var(--border-navy);transition:all .25s;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(10px)}
-.btn-secondary:hover{border-color:rgba(234,162,48,0.5);background:rgba(234,162,48,0.10);color:#F2B85C}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:#000;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
 .hero-video-frame::before{content:'';position:absolute;top:0;left:0;right:0;height:34px;background:var(--navy-2);border-bottom:1px solid rgba(255,255,255,0.08);z-index:2}
@@ -329,6 +330,10 @@ a,button{touch-action:manipulation}
   <div class="nav-links">
     <a href="#products">核心产品</a>
     <a href="#scenarios">场景应用</a>
+    <a href="#capabilities">产品能力</a>
+    <a href="#cases">客户案例</a>
+    <a href="#why">为什么我们</a>
+    <a class="nav-cta" href="#process">免费试用</a>
   </div>
   <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -943,6 +948,18 @@ if (navToggle && navEl) {
     navToggle.setAttribute('aria-expanded', 'false');
   }));
 }
+
+// active nav link on scroll (scrollspy)
+const spyLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
+const spyMap = {};
+spyLinks.forEach(a => { const id = a.getAttribute('href').slice(1); if (id) spyMap[id] = a; });
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    const link = spyMap[e.target.id];
+    if (link && e.isIntersecting) { spyLinks.forEach(a => a.classList.remove('active')); link.classList.add('active'); }
+  });
+}, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
 
 // capability tab switcher
 const capTabs = document.querySelectorAll('.cap-tab');
