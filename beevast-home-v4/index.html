@@ -100,11 +100,7 @@ section,nav,footer{position:relative;z-index:1}
 
 /* ===== LOGO 规范 =====
    nav：图片字标 assets/logo-head.png（透明底，去白底合成，高 48px）。
-   footer：SVG 字标 .logo-svg（深底白字，高 30px，viewBox 保持比例禁止拉伸）。 */
-.logo-svg{display:block;height:30px;width:auto}
-.logo-svg .mark{transition:transform .4s}
-a.nav-brand:hover .logo-svg .mark{transform:rotate(-6deg) scale(1.04)}
-.logo-svg text{font-family:'Inter','Noto Sans SC',sans-serif}
+   footer：图标 mark assets/logo-foot.jpg（白底圆角 chip，48px）。 */
 .logo-head{display:block;height:48px;width:auto;transition:transform .4s}
 a.nav-brand:hover .logo-head{transform:scale(1.04)}
 
@@ -190,29 +186,10 @@ section{padding:56px var(--pad-x)}
 .solution-card h3{font-size:var(--fs-xl);font-weight:800;margin:0;color:#fff}
 .sol-value{margin:4px 0 0;padding:10px 14px;border-left:2px solid var(--primary);background:rgba(234,162,48,0.06);color:#fff;font-size:var(--fs-sm);font-weight:600;line-height:1.6;border-radius:0 8px 8px 0}
 .sol-desc{margin:0 0 14px;font-size:var(--fs-sm);color:rgba(255,255,255,0.72);line-height:1.65}
-.sol-fit{margin:14px 0 0;padding-top:14px;border-top:1px solid var(--border-navy);font-size:var(--fs-sm);color:rgba(255,255,255,0.72)}
-.sol-fit span{color:var(--primary);font-weight:700;margin-right:6px}
 .solution-card ul{margin-top:14px;padding-left:0;list-style:none}
 .solution-card ul li{font-size:var(--fs-sm);color:rgba(255,255,255,0.82);padding:5px 0;padding-left:22px;position:relative}
 .solution-card ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--primary)}
 @media(max-width:780px){.solutions-grid{grid-template-columns:1fr}}
-
-/* ===== SCENARIOS ===== */
-.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.role-card{padding:30px 28px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;position:relative;overflow:hidden}
-.role-card:hover{transform:translateY(-4px);border-color:var(--border-glow);box-shadow:var(--shadow-lg);background:rgba(234,162,48,0.03)}
-.role-card h3{font-size:var(--fs-xl);font-weight:800;color:var(--text);margin-bottom:14px}
-.role-metric{display:flex;align-items:baseline;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.role-metric-num{font-size:var(--fs-stat);font-weight:900;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;letter-spacing:-1px}
-.role-metric-label{font-size:var(--fs-xs);color:var(--text-2);font-weight:600}
-.role-card p{font-size:var(--fs-sm);color:var(--text-2);line-height:1.7}
-.cap-abilities{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:52px}
-.cap-ab{padding:20px 14px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;transition:all .25s}
-.cap-ab:hover{border-color:var(--border-glow);transform:translateY(-2px)}
-.cap-ab strong{display:block;font-size:var(--fs-md);font-weight:800;color:var(--primary);margin-bottom:6px}
-.cap-ab span{font-size:var(--fs-xs);color:var(--text-2);line-height:1.5;display:block}
-@media(max-width:900px){.role-grid{grid-template-columns:repeat(2,1fr)}.cap-abilities{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:540px){.role-grid{grid-template-columns:1fr}.cap-abilities{grid-template-columns:repeat(2,1fr)}}
 
 /* ===== CAPABILITY SWITCHER ===== */
 .cap-switcher{max-width:1180px;margin:0 auto;padding:8px 0}
@@ -274,7 +251,10 @@ a,button{touch-action:manipulation}
 .adv-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:0;background:var(--grad-cyber);transition:height .35s}
 .adv-card:hover{transform:translateY(-4px);background:var(--navy-3);box-shadow:0 16px 40px rgba(0,0,0,0.35)}
 .adv-card:hover::before{height:100%}
-.adv-code{font-family:'JetBrains Mono','Inter',monospace;font-size:var(--fs-xs);font-weight:800;color:var(--primary);margin-bottom:14px;letter-spacing:2px;display:inline-block;padding:3px 10px;border:1px solid rgba(234,162,48,0.3);border-radius:6px;background:rgba(234,162,48,0.10)}
+.adv-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.adv-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;border:1px solid}
+.adv-ico svg{width:22px;height:22px}
+.adv-lbl{font-size:13px;font-weight:700;letter-spacing:.04em}
 .adv-card h3{font-size:var(--fs-md);font-weight:800;color:#fff;margin-bottom:10px}
 .adv-card p{font-size:var(--fs-sm);color:rgba(255,255,255,0.72);line-height:1.75}
 .compliance-row{margin-top:36px;padding:22px 32px;background:rgba(234,162,48,0.08);border:1px solid rgba(234,162,48,0.25);border-radius:var(--radius);color:#fff;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:18px 28px}
@@ -413,7 +393,6 @@ a,button{touch-action:manipulation}
           <li>连接 ERP、CRM、MES 等业务系统协同工作</li>
         </ul>
         <p class="sol-value">减少重复性工作，让员工聚焦客户服务、专业判断与价值创造。</p>
-        <p class="sol-fit"><span>适合</span>销售、客服、采购、HR、财务、品质等岗位</p>
       </div>
       <div class="solution-card reveal">
         <div class="sol-num">02 / 知识</div>
@@ -429,7 +408,6 @@ a,button{touch-action:manipulation}
           <li>持续积累组织经验，形成长期资产</li>
         </ul>
         <p class="sol-value">从「人知道」变成「组织知道」，让经验统一沉淀，持续传承与复用。</p>
-        <p class="sol-fit"><span>适合</span>技术文档、产品知识、制度规范、项目经验管理</p>
       </div>
       <div class="solution-card reveal">
         <div class="sol-num">03 / 场景</div>
@@ -445,59 +423,121 @@ a,button{touch-action:manipulation}
           <li>人机协同，实现效率与质量双提升</li>
         </ul>
         <p class="sol-value">从单点提效走向流程优化，推动组织持续增长与创新。</p>
-        <p class="sol-fit"><span>适合</span>智能报价、订单交付、采购协同、品质管理等场景</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 场景应用 -->
-<section id="scenarios">
+<section id="scenarios" style="background:var(--bg-2)">
+  <style>
+    .sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .sc-card{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column}
+    .sc-card-head{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+    .sc-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;border:1px solid}
+    .sc-ico svg{width:22px;height:22px}
+    .sc-card-head h3{font-size:19px;font-weight:800;color:#0a0a18;margin:0}
+    .sc-desc{color:rgba(10,10,24,0.72);font-size:13.5px;line-height:1.6;margin:0 0 14px}
+    .sc-stat-num{display:block;font-size:34px;font-weight:900;color:#0a0a18;line-height:1.05;letter-spacing:-.02em}
+    .sc-stat-lbl{display:block;font-size:12px;color:#6a6a70;margin-top:5px}
+    .sc-div{height:1px;background:rgba(0,0,0,0.07);margin:14px 0}
+    .sc-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .sc-list li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(10,10,24,0.72)}
+    .sc-list svg{width:15px;height:15px;flex:none}
+    .sc-cap{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .sc-cap-head{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+    .sc-cap-head h3{font-size:18px;font-weight:800;color:#0a0a18;margin:0}
+    .sc-cap p{color:rgba(10,10,24,0.72);font-size:13.5px;line-height:1.6;margin:0}
+    .sc-sub{text-align:center;max-width:760px;margin:48px auto 24px}
+    .sc-sub-pill{display:inline-block;padding:6px 14px;background:var(--grad-cyber);color:#1C1A17;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:14px}
+    .sc-sub h3{font-size:24px;font-weight:800;color:#0a0a18;line-height:1.2;margin:0}
+    @media(max-width:900px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:540px){.sc-grid{grid-template-columns:1fr}}
+  </style>
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">SCENARIOS</div>
-      <h2 class="section-title reveal">场景应用 · <span class="accent">按岗就绪</span></h2>
-      <p class="section-desc reveal">覆盖关键岗位的数智助手，支持先部署上线，再按需深度定制。</p>
+      <h2 class="section-title reveal">企业级数智助手 Agent，开箱即用</h2>
+      <p class="section-desc reveal">覆盖关键岗位 × 底层作业能力 · 先用起来再深度定制（免费试用 1 个月）</p>
     </div>
-    <div class="role-grid">
-      <div class="role-card reveal">
-        <h3>销售数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">2h→8min</span><span class="role-metric-label">报价耗时</span></div>
-        <p>自动解析图纸、拆解 BOM、匹配历史项目与工艺规则，辅助销售快速生成报价方案。</p>
+    <div class="sc-grid">
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8z"/><circle cx="7.6" cy="7.6" r="1.4"/></svg></span><h3>销售数智助手</h3></div>
+        <p class="sc-desc">自动解析图纸、拆解 BOM、匹配历史项目与工艺规则，辅助销售快速生成报价方案。</p>
+        <div><span class="sc-stat-num">80%</span><span class="sc-stat-lbl">报价周期平均缩短</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升报价准确率</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低经验依赖</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>加快客户响应速度</span></li>
+        </ul>
       </div>
-      <div class="role-card reveal">
-        <h3>客服数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">7×24</span><span class="role-metric-label">全天候响应</span></div>
-        <p>自动处理产品咨询、订单查询和知识问答，复杂问题无缝协同人工。</p>
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#0f766e;background:linear-gradient(150deg,#4f9d8a26,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 0 1-11.6 7.1L3 20.5l1.9-6.3A8 8 0 1 1 21 11.5z"/><circle cx="8.5" cy="11.5" r=".95"/><circle cx="12" cy="11.5" r=".95"/><circle cx="15.5" cy="11.5" r=".95"/></svg></span><h3>客服数智助手</h3></div>
+        <p class="sc-desc">自动处理产品咨询、订单查询和知识问答，复杂问题无缝协同人工。</p>
+        <div><span class="sc-stat-num">7×24</span><span class="sc-stat-lbl">全天候服务响应</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升客户满意度</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>减少重复咨询</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>沉淀客户知识</span></li>
+        </ul>
       </div>
-      <div class="role-card reveal">
-        <h3>采购数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">50%</span><span class="role-metric-label">协同效率提升</span></div>
-        <p>自动询价、比价、订单跟踪与供应商管理，让采购聚焦供应链优化。</p>
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#92600f;background:linear-gradient(150deg,#c89b6a26,#c89b6a0d);border-color:#c89b6a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2.5 3.5H5l2.1 10.4a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 7H6"/></svg></span><h3>采购数智助手</h3></div>
+        <p class="sc-desc">自动询价、比价、订单跟踪与供应商管理，让采购聚焦供应链优化。</p>
+        <div><span class="sc-stat-num">50%</span><span class="sc-stat-lbl">采购协同效率提升</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>缩短采购周期</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>规范采购流程</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低沟通成本</span></li>
+        </ul>
       </div>
-      <div class="role-card reveal">
-        <h3>HR 数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">3×</span><span class="role-metric-label">招聘处理提升</span></div>
-        <p>自动筛选简历、安排面试、生成分析报告，HR 聚焦人才评估与组织发展。</p>
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#6b5066;background:linear-gradient(150deg,#a8849e26,#a8849e0d);border-color:#a8849e40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V19"/><circle cx="9" cy="7" r="3.2"/><path d="M22 19v-1.5a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>HR 数智助手</h3></div>
+        <p class="sc-desc">自动筛选简历、安排面试、生成分析报告，HR 聚焦人才评估与组织发展。</p>
+        <div><span class="sc-stat-num">3×</span><span class="sc-stat-lbl">招聘处理效率提升</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>统一评估标准</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>优化候选人体验</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>沉淀招聘知识</span></li>
+        </ul>
       </div>
-      <div class="role-card reveal">
-        <h3>财务数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">90%</span><span class="role-metric-label">重复录入自动</span></div>
-        <p>自动完成票据识别、凭证录入、报表汇总与数据核对，加快经营分析。</p>
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#475569;background:linear-gradient(150deg,#7c8db526,#7c8db50d);border-color:#7c8db540"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18l2-1.4 2 1.4 2-1.4 2 1.4 2-1.4 2 1.4V3l-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4L6 3z"/><path d="M9.5 8.5h5M9.5 12h5"/></svg></span><h3>财务数智助手</h3></div>
+        <p class="sc-desc">自动完成票据识别、凭证录入、报表汇总与数据核对，加快经营分析。</p>
+        <div><span class="sc-stat-num">90%</span><span class="sc-stat-lbl">重复录入自动完成</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>减少人为差错</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提高核算效率</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>加快经营分析</span></li>
+        </ul>
       </div>
-      <div class="role-card reveal">
-        <h3>法务数智助手</h3>
-        <div class="role-metric"><span class="role-metric-num">70%</span><span class="role-metric-label">审查时间缩短</span></div>
-        <p>自动审查合同条款、风险识别、制度比对与合规辅助，降低合同风险。</p>
+      <div class="sc-card reveal">
+        <div class="sc-card-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="m5 7-2.5 6.5h5L5 7z"/><path d="m19 7-2.5 6.5h5L19 7z"/><path d="m5 7 7-2 7 2"/></svg></span><h3>法务数智助手</h3></div>
+        <p class="sc-desc">自动审查合同条款、风险识别、制度比对与合规辅助，降低合同风险。</p>
+        <div><span class="sc-stat-num">70%</span><span class="sc-stat-lbl">审查时间缩短</span></div>
+        <div class="sc-div"></div>
+        <ul class="sc-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>统一审核标准</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升合规水平</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低合同风险</span></li>
+        </ul>
       </div>
     </div>
-    <div class="cap-abilities reveal">
-      <div class="cap-ab"><strong>对话</strong><span>多轮 · 记忆 · 随问随答</span></div>
-      <div class="cap-ab"><strong>工单</strong><span>分派 · 优先级 · 闭环</span></div>
-      <div class="cap-ab"><strong>合同</strong><span>比对 · 风险 · 电子签</span></div>
-      <div class="cap-ab"><strong>数据</strong><span>报表 · 告警 · 预测</span></div>
-      <div class="cap-ab"><strong>审批</strong><span>编排 · 多级 · 人在环</span></div>
-      <div class="cap-ab"><strong>调度</strong><span>排程 · 重排 · 分配</span></div>
+    <div class="sc-sub reveal">
+      <span class="sc-sub-pill">底层能力 · 6 维度</span>
+      <h3>从对话到调度，打通企业全流程作业</h3>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-11.9 7.6L3 21l1.9-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>对话</h3></div><p>多轮对话 · 上下文记忆 · 一线随问随答</p></div>
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#0f766e;background:linear-gradient(150deg,#4f9d8a26,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.2a1.8 1.8 0 0 0 0 3.6V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.2a1.8 1.8 0 0 0 0-3.6V8z"/><path d="M9 7.5v9"/></svg></span><h3>工单</h3></div><p>自动分派 · 优先级 · 售后工单闭环</p></div>
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#92600f;background:linear-gradient(150deg,#c89b6a26,#c89b6a0d);border-color:#c89b6a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span><h3>合同</h3></div><p>条款比对 · 风险标注 · 合同电子签</p></div>
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#475569;background:linear-gradient(150deg,#7c8db526,#7c8db50d);border-color:#7c8db540"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 3.5v17h17"/><path d="M8 16v-4M12.5 16v-7M17 16v-3"/></svg></span><h3>数据</h3></div><p>自动报表 · 异常告警 · 趋势预测</p></div>
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#6b5066;background:linear-gradient(150deg,#a8849e26,#a8849e0d);border-color:#a8849e40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.3 12 2.4 2.4 4.9-5"/></svg></span><h3>审批</h3></div><p>流程编排 · 多级审批 · 请款 / 用印审批</p></div>
+      <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#876a16;background:linear-gradient(150deg,#e4bf7a26,#e4bf7a0d);border-color:#e4bf7a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span><h3>调度</h3></div><p>任务分配 · 排程 · 异常重排</p></div>
     </div>
   </div>
 </section>
@@ -577,7 +617,7 @@ a,button{touch-action:manipulation}
   <div class="container">
     <div class="section-head">
       <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
-      <p class="section-desc reveal">2 家标杆客户已跑通--数字员工在真实业务里运转，数据已脱敏。</p>
+      <p class="section-desc reveal">数字员工在真实业务里运转</p>
     </div>
 
     <div class="case-study reveal">
@@ -650,28 +690,28 @@ a,button{touch-action:manipulation}
 <section id="why" class="section-navy">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">WHY US</div>
+      <div class="section-tag reveal">为什么选择我们 · WE ARE TOGETHER</div>
       <h2 class="section-title reveal">不是供应商，是<span class="accent">你的 AI 团队</span></h2>
       <p class="section-desc reveal">安全 × 可控 × 复用 × 灵活 · 持续进化的工程沉淀。</p>
     </div>
     <div class="adv-grid">
       <div class="adv-card reveal">
-        <div class="adv-code">安全</div>
+        <div class="adv-head"><span class="adv-ico" style="color:#5a7fd6;background:linear-gradient(150deg,#5a7fd630,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/><circle cx="12" cy="15.2" r="1.3"/></svg></span><span class="adv-lbl" style="color:#5a7fd6">安全</span></div>
         <h3>私有化部署</h3>
         <p>Agent + 知识库整套部署在企业本地或专属云，不依赖外部 SaaS，断网可用。</p>
       </div>
       <div class="adv-card reveal">
-        <div class="adv-code">可控</div>
+        <div class="adv-head"><span class="adv-ico" style="color:#4f9d8a;background:linear-gradient(150deg,#4f9d8a30,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="6" rx="1.6"/><rect x="3.5" y="14" width="17" height="6" rx="1.6"/><path d="M7 7h.01M7 17h.01"/></svg></span><span class="adv-lbl" style="color:#4f9d8a">可控</span></div>
         <h3>数据不上云</h3>
         <p>业务数据物理不出企业网络，敏感字段先脱敏再传模型，零数据外流。</p>
       </div>
       <div class="adv-card reveal">
-        <div class="adv-code">复用</div>
+        <div class="adv-head"><span class="adv-ico" style="color:#7c8db5;background:linear-gradient(150deg,#7c8db530,#7c8db50d);border-color:#7c8db540"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></span><span class="adv-lbl" style="color:#7c8db5">复用</span></div>
         <h3>角色蒸馏复用</h3>
         <p>把岗位经验蒸馏成可复制数智助手，跨部门、跨企业技能库反复用。</p>
       </div>
       <div class="adv-card reveal">
-        <div class="adv-code">灵活</div>
+        <div class="adv-head"><span class="adv-ico" style="color:#e4bf7a;background:linear-gradient(150deg,#e4bf7a30,#e4bf7a0d);border-color:#e4bf7a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1.5 14h5M9.5 8h5M17.5 16h5"/></svg></span><span class="adv-lbl" style="color:#e4bf7a">灵活</span></div>
         <h3>模型自由度</h3>
         <p>底层多模型架构，Claude / GPT / 国产 / 开源平滑切换，不锁死单家厂商。</p>
       </div>
@@ -767,7 +807,6 @@ a,button{touch-action:manipulation}
 <section id="faq">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag reveal">FAQ</div>
       <h2 class="section-title reveal">常见问题</h2>
       <p class="section-desc reveal">先回答你最关心的几个问题，没覆盖到的直接问客户经理。</p>
     </div>
@@ -806,8 +845,8 @@ a,button{touch-action:manipulation}
     .bv-foot{background:var(--navy);border-top:1px solid var(--border-navy);padding:56px var(--pad-x) 24px;color:rgba(255,255,255,0.6);font-size:var(--fs-xs)}
     .bv-foot a{color:rgba(255,255,255,0.62);text-decoration:none;transition:color .15s}
     .bv-foot a:hover{color:var(--primary)}
-    .bv-foot-grid{display:grid;grid-template-columns:1.8fr 1fr;gap:40px;max-width:1200px;margin:0 auto;align-items:start}
-    .bv-foot-brand .logo-svg{height:30px}
+    .bv-foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1.1fr;gap:40px;max-width:1200px;margin:0 auto;align-items:start}
+    .bv-foot-brand .logo-foot{display:block;width:48px;height:48px;border-radius:12px;margin-bottom:16px}
     .bv-foot-brand p{margin:14px 0 0;line-height:1.7;max-width:340px}
     .bv-foot-brand .tag{color:rgba(255,255,255,0.68);font-size:var(--fs-sm)}
     .bv-foot-brand .sub{color:rgba(255,255,255,0.42)}
@@ -815,21 +854,18 @@ a,button{touch-action:manipulation}
     .bv-foot-tel{display:inline-flex;align-items:center;gap:7px;font-size:var(--fs-lg);font-weight:700;color:#fff;letter-spacing:.02em}
     .bv-foot-tel svg{flex:none;color:var(--primary)}
     .bv-foot-note{font-size:var(--fs-xs);line-height:1.7;color:rgba(255,255,255,0.42);margin:9px 0 0}
+    .bv-foot-qr{text-align:center}
+    .bv-foot-qr-card{display:inline-block;background:#fff;border-radius:12px;padding:8px;line-height:0}
+    .bv-foot-qr-card img{width:104px;height:104px;display:block;border-radius:4px}
+    .bv-foot-qr-cap{margin:10px 0 0;font-size:var(--fs-xs);color:rgba(255,255,255,0.6);line-height:1.5}
     .bv-foot-bar{border-top:1px solid var(--border-navy);max-width:1200px;margin:28px auto 0;padding-top:16px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.4);font-family:'JetBrains Mono','Inter',monospace}
-    @media(max-width:860px){.bv-foot-grid{grid-template-columns:1fr 1fr;gap:30px 28px}}
-    @media(max-width:520px){.bv-foot-grid{grid-template-columns:1fr;gap:26px}}
+    @media(max-width:860px){.bv-foot-grid{grid-template-columns:1fr 1fr;gap:30px 28px}.bv-foot-brand{grid-column:1/-1}}
+    @media(max-width:520px){.bv-foot-grid{grid-template-columns:1fr;gap:26px}.bv-foot-brand{grid-column:auto}}
   </style>
   <div class="bv-foot-grid">
     <div class="bv-foot-brand">
       <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-        <svg class="logo-svg" viewBox="0 0 200 40" role="img" aria-label="群蜂云枢 BeeVast">
-          <g class="mark" transform="translate(2,2)">
-            <path d="M18 2 L32 10 L32 26 L18 34 L4 26 L4 10 Z" fill="url(#logoGrad)"/>
-            <path d="M18 11 L24 14.5 L24 21.5 L18 25 L12 21.5 L12 14.5 Z" fill="#0E0C08"/>
-            <circle cx="18" cy="18" r="3" fill="url(#logoGrad)"/>
-          </g>
-          <text x="46" y="27" font-size="22" font-weight="800" fill="#FFFFFF">BeeVast</text>
-        </svg>
+        <img class="logo-foot" src="assets/logo-foot.jpg" alt="群蜂云枢 BeeVast">
       </a>
       <p class="tag">让每个企业都有自己的 AI 团队</p>
       <p class="sub">数智助手 · 企业知识大脑 · 场景智能体解决方案</p>
@@ -841,6 +877,10 @@ a,button{touch-action:manipulation}
         189-6801-8043
       </a>
       <p class="bv-foot-note">工作日 9:00–18:00 · 咨询产品与合作</p>
+    </div>
+    <div class="bv-foot-qr">
+      <div class="bv-foot-qr-card"><img src="assets/qr-consult.jpg" alt="一对一咨询二维码"></div>
+      <p class="bv-foot-qr-cap">一对一咨询 · 扫码加专属顾问</p>
     </div>
   </div>
   <div class="bv-foot-bar">
