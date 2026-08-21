@@ -152,6 +152,17 @@ section[id]{scroll-margin-top:84px}
 .vid-sound:hover{background:rgba(20,19,15,0.82)}
 .vid-sound svg{width:14px;height:14px}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.5);margin-top:16px;letter-spacing:0.3px}
+.hero-sub{font-size:var(--fs-md);color:rgba(255,255,255,0.78);line-height:1.75;margin-bottom:28px;max-width:520px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--grad-cyber);color:#1C1A17;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s}
+.hero-actions .ha-primary:hover{color:#1C1A17;transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
+.hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
+.hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.10);border-radius:var(--radius);overflow:hidden;max-width:1200px;margin:44px auto 0;position:relative;z-index:1}
+.hstat{background:rgba(20,28,46,0.72);padding:22px 16px;text-align:center;backdrop-filter:blur(8px)}
+.hstat .v{font-family:'Inter',sans-serif;font-size:var(--fs-stat);font-weight:800;letter-spacing:-1px;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums}
+.hstat .k{display:block;font-size:var(--fs-xs);color:rgba(255,255,255,0.62);margin-top:6px;letter-spacing:0.4px}
+@media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
 
 /* ===== SECTIONS BASE ===== */
 section{padding:56px var(--pad-x)}
@@ -300,7 +311,8 @@ a,button{touch-action:manipulation}
 /* ===== reveal animation (stagger) ===== */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
 .reveal.in{opacity:1;transform:translateY(0)}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4{transition-delay:0s}}
 
 /* ===== sticky mobile CTA ===== */
 .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:90;display:none;padding:10px var(--pad-x);background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-top:1px solid var(--border-glow);box-shadow:0 -8px 24px rgba(0,0,0,0.06)}
@@ -350,6 +362,11 @@ a,button{touch-action:manipulation}
         为企业交付可落地业务的 AI 智能体
       </div>
       <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
+      <p class="hero-sub reveal in">岗位数智助手 · 企业知识大脑 · 场景智能体 —— 跑在企业自己的服务器上，首个场景 5-8 天上线。</p>
+      <div class="hero-actions reveal in">
+        <a class="ha-primary" href="#process">免费试用 30 天</a>
+        <a class="ha-ghost" href="#cases">看真实案例</a>
+      </div>
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
@@ -369,7 +386,13 @@ a,button{touch-action:manipulation}
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>数据不出企业</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/></svg>全链路审计可追溯</span>
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>多模型自由切换</span>
-    <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a9 9 0 1 1-9-9"/><path d="M21 4v7h-7"/></svg>全渠道 企微 / 钉钉 / 飞书 支持</span>
+    <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a9 9 0 1 1-9-9"/><path d="M21 4v7h-7"/></svg>全渠道 企微 / 钉钉 / 飞书 / 微信 支持</span>
+  </div>
+  <div class="hero-stats reveal in">
+    <div class="hstat"><span class="v" data-count="12" data-suffix="+">12+</span><span class="k">岗位数字助理开箱即用</span></div>
+    <div class="hstat"><span class="v" data-count="100" data-suffix="+">100+</span><span class="k">官方技能持续扩充</span></div>
+    <div class="hstat"><span class="v" data-count="4">4</span><span class="k">IM 渠道接入</span></div>
+    <div class="hstat"><span class="v" data-count="70" data-suffix="+">70+</span><span class="k">交付版本持续迭代</span></div>
   </div>
 </section>
 
@@ -381,7 +404,7 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">从员工提效，到知识沉淀，再到业务协同增长。</p>
     </div>
     <div class="solutions-grid">
-      <div class="solution-card reveal">
+      <div class="solution-card reveal d1">
         <div class="sol-num">01 / 岗位</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
@@ -396,7 +419,7 @@ a,button{touch-action:manipulation}
         </ul>
         <p class="sol-value">减少重复性工作，让员工聚焦客户服务、专业判断与价值创造。</p>
       </div>
-      <div class="solution-card reveal">
+      <div class="solution-card reveal d2">
         <div class="sol-num">02 / 知识</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
@@ -411,7 +434,7 @@ a,button{touch-action:manipulation}
         </ul>
         <p class="sol-value">从「人知道」变成「组织知道」，让经验统一沉淀，持续传承与复用。</p>
       </div>
-      <div class="solution-card reveal">
+      <div class="solution-card reveal d3">
         <div class="sol-num">03 / 场景</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg></div>
@@ -685,6 +708,38 @@ a,button{touch-action:manipulation}
       </div>
       <p class="case-foot">换算：1.5 人 × 24 工作日/月 = 36 人天/月。已获客户授权引用。</p>
     </div>
+
+    <div class="case-study reveal">
+      <div class="case-study-head">
+        <div class="case-tags"><span class="case-tag">跨境物流</span><span class="case-tag">全岗位矩阵</span><span class="case-tag">私有化</span></div>
+        <h3>某国际物流企业 · 12 个岗位数字助理全员在跑</h3>
+        <p><strong>痛点：</strong>关务、财务、仓储、客服等岗位系统割裂，业务知识散落在老员工个人电脑与聊天记录里，新人上手慢、交接成本高。</p>
+      </div>
+      <div class="case-study-body">
+        <div class="case-col before">
+          <h4>Before</h4>
+          <ul>
+            <li>岗位知识散落，交接靠口口相传</li>
+            <li>跨系统查数据反复切换、人工搬运</li>
+            <li>新员工上手周期长</li>
+          </ul>
+        </div>
+        <div class="case-col after">
+          <h4>After</h4>
+          <ul>
+            <li>关务 / 财务 / 仓储 / 客服 / HR 等 12 个岗位数字助理日常在跑</li>
+            <li>企业工作台 + 企微双入口，知识统一沉淀可追溯</li>
+            <li>整套部署在客户自有设备，一键安装、持续升级</li>
+          </ul>
+        </div>
+        <div class="case-col roi">
+          <h4>部署规模</h4>
+          <div class="roi-big">12 个</div>
+          <div class="roi-label">岗位数字助理<br>数据不出企业</div>
+        </div>
+      </div>
+      <p class="case-foot">口径：数字助理数量为客户环境实际注册在跑的岗位数；整套平台私有化部署在客户自有设备，版本随出厂通道持续升级。</p>
+    </div>
   </div>
 </section>
 
@@ -697,22 +752,22 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">安全 × 可控 × 复用 × 灵活 · 持续进化的工程沉淀。</p>
     </div>
     <div class="adv-grid">
-      <div class="adv-card reveal">
+      <div class="adv-card reveal d1">
         <div class="adv-head"><span class="adv-ico" style="color:#5a7fd6;background:linear-gradient(150deg,#5a7fd630,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/><circle cx="12" cy="15.2" r="1.3"/></svg></span><span class="adv-lbl" style="color:#5a7fd6">安全</span></div>
         <h3>私有化部署</h3>
         <p>Agent + 知识库整套部署在企业本地或专属云，不依赖外部 SaaS，断网可用。</p>
       </div>
-      <div class="adv-card reveal">
+      <div class="adv-card reveal d2">
         <div class="adv-head"><span class="adv-ico" style="color:#4f9d8a;background:linear-gradient(150deg,#4f9d8a30,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="6" rx="1.6"/><rect x="3.5" y="14" width="17" height="6" rx="1.6"/><path d="M7 7h.01M7 17h.01"/></svg></span><span class="adv-lbl" style="color:#4f9d8a">可控</span></div>
         <h3>数据不上云</h3>
         <p>业务数据物理不出企业网络，敏感字段先脱敏再传模型，零数据外流。</p>
       </div>
-      <div class="adv-card reveal">
+      <div class="adv-card reveal d3">
         <div class="adv-head"><span class="adv-ico" style="color:#7c8db5;background:linear-gradient(150deg,#7c8db530,#7c8db50d);border-color:#7c8db540"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></span><span class="adv-lbl" style="color:#7c8db5">复用</span></div>
         <h3>角色蒸馏复用</h3>
         <p>把岗位经验蒸馏成可复制数智助手，跨部门、跨企业技能库反复用。</p>
       </div>
-      <div class="adv-card reveal">
+      <div class="adv-card reveal d4">
         <div class="adv-head"><span class="adv-ico" style="color:#e4bf7a;background:linear-gradient(150deg,#e4bf7a30,#e4bf7a0d);border-color:#e4bf7a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1.5 14h5M9.5 8h5M17.5 16h5"/></svg></span><span class="adv-lbl" style="color:#e4bf7a">灵活</span></div>
         <h3>模型自由度</h3>
         <p>底层多模型架构，Claude / GPT / 国产 / 开源平滑切换，不锁死单家厂商。</p>
@@ -724,6 +779,13 @@ a,button{touch-action:manipulation}
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>行为审计</span>
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>全链路追踪</span>
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>人工审批</span>
+    </div>
+    <div class="compliance-row reveal" style="margin-top:14px">
+      <span class="label">工程与交付</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>出包前沙箱真装冒烟</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="7" rx="2"/><rect x="2" y="13" width="20" height="7" rx="2"/><path d="M6 7.5h.01M6 16.5h.01"/></svg>arm64 / x64 双架构</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>版本迭代清单可追溯</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>升级不断服</span>
     </div>
   </div>
 </section>
@@ -934,6 +996,27 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+// hero stat counters
+const counters = document.querySelectorAll('.hstat .v[data-count]');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (counters.length && !reduceMotion && 'IntersectionObserver' in window) {
+  const cio = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      cio.unobserve(e.target);
+      const el = e.target, target = +el.dataset.count, suf = el.dataset.suffix || '';
+      const t0 = performance.now(), dur = 900;
+      const step = (t) => {
+        const p = Math.min(1, (t - t0) / dur);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suf;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(c => cio.observe(c));
+}
 
 // mobile nav toggle
 const navToggle = document.querySelector('.nav-toggle');
