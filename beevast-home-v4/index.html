@@ -99,14 +99,15 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：SVG mark（六边形蜂巢徽标）+ 加重加大字标「群蜂云枢」+ 金色 BeeVast（2026-08-21 admin5 钦定替换图片字标）。
+   nav：SVG mark（黑括号 + 双金六边形蜂巢，admin5 0821 参考稿）+ 字标竖排「群蜂云枢」上 /「BEEVAST」下，加重加厚。
    footer：图标 mark assets/logo-foot.jpg（白底圆角 chip，48px）。 */
-.nav-brand{display:flex;align-items:center;gap:11px}
+.nav-brand{display:flex;align-items:center;gap:12px}
 .brand-mark{display:block;transition:transform .35s}
-a.nav-brand:hover .brand-mark{transform:scale(1.06) rotate(-3deg)}
-.brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:25px;font-weight:900;letter-spacing:1.5px;color:var(--text);line-height:1;text-shadow:0 1px 0 rgba(255,255,255,0.6)}
-.brand-en{font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;background:var(--grad-cyber);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:translateY(1px)}
-@media(max-width:520px){.brand-word{font-size:21px}.brand-en{display:none}}
+a.nav-brand:hover .brand-mark{transform:scale(1.06)}
+.brand-text{display:flex;flex-direction:column;gap:4px;line-height:1}
+.brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:27px;font-weight:900;letter-spacing:3px;color:var(--text);line-height:1}
+.brand-en{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:5.5px;text-transform:uppercase;color:var(--text-2);line-height:1;padding-left:1px}
+@media(max-width:520px){.brand-word{font-size:22px;letter-spacing:2px}.brand-en{font-size:10px;letter-spacing:4px}}
 
 /* ===== NAV ===== */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 var(--pad-x);height:68px;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
@@ -340,13 +341,16 @@ a,button{touch-action:manipulation}
 <!-- NAV -->
 <nav id="nav">
   <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-    <svg class="brand-mark" viewBox="0 0 36 36" width="34" height="34" aria-hidden="true">
-      <path d="M18 2 L32 10 L32 26 L18 34 L4 26 L4 10 Z" fill="url(#logoGrad)"/>
-      <path d="M18 11 L24 14.5 L24 21.5 L18 25 L12 21.5 L12 14.5 Z" fill="#0B1220"/>
-      <circle cx="18" cy="18" r="3" fill="#EAA230"/>
+    <svg class="brand-mark" viewBox="0 0 40 40" width="38" height="38" aria-hidden="true">
+      <path d="M12 4 L3.5 10.5 L3.5 29.5 L12 36 L12 29.5 L7.5 26.5 L7.5 13.5 L12 10.5 Z" fill="#0B1220"/>
+      <path d="M28 4 L36.5 10.5 L36.5 29.5 L28 36 L28 29.5 L32.5 26.5 L32.5 13.5 L28 10.5 Z" fill="#0B1220"/>
+      <path d="M20 5.5 L27 9.5 L27 17.5 L20 21.5 L13 17.5 L13 9.5 Z" fill="url(#logoGrad)"/>
+      <path d="M20 18.5 L27 22.5 L27 30.5 L20 34.5 L13 30.5 L13 22.5 Z" fill="url(#logoGrad)"/>
     </svg>
-    <span class="brand-word">群蜂云枢</span>
-    <span class="brand-en">BeeVast</span>
+    <span class="brand-text">
+      <span class="brand-word">群蜂云枢</span>
+      <span class="brand-en">BeeVast</span>
+    </span>
   </a>
   <div class="nav-links">
     <a href="#products">核心业务</a>
