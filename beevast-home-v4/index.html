@@ -100,10 +100,10 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：图标 assets/logo-mark2.png（admin5 0822 上传图直接裁剪：粗金六边形框包徽标，白底反混透明）+ 字标「群蜂云枢」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 #ffb700）。
+   nav：图标 assets/logo-mark3.png?v=20260822a（admin5 0822 上传图直接裁剪：粗金六边形框包徽标，白底反混透明；259×375 竖长六边形）+ 字标「群蜂云枢」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 #ffb700）。aspect-ratio 锁定防缓存旧 CSS 拉变形。
    favicon：assets/logo-fav.png。footer：图标 mark assets/logo-foot.jpg（白底圆角 chip）。 */
-.nav-brand{display:flex;align-items:center;gap:13px}
-.brand-mark{display:block;width:auto;height:46px;transition:transform .35s}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.brand-mark{display:block;height:48px;width:auto;aspect-ratio:259/375;flex:none;transition:transform .35s}
 a.nav-brand:hover .brand-mark{transform:scale(1.06)}
 .brand-text{display:inline-flex;flex-direction:column;gap:6px;line-height:1}
 .brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:25px;font-weight:900;letter-spacing:2px;color:var(--text);line-height:1}
@@ -329,7 +329,7 @@ a,button{touch-action:manipulation}
 <!-- NAV -->
 <nav id="nav">
   <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-    <img class="brand-mark" src="assets/logo-mark2.png" alt="群蜂云枢徽标" width="32" height="46" decoding="async">
+    <img class="brand-mark" src="assets/logo-mark3.png?v=20260822a" alt="群蜂云枢徽标" width="32" height="47" decoding="async">
     <span class="brand-text">
       <span class="brand-word">群蜂云枢</span>
       <span class="brand-sub" aria-label="BeeVast"><i>B</i><i>E</i><i>E</i><i class="v">V</i><i>A</i><i>S</i><i>T</i></span>
