@@ -101,14 +101,14 @@ section,nav,footer{position:relative;z-index:1}
 /* ===== LOGO 规范 =====
    nav：图标 assets/logo-mark.png（admin5 0821 参考稿裁剪，黑括号+双金六边形，白底反混透明）+ 字标竖排「群蜂云枢」上 /「BEEVAST」下，加重加厚。
    favicon：assets/logo-fav.png（同 mark 64px）。footer：图标 mark assets/logo-foot.jpg（白底圆角 chip，黑括号深底不可见故保留白底 chip）。 */
-.nav-brand{display:flex;align-items:center;gap:12px}
-.brand-mark{display:block;width:auto;height:40px;transition:transform .35s}
+.nav-brand{display:flex;align-items:center;gap:13px}
+.brand-mark{display:block;width:auto;height:44px;transition:transform .35s}
 a.nav-brand:hover .brand-mark{transform:scale(1.06)}
-@media(max-width:520px){.brand-mark{height:34px}}
-.brand-text{display:flex;flex-direction:column;gap:4px;line-height:1}
-.brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:27px;font-weight:900;letter-spacing:3px;color:var(--text);line-height:1}
-.brand-en{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:5.5px;text-transform:uppercase;color:var(--text-2);line-height:1;padding-left:1px}
-@media(max-width:520px){.brand-word{font-size:22px;letter-spacing:2px}.brand-en{font-size:10px;letter-spacing:4px}}
+.brand-text{display:inline-flex;flex-direction:column;gap:6px;line-height:1}
+.brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:25px;font-weight:900;letter-spacing:2px;color:var(--text);line-height:1}
+.brand-en{display:flex;justify-content:space-between;align-self:stretch;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-2);line-height:1}
+.brand-en i{font-style:normal}
+@media(max-width:520px){.brand-mark{height:36px}.brand-word{font-size:21px;letter-spacing:1.5px}.brand-text{gap:5px}}
 
 /* ===== NAV ===== */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 var(--pad-x);height:68px;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
@@ -332,10 +332,10 @@ a,button{touch-action:manipulation}
 <!-- NAV -->
 <nav id="nav">
   <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-    <img class="brand-mark" src="assets/logo-mark.png" alt="群蜂云枢徽标" width="52" height="40" decoding="async">
+    <img class="brand-mark" src="assets/logo-mark.png" alt="群蜂云枢徽标" width="60" height="44" decoding="async">
     <span class="brand-text">
       <span class="brand-word">群蜂云枢</span>
-      <span class="brand-en">BeeVast</span>
+      <span class="brand-en" aria-label="BeeVast"><i>B</i><i>E</i><i>E</i><i>V</i><i>A</i><i>S</i><i>T</i></span>
     </span>
   </a>
   <div class="nav-links">
