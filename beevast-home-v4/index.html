@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="私有化部署的 AI 数字员工，数据不出企业，30 天免费 POC。">
 <meta name="twitter:image" content="https://beevast.com/assets/promo-poster.jpg">
 <link rel="canonical" href="https://beevast.com/">
+<link rel="preload" as="image" href="assets/hero-poster.jpg" fetchpriority="high">
 <link rel="icon" type="image/png" href="assets/logo-fav.png">
 <link rel="preconnect" href="https://fonts.font.im" crossorigin>
 <link href="https://fonts.font.im/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
@@ -149,13 +150,8 @@ section[id]{scroll-margin-top:84px}
 .hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-display);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:26px}
 .hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero-video{position:relative;z-index:1}
-.hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:#000;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
-.hero-video-frame::before{content:'';position:absolute;top:0;left:0;right:0;height:34px;background:var(--navy-2);border-bottom:1px solid rgba(255,255,255,0.08);z-index:2}
-.hero-video-frame::after{content:'● ● ●';position:absolute;top:9px;left:16px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
-.hero-video-frame video{display:block;width:100%;height:auto;margin-top:34px;aspect-ratio:16/9;object-fit:cover;background:#000}
-.vid-sound{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:rgba(20,19,15,0.62);color:#fff;font-size:var(--fs-xs);font-weight:600;border:1px solid rgba(255,255,255,0.16);backdrop-filter:blur(8px);transition:background .2s}
-.vid-sound:hover{background:rgba(20,19,15,0.82)}
-.vid-sound svg{width:14px;height:14px}
+.hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:#0B1220;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
+.hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.5);margin-top:16px;letter-spacing:0.3px}
 .hero-sub{font-size:var(--fs-md);color:rgba(255,255,255,0.78);line-height:1.75;margin-bottom:28px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -369,15 +365,9 @@ a,button{touch-action:manipulation}
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
-        <video autoplay muted loop playsinline preload="auto" poster="assets/promo-poster.jpg">
-          <source src="assets/promo.mp4" type="video/mp4">
-        </video>
-        <button class="vid-sound" type="button" aria-label="切换声音">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          <span class="lbl">点击开声音</span>
-        </button>
+        <img src="assets/hero-poster.jpg" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
       </div>
-      <div class="hero-video-cap">1 分钟了解 · AI 智能体的业务实景</div>
+      <div class="hero-video-cap">企业 AI 工作台 · 管理控制台实景</div>
     </div>
   </div>
   <div class="hero-trust reveal in">
@@ -973,17 +963,7 @@ window.addEventListener('scroll', () => {
   else nav.classList.remove('scrolled');
 }, { passive: true });
 
-// hero video sound toggle
-const heroVid = document.querySelector('.hero-video-frame video');
-const soundBtn = document.querySelector('.vid-sound');
-if (heroVid && soundBtn) {
-  const lbl = soundBtn.querySelector('.lbl');
-  soundBtn.addEventListener('click', () => {
-    heroVid.muted = !heroVid.muted;
-    if (heroVid.muted) { soundBtn.classList.remove('on'); lbl.textContent = '点击开声音'; }
-    else { soundBtn.classList.add('on'); lbl.textContent = '声音已开'; heroVid.play().catch(()=>{}); }
-  });
-}
+// hero video sound toggle (removed: 视频已替换为企业画报)
 
 // reveal on scroll (stagger)
 const io = new IntersectionObserver((entries) => {
