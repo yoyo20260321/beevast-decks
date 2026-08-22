@@ -101,11 +101,16 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：assets/logo-lockup.jpg（admin5 0822 上传原图整图直用：六边形徽标 + 群蜂云枢/智能科技字标，白底 JPG 与纯白 nav 无缝融合、无透明通道最抗图片处理链路）。favicon：assets/logo-fav.png。footer：assets/logo-foot.jpg。 */
-.nav-brand{display:flex;align-items:center}
-.brand-logo{display:block;height:58px;width:57px;flex:none;transition:transform .35s}
+   nav：六边形徽标 assets/logo-lockup.jpg（admin5 0822 上传，像素验真为纯图标无字标）+ HTML 字标「群蜂智能」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 --gold-v）——admin5 0822 钦定组合。favicon：assets/logo-fav.png。footer：assets/logo-foot.jpg。 */
+.nav-brand{display:flex;align-items:center;gap:12px}
+.brand-logo{display:block;height:46px;width:45px;flex:none;transition:transform .35s}
 a.nav-brand:hover .brand-logo{transform:scale(1.05)}
-@media(max-width:520px){.brand-logo{height:48px;width:47px}}
+.brand-text{display:inline-flex;flex-direction:column;gap:5px;line-height:1}
+.brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:24px;font-weight:900;letter-spacing:2px;color:var(--text);line-height:1}
+.brand-sub{display:flex;justify-content:space-between;align-self:stretch;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--text-2);line-height:1}
+.brand-sub i{font-style:normal}
+.brand-sub i.v{color:var(--gold-v)}
+@media(max-width:520px){.brand-logo{height:38px;width:37px}.brand-word{font-size:20px;letter-spacing:1.5px}.brand-text{gap:4px}}
 
 /* ===== NAV ===== */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 var(--pad-x);height:68px;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
@@ -318,8 +323,13 @@ a,button{touch-action:manipulation}
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-    <img class="brand-logo" src="assets/logo-lockup.jpg?v=20260822c" alt="群蜂云枢" width="57" height="58" decoding="async">
+  <a href="#top" class="nav-brand" aria-label="群蜂智能 BeeVast 首页">
+    <img class="brand-logo" src="assets/logo-lockup.jpg?v=20260822d" alt="群蜂智能徽标" width="45" height="46" decoding="async">
+    <span class="brand-text">
+      <span class="brand-word">群蜂智能</span>
+      <span class="brand-sub" aria-label="BeeVast"><i>B</i><i>E</i><i>E</i><i class="v">V</i><i>A</i><i>S</i><i>T</i></span>
+    </span>
+  </a>
   <div class="nav-links">
     <a href="#products">核心业务</a>
     <a href="#scenarios">场景应用</a>
