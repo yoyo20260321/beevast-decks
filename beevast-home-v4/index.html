@@ -18,10 +18,13 @@
 <meta name="twitter:description" content="私有化部署的 AI 数字员工，数据不出企业，30 天免费 POC。">
 <meta name="twitter:image" content="https://beevast.com/assets/hero-poster.jpg">
 <link rel="canonical" href="https://beevast.com/">
-<link rel="preload" as="image" href="assets/hero-poster.jpg" fetchpriority="high" media="(min-width:861px)">
+<link rel="preload" as="image" href="assets/hero-poster.jpg?v=20260822e" fetchpriority="high" media="(min-width:861px)">
 <link rel="icon" type="image/png" href="assets/logo-fav.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#0B1220">
 <link rel="preconnect" href="https://fonts.font.im" crossorigin>
-<link href="https://fonts.font.im/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.font.im/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.font.im/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,7 +32,7 @@
   "name": "群蜂云枢（杭州）智能科技有限公司",
   "alternateName": "BeeVast",
   "url": "https://beevast.com/",
-  "logo": "https://beevast.com/assets/logo.jpg",
+  "logo": "https://beevast.com/assets/logo-lockup.jpg",
   "description": "为企业交付可落地业务的 AI 智能体 - 岗位数智助手、企业知识大脑、场景智能体。私有化部署，数据不出企业。",
   "foundingDate": "2026",
   "contactPoint": {
@@ -99,6 +102,8 @@ img{max-width:100%;display:block}
 button{cursor:pointer;font-family:inherit}
 section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
+::selection{background:rgba(234,162,48,.28);color:var(--text)}
+footer.bv-foot::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAA230 18%,#ffb700 50%,#EAA230 82%,transparent)}
 
 /* ===== LOGO 规范 =====
    nav：六边形徽标 assets/logo-lockup.jpg（admin5 0822 上传，像素验真为纯图标无字标）+ HTML 字标「群蜂智能」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 --gold-v）——admin5 0822 钦定组合。favicon：assets/logo-fav.png。footer：assets/logo-foot.jpg。 */
@@ -360,7 +365,7 @@ a,button{touch-action:manipulation}
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
-        <img src="assets/hero-poster.jpg" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
+        <img src="assets/hero-poster.jpg?v=20260822e" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
       </div>
       <div class="hero-video-cap">企业 AI 工作台 · 管理控制台实景</div>
     </div>
@@ -574,7 +579,7 @@ a,button{touch-action:manipulation}
             <h3>一句话发起，自动执行</h3>
             <p>自然语言驱动：查关税 / 调数据 / 出报价、写文档、查轨迹——数字助理直接调工具出结果，附来源可核对，不用记系统怎么点。</p>
           </div>
-          <div class="cap-shot"><img src="shots/cap-chat.png" alt="数字助理对话" loading="lazy"></div>
+          <div class="cap-shot"><img src="shots/cap-chat.webp" alt="数字助理对话" width="1440" height="802" loading="lazy" decoding="async"></div>
         </div>
         <div class="cap-panel" data-i="1">
           <div class="cap-text">
@@ -582,7 +587,7 @@ a,button{touch-action:manipulation}
             <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
             <p>一个平台多个岗位数字助理，各司其职、共享记忆，像一支真的团队。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-team.png" alt="多岗位数字助理名册"></div>
+          <div class="cap-shot"><img data-src="shots/cap-team.webp" alt="多岗位数字助理名册" width="1440" height="900" decoding="async"></div>
         </div>
         <div class="cap-panel" data-i="2">
           <div class="cap-text">
@@ -590,7 +595,7 @@ a,button{touch-action:manipulation}
             <h3>SOP / 合同 / 手册，统一问答</h3>
             <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-kb.png" alt="企业知识库"></div>
+          <div class="cap-shot"><img data-src="shots/cap-kb.webp" alt="企业知识库" width="1440" height="900" decoding="async"></div>
         </div>
         <div class="cap-panel" data-i="3">
           <div class="cap-text">
@@ -598,7 +603,7 @@ a,button{touch-action:manipulation}
             <h3>按计划执行，无需值守</h3>
             <p>每日行情、定期对账、月度报表--定时数字助理自动执行，结果推送到企微 / 飞书。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-auto.png" alt="自动化定时任务"></div>
+          <div class="cap-shot"><img data-src="shots/cap-auto.webp" alt="自动化定时任务" width="1440" height="900" decoding="async"></div>
         </div>
         <div class="cap-panel" data-i="4">
           <div class="cap-text">
@@ -606,7 +611,7 @@ a,button{touch-action:manipulation}
             <h3>用量、链路、审计，全程可视</h3>
             <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-console.png" alt="管理控制台数据大盘"></div>
+          <div class="cap-shot"><img data-src="shots/cap-console.webp" alt="管理控制台数据大盘" width="1440" height="900" decoding="async"></div>
         </div>
         <div class="cap-panel" data-i="5">
           <div class="cap-text">
@@ -614,7 +619,7 @@ a,button{touch-action:manipulation}
             <h3>敏感操作，人工确认</h3>
             <p>退款、改价、对外发文等动作，数字助理先提交审批，人工批准后才执行--风险可控。</p>
           </div>
-          <div class="cap-shot"><img data-src="shots/cap-approval.png" alt="审批把关 人在环"></div>
+          <div class="cap-shot"><img data-src="shots/cap-approval.webp" alt="审批把关 人在环" width="1440" height="900" decoding="async"></div>
         </div>
       </div>
     </div>
@@ -908,7 +913,7 @@ a,button{touch-action:manipulation}
     <div class="bv-foot-grid">
       <div class="bv-foot-brand">
         <a href="#top" class="logo-row" aria-label="群蜂云枢 BeeVast 首页">
-          <img class="logo-foot" src="assets/logo-foot.jpg" alt="群蜂云枢 BeeVast">
+          <img class="logo-foot" src="assets/logo-foot.jpg" alt="群蜂云枢 BeeVast" width="108" height="108" loading="lazy" decoding="async">
           <span class="brand-name">群蜂云枢</span>
         </a>
         <p class="tag">让每个企业都有自己的 AI 团队</p>
@@ -923,7 +928,7 @@ a,button{touch-action:manipulation}
         <p class="bv-foot-note">工作日 9:00–18:00 · 咨询产品与合作</p>
       </div>
       <div class="bv-foot-qr">
-        <div class="bv-foot-qr-card"><img src="assets/qr-consult.jpg" alt="一对一咨询二维码"></div>
+        <div class="bv-foot-qr-card"><img src="assets/qr-consult.jpg" alt="一对一咨询二维码" width="132" height="134" loading="lazy" decoding="async"></div>
         <p class="bv-foot-qr-cap">一对一咨询 · 扫码加专属顾问</p>
       </div>
     </div>
