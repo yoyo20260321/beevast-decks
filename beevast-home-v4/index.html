@@ -100,16 +100,17 @@ section,nav,footer{position:relative;z-index:1}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 
 /* ===== LOGO 规范 =====
-   nav：六边形金框包徽标 SVG（外框+黑括号+双金六边形，admin5 0822 第二版参考）+ 字标「群蜂云枢」上 /「智能科技」下（四字两端对齐同宽）。
-   favicon：assets/logo-fav.png（同款方形 64px）。footer：图标 mark assets/logo-foot.jpg（白底圆角 chip，黑括号深底不可见故保留白底 chip）。 */
+   nav：图标 assets/logo-mark2.png（admin5 0822 上传图直接裁剪：粗金六边形框包徽标，白底反混透明）+ 字标「群蜂云枢」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 #ffb700）。
+   favicon：assets/logo-fav.png。footer：图标 mark assets/logo-foot.jpg（白底圆角 chip）。 */
 .nav-brand{display:flex;align-items:center;gap:13px}
-.brand-mark{display:block;width:44px;height:44px;transition:transform .35s}
+.brand-mark{display:block;width:auto;height:46px;transition:transform .35s}
 a.nav-brand:hover .brand-mark{transform:scale(1.06)}
-.brand-text{display:inline-flex;flex-direction:column;gap:5px;line-height:1}
+.brand-text{display:inline-flex;flex-direction:column;gap:6px;line-height:1}
 .brand-word{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:25px;font-weight:900;letter-spacing:2px;color:var(--text);line-height:1}
-.brand-sub{display:flex;justify-content:space-between;align-self:stretch;font-family:'Noto Sans SC',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;color:var(--text-2);line-height:1}
+.brand-sub{display:flex;justify-content:space-between;align-self:stretch;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--text-2);line-height:1}
 .brand-sub i{font-style:normal}
-@media(max-width:520px){.brand-mark{width:36px;height:36px}.brand-word{font-size:21px;letter-spacing:1.5px}.brand-text{gap:4px}}
+.brand-sub i.v{color:#ffb700}
+@media(max-width:520px){.brand-mark{height:38px}.brand-word{font-size:21px;letter-spacing:1.5px}.brand-text{gap:5px}}
 
 /* ===== NAV ===== */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 var(--pad-x);height:68px;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
@@ -328,10 +329,10 @@ a,button{touch-action:manipulation}
 <!-- NAV -->
 <nav id="nav">
   <a href="#top" class="nav-brand" aria-label="群蜂云枢 BeeVast 首页">
-    <svg class="brand-mark" width="44" height="44" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2B85C"/><stop offset="1" stop-color="#EAA230"/></linearGradient></defs><path d="M200 12 L338 92 L338 248 L200 328 L62 248 L62 92 Z" fill="none" stroke="url(#brandGrad)" stroke-width="30" stroke-linejoin="round"/><g transform="translate(100,126) scale(0.54)"><path fill="#0B1220" fill-rule="evenodd" d="M369.0 42.0L362.0 46.0L369.0 59.0L369.0 43.0ZM198.0 47.0L197.0 101.0L171.0 117.0L197.0 138.0L197.0 227.0L264.0 184.0L264.0 91.0L198.0 48.0ZM70.0 48.0L4.0 91.0L4.0 184.0L69.0 227.0L71.0 138.0L97.0 118.0L71.0 100.0L71.0 48.0ZM312.0 48.0L310.0 56.0L321.0 57.0L321.0 68.0L307.0 68.0L307.0 76.0L319.0 76.0L320.0 84.0L319.0 87.0L309.0 88.0L309.0 96.0L316.0 96.0L316.0 102.0L304.0 123.0L310.0 129.0L317.0 122.0L318.0 141.0L353.0 141.0L353.0 106.0L324.0 106.0L324.0 102.0L326.0 96.0L352.0 96.0L352.0 76.0L357.0 76.0L357.0 71.0L369.0 72.0L369.0 62.0L359.0 63.0L359.0 68.0L352.0 68.0L351.0 48.0L313.0 48.0ZM330.0 57.0L343.0 57.0L343.0 68.0L330.0 68.0L330.0 58.0ZM54.0 73.0L57.0 73.0L57.0 107.0L75.0 117.0L71.0 124.0L59.0 132.0L59.0 199.0L17.0 173.0L17.0 101.0L54.0 74.0ZM211.0 73.0L215.0 73.0L251.0 100.0L251.0 173.0L210.0 199.0L210.0 133.0L196.0 123.0L193.0 117.0L211.0 107.0L211.0 74.0ZM330.0 76.0L343.0 77.0L343.0 87.0L329.0 87.0L330.0 77.0ZM361.0 87.0L360.0 96.0L369.0 96.0L369.0 87.0L362.0 87.0ZM358.0 112.0L357.0 121.0L369.0 121.0L369.0 112.0L359.0 112.0ZM326.0 114.0L344.0 114.0L344.0 132.0L326.0 132.0L326.0 115.0Z"/><path fill="url(#brandGrad)" fill-rule="evenodd" d="M134.0 4.0L87.0 33.0L87.0 92.0L118.0 111.0L121.0 117.0L85.0 147.0L85.0 228.0L132.0 267.0L136.0 267.0L183.0 226.0L183.0 148.0L146.0 117.0L147.0 113.0L182.0 91.0L182.0 35.0L135.0 4.0ZM131.0 22.0L139.0 23.0L167.0 41.0L167.0 83.0L141.0 100.0L131.0 102.0L101.0 82.0L101.0 42.0L131.0 23.0ZM132.0 128.0L139.0 130.0L170.0 156.0L171.0 168.0L170.0 218.0L138.0 245.0L132.0 246.0L101.0 221.0L97.0 213.0L98.0 156.0L132.0 129.0Z"/></g></svg>
+    <img class="brand-mark" src="assets/logo-mark2.png" alt="群蜂云枢徽标" width="32" height="46" decoding="async">
     <span class="brand-text">
       <span class="brand-word">群蜂云枢</span>
-      <span class="brand-sub"><i>智</i><i>能</i><i>科</i><i>技</i></span>
+      <span class="brand-sub" aria-label="BeeVast"><i>B</i><i>E</i><i>E</i><i class="v">V</i><i>A</i><i>S</i><i>T</i></span>
     </span>
   </a>
   <div class="nav-links">
@@ -340,7 +341,6 @@ a,button{touch-action:manipulation}
     <a href="#capabilities">产品能力</a>
     <a href="#cases">客户案例</a>
     <a href="#why">选择我们</a>
-    <a class="nav-cta" href="#process">免费试用</a>
   </div>
   <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -769,13 +769,6 @@ a,button{touch-action:manipulation}
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>全链路追踪</span>
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>人工审批</span>
     </div>
-    <div class="compliance-row reveal" style="margin-top:14px">
-      <span class="label">工程与交付</span>
-      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>出包前沙箱真装冒烟</span>
-      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="7" rx="2"/><rect x="2" y="13" width="20" height="7" rx="2"/><path d="M6 7.5h.01M6 16.5h.01"/></svg>arm64 / x64 双架构</span>
-      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>版本迭代清单可追溯</span>
-      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>升级不断服</span>
-    </div>
   </div>
 </section>
 
@@ -801,7 +794,6 @@ a,button{touch-action:manipulation}
           <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>场景价值分析</li>
           <li><span class="pc-ck" style="background:#EEF2FF;color:#5A7FD6">✓</span>AI 实施路线规划</li>
         </ul>
-        <div class="pc-deliver">交付成果</div>
         <div class="pc-tags">
           <span class="pc-tag" style="background:#EEF2FF;color:#3B5BDB">AI 诊断报告</span>
           <span class="pc-tag" style="background:#EEF2FF;color:#3B5BDB">场景机会地图</span>
@@ -823,7 +815,6 @@ a,button{touch-action:manipulation}
           <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>数字助理搭建部署</li>
           <li><span class="pc-ck" style="background:#FEF3C7;color:#D97706">✓</span>驻场培训 + 专属顾问</li>
         </ul>
-        <div class="pc-deliver">交付成果</div>
         <div class="pc-tags">
           <span class="pc-tag" style="background:#FEF3C7;color:#B45309">岗位数智助手</span>
           <span class="pc-tag" style="background:#FEF3C7;color:#B45309">企业知识大脑</span>
@@ -844,7 +835,6 @@ a,button{touch-action:manipulation}
           <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>场景智能体矩阵建设</li>
           <li><span class="pc-ck" style="background:#ECFDF5;color:#2F9E5F">✓</span>持续价值运营</li>
         </ul>
-        <div class="pc-deliver">交付成果</div>
         <div class="pc-tags">
           <span class="pc-tag" style="background:#ECFDF5;color:#258753">企业级 AgentOS</span>
           <span class="pc-tag" style="background:#ECFDF5;color:#258753">AI 运营体系</span>
