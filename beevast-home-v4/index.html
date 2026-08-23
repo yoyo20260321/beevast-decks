@@ -142,8 +142,8 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 section[id]{scroll-margin-top:96px}
 
 /* ===== HERO (深 navy) ===== */
-.hero{background:linear-gradient(180deg,#141E36 0%,var(--navy) 74%);color:#fff;padding:66px var(--pad-x) 46px;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.26) 0%,rgba(234,162,48,0.09) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
+.hero{background:linear-gradient(180deg,#1B2A4A 0%,var(--navy) 78%);color:#fff;padding:66px var(--pad-x) 46px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.34) 0%,rgba(234,162,48,0.13) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
 @keyframes hero-glow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
 .hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
@@ -156,7 +156,7 @@ section[id]{scroll-margin-top:96px}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
 .hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220;filter:brightness(1.05);cursor:zoom-in}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
-.hero-sub{font-size:var(--fs-md);color:rgba(255,255,255,0.86);line-height:1.75;margin-bottom:28px;max-width:520px}
+.hero-sub{font-size:17px;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.7;margin-bottom:24px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
 .hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
 .hero-actions .ha-primary:hover{color:#1C1A17;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
@@ -188,7 +188,7 @@ section{padding:46px var(--pad-x)}
 .section-navy .section-tag{background:rgba(234,162,48,0.10);border-color:rgba(234,162,48,0.30)}
 
 /* ===== TRUST（资质带） ===== */
-.hero-trust{max-width:1200px;margin:48px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 32px;position:relative;z-index:1}
+.hero-trust{max-width:1200px;margin:36px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 32px;position:relative;z-index:1}
 .cert-item{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:600;color:rgba(255,255,255,0.78)}
 .cert-item svg{width:16px;height:16px;color:var(--primary)}
 
@@ -427,15 +427,10 @@ a,button{touch-action:manipulation}
   <div class="hero-grid-bg"></div>
   <div class="hero-inner">
     <div class="hero-copy">
-      <div class="hero-badge reveal in">
-        <span class="dot"></span>
-        为企业交付可落地业务的 AI 智能体
-      </div>
       <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
-      <p class="hero-sub reveal in">岗位数智助手 · 企业知识大脑 · 场景智能体 —— 跑在企业自己的服务器上，首个场景 5-8 天上线。</p>
+      <p class="hero-sub reveal in">为企业交付可落地业务的 AI 智能体</p>
       <div class="hero-actions reveal in">
         <a class="ha-primary" href="#" data-modal data-scene="试用">申请 30 天试用</a>
-        <a class="ha-ghost" href="#" data-modal data-scene="诊断">预约 30 分钟场景诊断</a>
       </div>
     </div>
     <div class="hero-video reveal in">
@@ -705,7 +700,6 @@ a,button{touch-action:manipulation}
   <div class="container">
     <div class="section-head">
       <h2 class="section-title reveal">客户场景与<span class="accent">案例</span></h2>
-      <p class="section-desc reveal">AI 在真实业务里运转 · 一屏一个客户</p>
     </div>
 
     <div class="case-rail" id="caseRail">
