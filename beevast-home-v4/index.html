@@ -153,8 +153,8 @@ section[id]{scroll-margin-top:96px}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:999px;background:rgba(234,162,48,0.10);border:1px solid rgba(234,162,48,0.35);font-size:var(--fs-xs);color:#F2B85C;font-weight:600;margin-bottom:30px;backdrop-filter:blur(10px)}
 .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(234,162,48,0.2),0 0 12px var(--primary);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:clamp(30px,4vw,46px);font-weight:900;line-height:1.16;letter-spacing:-1px;margin-bottom:22px}
-.hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;-webkit-text-stroke:1px rgba(255,255,255,.55);paint-order:stroke fill;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
+.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:clamp(30px,4.3vw,48px);font-weight:900;line-height:1.16;letter-spacing:-1.5px;margin-bottom:28px}
+.hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;-webkit-text-stroke:2px rgba(255,255,255,.7);paint-order:stroke fill;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
 .hero-video{position:relative;z-index:1;margin-top:18px}
@@ -162,7 +162,8 @@ section[id]{scroll-margin-top:96px}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
 .hero-sub{font-size:17px;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.7;margin-bottom:24px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.hero-actions .ha-primary{padding:15px 36px;border-radius:12px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
 .hero-actions .ha-primary:hover{color:#fff;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
 .hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
 .hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
@@ -462,6 +463,7 @@ a,button{touch-action:manipulation}
       <h1 class="reveal in"><span style="display:block">为企业交付可落地业务的</span><span class="accent">AI 智能体</span></h1>
       <div class="hero-actions reveal in">
         <a class="ha-primary" href="#" data-modal data-scene="咨询">免费预约 POC / 咨询</a>
+        <a class="ha-ghost" href="#cases">看客户案例</a>
       </div>
     </div>
     <div class="hero-video reveal in">
