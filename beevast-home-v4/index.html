@@ -157,6 +157,8 @@ section[id]{scroll-margin-top:96px}
 .hero h1 .accent{display:inline-block;padding:4px 18px 6px;border-radius:12px;background:linear-gradient(135deg,#F5C468 0%,#EAA230 55%,#D89422 100%);color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 6px 28px rgba(234,162,48,0.45),inset 0 1px 0 rgba(255,255,255,0.35)}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
+.hero-shot-badge{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(11,18,32,0.72);border:1px solid rgba(255,255,255,0.16);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:700;letter-spacing:.04em}
+.hero-shot-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 10px var(--primary)}
 .hero-video{position:relative;z-index:1;margin-top:18px}
 .hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220;filter:brightness(1.16) contrast(1.04) saturate(1.05);cursor:zoom-in}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
@@ -165,12 +167,13 @@ section[id]{scroll-margin-top:96px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;align-items:center}
 .hero-actions .ha-primary{padding:15px 36px;border-radius:12px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
 .hero-actions .ha-primary:hover{color:#fff;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
-.hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
+.hero-actions .ha-ghost{padding:15px 32px;border-radius:12px;background:rgba(15,23,42,0.55);border:1px solid rgba(255,255,255,0.35);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s;backdrop-filter:blur(6px)}
 .hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
 .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);overflow:hidden;max-width:1200px;margin:44px auto 0;position:relative;z-index:1;box-shadow:0 18px 50px rgba(0,0,0,0.25)}
 .hstat{background:rgba(38,52,82,0.50);padding:22px 16px;text-align:center;backdrop-filter:blur(8px)}
 .hstat .v{font-family:'Inter',sans-serif;font-size:var(--fs-stat);font-weight:800;letter-spacing:-1px;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums;filter:drop-shadow(0 0 16px rgba(234,162,48,0.22))}
 .hstat .k{display:block;font-size:var(--fs-xs);color:rgba(255,255,255,0.74);margin-top:6px;letter-spacing:0.4px}
+.hstat .k2{display:block;font-size:11px;color:rgba(255,255,255,0.48);margin-top:3px;letter-spacing:0.2px}
 @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
 
 /* ===== SECTIONS BASE ===== */
@@ -461,13 +464,15 @@ a,button{touch-action:manipulation}
   <div class="hero-inner">
     <div class="hero-copy">
       <h1 class="reveal in"><span style="display:block">为企业交付可落地业务的</span><span class="accent">AI 智能体</span></h1>
+      <p class="hero-sub reveal in">深度融合企业业务场景，快速落地、持续进化，让 AI 真正成为业务增长新引擎。</p>
       <div class="hero-actions reveal in">
         <a class="ha-primary" href="#" data-modal data-scene="咨询">免费预约 POC / 咨询</a>
-        <a class="ha-ghost" href="#cases">看客户案例</a>
+        <a class="ha-ghost" href="#cases">看看客户案例</a>
       </div>
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
+        <span class="hero-shot-badge">真实业务场景 · 客户交付案例</span>
         <img src="assets/hero-poster.jpg?v=20260823a" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
       </div>
     </div>
@@ -480,10 +485,10 @@ a,button{touch-action:manipulation}
     <span class="cert-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a9 9 0 1 1-9-9"/><path d="M21 4v7h-7"/></svg>全渠道 企微 / 钉钉 / 飞书 / 微信 支持</span>
   </div>
   <div class="hero-stats reveal in">
-    <div class="hstat"><span class="v" data-count="12" data-suffix="+">12+</span><span class="k">岗位数字助理开箱即用</span></div>
-    <div class="hstat"><span class="v" data-count="100" data-suffix="+">100+</span><span class="k">官方技能持续扩充</span></div>
-    <div class="hstat"><span class="v">3-5 月</span><span class="k">客户回本周期</span></div>
-    <div class="hstat"><span class="v">5-8 天</span><span class="k">首个场景上线</span></div>
+    <div class="hstat"><span class="v" data-count="12" data-suffix="+">12+</span><span class="k">岗位数字助理开箱即用</span><span class="k2">覆盖核心业务场景</span></div>
+    <div class="hstat"><span class="v" data-count="100" data-suffix="+">100+</span><span class="k">官方技能持续扩充</span><span class="k2">满足企业个性化需求</span></div>
+    <div class="hstat"><span class="v">3-5 月</span><span class="k">客户回本周期</span><span class="k2">快速见效 · 价值可衡量</span></div>
+    <div class="hstat"><span class="v">5-8 天</span><span class="k">首个场景上线</span><span class="k2">敏捷交付 · 快速落地</span></div>
   </div>
 </section>
 
