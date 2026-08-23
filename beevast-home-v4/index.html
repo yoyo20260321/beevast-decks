@@ -378,8 +378,8 @@ a,button{touch-action:manipulation}
 .modal-form .mf-sub{font-size:var(--fs-sm);color:var(--text-2);margin:0 0 18px;line-height:1.6}
 .mf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .modal-form label{display:block;font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:5px}
-.modal-form input,.modal-form select{width:100%;padding:11px 12px;border:1px solid var(--border-strong);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:#fff}
-.modal-form input:focus,.modal-form select:focus{outline:2px solid var(--primary);outline-offset:0;border-color:var(--primary)}
+.modal-form input,.modal-form select,.modal-form textarea{width:100%;padding:11px 12px;border:1px solid var(--border-strong);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:#fff}
+.modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{outline:2px solid var(--primary);outline-offset:0;border-color:var(--primary)}
 .mf-submit{width:100%;margin-top:6px;padding:13px;border:none;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:15px;cursor:pointer}
 .mf-submit:hover{background:var(--primary-2)}
 .mf-note{margin:10px 0 0;font-size:12px;color:var(--text-3);text-align:center}
@@ -427,10 +427,9 @@ a,button{touch-action:manipulation}
   <div class="hero-grid-bg"></div>
   <div class="hero-inner">
     <div class="hero-copy">
-      <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
-      <p class="hero-sub reveal in">为企业交付可落地业务的 AI 智能体</p>
+      <h1 class="reveal in">为企业交付<br>可落地业务的 <span class="accent">AI 智能体</span></h1>
       <div class="hero-actions reveal in">
-        <a class="ha-primary" href="#" data-modal data-scene="试用">申请 30 天试用</a>
+        <a class="ha-primary" href="#" data-modal data-scene="咨询">免费预约 POC / 咨询</a>
       </div>
     </div>
     <div class="hero-video reveal in">
@@ -1138,6 +1137,9 @@ if (capTabList) {
               </select>
             </div>
           </div>
+          <div class="mf-row solo">
+            <div><label for="mfNeed">您关注的场景与需求</label><textarea id="mfNeed" name="need" rows="3" maxlength="300" placeholder="例如：销售报价慢，想先做一个图纸拆 BOM 出报价的 POC"></textarea></div>
+          </div>
           <button class="mf-submit" type="submit">提交，等顾问联系</button>
           <p class="mf-note">提交即视为同意通过电话 / 企微与您联系，信息仅用于本次咨询。</p>
         </form>
@@ -1184,7 +1186,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 document.getElementById('leadForm').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target;
-  const msg = `【官网咨询】${f.name.value} · ${f.company.value} · ${f.phone.value} · 关注场景：${f.scene.value}`;
+  const msg = `【官网咨询】${f.name.value} · ${f.company.value} · ${f.phone.value} · 关注场景：${f.scene.value}${f.need.value ? ' · 需求：' + f.need.value : ''}`;
   const done = () => { document.getElementById('mfForm').style.display = 'none'; document.getElementById('mfOk').style.display = 'block'; };
   if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, done); else done();
 });
