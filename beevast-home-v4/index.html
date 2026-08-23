@@ -341,24 +341,27 @@ a,button{touch-action:manipulation}
 .cta-lnk{font-weight:800;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;transition:color .2s,border-color .2s;white-space:nowrap}
 .cta-lnk:hover{color:var(--primary);border-color:var(--primary)}
 .sc-grid .sc-card{position:relative}
-.sc-more-link{position:absolute;top:12px;right:14px;font-size:12.5px;font-weight:700;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;cursor:pointer;z-index:1}
+.sc-more-link{position:absolute;top:-17px;right:2px;font-size:12.5px;font-weight:700;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;cursor:pointer;z-index:2}
 .sc-more-link:hover{color:var(--primary)}
 .sc-grid .sc-card.sc-fold{display:none}
 .sc-grid.open .sc-card.sc-fold{display:flex}
-.sc-grid.sc-cap-row{grid-template-columns:repeat(6,1fr);gap:12px;margin-top:24px}
+.sc-grid.sc-cap-row{grid-template-columns:repeat(6,1fr);gap:12px}
 .sc-cap-row .sc-cap{padding:16px 14px;border-radius:12px}
 .sc-cap-row .sc-cap-head{margin-bottom:6px;gap:8px}
 .sc-cap-row h3{font-size:15px}
 .sc-cap-row .sc-ico{width:30px;height:30px;border-radius:8px}
 .sc-cap-row .sc-ico svg{width:17px;height:17px}
 .sc-cap-row p{font-size:12px;line-height:1.5}
-.case-rail .case-study{margin-bottom:0}
+.case-rail .case-study{margin-bottom:0;transition:box-shadow .3s}
+.case-rail .case-study:hover{box-shadow:0 12px 36px rgba(234,162,48,0.12)}
+.sc-card{transition:border-color .3s,box-shadow .3s}
+.sc-card:hover{border-color:var(--border-glow);box-shadow:0 10px 30px rgba(234,162,48,0.10)}
 @media(max-width:960px){.sc-grid.sc-cap-row{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.sc-grid.sc-cap-row{grid-template-columns:repeat(2,1fr)}}
 .case-rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .case-rail::-webkit-scrollbar{display:none}
-.case-rail .case-study{flex:0 0 min(760px,100%);scroll-snap-align:center}
-.case-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px}
+.case-rail .case-study{flex:0 0 100%;scroll-snap-align:center}
+.case-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
 .case-dots{display:flex;gap:8px}
 .case-dot{width:9px;height:9px;border-radius:99px;border:none;background:rgba(28,26,23,.15);cursor:pointer;padding:0;transition:width .25s,background .25s}
 .case-dot.on{width:26px;background:var(--primary)}
@@ -534,7 +537,7 @@ a,button{touch-action:manipulation}
     .sc-cap-head{display:flex;align-items:center;gap:11px;margin-bottom:8px}
     .sc-cap-head h3{font-size:18px;font-weight:800;color:#0a0a18;margin:0}
     .sc-cap p{color:rgba(10,10,24,0.72);font-size:13.5px;line-height:1.6;margin:0}
-    .sc-sub{text-align:center;max-width:760px;margin:48px auto 24px}
+    .sc-sub{text-align:center;max-width:760px;margin:30px auto 14px}
     .sc-sub-pill{display:inline-block;padding:6px 14px;background:var(--primary);color:#1C1A17;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:14px}
     .sc-sub h3{font-size:24px;font-weight:800;color:#0a0a18;line-height:1.2;margin:0}
     @media(max-width:900px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
@@ -614,6 +617,7 @@ a,button{touch-action:manipulation}
         </ul>
       </div>
     </div>
+    <div class="sc-sub reveal"><h3>从对话到调度，打通企业全流程作业</h3></div>
     <div class="sc-grid sc-cap-row">
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-11.9 7.6L3 21l1.9-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>对话</h3></div><p>多轮对话 · 上下文记忆 · 一线随问随答</p></div>
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#0f766e;background:linear-gradient(150deg,#4f9d8a26,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.2a1.8 1.8 0 0 0 0 3.6V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.2a1.8 1.8 0 0 0 0-3.6V8z"/><path d="M9 7.5v9"/></svg></span><h3>工单</h3></div><p>自动分派 · 优先级 · 售后工单闭环</p></div>
@@ -631,7 +635,6 @@ a,button{touch-action:manipulation}
     <div class="section-head">
       <h2 class="section-title reveal">BeeWork AI · 产品能力一览</h2>
       <p class="section-desc reveal">以下均为真实运行界面，覆盖对话、协作、知识、自动化等核心能力。</p>
-      <div class="cap-steps reveal"><b>① 输入需求</b><span class="arw">→</span><b>② 自动调用工具</b><span class="arw">→</span><b>③ 生成结果</b><span style="color:var(--text-3)">· 点击截图可放大</span></div>
     </div>
     <div class="cap-switcher reveal">
       <div class="cap-tabs" role="tablist" aria-label="数字助理能力">
@@ -701,8 +704,8 @@ a,button{touch-action:manipulation}
 <section id="cases" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <h2 class="section-title reveal">案例 · <span class="accent">真实落地</span></h2>
-      <p class="section-desc reveal">AI 在真实业务里运转</p>
+      <h2 class="section-title reveal">客户场景与<span class="accent">案例</span></h2>
+      <p class="section-desc reveal">AI 在真实业务里运转 · 一屏一个客户</p>
     </div>
 
     <div class="case-rail" id="caseRail">
