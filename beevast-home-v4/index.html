@@ -337,17 +337,15 @@ a,button{touch-action:manipulation}
 /* ===== nav CTA / 内联 CTA / 表单 modal / lightbox / 岗位折叠 / 能力一行 / 案例轮播 ===== */
 .nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
 .nav-cta:hover{background:var(--primary-2)}
-.cta-inline{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px;font-size:15px;color:var(--text-2);text-align:center}
+.cta-inline{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:15px;color:var(--text-2);text-align:right}
 .cta-lnk{font-weight:800;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;transition:color .2s,border-color .2s;white-space:nowrap}
 .cta-lnk:hover{color:var(--primary);border-color:var(--primary)}
-.sc-toggle{display:block;margin:22px auto 0;padding:11px 26px;border-radius:10px;border:1px solid var(--border-strong);background:#fff;color:var(--text);font-weight:700;font-size:var(--fs-sm);cursor:pointer}
-.sc-toggle:hover{border-color:var(--border-glow);color:var(--primary-2)}
+.sc-grid .sc-card{position:relative}
+.sc-more-link{position:absolute;top:12px;right:14px;font-size:12.5px;font-weight:700;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;cursor:pointer;z-index:1}
+.sc-more-link:hover{color:var(--primary)}
 .sc-grid .sc-card.sc-fold{display:none}
 .sc-grid.open .sc-card.sc-fold{display:flex}
-.t-less{display:none}
-.sc-grid.open + .sc-toggle .t-more{display:none}
-.sc-grid.open + .sc-toggle .t-less{display:inline}
-.sc-grid.sc-cap-row{grid-template-columns:repeat(6,1fr);gap:12px}
+.sc-grid.sc-cap-row{grid-template-columns:repeat(6,1fr);gap:12px;margin-top:24px}
 .sc-cap-row .sc-cap{padding:16px 14px;border-radius:12px}
 .sc-cap-row .sc-cap-head{margin-bottom:6px;gap:8px}
 .sc-cap-row h3{font-size:15px}
@@ -571,6 +569,7 @@ a,button{touch-action:manipulation}
         </ul>
       </div>
       <div class="sc-card reveal">
+        <a class="sc-more-link" href="#" role="button" aria-expanded="false">查看全部岗位助手</a>
         <div class="sc-card-head"><span class="sc-ico" style="color:#92600f;background:linear-gradient(150deg,#c89b6a26,#c89b6a0d);border-color:#c89b6a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2.5 3.5H5l2.1 10.4a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 7H6"/></svg></span><h3>采购数智助手</h3></div>
         <p class="sc-desc">自动询价、比价、订单跟踪与供应商管理，让采购聚焦供应链优化。</p>
         <div><span class="sc-stat-num">50%</span><span class="sc-stat-lbl">采购协同效率提升</span></div>
@@ -614,11 +613,6 @@ a,button{touch-action:manipulation}
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低合同风险</span></li>
         </ul>
       </div>
-    </div>
-    <button class="sc-toggle" type="button" aria-expanded="false"><span class="t-more">查看全部 6 大岗位助手</span><span class="t-less">收起岗位列表</span></button>
-    <div class="sc-sub reveal">
-      <span class="sc-sub-pill">底层能力 · 6 维度</span>
-      <h3>从对话到调度，打通企业全流程作业</h3>
     </div>
     <div class="sc-grid sc-cap-row">
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-11.9 7.6L3 21l1.9-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>对话</h3></div><p>多轮对话 · 上下文记忆 · 一线随问随答</p></div>
@@ -1198,11 +1192,14 @@ document.getElementById('leadForm').addEventListener('submit', e => {
   if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, done); else done();
 });
 
-// ===== 岗位折叠 =====
-const tog = document.querySelector('.sc-toggle');
-if (tog) tog.addEventListener('click', () => {
+// ===== 岗位折叠（入口在采购卡右上角） =====
+const tog = document.querySelector('.sc-more-link');
+if (tog) tog.addEventListener('click', e => {
+  e.preventDefault();
   const g = document.querySelectorAll('.sc-grid')[0];
-  tog.setAttribute('aria-expanded', g.classList.toggle('open'));
+  const open = g.classList.toggle('open');
+  tog.setAttribute('aria-expanded', open);
+  tog.textContent = open ? '收起岗位列表' : '查看全部岗位助手';
 });
 
 // ===== 案例轮播（默认国际物流 + 自动轮播） =====
