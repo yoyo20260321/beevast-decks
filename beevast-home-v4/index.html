@@ -250,7 +250,7 @@ section{padding:46px var(--pad-x)}
 .cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
 .cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite;filter:brightness(1.07) saturate(1.03);cursor:zoom-in}
 @keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after{animation:none}}
+@media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after,.modal-mask.open .modal{animation:none}}
 @media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
 .cap-panel:not(.active) .cap-shot img{animation:none}
 a,button{touch-action:manipulation}
@@ -394,7 +394,15 @@ a,button{touch-action:manipulation}
 .cap-steps .arw{color:var(--text-3)}
 .modal-mask{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(11,18,32,.55);backdrop-filter:blur(6px)}
 .modal-mask.open{display:flex}
-.modal{position:relative;display:grid;grid-template-columns:1.2fr .8fr;width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.3)}
+.modal{position:relative;display:grid;grid-template-columns:1.2fr .8fr;width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border:1px solid var(--border-strong);border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.32),0 0 0 4px rgba(255,255,255,.6)}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#EAA230,#ffb700,#EAA230);z-index:2}
+.modal-mask.open .modal{animation:mIn .22s ease-out}
+@keyframes mIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.modal-form textarea{min-height:96px;resize:vertical;line-height:1.6}
+.modal-form input:user-invalid{border-color:#e11d48}
+.modal-form input:user-invalid:focus{outline-color:#e11d48}
+.mf-submit{transition:background .2s,transform .15s}
+.mf-submit:hover{background:var(--primary-2);transform:translateY(-1px)}
 .modal-form{padding:30px 30px 26px}
 .modal-form h3{font-size:20px;font-weight:900;color:var(--text);margin:0 0 4px;font-family:'Inter','Noto Sans SC',sans-serif}
 .modal-form .mf-sub{font-size:var(--fs-sm);color:var(--text-2);margin:0 0 18px;line-height:1.6}
@@ -412,7 +420,7 @@ a,button{touch-action:manipulation}
 .modal-qr .t{font-size:14px;font-weight:700}
 .modal-qr .d{font-size:12px;color:rgba(255,255,255,.72);line-height:1.6}
 .modal-qr a{color:#F2B85C;font-size:13px;font-weight:700}
-.modal-x{position:absolute;top:12px;right:14px;border:none;background:transparent;font-size:24px;color:var(--text-3);cursor:pointer;line-height:1;z-index:1}
+.modal-x{position:absolute;top:8px;right:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;font-size:24px;color:var(--text-3);cursor:pointer;line-height:1;z-index:3;border-radius:10px}
 .modal-x:hover{color:var(--text)}
 @media(max-width:700px){.modal{grid-template-columns:1fr}.modal-qr{padding:20px}}
 .lb{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(11,18,32,.88);cursor:zoom-out;padding:24px}
@@ -1150,16 +1158,11 @@ if (capTabList) {
             <div><label for="mfName">姓名</label><input id="mfName" name="name" required maxlength="20" autocomplete="name"></div>
             <div><label for="mfCompany">公司</label><input id="mfCompany" name="company" required maxlength="40" autocomplete="organization"></div>
           </div>
-          <div class="mf-row">
+          <div class="mf-row solo">
             <div><label for="mfPhone">手机号</label><input id="mfPhone" name="phone" required pattern="1[0-9]{10}" inputmode="numeric" maxlength="11" autocomplete="tel"></div>
-            <div><label for="mfScene">关注场景</label>
-              <select id="mfScene" name="scene">
-                <option>销售报价</option><option>客服响应</option><option>采购协同</option><option>HR 招聘</option><option>财务核算</option><option>法务合同</option><option>先做 30 天试用</option><option>其他 · 整体咨询</option>
-              </select>
-            </div>
           </div>
           <div class="mf-row solo">
-            <div><label for="mfNeed">您关注的场景与需求</label><textarea id="mfNeed" name="need" rows="3" maxlength="300" placeholder="例如：销售报价慢，想先做一个图纸拆 BOM 出报价的 POC"></textarea></div>
+            <div><label for="mfNeed">您关注的场景与需求</label><textarea id="mfNeed" name="need" rows="4" maxlength="300" placeholder="例如：销售报价慢，想先做一个图纸拆 BOM 出报价的 POC"></textarea></div>
           </div>
           <button class="mf-submit" type="submit">提交，等顾问联系</button>
           <p class="mf-note">提交即视为同意通过电话 / 企微与您联系，信息仅用于本次咨询。</p>
@@ -1180,11 +1183,8 @@ if (capTabList) {
 <script>
 // ===== 转化 modal =====
 const mask = document.getElementById('leadModal');
-const sceneMap = { '诊断': '其他 · 整体咨询', '试用': '先做 30 天试用', '咨询': '其他 · 整体咨询' };
-function openModal(scene) {
+function openModal() {
   mask.classList.add('open'); document.body.style.overflow = 'hidden';
-  const s = document.getElementById('mfScene');
-  if (scene && sceneMap[scene]) s.value = sceneMap[scene];
   const f = mask.querySelector('input'); if (f) f.focus();
 }
 function closeModal() { mask.classList.remove('open'); document.body.style.overflow = ''; }
@@ -1207,7 +1207,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 document.getElementById('leadForm').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target;
-  const msg = `【官网咨询】${f.name.value} · ${f.company.value} · ${f.phone.value} · 关注场景：${f.scene.value}${f.need.value ? ' · 需求：' + f.need.value : ''}`;
+  const msg = `【官网咨询】${f.name.value} · ${f.company.value} · ${f.phone.value}${f.need.value ? ' · 需求：' + f.need.value : ''}`;
   const done = () => { document.getElementById('mfForm').style.display = 'none'; document.getElementById('mfOk').style.display = 'block'; };
   if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, done); else done();
 });
