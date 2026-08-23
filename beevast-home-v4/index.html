@@ -214,8 +214,16 @@ section{padding:46px var(--pad-x)}
 #products .solution-card ul li{color:var(--text)}
 #products .sol-value{color:var(--text);background:rgba(234,162,48,0.07)}
 #products{background-image:radial-gradient(56% 36% at 50% 0%,rgba(234,162,48,0.07),transparent 72%),radial-gradient(rgba(11,18,32,0.05) 1px,transparent 1px);background-size:auto,26px 26px}
-#products .solution-card::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0;transition:opacity .3s}
+#products .solution-card::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--sol,var(--primary)),transparent);opacity:0;transition:opacity .3s}
 #products .solution-card:hover::before{opacity:1}
+#products .solution-card{--sol:#5A7FD6;--sol-bg:rgba(90,127,214,.12);--sol-bd:rgba(90,127,214,.32)}
+#products .solution-card.sol-b{--sol:#4F9D8A;--sol-bg:rgba(79,157,138,.12);--sol-bd:rgba(79,157,138,.32)}
+#products .solution-card.sol-c{--sol:#A8849E;--sol-bg:rgba(168,132,158,.12);--sol-bd:rgba(168,132,158,.32)}
+#products .solution-card .sol-icon{color:var(--sol);background:linear-gradient(135deg,var(--sol-bg),transparent);border-color:var(--sol-bd)}
+#products .solution-card .sol-num{color:var(--sol)}
+#products .solution-card .sol-num::before{background:linear-gradient(90deg,var(--sol),transparent)}
+#products .solution-card ul li::before{background:var(--sol)}
+#products .solution-card .sol-value{border-left-color:var(--sol);background:var(--sol-bg)}
 @media(max-width:780px){.solutions-grid{grid-template-columns:1fr}}
 
 /* ===== CAPABILITY SWITCHER ===== */
@@ -464,7 +472,7 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">从员工提效，到知识沉淀，再到业务协同增长。</p>
     </div>
     <div class="solutions-grid">
-      <div class="solution-card reveal d1">
+      <div class="solution-card reveal d1 sol-a">
         <div class="sol-num">01 / 岗位</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
@@ -479,7 +487,7 @@ a,button{touch-action:manipulation}
         </ul>
         <p class="sol-value">减少重复性工作，让员工聚焦客户服务、专业判断与价值创造。</p>
       </div>
-      <div class="solution-card reveal d2">
+      <div class="solution-card reveal d2 sol-b">
         <div class="sol-num">02 / 知识</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
@@ -494,7 +502,7 @@ a,button{touch-action:manipulation}
         </ul>
         <p class="sol-value">从「人知道」变成「组织知道」，让经验统一沉淀，持续传承与复用。</p>
       </div>
-      <div class="solution-card reveal d3">
+      <div class="solution-card reveal d3 sol-c">
         <div class="sol-num">03 / 场景</div>
         <div class="sol-head">
           <div class="sol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg></div>
