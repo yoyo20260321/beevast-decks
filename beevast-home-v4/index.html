@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="私有化部署的 AI 数字员工，数据不出企业，30 天免费 POC。">
 <meta name="twitter:image" content="https://beevast.com/assets/hero-poster.jpg">
 <link rel="canonical" href="https://beevast.com/">
-<link rel="preload" as="image" href="assets/hero-poster.jpg?v=20260822e" fetchpriority="high" media="(min-width:861px)">
+<link rel="preload" as="image" href="assets/hero-poster.jpg?v=20260823a" fetchpriority="high" media="(min-width:861px)">
 <link rel="icon" type="image/png" href="assets/logo-fav.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="theme-color" content="#0B1220">
@@ -154,7 +154,7 @@ section[id]{scroll-margin-top:96px}
 .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(234,162,48,0.2),0 0 12px var(--primary);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:clamp(30px,4vw,46px);font-weight:900;line-height:1.16;letter-spacing:-1px;margin-bottom:22px}
-.hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
+.hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;-webkit-text-stroke:1px rgba(255,255,255,.55);paint-order:stroke fill;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
 .hero-video{position:relative;z-index:1;margin-top:18px}
@@ -162,8 +162,8 @@ section[id]{scroll-margin-top:96px}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
 .hero-sub{font-size:17px;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.7;margin-bottom:24px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
-.hero-actions .ha-primary:hover{color:#1C1A17;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
+.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
+.hero-actions .ha-primary:hover{color:#fff;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
 .hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
 .hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
 .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);overflow:hidden;max-width:1200px;margin:44px auto 0;position:relative;z-index:1;box-shadow:0 18px 50px rgba(0,0,0,0.25)}
@@ -352,18 +352,18 @@ a,button{touch-action:manipulation}
 /* ===== sticky mobile CTA ===== */
 .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:90;display:none;padding:10px var(--pad-x);background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-top:1px solid var(--border-glow);box-shadow:0 -8px 24px rgba(0,0,0,0.06)}
 .sticky-cta a{flex:1;text-align:center;padding:13px;border-radius:10px;font-size:var(--fs-sm);font-weight:800}
-.sticky-cta .sc-primary{background:var(--primary);color:#1C1A17}
+.sticky-cta .sc-primary{background:var(--primary);color:#fff}
 .sticky-cta .sc-ghost{background:var(--bg-2);color:var(--text);border:1px solid var(--border-strong)}
 @media(max-width:640px){.sticky-cta{display:flex;gap:10px}body{padding-bottom:72px}}
 
 /* ===== nav CTA / 内联 CTA / 表单 modal / lightbox / 岗位折叠 / 能力一行 / 案例轮播 ===== */
-.nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
+.nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
 .nav-cta:hover{background:var(--primary-2)}
 .cta-inline{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:15px;color:var(--text-2);text-align:right}
 .cta-lnk{font-weight:800;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;transition:color .2s,border-color .2s;white-space:nowrap}
 .cta-lnk:hover{color:var(--primary);border-color:var(--primary)}
 .sc-grid .sc-card{position:relative}
-.sc-more-link{position:absolute;top:-25px;right:2px;font-size:12.5px;font-weight:700;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;cursor:pointer;z-index:2}
+.sc-more-link{position:absolute;top:-27px;right:0;font-size:12.5px;font-weight:700;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding:4px 2px 1px;cursor:pointer;z-index:2}
 .sc-more-link:hover{color:var(--primary)}
 .sc-grid .sc-card.sc-fold{display:none}
 .sc-grid.open .sc-card.sc-fold{display:flex}
@@ -385,9 +385,10 @@ a,button{touch-action:manipulation}
 .case-rail .case-study{flex:0 0 100%;scroll-snap-align:center}
 .case-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
 .case-dots{display:flex;gap:8px}
-.case-dot{width:9px;height:9px;border-radius:99px;border:none;background:rgba(28,26,23,.15);cursor:pointer;padding:0;transition:width .25s,background .25s}
-.case-dot.on{width:26px;background:var(--primary)}
-.case-arw{width:36px;height:36px;border-radius:99px;border:1px solid var(--border-strong);background:#fff;cursor:pointer;font-size:16px;color:var(--text);line-height:1}
+.case-dot{width:38px;height:38px;border-radius:99px;border:none;background:transparent;padding:14px 6px;background-clip:content-box;cursor:pointer;transition:background .25s}
+.case-dot::after{content:'';display:block;width:100%;height:9px;border-radius:99px;background:rgba(28,26,23,.18)}
+.case-dot.on::after{background:var(--primary)}
+.case-arw{width:40px;height:40px;border-radius:99px;border:1px solid var(--border-strong);background:#fff;cursor:pointer;font-size:16px;color:var(--text);line-height:1}
 .case-arw:hover{border-color:var(--border-glow);color:var(--primary-2)}
 .cap-steps{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 18px;font-family:'JetBrains Mono','Inter',monospace;font-size:12.5px;font-weight:700;color:var(--text-2)}
 .cap-steps b{color:var(--primary-2)}
@@ -411,7 +412,7 @@ a,button{touch-action:manipulation}
 .modal-form label{display:block;font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:5px}
 .modal-form input,.modal-form select,.modal-form textarea{width:100%;padding:11px 12px;border:1px solid var(--border-strong);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:#fff}
 .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{outline:2px solid var(--primary);outline-offset:0;border-color:var(--primary)}
-.mf-submit{width:100%;margin-top:6px;padding:13px;border:none;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:15px;cursor:pointer}
+.mf-submit{width:100%;margin-top:6px;padding:13px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
 .mf-submit:hover{background:var(--primary-2)}
 .mf-note{margin:10px 0 0;font-size:12px;color:var(--text-3);text-align:center}
 .mf-ok{display:none;text-align:center;padding:34px 10px}
@@ -465,7 +466,7 @@ a,button{touch-action:manipulation}
     </div>
     <div class="hero-video reveal in">
       <div class="hero-video-frame">
-        <img src="assets/hero-poster.jpg?v=20260822e" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
+        <img src="assets/hero-poster.jpg?v=20260823a" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
       </div>
     </div>
   </div>
