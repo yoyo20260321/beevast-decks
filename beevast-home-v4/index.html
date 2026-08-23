@@ -139,10 +139,10 @@ nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 nav.open .nav-toggle span:nth-child(2){opacity:0}
 nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 }
-section[id]{scroll-margin-top:84px}
+section[id]{scroll-margin-top:96px}
 
 /* ===== HERO (深 navy) ===== */
-.hero{background:linear-gradient(180deg,#141E36 0%,var(--navy) 74%);color:#fff;padding:84px var(--pad-x) 52px;overflow:hidden}
+.hero{background:linear-gradient(180deg,#141E36 0%,var(--navy) 74%);color:#fff;padding:66px var(--pad-x) 46px;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.26) 0%,rgba(234,162,48,0.09) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
 @keyframes hero-glow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
@@ -154,12 +154,12 @@ section[id]{scroll-margin-top:84px}
 .hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
-.hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220}
-.hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.5);margin-top:16px;letter-spacing:0.3px}
-.hero-sub{font-size:var(--fs-md);color:rgba(255,255,255,0.78);line-height:1.75;margin-bottom:28px;max-width:520px}
+.hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220;filter:brightness(1.05);cursor:zoom-in}
+.hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
+.hero-sub{font-size:var(--fs-md);color:rgba(255,255,255,0.86);line-height:1.75;margin-bottom:28px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--grad-cyber);color:#1C1A17;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s}
-.hero-actions .ha-primary:hover{color:#1C1A17;transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
+.hero-actions .ha-primary{padding:14px 32px;border-radius:12px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-base);box-shadow:0 8px 28px rgba(234,162,48,0.35);transition:transform .2s,box-shadow .2s,background .2s}
+.hero-actions .ha-primary:hover{color:#1C1A17;background:var(--primary-2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(234,162,48,0.45)}
 .hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
 .hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
 .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.10);border-radius:var(--radius);overflow:hidden;max-width:1200px;margin:44px auto 0;position:relative;z-index:1}
@@ -169,10 +169,13 @@ section[id]{scroll-margin-top:84px}
 @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
 
 /* ===== SECTIONS BASE ===== */
-section{padding:56px var(--pad-x)}
+section{padding:46px var(--pad-x)}
+@media(max-width:640px){section{padding:40px var(--pad-x)}}
 .container{max-width:1200px;margin:0 auto}
 .section-tag{display:inline-block;padding:7px 16px;border-radius:999px;background:rgba(234,162,48,0.08);border:1px solid var(--border-glow);font-size:var(--fs-xs);color:var(--primary);font-weight:700;letter-spacing:2px;margin-bottom:18px;text-transform:uppercase;font-family:'JetBrains Mono','Inter',monospace}
 .section-title{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-h2);font-weight:900;color:var(--text);letter-spacing:-1px;margin-bottom:16px;line-height:1.2}
+#scenarios .section-title,#capabilities .section-title,#why .section-title,#process .section-title{font-family:'Inter','Noto Sans SC',sans-serif;letter-spacing:-.5px}
+.section-desc{max-width:40em;margin-left:auto;margin-right:auto}
 .section-title .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:var(--fs-base);color:var(--text-2);max-width:680px;line-height:1.75}
 .section-head{text-align:center;margin-bottom:34px}
@@ -181,7 +184,7 @@ section{padding:56px var(--pad-x)}
 #scenarios{background:var(--bg-2);background-image:radial-gradient(rgba(11,18,32,0.05) 1px,transparent 1px);background-size:26px 26px}
 .section-navy{background:linear-gradient(180deg,#111B32 0%,var(--navy) 82%);color:#fff;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
 .section-navy .section-title{color:#fff}
-.section-navy .section-desc{color:rgba(255,255,255,0.72)}
+.section-navy .section-desc{color:rgba(255,255,255,0.82)}
 .section-navy .section-tag{background:rgba(234,162,48,0.10);border-color:rgba(234,162,48,0.30)}
 
 /* ===== TRUST（资质带） ===== */
@@ -218,7 +221,7 @@ section{padding:56px var(--pad-x)}
 .cap-tabs::-webkit-scrollbar{display:none}
 .cap-tab{flex:0 0 auto;scroll-snap-align:start;min-height:44px;display:inline-flex;align-items:center;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:color .2s,border-color .2s,background .2s}
 .cap-tab:hover{border-color:var(--border-glow);color:var(--text)}
-.cap-tab.active{background:var(--grad-cyber);color:#1C1A17;border-color:#EAA230;font-weight:800;box-shadow:var(--glow-cyan)}
+.cap-tab.active{background:var(--primary);color:#1C1A17;border-color:#EAA230;font-weight:800;box-shadow:var(--glow-cyan)}
 .cap-stage{position:relative}
 .cap-panel{display:none;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
 .cap-panel.active{display:grid;animation:capFade .4s ease-out}
@@ -229,14 +232,14 @@ section{padding:56px var(--pad-x)}
 .cap-shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);background:var(--bg-3);box-shadow:var(--shadow-lg)}
 .cap-shot::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:var(--bg-2);border-bottom:1px solid var(--border);z-index:2}
 .cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
-.cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite}
+.cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite;filter:brightness(1.07) saturate(1.03);cursor:zoom-in}
 @keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 @media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after{animation:none}}
 @media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
 .cap-panel:not(.active) .cap-shot img{animation:none}
 a,button{touch-action:manipulation}
 @media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:40px}}
-@media(max-width:640px){section{padding:56px var(--pad-x)}.hero{padding:88px var(--pad-x) 56px}.section-head{margin-bottom:36px}.hero-trust{gap:12px 20px}}
+@media(max-width:640px){.hero{padding:80px var(--pad-x) 48px}.section-head{margin-bottom:28px}.hero-trust{gap:12px 20px}}
 
 /* ===== CASES ===== */
 .case-study{background:#fff;border:1px solid var(--border-glow);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px}
@@ -319,17 +322,81 @@ a,button{touch-action:manipulation}
 /* footer / cta-final 样式已移至页脚 .bv-foot 内联 style（growclaw 风格，见文末） */
 
 /* ===== reveal animation (stagger) ===== */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .3s ease-out,transform .3s ease-out}
 .reveal.in{opacity:1;transform:translateY(0)}
-.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+.reveal.d1{transition-delay:.04s}.reveal.d2{transition-delay:.08s}.reveal.d3{transition-delay:.12s}.reveal.d4{transition-delay:.16s}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4{transition-delay:0s}}
 
 /* ===== sticky mobile CTA ===== */
 .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:90;display:none;padding:10px var(--pad-x);background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-top:1px solid var(--border-glow);box-shadow:0 -8px 24px rgba(0,0,0,0.06)}
 .sticky-cta a{flex:1;text-align:center;padding:13px;border-radius:10px;font-size:var(--fs-sm);font-weight:800}
-.sticky-cta .sc-primary{background:var(--grad-cyber);color:#1C1A17}
+.sticky-cta .sc-primary{background:var(--primary);color:#1C1A17}
 .sticky-cta .sc-ghost{background:var(--bg-2);color:var(--text);border:1px solid var(--border-strong)}
 @media(max-width:640px){.sticky-cta{display:flex;gap:10px}body{padding-bottom:72px}}
+
+/* ===== nav CTA / 内联 CTA / 表单 modal / lightbox / 岗位折叠 / 能力一行 / 案例轮播 ===== */
+.nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
+.nav-cta:hover{background:var(--primary-2)}
+.cta-inline{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:36px;padding:22px 28px;border:1px solid var(--border-glow);border-radius:14px;background:#fff}
+.cta-inline h3{font-size:18px;font-weight:800;color:var(--text);margin:0}
+.cta-inline p{margin:4px 0 0;font-size:var(--fs-sm);color:var(--text-2)}
+.cta-btn{padding:12px 26px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);transition:background .2s;flex:none}
+.cta-btn:hover{background:var(--primary-2)}
+.sc-toggle{display:block;margin:22px auto 0;padding:11px 26px;border-radius:10px;border:1px solid var(--border-strong);background:#fff;color:var(--text);font-weight:700;font-size:var(--fs-sm);cursor:pointer}
+.sc-toggle:hover{border-color:var(--border-glow);color:var(--primary-2)}
+.sc-grid .sc-card.sc-fold{display:none}
+.sc-grid.open .sc-card.sc-fold{display:flex}
+.t-less{display:none}
+.sc-grid.open + .sc-toggle .t-more{display:none}
+.sc-grid.open + .sc-toggle .t-less{display:inline}
+.sc-grid.sc-cap-row{grid-template-columns:repeat(6,1fr);gap:12px}
+.sc-cap-row .sc-cap{padding:16px 14px;border-radius:12px}
+.sc-cap-row .sc-cap-head{margin-bottom:6px;gap:8px}
+.sc-cap-row h3{font-size:15px}
+.sc-cap-row .sc-ico{width:30px;height:30px;border-radius:8px}
+.sc-cap-row .sc-ico svg{width:17px;height:17px}
+.sc-cap-row p{font-size:12px;line-height:1.5}
+.case-rail .case-study{margin-bottom:0}
+@media(max-width:960px){.sc-grid.sc-cap-row{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.sc-grid.sc-cap-row{grid-template-columns:repeat(2,1fr)}}
+.case-rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.case-rail::-webkit-scrollbar{display:none}
+.case-rail .case-study{flex:0 0 min(760px,100%);scroll-snap-align:center}
+.case-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px}
+.case-dots{display:flex;gap:8px}
+.case-dot{width:9px;height:9px;border-radius:99px;border:none;background:rgba(28,26,23,.15);cursor:pointer;padding:0;transition:width .25s,background .25s}
+.case-dot.on{width:26px;background:var(--primary)}
+.case-arw{width:36px;height:36px;border-radius:99px;border:1px solid var(--border-strong);background:#fff;cursor:pointer;font-size:16px;color:var(--text);line-height:1}
+.case-arw:hover{border-color:var(--border-glow);color:var(--primary-2)}
+.cap-steps{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 18px;font-family:'JetBrains Mono','Inter',monospace;font-size:12.5px;font-weight:700;color:var(--text-2)}
+.cap-steps b{color:var(--primary-2)}
+.cap-steps .arw{color:var(--text-3)}
+.modal-mask{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(11,18,32,.55);backdrop-filter:blur(6px)}
+.modal-mask.open{display:flex}
+.modal{position:relative;display:grid;grid-template-columns:1.2fr .8fr;width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.3)}
+.modal-form{padding:30px 30px 26px}
+.modal-form h3{font-size:20px;font-weight:900;color:var(--text);margin:0 0 4px;font-family:'Inter','Noto Sans SC',sans-serif}
+.modal-form .mf-sub{font-size:var(--fs-sm);color:var(--text-2);margin:0 0 18px;line-height:1.6}
+.mf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.modal-form label{display:block;font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:5px}
+.modal-form input,.modal-form select{width:100%;padding:11px 12px;border:1px solid var(--border-strong);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:#fff}
+.modal-form input:focus,.modal-form select:focus{outline:2px solid var(--primary);outline-offset:0;border-color:var(--primary)}
+.mf-submit{width:100%;margin-top:6px;padding:13px;border:none;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:15px;cursor:pointer}
+.mf-submit:hover{background:var(--primary-2)}
+.mf-note{margin:10px 0 0;font-size:12px;color:var(--text-3);text-align:center}
+.mf-ok{display:none;text-align:center;padding:34px 10px}
+.mf-ok .big{font-size:17px;font-weight:900;color:var(--text);margin-bottom:8px}
+.modal-qr{padding:30px 24px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.modal-qr img{width:132px;height:132px;border-radius:12px;background:#fff;padding:6px}
+.modal-qr .t{font-size:14px;font-weight:700}
+.modal-qr .d{font-size:12px;color:rgba(255,255,255,.72);line-height:1.6}
+.modal-qr a{color:#F2B85C;font-size:13px;font-weight:700}
+.modal-x{position:absolute;top:12px;right:14px;border:none;background:transparent;font-size:24px;color:var(--text-3);cursor:pointer;line-height:1;z-index:1}
+.modal-x:hover{color:var(--text)}
+@media(max-width:700px){.modal{grid-template-columns:1fr}.modal-qr{padding:20px}}
+.lb{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(11,18,32,.88);cursor:zoom-out;padding:24px}
+.lb.open{display:flex}
+.lb img{max-width:min(1280px,96vw);max-height:92vh;border-radius:10px;box-shadow:0 20px 80px rgba(0,0,0,.5)}
 </style>
 </head>
 <body>
@@ -349,6 +416,7 @@ a,button{touch-action:manipulation}
     <a href="#capabilities">产品能力</a>
     <a href="#cases">客户案例</a>
     <a href="#why">选择我们</a>
+    <a href="#" class="nav-cta" data-modal data-scene="诊断">预约诊断</a>
   </div>
   <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -367,8 +435,8 @@ a,button{touch-action:manipulation}
       <h1 class="reveal in">让每个企业<br>都有自己的 <span class="accent">AI 团队</span></h1>
       <p class="hero-sub reveal in">岗位数智助手 · 企业知识大脑 · 场景智能体 —— 跑在企业自己的服务器上，首个场景 5-8 天上线。</p>
       <div class="hero-actions reveal in">
-        <a class="ha-primary" href="#process">免费试用 30 天</a>
-        <a class="ha-ghost" href="#cases">看真实案例</a>
+        <a class="ha-primary" href="#" data-modal data-scene="试用">申请 30 天试用</a>
+        <a class="ha-ghost" href="#" data-modal data-scene="诊断">预约 30 分钟场景诊断</a>
       </div>
     </div>
     <div class="hero-video reveal in">
@@ -471,7 +539,7 @@ a,button{touch-action:manipulation}
     .sc-cap-head h3{font-size:18px;font-weight:800;color:#0a0a18;margin:0}
     .sc-cap p{color:rgba(10,10,24,0.72);font-size:13.5px;line-height:1.6;margin:0}
     .sc-sub{text-align:center;max-width:760px;margin:48px auto 24px}
-    .sc-sub-pill{display:inline-block;padding:6px 14px;background:var(--grad-cyber);color:#1C1A17;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:14px}
+    .sc-sub-pill{display:inline-block;padding:6px 14px;background:var(--primary);color:#1C1A17;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:14px}
     .sc-sub h3{font-size:24px;font-weight:800;color:#0a0a18;line-height:1.2;margin:0}
     @media(max-width:900px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:540px){.sc-grid{grid-template-columns:1fr}}
@@ -515,7 +583,7 @@ a,button{touch-action:manipulation}
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低沟通成本</span></li>
         </ul>
       </div>
-      <div class="sc-card reveal">
+      <div class="sc-card reveal sc-fold">
         <div class="sc-card-head"><span class="sc-ico" style="color:#6b5066;background:linear-gradient(150deg,#a8849e26,#a8849e0d);border-color:#a8849e40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V19"/><circle cx="9" cy="7" r="3.2"/><path d="M22 19v-1.5a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>HR 数智助手</h3></div>
         <p class="sc-desc">自动筛选简历、安排面试、生成分析报告，HR 聚焦人才评估与组织发展。</p>
         <div><span class="sc-stat-num">3×</span><span class="sc-stat-lbl">招聘处理效率提升</span></div>
@@ -526,7 +594,7 @@ a,button{touch-action:manipulation}
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>沉淀招聘知识</span></li>
         </ul>
       </div>
-      <div class="sc-card reveal">
+      <div class="sc-card reveal sc-fold">
         <div class="sc-card-head"><span class="sc-ico" style="color:#475569;background:linear-gradient(150deg,#7c8db526,#7c8db50d);border-color:#7c8db540"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18l2-1.4 2 1.4 2-1.4 2 1.4 2-1.4 2 1.4V3l-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4L6 3z"/><path d="M9.5 8.5h5M9.5 12h5"/></svg></span><h3>财务数智助手</h3></div>
         <p class="sc-desc">自动完成票据识别、凭证录入、报表汇总与数据核对，加快经营分析。</p>
         <div><span class="sc-stat-num">90%</span><span class="sc-stat-lbl">重复录入自动完成</span></div>
@@ -537,7 +605,7 @@ a,button{touch-action:manipulation}
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>加快经营分析</span></li>
         </ul>
       </div>
-      <div class="sc-card reveal">
+      <div class="sc-card reveal sc-fold">
         <div class="sc-card-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="m5 7-2.5 6.5h5L5 7z"/><path d="m19 7-2.5 6.5h5L19 7z"/><path d="m5 7 7-2 7 2"/></svg></span><h3>法务数智助手</h3></div>
         <p class="sc-desc">自动审查合同条款、风险识别、制度比对与合规辅助，降低合同风险。</p>
         <div><span class="sc-stat-num">70%</span><span class="sc-stat-lbl">审查时间缩短</span></div>
@@ -549,11 +617,12 @@ a,button{touch-action:manipulation}
         </ul>
       </div>
     </div>
+    <button class="sc-toggle" type="button" aria-expanded="false"><span class="t-more">查看全部 6 大岗位助手</span><span class="t-less">收起岗位列表</span></button>
     <div class="sc-sub reveal">
       <span class="sc-sub-pill">底层能力 · 6 维度</span>
       <h3>从对话到调度，打通企业全流程作业</h3>
     </div>
-    <div class="sc-grid">
+    <div class="sc-grid sc-cap-row">
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#1e40af;background:linear-gradient(150deg,#5a7fd626,#5a7fd60d);border-color:#5a7fd640"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-11.9 7.6L3 21l1.9-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>对话</h3></div><p>多轮对话 · 上下文记忆 · 一线随问随答</p></div>
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#0f766e;background:linear-gradient(150deg,#4f9d8a26,#4f9d8a0d);border-color:#4f9d8a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.2a1.8 1.8 0 0 0 0 3.6V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.2a1.8 1.8 0 0 0 0-3.6V8z"/><path d="M9 7.5v9"/></svg></span><h3>工单</h3></div><p>自动分派 · 优先级 · 售后工单闭环</p></div>
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#92600f;background:linear-gradient(150deg,#c89b6a26,#c89b6a0d);border-color:#c89b6a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span><h3>合同</h3></div><p>条款比对 · 风险标注 · 合同电子签</p></div>
@@ -570,6 +639,7 @@ a,button{touch-action:manipulation}
     <div class="section-head">
       <h2 class="section-title reveal">BeeWork AI · 产品能力一览</h2>
       <p class="section-desc reveal">以下均为真实运行界面，覆盖对话、协作、知识、自动化等核心能力。</p>
+      <div class="cap-steps reveal"><b>① 输入需求</b><span class="arw">→</span><b>② 自动调用工具</b><span class="arw">→</span><b>③ 生成结果</b><span style="color:var(--text-3)">· 点击截图可放大</span></div>
     </div>
     <div class="cap-switcher reveal">
       <div class="cap-tabs" role="tablist" aria-label="数字助理能力">
@@ -631,6 +701,7 @@ a,button{touch-action:manipulation}
         </div>
       </div>
     </div>
+    <div class="cta-inline reveal"><div><h3>想在你的业务里先跑一个场景？</h3><p>申请 30 天试用 · 首个场景 5-8 天上线</p></div><a class="cta-btn" href="#" data-modal data-scene="试用">申请 30 天试用</a></div>
   </div>
 </section>
 
@@ -642,6 +713,7 @@ a,button{touch-action:manipulation}
       <p class="section-desc reveal">AI 在真实业务里运转</p>
     </div>
 
+    <div class="case-rail" id="caseRail">
     <div class="case-study reveal">
       <div class="case-study-head">
         <div class="case-tags"><span class="case-tag">制造业</span><span class="case-tag">报价 SOP</span></div>
@@ -737,6 +809,16 @@ a,button{touch-action:manipulation}
       </div>
       <p class="case-foot">口径：数字助理数量为客户环境实际注册在跑的岗位数；整套平台私有化部署在客户自有设备，版本随出厂通道持续升级。</p>
     </div>
+    </div>
+    <div class="case-nav">
+      <button class="case-arw" type="button" data-case="-1" aria-label="上一个案例">‹</button>
+      <div class="case-dots" id="caseDots"></div>
+      <button class="case-arw" type="button" data-case="1" aria-label="下一个案例">›</button>
+    </div>
+    <div class="cta-inline reveal">
+      <div><h3>你的岗位场景，也这样跑一遍？</h3><p>30 分钟场景诊断 · 出一份可落地的试点方案</p></div>
+      <a class="cta-btn" href="#" data-modal data-scene="诊断">预约 30 分钟场景诊断</a>
+    </div>
   </div>
 </section>
 
@@ -777,6 +859,7 @@ a,button{touch-action:manipulation}
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>全链路追踪</span>
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>人工审批</span>
     </div>
+    <div class="cta-inline reveal" style="background:var(--navy-2);border-color:var(--border-navy)"><div><h3 style="color:#fff">想先聊聊安全与部署方案？</h3><p style="color:rgba(255,255,255,.72)">私有化 · 数据不出企业 · 顾问一对一解答</p></div><a class="cta-btn" href="#" data-modal data-scene="咨询">合作咨询</a></div>
   </div>
 </section>
 
@@ -784,7 +867,7 @@ a,button{touch-action:manipulation}
 <section id="process" class="section-soft">
   <div class="container">
     <div class="section-head">
-      <span class="reveal" style="display:inline-block;padding:7px 18px;background:var(--grad-cyber);color:#1C1A17;border-radius:999px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.05em;margin-bottom:18px">服务流程 · 合作路径</span>
+      <span class="reveal" style="display:inline-block;padding:7px 18px;background:var(--primary);color:#1C1A17;border-radius:999px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.05em;margin-bottom:18px">服务流程 · 合作路径</span>
       <h2 class="section-title reveal">从需求到价值，陪伴企业实现 <span class="accent">AI 增长</span></h2>
       <p class="section-desc reveal">全程陪跑 · 先用起来再做深度定制</p>
     </div>
@@ -950,7 +1033,7 @@ a,button{touch-action:manipulation}
 <!-- sticky mobile CTA -->
 <div class="sticky-cta">
   <a href="#cases" class="sc-ghost">看案例</a>
-  <a href="tel:18968018043" class="sc-primary">合作咨询</a>
+  <a href="#" class="sc-primary" data-modal data-scene="咨询">合作咨询</a>
 </div>
 
 <script>
@@ -1046,6 +1129,114 @@ if (capTabList) {
     selectCap(next);
   });
 }
+</script>
+
+<!-- 转化表单 modal + 截图放大 lightbox -->
+<div class="modal-mask" id="leadModal" role="dialog" aria-modal="true" aria-label="预约咨询">
+  <div class="modal">
+    <button class="modal-x" type="button" aria-label="关闭">×</button>
+    <div class="modal-form">
+      <div id="mfForm">
+        <h3>预约 30 分钟场景诊断</h3>
+        <p class="mf-sub">留下信息，顾问带着你关注场景的 demo 来沟通；也可以直接扫码加企业微信，不用打电话。</p>
+        <form id="leadForm">
+          <div class="mf-row">
+            <div><label for="mfName">姓名</label><input id="mfName" name="name" required maxlength="20" autocomplete="name"></div>
+            <div><label for="mfCompany">公司</label><input id="mfCompany" name="company" required maxlength="40" autocomplete="organization"></div>
+          </div>
+          <div class="mf-row">
+            <div><label for="mfPhone">手机号</label><input id="mfPhone" name="phone" required pattern="1[0-9]{10}" inputmode="numeric" maxlength="11" autocomplete="tel"></div>
+            <div><label for="mfScene">关注场景</label>
+              <select id="mfScene" name="scene">
+                <option>销售报价</option><option>客服响应</option><option>采购协同</option><option>HR 招聘</option><option>财务核算</option><option>法务合同</option><option>先做 30 天试用</option><option>其他 · 整体咨询</option>
+              </select>
+            </div>
+          </div>
+          <button class="mf-submit" type="submit">提交，等顾问联系</button>
+          <p class="mf-note">提交即视为同意通过电话 / 企微与您联系，信息仅用于本次咨询。</p>
+        </form>
+      </div>
+      <div class="mf-ok" id="mfOk"><div class="big">已记录 ✓</div><p class="mf-sub">需求信息已复制到剪贴板，扫码加企业微信粘贴发给顾问，响应更快。</p></div>
+    </div>
+    <div class="modal-qr">
+      <img src="assets/qr-consult.jpg" alt="企业微信咨询二维码" width="132" height="134" loading="lazy">
+      <div class="t">企业微信 · 一对一咨询</div>
+      <div class="d">不方便打电话？扫码直接聊</div>
+      <a href="tel:18968018043">或电话直达 18968018043</a>
+    </div>
+  </div>
+</div>
+<div class="lb" id="lb" role="dialog" aria-label="产品截图放大"><img src="" alt="产品截图放大视图"></div>
+
+<script>
+// ===== 转化 modal =====
+const mask = document.getElementById('leadModal');
+const sceneMap = { '诊断': '其他 · 整体咨询', '试用': '先做 30 天试用', '咨询': '其他 · 整体咨询' };
+function openModal(scene) {
+  mask.classList.add('open'); document.body.style.overflow = 'hidden';
+  const s = document.getElementById('mfScene');
+  if (scene && sceneMap[scene]) s.value = sceneMap[scene];
+  const f = mask.querySelector('input'); if (f) f.focus();
+}
+function closeModal() { mask.classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-modal]');
+  if (t) { e.preventDefault(); openModal(t.dataset.scene); }
+});
+mask.addEventListener('click', e => { if (e.target === mask || e.target.closest('.modal-x')) closeModal(); });
+
+// ===== lightbox =====
+const lb = document.getElementById('lb');
+document.addEventListener('click', e => {
+  const im = e.target.closest('.cap-shot img,.hero-video-frame img');
+  if (im) { lb.querySelector('img').src = im.currentSrc || im.src; lb.classList.add('open'); }
+});
+lb.addEventListener('click', () => lb.classList.remove('open'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); lb.classList.remove('open'); } });
+
+// ===== 表单提交（静态站：复制到剪贴板 + 成功态 + 企微引导） =====
+document.getElementById('leadForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const msg = `【官网咨询】${f.name.value} · ${f.company.value} · ${f.phone.value} · 关注场景：${f.scene.value}`;
+  const done = () => { document.getElementById('mfForm').style.display = 'none'; document.getElementById('mfOk').style.display = 'block'; };
+  if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, done); else done();
+});
+
+// ===== 岗位折叠 =====
+const tog = document.querySelector('.sc-toggle');
+if (tog) tog.addEventListener('click', () => {
+  const g = document.querySelectorAll('.sc-grid')[0];
+  tog.setAttribute('aria-expanded', g.classList.toggle('open'));
+});
+
+// ===== 案例轮播（默认国际物流 + 自动轮播） =====
+const rail = document.getElementById('caseRail');
+if (rail) {
+  const cards = [...rail.children], dots = document.getElementById('caseDots');
+  const step = () => rail.scrollWidth / cards.length;
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.type = 'button'; d.className = 'case-dot'; d.setAttribute('aria-label', '案例 ' + (i + 1));
+    d.addEventListener('click', () => go(i)); dots.appendChild(d);
+  });
+  const ds = [...dots.children];
+  const cur = () => Math.round(rail.scrollLeft / step());
+  function go(i) { rail.scrollTo({ left: ((i % cards.length) + cards.length) % cards.length * step(), behavior: 'smooth' }); }
+  function sync() { ds.forEach((d, j) => d.classList.toggle('on', j === cur())); }
+  rail.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+  document.querySelectorAll('.case-arw').forEach(b => b.addEventListener('click', () => go(cur() + +b.dataset.case)));
+  go(cards.length - 1); sync();
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const tick = () => go(cur() + 1);
+    let timer = setInterval(tick, 8000);
+    rail.addEventListener('pointerenter', () => clearInterval(timer));
+    rail.addEventListener('pointerleave', () => { clearInterval(timer); timer = setInterval(tick, 8000); });
+  }
+}
+
+// 无 IntersectionObserver 时内容直接可见
+if (!('IntersectionObserver' in window)) document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 </script>
 
 </body>
