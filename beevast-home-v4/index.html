@@ -142,19 +142,19 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 section[id]{scroll-margin-top:96px}
 
 /* ===== HERO (深 navy) ===== */
-.hero{background:linear-gradient(180deg,#1B2A4A 0%,var(--navy) 78%);color:#fff;padding:66px var(--pad-x) 46px;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.34) 0%,rgba(234,162,48,0.13) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
+.hero{background:linear-gradient(180deg,#24365C 0%,var(--navy) 80%);color:#fff;padding:66px var(--pad-x) 46px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(circle,rgba(234,162,48,0.40) 0%,rgba(234,162,48,0.16) 38%,transparent 65%);pointer-events:none;animation:hero-glow 14s ease-in-out infinite}
 @keyframes hero-glow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
-.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.08) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0,black 0%,transparent 75%);pointer-events:none}
 .hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:999px;background:rgba(234,162,48,0.10);border:1px solid rgba(234,162,48,0.35);font-size:var(--fs-xs);color:#F2B85C;font-weight:600;margin-bottom:30px;backdrop-filter:blur(10px)}
 .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(234,162,48,0.2),0 0 12px var(--primary);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-display);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:26px}
+.hero h1{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:clamp(28px,3.6vw,44px);font-weight:900;line-height:1.18;letter-spacing:-1px;margin-bottom:22px}
 .hero h1 .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;display:inline-block;filter:drop-shadow(0 0 30px rgba(234,162,48,0.4))}
 .hero-video{position:relative;z-index:1}
 .hero-video-frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);background:var(--navy);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(234,162,48,0.16),0 0 64px rgba(234,162,48,0.12)}
-.hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220;filter:brightness(1.05);cursor:zoom-in}
+.hero-video-frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;background:#0B1220;filter:brightness(1.1);cursor:zoom-in}
 .hero-video-cap{text-align:center;font-size:var(--fs-xs);color:rgba(255,255,255,0.7);margin-top:16px;letter-spacing:0.3px}
 .hero-sub{font-size:17px;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.7;margin-bottom:24px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -163,7 +163,7 @@ section[id]{scroll-margin-top:96px}
 .hero-actions .ha-ghost{padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:700;font-size:var(--fs-base);transition:background .2s,border-color .2s}
 .hero-actions .ha-ghost:hover{color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.4)}
 .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);overflow:hidden;max-width:1200px;margin:44px auto 0;position:relative;z-index:1;box-shadow:0 18px 50px rgba(0,0,0,0.25)}
-.hstat{background:rgba(30,42,68,0.55);padding:22px 16px;text-align:center;backdrop-filter:blur(8px)}
+.hstat{background:rgba(38,52,82,0.50);padding:22px 16px;text-align:center;backdrop-filter:blur(8px)}
 .hstat .v{font-family:'Inter',sans-serif;font-size:var(--fs-stat);font-weight:800;letter-spacing:-1px;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums}
 .hstat .k{display:block;font-size:var(--fs-xs);color:rgba(255,255,255,0.74);margin-top:6px;letter-spacing:0.4px}
 @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
@@ -439,7 +439,6 @@ a,button{touch-action:manipulation}
       <div class="hero-video-frame">
         <img src="assets/hero-poster.jpg?v=20260822e" alt="群蜂云枢企业画报：AI 工作台与管理控制台实景" width="1200" height="750" decoding="async" fetchpriority="high">
       </div>
-      <div class="hero-video-cap">企业 AI 工作台 · 管理控制台实景</div>
     </div>
   </div>
   <div class="hero-trust reveal in">
