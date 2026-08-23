@@ -337,11 +337,9 @@ a,button{touch-action:manipulation}
 /* ===== nav CTA / 内联 CTA / 表单 modal / lightbox / 岗位折叠 / 能力一行 / 案例轮播 ===== */
 .nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
 .nav-cta:hover{background:var(--primary-2)}
-.cta-inline{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:36px;padding:22px 28px;border:1px solid var(--border-glow);border-radius:14px;background:#fff}
-.cta-inline h3{font-size:18px;font-weight:800;color:var(--text);margin:0}
-.cta-inline p{margin:4px 0 0;font-size:var(--fs-sm);color:var(--text-2)}
-.cta-btn{padding:12px 26px;border-radius:10px;background:var(--primary);color:#1C1A17;font-weight:800;font-size:var(--fs-sm);transition:background .2s;flex:none}
-.cta-btn:hover{background:var(--primary-2)}
+.cta-inline{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px;font-size:15px;color:var(--text-2);text-align:center}
+.cta-lnk{font-weight:800;color:var(--primary-2);border-bottom:1px solid rgba(234,162,48,.5);padding-bottom:1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.cta-lnk:hover{color:var(--primary);border-color:var(--primary)}
 .sc-toggle{display:block;margin:22px auto 0;padding:11px 26px;border-radius:10px;border:1px solid var(--border-strong);background:#fff;color:var(--text);font-weight:700;font-size:var(--fs-sm);cursor:pointer}
 .sc-toggle:hover{border-color:var(--border-glow);color:var(--primary-2)}
 .sc-grid .sc-card.sc-fold{display:none}
@@ -701,7 +699,7 @@ a,button{touch-action:manipulation}
         </div>
       </div>
     </div>
-    <div class="cta-inline reveal"><div><h3>想在你的业务里先跑一个场景？</h3><p>申请 30 天试用 · 首个场景 5-8 天上线</p></div><a class="cta-btn" href="#" data-modal data-scene="试用">申请 30 天试用</a></div>
+    <p class="cta-inline reveal">想在你的业务里先跑一个场景？<a class="cta-lnk" href="#" data-modal data-scene="试用">申请 30 天试用 →</a></p>
   </div>
 </section>
 
@@ -815,10 +813,7 @@ a,button{touch-action:manipulation}
       <div class="case-dots" id="caseDots"></div>
       <button class="case-arw" type="button" data-case="1" aria-label="下一个案例">›</button>
     </div>
-    <div class="cta-inline reveal">
-      <div><h3>你的岗位场景，也这样跑一遍？</h3><p>30 分钟场景诊断 · 出一份可落地的试点方案</p></div>
-      <a class="cta-btn" href="#" data-modal data-scene="诊断">预约 30 分钟场景诊断</a>
-    </div>
+    <p class="cta-inline reveal">你的岗位场景，也这样跑一遍？<a class="cta-lnk" href="#" data-modal data-scene="诊断">预约 30 分钟场景诊断 →</a></p>
   </div>
 </section>
 
@@ -859,7 +854,7 @@ a,button{touch-action:manipulation}
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>全链路追踪</span>
       <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>人工审批</span>
     </div>
-    <div class="cta-inline reveal" style="background:var(--navy-2);border-color:var(--border-navy)"><div><h3 style="color:#fff">想先聊聊安全与部署方案？</h3><p style="color:rgba(255,255,255,.72)">私有化 · 数据不出企业 · 顾问一对一解答</p></div><a class="cta-btn" href="#" data-modal data-scene="咨询">合作咨询</a></div>
+    <p class="cta-inline reveal" style="color:rgba(255,255,255,.72)">想先聊聊安全与部署方案？<a class="cta-lnk" href="#" data-modal data-scene="咨询" style="color:#F2B85C">合作咨询 →</a></p>
   </div>
 </section>
 
