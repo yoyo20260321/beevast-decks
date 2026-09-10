@@ -181,7 +181,7 @@ section{padding:46px var(--pad-x)}
 .container{max-width:1200px;margin:0 auto}
 .section-tag{display:inline-block;padding:7px 16px;border-radius:999px;background:rgba(234,162,48,0.08);border:1px solid var(--border-glow);font-size:var(--fs-xs);color:var(--primary);font-weight:700;letter-spacing:2px;margin-bottom:18px;text-transform:uppercase;font-family:'JetBrains Mono','Inter',monospace}
 .section-title{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-h2);font-weight:900;color:var(--text);letter-spacing:-1px;margin-bottom:16px;line-height:1.2}
-#scenarios .section-title,#capabilities .section-title,#why .section-title,#process .section-title{font-family:'Inter','Noto Sans SC',sans-serif;letter-spacing:-.5px}
+#scenarios .section-title,#why .section-title,#process .section-title{font-family:'Inter','Noto Sans SC',sans-serif;letter-spacing:-.5px}
 .section-desc{max-width:40em;margin-left:auto;margin-right:auto}
 .section-title .accent{background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:var(--fs-base);color:var(--text-2);max-width:680px;line-height:1.75}
@@ -234,28 +234,7 @@ section{padding:46px var(--pad-x)}
 #products .solution-card .sol-value{border-left-color:var(--sol);background:var(--sol-bg)}
 @media(max-width:780px){.solutions-grid{grid-template-columns:1fr}}
 
-/* ===== CAPABILITY SWITCHER ===== */
-.cap-switcher{max-width:1180px;margin:0 auto;padding:8px 0}
-.cap-tabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:36px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
-.cap-tabs::-webkit-scrollbar{display:none}
-.cap-tab{flex:0 0 auto;scroll-snap-align:start;min-height:44px;display:inline-flex;align-items:center;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:color .2s,border-color .2s,background .2s}
-.cap-tab:hover{border-color:var(--border-glow);color:var(--text)}
-.cap-tab.active{background:var(--primary);color:#1C1A17;border-color:#EAA230;font-weight:800;box-shadow:var(--glow-cyan)}
-.cap-stage{position:relative}
-.cap-panel{display:none;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
-.cap-panel.active{display:grid;animation:capFade .4s ease-out}
-@keyframes capFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.cap-num{font-family:'JetBrains Mono','Inter',monospace;font-size:var(--fs-xs);font-weight:800;color:var(--primary);letter-spacing:2px;margin-bottom:14px}
-.cap-text h3{font-family:'Noto Serif SC','Noto Sans SC',serif;font-size:var(--fs-h3);font-weight:900;color:var(--text);letter-spacing:-0.5px;margin-bottom:14px;line-height:1.3}
-.cap-text p{font-size:var(--fs-base);color:var(--text-2);line-height:1.75}
-.cap-shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);background-color:#F6F5F1;background-image:radial-gradient(circle 2.5px at 20px 16px,#F87171 98%,transparent),radial-gradient(circle 2.5px at 38px 16px,#FBBF24 98%,transparent),radial-gradient(circle 2.5px at 56px 16px,#34D399 98%,transparent);background-repeat:no-repeat;box-shadow:var(--shadow-lg)}
-.cap-shot::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:var(--bg-2);border-bottom:1px solid var(--border);z-index:2}
-.cap-shot::after{content:'● ● ●';position:absolute;top:8px;left:14px;color:var(--primary);opacity:.5;font-size:var(--fs-xs);letter-spacing:4px;z-index:3}
-.cap-shot img{display:block;width:100%;height:auto;margin-top:32px;animation:capZoom 16s ease-in-out infinite;filter:brightness(1.07) saturate(1.03);cursor:zoom-in}
-@keyframes capZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@media(prefers-reduced-motion:reduce){.cap-shot img,.cap-panel.active,.hero::before,.hero-badge .dot,body::after,.modal-mask.open .modal{animation:none}}
-@media(max-width:860px){.cap-panel,.cap-panel.active{grid-template-columns:1fr;gap:20px}.cap-panel .cap-shot{order:-1}}
-.cap-panel:not(.active) .cap-shot img{animation:none}
+@media(prefers-reduced-motion:reduce){.hero::before,.hero-badge .dot,body::after,.modal-mask.open .modal{animation:none}}
 a,button{touch-action:manipulation}
 @media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:40px}}
 @media(max-width:640px){.hero{padding:80px var(--pad-x) 48px}.section-head{margin-bottom:28px}.hero-trust{gap:12px 20px}}
@@ -447,7 +426,6 @@ a,button{touch-action:manipulation}
   <div class="nav-links">
     <a href="#products">核心业务</a>
     <a href="#scenarios">场景应用</a>
-    <a href="#capabilities">产品能力</a>
     <a href="#cases">客户案例</a>
     <a href="#why">选择我们</a>
     <a href="#" class="nav-cta" data-modal data-scene="诊断">预约诊断</a>
@@ -655,77 +633,6 @@ a,button{touch-action:manipulation}
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#6b5066;background:linear-gradient(150deg,#a8849e26,#a8849e0d);border-color:#a8849e40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.3 12 2.4 2.4 4.9-5"/></svg></span><h3>审批</h3></div><p>流程编排 · 多级审批 · 请款 / 用印审批</p></div>
       <div class="sc-cap reveal"><div class="sc-cap-head"><span class="sc-ico" style="color:#876a16;background:linear-gradient(150deg,#e4bf7a26,#e4bf7a0d);border-color:#e4bf7a40"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span><h3>调度</h3></div><p>任务分配 · 排程 · 异常重排</p></div>
     </div>
-  </div>
-</section>
-
-<!-- 产品展示 GALLERY -->
-<section id="capabilities" class="section-soft">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title reveal">BeeWork AI · 产品能力一览</h2>
-      <p class="section-desc reveal">以下均为真实运行界面，覆盖对话、协作、知识、自动化等核心能力。</p>
-    </div>
-    <div class="cap-switcher reveal">
-      <div class="cap-tabs" role="tablist" aria-label="数字助理能力">
-        <button class="cap-tab active" role="tab" aria-selected="true" data-i="0">01 对话即工作</button>
-        <button class="cap-tab" role="tab" aria-selected="false" data-i="1">02 一支 AI 团队</button>
-        <button class="cap-tab" role="tab" aria-selected="false" data-i="2">03 企业知识库</button>
-        <button class="cap-tab" role="tab" aria-selected="false" data-i="3">04 自动化场景</button>
-        <button class="cap-tab" role="tab" aria-selected="false" data-i="4">05 管理控制台</button>
-        <button class="cap-tab" role="tab" aria-selected="false" data-i="5">06 审批门</button>
-      </div>
-      <div class="cap-stage">
-        <div class="cap-panel active" data-i="0">
-          <div class="cap-text">
-            <div class="cap-num">01 · 对话即工作</div>
-            <h3>一句话发起，自动执行</h3>
-            <p>自然语言驱动：查关税 / 调数据 / 出报价、写文档、查轨迹——数字助理直接调工具出结果，附来源可核对，不用记系统怎么点。</p>
-          </div>
-          <div class="cap-shot"><img src="shots/cap-chat.webp" alt="数字助理对话" width="1440" height="802" loading="lazy" decoding="async"></div>
-        </div>
-        <div class="cap-panel" data-i="1">
-          <div class="cap-text">
-            <div class="cap-num">02 · 一支 AI 团队</div>
-            <h3>关务 / 财务 / 运营 / 客服 / 法务 / HR</h3>
-            <p>一个平台多个岗位数字助理，各司其职、共享记忆，像一支真的团队。</p>
-          </div>
-          <div class="cap-shot"><img data-src="shots/cap-team.webp" alt="多岗位数字助理名册" width="1440" height="900" decoding="async"></div>
-        </div>
-        <div class="cap-panel" data-i="2">
-          <div class="cap-text">
-            <div class="cap-num">03 · 企业知识库</div>
-            <h3>SOP / 合同 / 手册，统一问答</h3>
-            <p>企业文档统一检索；按「仅自己 / 本部门 / 全公司」分级可见，知识不外泄。</p>
-          </div>
-          <div class="cap-shot"><img data-src="shots/cap-kb.webp" alt="企业知识库" width="1440" height="900" decoding="async"></div>
-        </div>
-        <div class="cap-panel" data-i="3">
-          <div class="cap-text">
-            <div class="cap-num">04 · 自动化场景</div>
-            <h3>按计划执行，无需值守</h3>
-            <p>每日行情、定期对账、月度报表--定时数字助理自动执行，结果推送到企微 / 飞书。</p>
-          </div>
-          <div class="cap-shot"><img data-src="shots/cap-auto.webp" alt="自动化定时任务" width="1440" height="900" decoding="async"></div>
-        </div>
-        <div class="cap-panel" data-i="4">
-          <div class="cap-text">
-            <div class="cap-num">05 · 管理控制台</div>
-            <h3>用量、链路、审计，全程可视</h3>
-            <p>数据大盘 + 全链路追踪 + 行为审计：每一次对话、每一步操作都可观测、可追溯。</p>
-          </div>
-          <div class="cap-shot"><img data-src="shots/cap-console.webp" alt="管理控制台数据大盘" width="1440" height="900" decoding="async"></div>
-        </div>
-        <div class="cap-panel" data-i="5">
-          <div class="cap-text">
-            <div class="cap-num">06 · 审批把关</div>
-            <h3>敏感操作，人工确认</h3>
-            <p>退款、改价、对外发文等动作，数字助理先提交审批，人工批准后才执行--风险可控。</p>
-          </div>
-          <div class="cap-shot"><img data-src="shots/cap-approval.webp" alt="审批把关 人在环" width="1440" height="900" decoding="async"></div>
-        </div>
-      </div>
-    </div>
-    <p class="cta-inline reveal">想在你的业务里先跑一个场景？<a class="cta-lnk" href="#" data-modal data-scene="试用">申请 30 天试用 →</a></p>
   </div>
 </section>
 
@@ -1131,32 +1038,6 @@ const spy = new IntersectionObserver((entries) => {
 }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
 document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
 
-// capability tab switcher
-const capTabs = document.querySelectorAll('.cap-tab');
-const capPanels = document.querySelectorAll('.cap-panel');
-const capTabList = document.querySelector('.cap-tabs');
-function selectCap(i) {
-  capTabs.forEach((t, idx) => { const on = idx === i; t.classList.toggle('active', on); t.setAttribute('aria-selected', on); });
-  capPanels.forEach((p, idx) => p.classList.toggle('active', idx === i));
-  const img = capPanels[i] && capPanels[i].querySelector('img');
-  if (img && img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (capTabs[i]) capTabs[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-}
-capTabs.forEach((t, idx) => t.addEventListener('click', () => selectCap(idx)));
-capTabs.forEach((t, idx) => t.addEventListener('pointerenter', () => {
-  const img = capPanels[idx] && capPanels[idx].querySelector('img');
-  if (img && img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
-}));
-if (capTabList) {
-  capTabList.addEventListener('keydown', (e) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const cur = Array.from(capTabs).findIndex(t => t.classList.contains('active'));
-    const next = e.key === 'ArrowRight' ? (cur + 1) % capTabs.length : (cur - 1 + capTabs.length) % capTabs.length;
-    capTabs[next].focus();
-    selectCap(next);
-  });
-}
 </script>
 
 <!-- 转化表单 modal + 截图放大 lightbox -->
@@ -1211,7 +1092,7 @@ mask.addEventListener('click', e => { if (e.target === mask || e.target.closest(
 // ===== lightbox =====
 const lb = document.getElementById('lb');
 document.addEventListener('click', e => {
-  const im = e.target.closest('.cap-shot img,.hero-video-frame img');
+  const im = e.target.closest('.hero-video-frame img');
   if (im) { lb.querySelector('img').src = im.currentSrc || im.src; lb.classList.add('open'); }
 });
 lb.addEventListener('click', () => lb.classList.remove('open'));
