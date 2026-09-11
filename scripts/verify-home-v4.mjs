@@ -73,6 +73,7 @@ for (const required of [
   "env(safe-area-inset-bottom)",
   ".nav-toggle,.nav-links a,button,.faq-item summary{min-height:44px}",
   ".nav-toggle,.case-dot,.case-arw,.modal-x,.sc-more-link{min-width:44px}",
+  ".sc-more-link{min-height:44px}",
   ".modal-form input,.modal-form textarea{font-size:16px}",
   "env(safe-area-inset-top)",
   "const caseMotion=!reduceMotion&&window.innerWidth>640",
