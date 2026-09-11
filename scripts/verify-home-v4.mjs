@@ -50,13 +50,33 @@ for (const { webp, jpeg } of imagePairs) {
   }
 }
 
+function hasPicturePair(webp, jpeg) {
+  return [...html.matchAll(/<picture\b[^>]*>([\s\S]*?)<\/picture>/g)].some((match) => {
+    const contents = match[1];
+    return new RegExp(`<source\\b[^>]*srcset="${webp.replace(".", "\\.")}(?:\\?[^\"]*)?"[^>]*type="image/webp"`).test(contents)
+      && new RegExp(`<img\\b[^>]*src="${jpeg.replace(".", "\\.")}(?:\\?[^\"]*)?"`).test(contents);
+  });
+}
+
+for (const { webp, jpeg } of imagePairs) {
+  check(hasPicturePair(webp, jpeg), `WebP/JPEG are not a valid <picture> pair: ${webp}`);
+}
+check(
+  /<link\b[^>]*rel="preload"[^>]*as="image"[^>]*href="assets\/hero-poster\.webp(?:\?[^\"]*)?"[^>]*type="image\/webp"[^>]*fetchpriority="high"/.test(html),
+  "hero preload does not match the preferred WebP source",
+);
+
 for (const required of [
   "content-visibility:auto",
   "contain-intrinsic-size:auto",
   "100dvh",
   "env(safe-area-inset-bottom)",
   ".nav-toggle,.nav-links a,button,.faq-item summary{min-height:44px}",
+  ".nav-toggle,.case-dot,.case-arw,.modal-x,.sc-more-link{min-width:44px}",
   ".modal-form input,.modal-form textarea{font-size:16px}",
+  "env(safe-area-inset-top)",
+  "const caseMotion=!reduceMotion&&window.innerWidth>640",
+  "behavior:caseMotion?'smooth':'auto'",
   "@media(prefers-reduced-motion:reduce)",
   "transition:none",
   "'IntersectionObserver' in window",

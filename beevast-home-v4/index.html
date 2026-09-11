@@ -346,10 +346,13 @@ a,button{touch-action:manipulation}
 .sticky-cta{display:flex;gap:10px;backdrop-filter:none}
 body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .nav-toggle,.nav-links a,button,.faq-item summary{min-height:44px}
+.nav-toggle,.case-dot,.case-arw,.modal-x,.sc-more-link{min-width:44px}
 .hero-actions{flex-direction:column;align-items:stretch}
 .hero-actions a{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px}
 body::before,body::after{display:none}
 .hero::before{animation:none}
+.hero-badge .dot{animation:none}
+.reveal{opacity:1;transform:none;transition:none}
 .hero-badge,.hstat,.modal-mask{backdrop-filter:none}
 }
 
@@ -391,7 +394,7 @@ body::before,body::after{display:none}
 .cap-steps{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 18px;font-family:var(--font-mono);font-size:12.5px;font-weight:700;color:var(--text-2)}
 .cap-steps b{color:var(--primary-2)}
 .cap-steps .arw{color:var(--text-3)}
-.modal-mask{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(11,18,32,.55);backdrop-filter:blur(6px)}
+.modal-mask{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;padding:max(20px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));background:rgba(11,18,32,.55);backdrop-filter:blur(6px)}
 .modal-mask.open{display:flex}
 .modal{position:relative;display:grid;grid-template-columns:1.2fr .8fr;width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border:1px solid var(--border-strong);border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.32),0 0 0 4px rgba(255,255,255,.6)}
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#EAA230,#ffb700,#EAA230);z-index:2}
@@ -424,7 +427,7 @@ body::before,body::after{display:none}
 .modal-x:hover{color:var(--text)}
 @media(max-width:700px){.modal{grid-template-columns:1fr}.modal-qr{padding:20px}}
 @media(max-width:640px){
-.modal{max-height:calc(100dvh - 24px)}
+.modal{max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
 .modal-form input,.modal-form textarea{font-size:16px}
 .modal-form select{font-size:16px}
 }
@@ -1156,6 +1159,7 @@ const rail = document.getElementById('caseRail');
 if (rail) {
   const cards = [...rail.children], dots = document.getElementById('caseDots');
   const step = () => rail.scrollWidth / cards.length;
+  const caseMotion=!reduceMotion&&window.innerWidth>640;
   cards.forEach((_, i) => {
     const d = document.createElement('button');
     d.type = 'button'; d.className = 'case-dot'; d.setAttribute('aria-label', '案例 ' + (i + 1));
@@ -1163,12 +1167,12 @@ if (rail) {
   });
   const ds = [...dots.children];
   const cur = () => Math.round(rail.scrollLeft / step());
-  function go(i) { rail.scrollTo({ left: ((i % cards.length) + cards.length) % cards.length * step(), behavior: 'smooth' }); }
+  function go(i) { rail.scrollTo({left:((i%cards.length)+cards.length)%cards.length*step(),behavior:caseMotion?'smooth':'auto'}); }
   function sync() { ds.forEach((d, j) => d.classList.toggle('on', j === cur())); }
   rail.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
   document.querySelectorAll('.case-arw').forEach(b => b.addEventListener('click', () => go(cur() + +b.dataset.case)));
   go(cards.length - 1); sync();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (caseMotion) {
     const tick = () => go(cur() + 1);
     let timer = setInterval(tick, 8000);
     rail.addEventListener('pointerenter', () => clearInterval(timer));
