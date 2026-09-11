@@ -18,7 +18,7 @@
 
 - [ ] **Step 1: 写入失败优先的验收断言**
 
-脚本读取 HTML，校验：第三方字体链接为 0；产品能力模块及关联选择器为 0；WebP 与 JPEG 回退均存在；H5 安全区、`100dvh`、移动输入字号、`content-visibility`、IntersectionObserver 回退存在；所有本地图片路径可读；所有 `href="#..."` 均指向存在的 ID；JSON-LD 可解析；备案号存在。用 `gzipSync` 和 `statSync` 计算 HTML gzip 体积及首屏关键资源总量，并断言 HTML gzip 不高于 24,000 B。提取普通内联脚本，以 `new Function()` 做 JavaScript 语法检查；用 `HTMLParser` 等价的标签栈检查确保 HTML 无明显未闭合结构。
+脚本读取 HTML，校验：第三方字体链接为 0；产品能力模块及关联选择器为 0；JPEG 回退均存在；若某张 WebP 文件存在，则它必须小于原 JPEG 且被 `<picture>` 引用，若不存在则 HTML 不得引用它；H5 安全区、`100dvh`、移动输入字号、所有移动导航/按钮/CTA 的 44 px 触控区、`content-visibility`、`prefers-reduced-motion`、IntersectionObserver 回退存在；所有本地图片路径可读；所有 `href="#..."` 均指向存在的 ID；JSON-LD 可解析；备案号存在。用 `gzipSync` 和 `statSync` 计算 HTML gzip 体积及首屏关键资源总量，并断言 HTML gzip 不高于 24,000 B。提取普通内联脚本，以 `new Function()` 做 JavaScript 语法检查；用 `HTMLParser` 等价的标签栈检查确保 HTML 无明显未闭合结构。
 
 - [ ] **Step 2: 运行脚本并确认先失败**
 
@@ -54,7 +54,7 @@ Expected: `cwebp` 存在；两个文件均生成，且分别小于原 JPEG。若
 
 - [ ] **Step 2: 修改首屏资源引用**
 
-删除 `fonts.font.im` 预连接、样式和 `noscript`；将字体栈切到系统字体。更新 hero 预加载为 WebP；用 `<picture>` 为导航 Logo 和 hero 图片提供 WebP + JPEG 回退，保留宽高、alt 与首屏优先级。
+删除 `fonts.font.im` 预连接、样式和 `noscript`；将字体栈切到系统字体。仅对生成后确实小于原 JPEG 的图片更新预加载并用 `<picture>` 提供 WebP + JPEG 回退；未达标的图片继续只引用 JPEG。保留宽高、alt 与首屏优先级。
 
 - [ ] **Step 3: 运行验收脚本**
 
@@ -78,7 +78,9 @@ Run: `git add beevast-home-v4/index.html beevast-home-v4/assets/*.webp && git co
 
 - [ ] **Step 2: 增加移动端规则**
 
-在 640 px 以下：CTA 变为整行 44 px 以上触控区；表单控件字号至少 16 px；弹窗以 `100dvh` 约束；底部 CTA 和 body padding 使用 `env(safe-area-inset-bottom)`；关闭固定装饰层、重模糊和非必要动画。在 420 px 以下，将场景区 `.sc-grid.sc-cap-row` 改为单列并收紧标题/间距；不得恢复已删除的 `section#capabilities`。
+在 640 px 以下：CTA 变为整行 44 px 以上触控区；`.nav-toggle`、`.nav-links a`、所有 `button` 和 FAQ `summary` 的可点击高度不低于 44 px；表单控件字号至少 16 px；弹窗以 `100dvh` 约束；底部 CTA 和 body padding 使用 `env(safe-area-inset-bottom)`；关闭固定装饰层、重模糊和非必要动画。在 420 px 以下，将场景区 `.sc-grid.sc-cap-row` 改为单列并收紧标题/间距；不得恢复已删除的 `section#capabilities`。
+
+同时补全 `@media(prefers-reduced-motion:reduce)`：关闭 hero、装饰层、reveal、modal、按钮和卡片的动画/过渡，并让内容直接显示；静态验收脚本必须断言该规则存在。
 
 - [ ] **Step 3: 增加 JavaScript 能力回退**
 
