@@ -153,7 +153,7 @@ Expected: rsync 成功，`nginx -t` 成功，reload 返回 OK，HTTPS 200，备�
 
 - [ ] **Step 4: 验证正式站**
 
-验证 `beevast.com` 与 `www.beevast.com` HTTP 200；无第三方字体引用；WebP 与 JPEG 回退可访问；产品能力模块不存在；FAQ、客户案例、表单与备案号仍存在。
+验证 `beevast.com` 与 `www.beevast.com` HTTP 200；无第三方字体引用；所有 JPEG 回退可访问；仅对源码实际引用的 WebP 验证可访问；产品能力模块不存在；FAQ、客户案例、表单与备案号仍存在。
 
 失败分支：若任一域名非 200、关键内容缺失、静态资源不可访问或页面仍含已删除模块，立即停止交付，使用发布前记录的稳定提交恢复 `beevast-home-v4` 并重新执行正典生产发布；恢复后再次验证两域名与备案号，再记录回滚结果。
 
