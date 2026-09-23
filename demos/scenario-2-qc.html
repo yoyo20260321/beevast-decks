@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 智能质检工作台（威贸电子）</title>
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 智能质检分析智能体（威贸电子 · IQC）</title>
 <style>
-:root{--bg:#F6F7FB;--pan:#FFFFFF;--pan2:#F8FAFC;--bd:#E2E8F0;--ac:#4F46E5;--ac2:#818CF8;--blue:#2563EB;--tx:#0F172A;--mut:#5B6B84;--ok:#15803D;--okbg:#F0FDF4;--warn:#B45309;--warnbg:#FFFBEB;--bad:#B91C1C;--badbg:#FEF2F2;--glow:rgba(99,102,241,.14)}
+:root{--bg:#F6F7FB;--pan:#FFFFFF;--pan2:#F8FAFC;--bd:#E2E8F0;--ac:#4F46E5;--ac2:#818CF8;--blue:#2563EB;--tx:#0F172A;--mut:#5B6B84;--ok:#15803D;--okbg:#F0FDF4;--warn:#B45309;--warnbg:#FFFBEB;--bad:#B91C1C;--badbg:#FEF2F2;--low:#92400E;--lowbg:#FEFCE8}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
 body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
@@ -12,49 +12,49 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .apprchip{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--warn);background:var(--warnbg);border:1px solid #FDE68A;border-radius:9px;padding:5px 12px;cursor:pointer}
 .apprchip.done{color:var(--ok);background:var(--okbg);border-color:#BBF7D0}
 .kpis{display:flex;gap:14px;padding:14px 22px 0}
-.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:12px 18px}
-.kpi b{font-size:24px;color:var(--ac)}
+.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:11px 18px}
+.kpi b{font-size:22px;color:var(--ac)}
 .kpi i{font-style:normal;font-size:12px;margin-left:8px;color:var(--ok)}
-.kpi i.dn{color:var(--bad)}
-.kpi span{display:block;font-size:12px;color:var(--mut);margin-top:3px}
-.wrap{display:flex;flex:1;gap:14px;padding:14px 22px 16px;min-height:0;overflow:hidden}
-.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
-.panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.kpi i.dn{color:var(--mut)}
+.kpi span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.wrap{display:flex;flex:1;gap:14px;padding:12px 22px 14px;min-height:0;overflow:hidden}
+.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:13px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
+.panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:9px}
 .panel h3 em{font-style:normal;font-size:11px;color:var(--mut);font-weight:400}
-.left{width:330px;flex:none}.mid{flex:1.25;min-width:0}.right{width:350px;flex:none}
+.left{width:330px;flex:none}.mid{flex:1.3;min-width:0}.right{width:350px;flex:none}
 .sec{font-size:12px;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px;margin:10px 0 6px}
-.drop{border:1.5px dashed #C7D2FE;background:var(--pan2);border-radius:12px;padding:14px 12px;text-align:center;color:var(--mut);font-size:12.5px;cursor:pointer;transition:.15s}
+.drop{border:1.5px dashed #C7D2FE;background:var(--pan2);border-radius:12px;padding:12px;text-align:center;color:var(--mut);font-size:12px;cursor:pointer;transition:.15s}
 .drop:hover{background:#EEF2FF;border-color:var(--ac2)}
 .drop b{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--ac);font-size:13px;margin-bottom:4px}
 .drop .hint{display:block}
 .drop.up{padding:9px 12px}
 .drop.up .hint{display:none}
 .drop.up b{margin-bottom:0}
-.fl{display:flex;align-items:center;gap:8px;font-size:12px;background:var(--pan2);border:1px solid var(--bd);border-radius:9px;padding:5px 10px;margin-bottom:5px}
-.fls{margin-top:8px}
+.fls{margin-top:7px}
+.fl{display:flex;align-items:center;gap:7px;font-size:11.5px;background:var(--pan2);border:1px solid var(--bd);border-radius:8px;padding:4px 9px;margin-bottom:4px}
 .fl b{font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fl .ext{font-size:10px;color:var(--ac);background:#EEF2FF;border-radius:5px;padding:1px 6px;font-weight:700;flex:none}
 .fl .fs{margin-left:auto;color:var(--mut);flex:none}
 .fl .fs.ok{color:var(--ok)}
-.fl .fs.run{color:var(--ac)}
-.stage{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed var(--bd)}
+.fl .fs.conv{color:var(--warn)}
+.stage{display:flex;align-items:flex-start;gap:9px;padding:5px 0;border-bottom:1px dashed var(--bd)}
 .stage:last-child{border-bottom:none}
-.sic{width:28px;height:28px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);flex:none}
+.sic{width:26px;height:26px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);flex:none}
 .stage.run .sic{background:#EEF2FF;border-color:#C7D2FE;color:var(--ac)}
 .stage.done .sic{background:var(--okbg);border-color:#BBF7D0;color:var(--ok)}
 .sbody{flex:1;min-width:0}
-.sname{font-size:12.5px;font-weight:600;color:var(--mut)}
+.sname{font-size:12px;font-weight:600;color:var(--mut)}
 .stage.run .sname{color:var(--ac)}
 .stage.done .sname{color:var(--tx)}
-.sstate{font-size:10.5px;margin-left:8px;font-weight:700}
+.sstate{font-size:10.5px;margin-left:7px;font-weight:700}
 .stage.run .sstate{color:var(--ac)}
 .stage.done .sstate{color:var(--ok)}
-.ssum{font-size:11px;color:var(--mut);line-height:1.6;margin-top:3px;display:none}
+.ssum{font-size:10.5px;color:var(--mut);line-height:1.55;margin-top:2px;display:none}
 .stage.done .ssum{display:block}
 .dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ac);margin-right:5px;animation:pu 1s infinite}
 @keyframes pu{50%{opacity:.25}}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
-.mchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
+.mchip{font-size:11px;border:1px solid var(--bd);border-radius:9px;padding:4px 10px;color:var(--mut);cursor:pointer;background:var(--pan2)}
 .mchip.on{border-color:var(--ac);color:var(--ac);background:#EEF2FF;font-weight:700}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:8px;padding:6px 13px;cursor:pointer}
@@ -62,51 +62,67 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .btn.pri:hover{background:#4338CA}
 .btn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan)}
 .btn.ghost:hover{color:var(--ac);border-color:#C7D2FE}
-.btn.amber{background:var(--warnbg);color:var(--warn);border:1px solid #FDE68A;font-weight:600}
-.btn.amber.ok{background:var(--okbg);color:var(--ok);border-color:#BBF7D0}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tabs span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--bd);border-radius:9px;padding:6px 14px;color:var(--mut);cursor:pointer;background:var(--pan)}
+.btn.sm{font-size:11.5px;padding:5px 11px}
+.tabs{display:flex;gap:8px;margin-bottom:11px}
+.tabs span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--bd);border-radius:9px;padding:6px 13px;color:var(--mut);cursor:pointer;background:var(--pan)}
 .tabs span.on{background:var(--ac);color:#fff;font-weight:700;border-color:var(--ac)}
 .rpt{border:1px solid var(--bd);border-radius:12px;overflow:hidden}
-.rpth{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
-.rpth b{font-size:14px}
-.rpth .no{font-size:11.5px;color:var(--mut)}
+.rpth{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
+.rpth b{font-size:13.5px}
+.rpth .no{font-size:11px;color:var(--mut)}
 .badge{margin-left:auto;font-size:11.5px;font-weight:700;border-radius:8px;padding:3px 10px}
 .badge.ok{background:var(--okbg);color:var(--ok)}
 .badge.warn{background:var(--warnbg);color:var(--warn)}
 .badge.hi{background:var(--badbg);color:var(--bad)}
-.rmeta{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);padding:9px 14px;border-bottom:1px solid var(--bd)}
+.rmeta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--mut);padding:8px 14px;border-bottom:1px solid var(--bd)}
 .rmeta b{color:var(--tx);font-weight:600}
-table.itt{width:100%;border-collapse:collapse;font-size:12px}
-.itt th{font-size:11px;color:var(--mut);text-align:left;font-weight:600;padding:7px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
-.itt td{padding:7px 14px;border-bottom:1px solid var(--bd);color:var(--tx)}
+table.itt{width:100%;border-collapse:collapse;font-size:11.5px}
+.itt th{font-size:10.5px;color:var(--mut);text-align:left;font-weight:600;padding:6px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
+.itt td{padding:6px 14px;border-bottom:1px solid var(--bd);color:var(--tx)}
 .itt td.mut{color:var(--mut)}
 .itt tr.ng td{background:var(--badbg)}
-.itt tr.ng td:first-child{color:var(--bad);font-weight:600}
-.itt td .en{display:block;font-size:10px;color:var(--mut)}
-.root{margin-top:12px;background:var(--pan2);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:10px;padding:11px 14px}
-.root .rt{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
-.root .p{font-size:11px;color:var(--ac);background:#EEF2FF;border-radius:7px;padding:1px 8px;font-weight:700}
-.root .ev{font-size:11.5px;color:var(--mut);margin:6px 0;line-height:1.65}
-.root ol{margin:4px 0 0 16px;font-size:12px;line-height:1.8;color:var(--tx)}
-.empty{color:var(--mut);font-size:12.5px;text-align:center;padding:26px 0;line-height:1.8}
+.itt tr.mg td{background:var(--warnbg)}
+.itt td .en{display:block;font-size:9.5px;color:var(--mut)}
+.ltag{display:inline-block;font-size:9.5px;color:var(--low);background:var(--lowbg);border:1px solid #FDE68A;border-radius:5px;padding:0 5px;margin-left:6px;font-weight:600}
+.judge{margin-top:11px;background:var(--pan2);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:10px;padding:10px 13px}
+.judge .jt{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.judge .p{font-size:10.5px;color:var(--ac);background:#EEF2FF;border-radius:7px;padding:1px 8px;font-weight:700}
+.judge ol{margin:5px 0 0 15px;font-size:11.5px;line-height:1.75;color:var(--tx)}
+.judge ol span{color:var(--mut)}
+.mgbox{margin-top:10px;border:1px solid #FDE68A;background:var(--warnbg);border-radius:10px;padding:10px 13px}
+.mgbox .mt{font-size:12.5px;font-weight:700;color:var(--warn);display:flex;align-items:center;gap:7px}
+.mgitem{display:flex;align-items:center;gap:9px;font-size:12px;margin-top:8px;flex-wrap:wrap}
+.mgitem .mv{flex:1;min-width:200px;line-height:1.6}
+.mgitem .mv span{color:var(--mut)}
+.mgdone{font-size:11.5px;color:var(--ok);font-weight:600}
+.empty{color:var(--mut);font-size:12.5px;text-align:center;padding:24px 0;line-height:1.8}
 .empty .ic{width:26px;height:26px;display:block;margin:0 auto 8px;color:#C7D2FE}
 .supleg{display:flex;gap:14px;font-size:11px;color:var(--mut);margin-bottom:4px}
 .supleg i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px}
-.sbar{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:7px}
+.sbar{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:6px}
 .sbar b{width:64px;font-weight:600;color:var(--tx)}
 .sbar .tr{flex:1;height:9px;background:var(--pan2);border-radius:5px;overflow:hidden}
 .sbar .tr i{display:block;height:100%;border-radius:5px;transition:width .5s}
 .sbar .p{width:26px;text-align:right;color:var(--mut)}
+.qw{font-size:10.5px;color:var(--mut);margin-bottom:6px}
+.qw b{color:var(--tx)}
 .aleg{display:flex;gap:14px;font-size:11px;color:var(--mut)}
 .aleg span{cursor:pointer;display:flex;align-items:center;gap:4px}
 .aleg span.on{color:var(--ac);font-weight:700}
-.sdt{margin-top:10px;background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:10px 13px;font-size:12px;line-height:1.75}
+.sdt{margin-top:9px;background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:9px 13px;font-size:12px;line-height:1.7}
 .sdt b{font-size:12.5px}
 .sdt .k{color:var(--mut)}
 .sdt .ng{color:var(--bad);font-weight:700}
-.sdt .act{margin-top:5px;padding:7px 9px;background:var(--pan);border-left:3px solid var(--ac);border-radius:6px;color:var(--tx);font-size:11.5px;line-height:1.7}
-/* AI 对话 */
+.sdt .act{margin-top:5px;padding:6px 9px;background:var(--pan);border-left:3px solid var(--ac);border-radius:6px;color:var(--tx);font-size:11.5px;line-height:1.65}
+/* 台账 */
+.led{border:1px solid var(--bd);border-radius:10px;overflow:auto}
+table.ldb{width:100%;border-collapse:collapse;font-size:11px}
+.ldb th{font-size:10px;color:var(--mut);text-align:left;font-weight:600;padding:6px 10px;background:var(--pan2);border-bottom:1px solid var(--bd);white-space:nowrap}
+.ldb td{padding:5px 10px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.ldb tr.new td{animation:hl 1.6s}
+@keyframes hl{from{background:#EEF2FF}to{background:transparent}}
+.ldb .vg{color:var(--ok);font-weight:600}.ldb .vb{color:var(--bad);font-weight:600}.ldb .vm{color:var(--warn);font-weight:600}
+/* AI */
 .aiwrap{flex:1;display:flex;flex-direction:column;min-height:0}
 .msgs{flex:1;overflow:auto;padding:2px 2px 8px;min-height:0}
 .msg{margin-bottom:10px;display:flex;gap:8px}
@@ -131,132 +147,170 @@ table.itt{width:100%;border-collapse:collapse;font-size:12px}
 .inrow .send{width:34px;height:34px;border-radius:9px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .inrow .send:hover{background:#4338CA}
 .toast{position:fixed;right:24px;bottom:24px;background:var(--tx);color:#fff;font-size:13px;font-weight:600;border-radius:10px;padding:10px 18px;display:none;z-index:99;box-shadow:0 8px 24px rgba(15,23,42,.25)}
+.dfoot{font-size:10.5px;color:#94A3B8;line-height:1.6;margin-top:8px}
 svg text{font-family:inherit}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能质检工作台</b><span class="toptag">威贸电子</span>
-<div class="apprchip" id="apprChip" onclick="gotoApproval()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>待人工审批 · 1 项放行</div></div>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能质检分析智能体</b><span class="toptag">威贸电子 · IQC</span>
+<div class="apprchip" id="apprChip" onclick="gotoMarginal()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>临界项待人工确认 · 1 项</div></div>
 
 <div class="kpis">
-<div class="kpi"><b>98%</b><i>▲2pt</i><span>AI vs 人工判定一致率</span></div>
-<div class="kpi"><b>8min</b><i class="dn">▼52min</i><span>检验报告出稿时长</span></div>
-<div class="kpi"><b>-45%</b><span>漏检率（较人工抽检）</span></div>
-<div class="kpi"><b>12</b><span>本周质检批次 · 3 供应商</span></div></div>
+<div class="kpi"><b>≤20h</b><i class="dn">基线 62h/月</i><span>品质部月度工时 · 省 44h（-70%）</span></div>
+<div class="kpi"><b>3min</b><i class="dn">基线 30 分钟</i><span>单份图纸套模板报告（端到端）</span></div>
+<div class="kpi"><b>≥95%</b><span>格式保真一次通过率（保真三查）</span></div>
+<div class="kpi"><b>78%</b><span>批量处理覆盖率（目标 80%）</span></div></div>
 
 <div class="wrap">
 <div class="panel left">
-<h3><svg class="ic" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>来料检验 · 批量处理</h3>
-<div class="drop" id="drop" onclick="addFiles()"><b><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2M12 12v9"/><path d="M16 16l-4-4-4 4"/></svg>上传检验报告文件</b><span class="hint">点击或拖入 · 支持 PDF / Excel / 图片 / ZIP</span><div id="fls" class="fls"></div></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>自动化分析流程</div>
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>批量接入 · 智能体流水线</h3>
+<div class="drop" id="drop" onclick="addFiles()"><b><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2M12 12v9"/><path d="M16 16l-4-4-4 4"/></svg>上传检验报告 / 图纸</b><span class="hint">ZIP / 多文件 · 单批 ≤50 份 · .xls 老格式自动归一 .xlsx</span><div id="fls" class="fls"></div></div>
+<div style="margin-top:9px" class="btnrow"><span class="btn pri" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>开始自动分析</span></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>处理流程</div>
 <div id="stages"></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>按型号拆解 · <span id="mcount" style="color:var(--tx)">待分析</span></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>按 11 位料号拆解 · <span id="mcount" style="color:var(--tx)">待分析</span></div>
 <div class="chips" id="mchips"></div>
-<div style="margin-top:12px" class="btnrow"><span class="btn pri" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>开始自动分析</span></div>
 </div>
 
 <div class="panel mid">
-<div class="tabs"><span class="on" data-t="rpt"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>检验报告 · 按型号</span><span data-t="sup"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>供应商来料质量</span></div>
-<div id="tab-rpt"><div class="empty" id="rptEmpty"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>上传文件并执行分析后<br>按图纸套用模板自动生成检验报告与根因建议</div><div id="rptBody" style="display:none"></div></div>
+<div class="tabs"><span class="on" data-t="rpt"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>检验报告 · 按料号</span><span data-t="led"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8V21H3V8M1 3h22v5H1zM10 12h4"/></svg>来料质量台账</span><span data-t="sup"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>供应商月度统计</span></div>
+<div id="tab-rpt"><div class="empty" id="rptEmpty"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>上传文件执行分析后<br>按「图纸 → 套模板 → 判定引擎」自动出报告</div><div id="rptBody" style="display:none"></div></div>
+<div id="tab-led" style="display:none">
+<h3 style="margin-bottom:2px">来料质量台账<em>拆解 / 判定结果自动追加 · 支撑批次追溯（ISO 9001）</em></h3>
+<div class="led"><table class="ldb"><thead><tr><th>日期</th><th>料号</th><th>物料名称</th><th>供应商</th><th>批次</th><th>检验项</th><th>实测</th><th>判定</th><th>检验员</th></tr></thead><tbody id="ledBody"></tbody></table></div>
+<div class="btnrow" style="margin-top:10px"><span class="btn pri" onclick="toast('月度统计三件套已生成 · XLSX ×1（10 分钟口径，模拟）')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>一键生成月度统计三件套</span><span class="dfoot" style="margin-top:6px">台账覆盖率目标 100%：拆解 / 判定结果随批自动回写</span></div>
+</div>
 <div id="tab-sup" style="display:none">
-<h3 style="margin-bottom:4px">供应商来料质量 · 本季<em>合格率 / 及时率（%）</em></h3>
+<h3 style="margin-bottom:2px">供应商月度质量统计 · 一页版<em>基于台账按月生成</em></h3>
 <div class="supleg"><span><i style="background:#4F46E5"></i>来料合格率</span><span><i style="background:#D97706"></i>交付及时率</span><span><i style="background:#CBD5E1"></i>目标 95%</span></div>
 <div id="gbar"></div>
-<div class="sec" style="margin-top:12px">综合绩效评分（百分制）</div>
+<div class="sec" style="margin-top:10px">供应商绩效评分卡（QDDS 权重）<em>质量 50% · 交付 30% · 响应 20%</em></div>
+<div class="qw">综合分 = <b>合格率×50%</b> + <b>及时率×30%</b> + <b>响应×20%</b>（权重可配置）</div>
 <div id="perfBars"></div>
-<div class="sec" style="margin-top:12px">来料合格率趋势 · 近 8 周<em id="trSup"></em><span class="aleg" id="aleg" style="margin-left:auto"></span></div>
-<svg id="trend" width="100%" height="120"></svg>
+<div class="sec" style="margin-top:8px">来料合格率趋势 · 近 6 个月<em id="trSup"></em><span class="aleg" id="aleg" style="margin-left:auto"></span></div>
+<svg id="trend" width="100%" height="108"></svg>
 <div class="sdt" id="supDetail"></div>
 </div></div>
 
 <div class="panel right">
-<h3><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI 助手 · 质检<em>可执行 · 可修改</em></h3>
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI 助手 · 质检<em>对话触发 · 可执行可修改</em></h3>
 <div class="aiwrap"><div class="msgs" id="msgs"></div>
 <div class="chipcol" id="qchips"></div>
-<div class="inrow"><input id="aiIn" placeholder="输入指令，如：执行分析 / 报告改双语 / 切换 WM-C1206" onkeydown="if(event.key==='Enter')aiSend()"><span class="send" onclick="aiSend()"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+<div class="inrow"><input id="aiIn" placeholder="输入指令，如：执行分析 / 临界项确认 / 查台账" onkeydown="if(event.key==='Enter')aiSend()"><span class="send" onclick="aiSend()"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
 </div></div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
 const MODELS={
- "WM-C0902":{no:"QR-WM-2026-0918-01",batch:"LOT-B2209 · 3,200 件",sup:"供应商 A · 苏州华辰",dwg:"DWG-C0902-R4",tpl:"连接器来料检验模板 V3.2",verdict:"hi",vx:"不合格",
-  items:[["外形尺寸","±0.05mm","3 件超差（0.02mm）","不合格"],["镀层厚度","≥2.5μm","2.1μm","不合格"],["外观（划痕）","无可见划痕","抽检 3 件","不合格"],["导通电阻","≤10mΩ","6.8mΩ","合格"],["盐雾试验","48h 无腐蚀","通过","合格"]],
+ "30210420125":{name:"圆形连接器外壳",no:"QR-2026-0918-01",batch:"LOT-B2209 · 3,200 件",sup:"供应商 A · 苏州华辰",dwg:"DWG-125-R4（图片版）",tpl:"连接器来料检验模板 V3.2",verdict:"hi",vx:"不合格",
+  items:[["外形尺寸（图纸）","±0.05mm","3 件超差 0.02mm","不合格"],["镀层厚度","≥2.5μm","2.1μm","不合格"],["外观（划痕）","无可见划痕","抽检发现 3 件","不合格"],["导通电阻","≤10mΩ","6.8mΩ","合格"],["盐雾试验","48h 无腐蚀","通过","合格"]],
   itemsEn:[["Dimensions","±0.05mm","3 pcs oversize","NG"],["Plating thickness","≥2.5μm","2.1μm","NG"],["Appearance","No visible scratch","3 pcs found","NG"],["Contact resistance","≤10mΩ","6.8mΩ","OK"],["Salt spray","48h no corrosion","Pass","OK"]],
-  root:{c:"镀层槽液浓度衰减",p:"78%",ev:"近 3 批镀层厚度连续下探（2.6→2.3→2.1μm），与供应商 A 槽液更换周期（超期 9 天）吻合；划痕集中于同一包装托盘位。",sug:["槽液浓度补正，更换周期由 14 天缩短至 7 天","供应商 A 首件加测镀层厚度，连续 3 批合格后恢复抽检","该批来料加严检验（AQL 0.65→0.4），划痕批全数复检"]}},
- "WM-C1206":{no:"QR-WM-2026-0918-02",batch:"LOT-B2204 · 1,800 件",sup:"供应商 B · 宁并茂联",dwg:"DWG-C1206-R2",tpl:"连接器来料检验模板 V3.2",verdict:"warn",vx:"让步接收 · 复审中",
-  items:[["插拔力","5-20N","20.6N（临界）","临界"],["绝缘耐压","≥500V","512V","合格"],["接触阻抗","≤30mΩ","24mΩ","合格"],["外观","无变形","合格","合格"],["包装标识","按图纸","合格","合格"]],
-  itemsEn:[["Insertion force","5-20N","20.6N (marginal)","Marginal"],["Dielectric","≥500V","512V","OK"],["Contact impedance","≤30mΩ","24mΩ","OK"],["Appearance","No deformation","OK","OK"],["Packaging","Per drawing","OK","OK"]],
-  root:{c:"端子模具磨损（冲压边缘毛刺）",p:"64%",ev:"插拔力呈单侧上偏，与模具寿命台账（已达 82%）一致；毛刺 0.04mm 接近上限。",sug:["供应商 B 模具检修并提交寿命确认报告","首件插拔力全检，稳定后恢复抽检","模具寿命预警纳入供应商准入条款"]}},
- "WM-B1805":{no:"QR-WM-2026-0918-03",batch:"LOT-B2197 · 5,000 件",sup:"供应商 C · 东莞宏联",dwg:"DWG-B1805-R6",tpl:"线束端子检验模板 V1.8",verdict:"ok",vx:"合格 · 自动放行",
-  items:[["压接高度","按图纸公差","合格","合格"],["拉脱力","≥50N","58N","合格"],["外观","无变形氧化","合格","合格"],["尺寸","±0.1mm","合格","合格"],["包装","按图纸","合格","合格"]],
-  itemsEn:[["Crimp height","Per drawing","OK","OK"],["Pull-off force","≥50N","58N","OK"],["Appearance","No deformation","OK","OK"],["Dimensions","±0.1mm","OK","OK"],["Packaging","Per drawing","OK","OK"]],
-  root:{c:"无需开单",p:"—",ev:"全项合格 · AI 判定与抽检复核一致，自动放行。",sug:["维持现行检验频次","建议将该供应商列入季度免检候选"]}}};
+  rules:[["镀层厚度","标准 ≥2.5μm（图纸注 3） vs 实测 2.1μm","规则：下限负偏差不允许 → 不合格"],["外形尺寸","公差 ±0.05mm vs 3 件超差 0.02mm","规则：超差即拒收 → 不合格"],["外观","无可见划痕（限度样板） vs 3 件","规则：按限度样板判定 → 不合格"]]},
+ "30210630142":{name:"板对板连接器",no:"QR-2026-0918-02",batch:"LOT-B2204 · 1,800 件",sup:"供应商 B · 宁并茂联",dwg:"DWG-142-R2（PDF 版）",tpl:"连接器来料检验模板 V3.2",verdict:"warn",vx:"临界待确认",
+  items:[["插拔力","5-20N","20.6N","临界"],["绝缘耐压（OCR）","≥500V","512V","合格"],["接触阻抗","≤30mΩ","24mΩ","合格"],["外观","无变形","合格","合格"],["包装标识","按图纸","合格","合格"]],
+  itemsEn:[["Insertion force","5-20N","20.6N","Marginal"],["Dielectric (OCR)","≥500V","512V","OK"],["Contact impedance","≤30mΩ","24mΩ","OK"],["Appearance","No deformation","OK","OK"],["Packaging","Per drawing","OK","OK"]],
+  rules:[["插拔力","标准 5-20N vs 实测 20.6N","超上限 +3%，落入 ±5% 临界带宽 → 临界，待人工确认"],["绝缘耐压","标准 ≥500V vs 实测 512V","规则：高于下限 → 合格（OCR 低置信已标黄）"]]},
+ "40110810237":{name:"线束端子",no:"QR-2026-0918-03",batch:"LOT-B2197 · 5,000 件",sup:"供应商 C · 东莞宏联",dwg:"DWG-237-R6（图片版）",tpl:"线束端子检验模板 V1.8",verdict:"ok",vx:"合格 · 自动放行",
+  items:[["压接高度（OCR）","按图纸公差","合格","合格"],["拉脱力","≥50N","58N","合格"],["外观","无变形氧化","合格","合格"],["尺寸","±0.1mm","合格","合格"],["包装","按图纸","合格","合格"]],
+  itemsEn:[["Crimp height (OCR)","Per drawing","OK","OK"],["Pull-off force","≥50N","58N","OK"],["Appearance","No deformation","OK","OK"],["Dimensions","±0.1mm","OK","OK"],["Packaging","Per drawing","OK","OK"]],
+  rules:[["全项","各检验项均落在公差带内","规则引擎全量比对通过 → 合格，自动放行"]]}};
+const OCR_LOW={"30210630142":[1],"40110810237":[0]};
 const SUPS={
- "供应商 A":{full:"供应商 A · 苏州华辰",pass:91.2,ontime:96.4,perf:87,lots:38,ng:5,top:"镀层偏薄 · 外观划痕",act:"来料加严检验（AQL 0.65→0.4）+ 8D 整改跟踪 + 周度对账评审",trend:[93.5,92.8,92.1,91.6,90.9,91.8,91.4,91.2]},
- "供应商 B":{full:"供应商 B · 宁并茂联",pass:96.8,ontime:92.1,perf:91,lots:26,ng:1,top:"尺寸临界 · 插拔力上偏",act:"交期专项改善（承诺 95%+），技术侧跟踪模具寿命",trend:[95.9,96.4,96.1,97.0,96.6,97.2,96.9,96.8]},
- "供应商 C":{full:"供应商 C · 东莞宏联",pass:99.1,ontime:98.5,perf:96,lots:31,ng:0,top:"无显著缺陷",act:"维持现行频次，列入季度免检候选",trend:[98.6,98.9,99.0,98.7,99.2,99.0,99.1,99.1]}};
+ "供应商 A":{full:"供应商 A · 苏州华辰",pass:91.2,ontime:96.4,resp:82,top:"镀层偏薄 · 外观划痕",disp:"退货 + 挑选使用（加严检验），启动 8D 跟踪",trend:[93.5,92.8,92.1,91.6,90.9,91.8,91.4,91.2]},
+ "供应商 B":{full:"供应商 B · 宁并茂联",pass:96.8,ontime:92.1,resp:90,top:"尺寸临界 · 插拔力上偏",disp:"让步接收（临界项确认后），交期专项改善",trend:[95.9,96.4,96.1,97.0,96.6,97.2,96.9,96.8]},
+ "供应商 C":{full:"供应商 C · 东莞宏联",pass:99.1,ontime:98.5,resp:96,top:"无显著缺陷",disp:"维持现行频次，列入季度免检候选",trend:[98.6,98.9,99.0,98.7,99.2,99.0,99.1,99.1]}};
 const STAGES=[
- ["格式识别与解析","M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2","PDF ×1 · Excel ×1 · 图片 OCR ×1 · 全部解析成功"],
- ["按型号拆解归类","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","识别 3 个型号 · 107 项检验数据（WM-C0902 ×42 / WM-C1206 ×38 / WM-B1805 ×27）"],
- ["图纸匹配与模板套用","M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z","图纸匹配 3/3 · 套用《连接器来料检验模板 V3.2》《线束端子检验模板 V1.8》"],
- ["数据校验与 AI 复判","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","临界/疑似超标 2 项 → AI 交叉复核确认"],
- ["检验报告生成","M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6","3 份检验报告 + 根因建议 · 待质量部复核签发"]];
-const FILES=[["IQC检验报告_0918批.pdf","PDF"],["来料检验数据_3供应商.xlsx","XLSX"],["外观抽检照片_B2209.zip","IMG"]];
-let cur="WM-C0902",bi=false,ran=false,pushed=false;
+ ["批量接入与格式归一","M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2","PDF ×1 · Excel ×1（.xls 已无损转 .xlsx）· 图片 OCR ×1 · 逐文件状态回执"],
+ ["按 11 位料号拆解 · 保真三查","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","拆出 3 个料号 107 项数据；三查：可打开无弹窗 ✓ / 徽章勾选框合并单元格在位 ✓ / 行格式与模板一致 ✓"],
+ ["图纸尺寸提取 → 套模板出报告","M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z","图纸（图片/PDF）识别尺寸公差 → 匹配既有模板 → 写入实测；低置信尺寸项已标黄"],
+ ["判定引擎全量比对","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","公差 / 允收规则显式化比对 → 合格 / 不合格 / 临界三态（AI 只标记不裁决）"],
+ ["临界项与低置信项 → 人工确认","M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11","临界 1 项 + OCR 低置信 2 项推送检验员，确认后签字留痕回写台账"],
+ ["结果入台账 · 月度统计一键出表","M21 8V21H3V8M1 3h22v5H1zM10 12h4","拆解 / 判定结果 100% 追加台账；月末一键生成供应商统计三件套"]];
+const FILES=[["IQC检验报告_0918批.xls","XLS 转换中"],["来料检验数据_3供应商.xlsx","XLSX"],["外观抽检照片_B2209.zip","IMG"]];
+const LEDGER0=[
+ ["09-18","30210420125","圆形连接器外壳","供应商 A","LOT-B2209","镀层厚度","2.1μm","不合格","系统判定"],
+ ["09-18","30210420125","圆形连接器外壳","供应商 A","LOT-B2209","外形尺寸","3 件超差","不合格","系统判定"],
+ ["09-18","30210630142","板对板连接器","供应商 B","LOT-B2204","插拔力","20.6N","临界","待人工确认"],
+ ["09-18","40110810237","线束端子","供应商 C","LOT-B2197","拉脱力","58N","合格","系统判定"],
+ ["09-17","30210630142","板对板连接器","供应商 B","LOT-B2201","接触阻抗","24mΩ","合格","系统判定"],
+ ["09-16","30210420125","圆形连接器外壳","供应商 A","LOT-B2188","镀层厚度","2.3μm","不合格","系统判定"]];
+let cur="30210420125",bi=false,ran=false,ledger=LEDGER0.map(r=>r.slice());
+let mgDone=false,mgBy=null;
 
-/* ─── 左栏：上传 + 流水线 ─── */
+/* ─── 左栏 ─── */
 function addFiles(){const box=document.getElementById("fls");
  if(box.children.length)return;
  FILES.forEach((f,i)=>setTimeout(()=>{document.getElementById("drop").classList.add("up");
   const d=document.createElement("div");d.className="fl";
-  d.innerHTML=`<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>${f[0]}</b><span class="ext">${f[1]}</span><span class="fs run">解析中…</span>`;
+  d.innerHTML=`<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>${f[0]}</b><span class="ext">${f[1].split(" ")[0]}</span><span class="fs run">处理中…</span>`;
   box.appendChild(d);
-  setTimeout(()=>{d.querySelector(".fs").className="fs ok";d.querySelector(".fs").textContent="已解析 ✓"},700+i*250)},i*260));}
+  setTimeout(()=>{const fs=d.querySelector(".fs");
+   if(f[1].includes("转换")){fs.className="fs conv";fs.textContent=".xls→.xlsx ✓"}else{fs.className="fs ok";fs.textContent="已解析 ✓"}},700+i*250)},i*260))}
 function renderStages(st){const box=document.getElementById("stages");box.innerHTML="";
  STAGES.forEach((s,i)=>{const cls=st>i?"done":st===i?"run":"";
   box.innerHTML+=`<div class="stage ${cls}"><div class="sic"><svg class="ic" viewBox="0 0 24 24">${st>i?'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3"/>':`<path d="${s[1]}"/>`}</svg></div>
-  <div class="sbody"><div class="sname">${s[0]}<span class="sstate">${st>i?"✓ 完成":st===i?'<span class="dot"></span>执行中':i===0?"待执行":"排队"}</span></div><div class="ssum">${s[2]}</div></div></div>`})}
-function runPipeline(){if(ran){renderStages(0);ran=false;setTimeout(runPipeline,80);return}
+  <div class="sbody"><div class="sname">${s[0]}<span class="sstate">${st>i?"✓":st===i?'<span class="dot"></span>执行中':"排队"}</span></div><div class="ssum">${s[2]}</div></div></div>`})}
+function runPipeline(){if(ran){ledger=LEDGER0.map(r=>r.slice());mgDone=false;mgBy=null;renderLedger();
+ document.getElementById("apprChip").className="apprchip";document.getElementById("apprChip").innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>临界项待人工确认 · 1 项';
+ renderStages(0);ran=false;setTimeout(runPipeline,80);return}
  ran=true;document.getElementById("runBtn").innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新执行分析';
- document.getElementById("mcount").textContent="识别 3 个型号";
+ document.getElementById("mcount").textContent="拆出 3 个料号";
  let st=0;renderStages(0);
  const step=()=>{if(st>STAGES.length){finishRun();return}
-  renderStages(st);st++;setTimeout(step,st===STAGES.length+1?500:1150)};step()}
+  renderStages(st);st++;setTimeout(step,st===STAGES.length+1?500:1000)};step()}
 function finishRun(){renderStages(STAGES.length);
  const mc=document.getElementById("mchips");
- mc.innerHTML=Object.keys(MODELS).map(m=>`<span class="mchip ${m===cur?"on":""}" data-m="${m}">${m} <span style="color:var(--mut)">· {{n}} 项</span></span>`).join("")
-  .replace("{{n}}","42").replace("{{n}}","38").replace("{{n}}","27");
+ mc.innerHTML=Object.keys(MODELS).map(m=>`<span class="mchip ${m===cur?"on":""}" data-m="${m}">${m} <span style="color:var(--mut)">· ${MODELS[m].name}</span></span>`).join("");
  mc.querySelectorAll(".mchip").forEach(c=>c.onclick=()=>{cur=c.dataset.m;syncChips();renderReport()});
- toast("分析完成 · 3 份检验报告已生成");renderReport();syncChips();
- aiSay("<b>分析完成。</b>3 个型号 107 项数据已按图纸套用模板出稿：<b>WM-C0902 不合格</b>（镀层+划痕）、WM-C1206 让步接收（插拔力临界）、WM-B1805 合格放行。已生成根因建议，可回复「双语」切换报告语言。")}
+ toast("分析完成 · 3 份报告 + 台账已回写");renderReport();renderLedger();syncChips();
+ aiSay("<b>分析完成。</b>3 个料号按图纸套模板出稿：30210420125 <b>不合格</b>（判定依据已附规则引用）、30210630142 <b>临界 1 项待你确认</b>（插拔力超上限 +3%，±5% 带宽内）、40110810237 合格自动放行。结果已 100% 回写台账。")}
 function syncChips(){document.querySelectorAll("#mchips .mchip").forEach(c=>c.classList.toggle("on",c.dataset.m===cur))}
 
-/* ─── 中栏：报告 ─── */
+/* ─── 报告 ─── */
 function renderReport(){const d=MODELS[cur];const body=document.getElementById("rptBody");
  document.getElementById("rptEmpty").style.display="none";body.style.display="block";
  const items=bi?d.itemsEn:d.items;
- const L=bi?{no:"Report No.",batch:"Batch",sup:"Supplier",dwg:"Drawing",tpl:"Template",it:"Inspection Items",std:"Standard",ms:"Measured",vd:"Verdict",rc:"AI Root Cause Analysis",ev:"Evidence",sug:"Recommended Actions",ok:"OK",ng:"NG"}:
- {no:"报告编号",batch:"批次",sup:"供应商",dwg:"图纸",tpl:"模板",it:"检验项与结论",std:"标准要求",ms:"实测结果",vd:"单项判定",rc:"AI 根因分析与建议",ev:"判定依据",sug:"建议处置",ok:"合格",ng:"不合格"};
- body.innerHTML=`<div class="rpt"><div class="rpth"><b>${cur}</b><span class="no">${L.no} ${d.no}${bi?"":" · V1.0"}</span><span class="badge ${d.verdict}">${d.vx}</span></div>
+ const L=bi?{no:"Report No.",batch:"Batch",sup:"Supplier",dwg:"Drawing",tpl:"Template",std:"Standard",ms:"Measured",vd:"Verdict",jr:"Rule-based Judgment Basis",sug2:"Disposition Options",cf:"Confirm",cn:"Reject",ok:"OK",ng:"NG"}:
+ {no:"报告编号",batch:"批次",sup:"供应商",dwg:"图纸",tpl:"模板",std:"标准要求",ms:"实测结果",vd:"判定",jr:"判定依据（规则引擎 · 公差 vs 实测）",sug2:"处置选项",cf:"确认合格",cn:"判不合格",ok:"合格",ng:"不合格"};
+ const lows=OCR_LOW[cur]||[];
+ body.innerHTML=`<div class="rpt"><div class="rpth"><b>${cur} · ${d.name}</b><span class="no">${L.no} ${d.no}${bi?"":" · V1.0"}</span><span class="badge ${d.verdict==="warn"&&!mgDone?"warn":d.verdict==="hi"?"hi":"ok"}">${d.verdict==="warn"?(mgDone?"临界 · 已确认："+mgBy:"临界待确认"):d.vx}</span></div>
  <div class="rmeta"><span>${L.batch} <b>${d.batch}</b></span><span>${L.sup} <b>${d.sup}</b></span><span>${L.dwg} <b>${d.dwg}</b></span><span>${L.tpl} <b>${d.tpl}</b></span></div>
  <table class="itt"><tr><th>${bi?"Item":"检验项"}</th><th>${L.std}</th><th>${L.ms}</th><th>${L.vd}</th></tr>
- ${items.map((it,i)=>{const ng=it[3]!=="合格"&&it[3]!=="OK";return `<tr class="${ng?"ng":""}"><td>${it[0]}${bi?'':`<span class="en">${d.itemsEn[i][0]}</span>`}</td><td class="mut">${it[1]}</td><td>${it[2]}</td><td style="color:${ng?"var(--bad)":"var(--ok)"};font-weight:600">${it[3]}</td></tr>`}).join("")}</table></div>
- <div class="root"><div class="rt"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>${L.rc}<span class="p">${d.root.c==="无需开单"?"自动放行":"置信度 "+d.root.p}</span></div>
- <div class="ev">${L.ev}：${d.root.ev}</div>
- <div style="font-size:11.5px;color:var(--mut);font-weight:600">${L.sug}</div><ol>${d.root.sug.map(s=>`<li>${s}</li>`).join("")}</ol></div>
- <div class="btnrow" style="margin-top:12px">
- <span class="btn ghost" onclick="regen()"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新生成</span>
+ ${items.map((it,i)=>{const v=it[3];const cls=v==="合格"||v==="OK"?"":v==="临界"||v==="Marginal"?(mgDone?"":"mg"):"ng";
+  const vdColor=v==="合格"||v==="OK"?"var(--ok)":(v==="临界"||v==="Marginal")?"var(--warn)":"var(--bad)";
+  const lowTag=lows.includes(i)&&!bi?'<span class="ltag">OCR 低置信 · 建议复核</span>':lows.includes(i)?'<span class="ltag">low-conf</span>':"";
+  return `<tr class="${cls}"><td>${it[0]}${bi?"":`<span class="en">${d.itemsEn[i][0]}</span>`}</td><td class="mut">${it[1]}</td><td>${it[2]}${lowTag}</td><td style="color:${vdColor};font-weight:600">${v}</td></tr>`}).join("")}</table></div>
+ <div class="judge"><div class="jt"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>${L.jr}<span class="p">规则已显式化</span></div>
+ <ol>${d.rules.map(r=>`<li><b>${r[0]}</b>：${r[1]} — <span>${r[2]}</span></li>`).join("")}</ol>
+ <div class="dfoot">公差上下限 / 允收准则 / 抽样要求均可在规则库配置 · 临界带宽默认 ±5%（可调）· AI 只标记不裁决，放行结论留人工签字位</div></div>
+ ${d.verdict==="warn"&&!mgDone?`<div class="mgbox"><div class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>临界项人工确认（确认后签字留痕回写台账）</div>
+ <div class="mgitem"><span class="mv"><b>插拔力</b>：标准 5-20N vs 实测 20.6N（超上限 +3%，处于 ±5% 临界带宽）<span>　·　批次 LOT-B2204 · 供应商 B</span></span>
+ <span class="btn pri sm" onclick="mgConfirm('confirm')">${L.cf}</span><span class="btn ghost sm" onclick="mgConfirm('reject')">${L.cn}</span></div></div>`:
+ d.verdict==="warn"?`<div class="mgdone" style="margin-top:10px">✓ 临界项已由 ${mgBy} 确认（签字留痕）· 结果已回写台账</div>`:""}
+ <div class="btnrow" style="margin-top:11px">
+ <span class="btn ghost" onclick="regen()"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新出报告</span>
  <span class="btn ghost" onclick="toggleBi()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>${bi?"中文版":"中英双语"}</span>
- <span class="btn ghost" onclick="toast('报告已导出 · PDF ×1（模拟）')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>导出 PDF</span>
- ${d.verdict==="ok"?"":`<span class="btn amber ${pushed?"ok":""}" id="apprBtn" onclick="approve()" style="margin-left:auto">${pushed?"✓ 已批准放行 · 质量部 王工":"高风险放行 / 停线决策 → 人工审批"}</span>`}</div>`}
-function regen(){const d=MODELS[cur];if(d.no.includes("V2"))d.no=d.no.replace("-V2","");else d.no=d.no+"-V2";renderReport();toast("报告已按最新数据重新生成 · "+d.no)}
-function toggleBi(){bi=!bi;renderReport();if(document.getElementById("tab-sup").style.display==="none")toast(bi?"检验报告已切换为中英双语":"检验报告已切回中文版")}
-function approve(){pushed=true;renderReport();document.getElementById("apprChip").className="apprchip done";document.getElementById("apprChip").innerHTML="✓ 放行审批已完成 · 质量部 王工 09:41";toast("已批准放行 · 审计留痕已记录")}
-function gotoApproval(){switchTab("rpt");cur="WM-C0902";syncChips();renderReport();const b=document.getElementById("apprBtn");if(b){b.style.outline="2px solid #FDE68A";setTimeout(()=>b.style.outline="",1600)}}
+ <span class="btn ghost" onclick="toast('报告已导出 · XLSX（可选 PDF）· 模拟')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>导出 XLSX</span></div>`}
+function mgConfirm(kind){mgDone=true;mgBy=kind==="confirm"?"检验员 王工（确认让步接收）":"检验员 王工（判不合格）";
+ const d=MODELS[cur];const vd=kind==="confirm"?"让步接收":"不合格";
+ ledger.unshift(["09-18",cur,d.name,"供应商 B","LOT-B2204","插拔力","20.6N",vd,"王工（签字）"]);
+ renderLedger();renderReport();
+ document.getElementById("apprChip").className="apprchip done";document.getElementById("apprChip").innerHTML="✓ 临界项已确认 · 签字留痕已回写台账";
+ toast("确认记录已留痕 · 台账已回写")}
+function gotoMarginal(){switchTab("rpt");cur="30210630142";syncChips();renderReport();
+ const el=document.querySelector(".mgbox");if(el)el.style.outline="2px solid #FDE68A",setTimeout(()=>el.style.outline="",1600)}
+function regen(){const d=MODELS[cur];d.no=d.no.includes("V2")?d.no.replace("-V2",""):d.no+"-V2";renderReport();toast("报告已重新生成 · "+d.no)}
+function toggleBi(){bi=!bi;renderReport();toast(bi?"检验报告已切换为中英双语":"检验报告已切回中文版")}
 
-/* ─── 中栏：供应商统计 ─── */
+/* ─── 台账 ─── */
+function renderLedger(){const tb=document.getElementById("ledBody");
+ tb.innerHTML=ledger.slice(0,8).map((r,i)=>{const vc=r[7]==="合格"?"vg":r[7]==="临界"||r[7].includes("让步")?"vm":"vb";
+  return `<tr class="${i===0&&r[8]&&r[8].includes("王工")?"new":""}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td class="${vc}">${r[7]}</td><td>${r[8]}</td></tr>`}).join("")}
+
+/* ─── 供应商统计 ─── */
 let selSup="供应商 A";
+function qdds(s){return Math.round(s.pass*0.5+s.ontime*0.3+s.resp*0.2)}
 function renderSup(){const g=document.getElementById("gbar");
- const names=Object.keys(SUPS),W=g.clientWidth||560,H=190,P={l:30,b:24,t:14};
+ const names=Object.keys(SUPS),W=g.clientWidth||560,H=180,P={l:30,b:22,t:14};
  const mx=100,y=v=>P.t+(H-P.t-P.b)*(1-v/mx),gw=(W-P.l)/names.length;
  let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-6}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4" stroke-width="1.2"/><text x="${W-8}" y="${y(95)-4}" font-size="10" fill="#94A3B8" text-anchor="end">目标 95</text>`;
  [0,25,50,75,100].forEach(t=>{s+=`<line x1="${P.l}" y1="${y(t)}" x2="${W-6}" y2="${y(t)}" stroke="#EEF2F7" stroke-width="1"/><text x="${P.l-6}" y="${y(t)+3.5}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
@@ -267,29 +321,28 @@ function renderSup(){const g=document.getElementById("gbar");
   <text x="${cx+bw/2+3}" y="${y(d.ontime)-5}" font-size="10.5" font-weight="700" fill="#D97706" text-anchor="middle">${d.ontime}</text>
   <text x="${cx}" y="${H-7}" font-size="11" fill="${selSup===n?"#0F172A":"#5B6B84"}" text-anchor="middle" font-weight="${selSup===n?"700":"400"}">${n}</text></g>`});
  g.innerHTML=`<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
- const pb=document.getElementById("perfBars");const rank=Object.entries(SUPS).sort((a,b)=>b[1].perf-a[1].perf);
+ const pb=document.getElementById("perfBars");const rank=Object.entries(SUPS).sort((a,b)=>qdds(b[1])-qdds(a[1]));
  const shade=["#312E81","#4F46E5","#818CF8"];
- pb.innerHTML=rank.map((r,i)=>`<div class="sbar"><b>${r[0]}</b><div class="tr"><i style="width:${r[1].perf}%;background:${shade[i]}"></i></div><span class="p">${r[1].perf}</span></div>`).join("");
+ pb.innerHTML=rank.map((r,i)=>`<div class="sbar"><b>${r[0]}</b><div class="tr"><i style="width:${qdds(r[1])}%;background:${shade[i]}"></i></div><span class="p">${qdds(r[1])}</span></div>`).join("");
  const lg=document.getElementById("aleg");
  lg.innerHTML=names.map(n=>`<span class="${n===selSup?"on":""}" onclick="pickSup('${n}')"><i style="width:8px;height:8px;border-radius:3px;background:${n===selSup?"#4F46E5":"#CBD5E1"};display:inline-block"></i>${n}</span>`).join("");
  renderTrend();renderSupDetail()}
 function renderTrend(){const svg=document.getElementById("trend");const d=SUPS[selSup];
- const W=svg.clientWidth||560,H=120,P={l:28,b:18,t:10},lo=88,hi=100;
- const x=i=>P.l+i*(W-P.l-8)/7,y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
+ const W=svg.clientWidth||560,H=108,P={l:26,b:16,t:8},lo=88,hi=100;
+ const x=i=>P.l+i*(W-P.l-8)/(d.trend.length-1),y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
  let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-8}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4"/><text x="${W-10}" y="${y(95)-4}" font-size="9.5" fill="#94A3B8" text-anchor="end">目标 95%</text>`;
  [88,92,96,100].forEach(t=>{s+=`<text x="${P.l-5}" y="${y(t)+3}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
  s+=`<polyline points="${d.trend.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.4" stroke-linecap="round"/>`;
- s+=d.trend.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#fff" stroke="#4F46E5" stroke-width="2"/><text x="${x(i)}" y="${H-4}" font-size="9" fill="#94A3B8" text-anchor="middle">W${i+1}</text>`).join("");
- svg.innerHTML=s;document.getElementById("trSup").textContent="· "+SUPS[selSup].full}
+ s+=d.trend.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.8" fill="#fff" stroke="#4F46E5" stroke-width="2"/>`).join("");
+ svg.innerHTML=s;document.getElementById("trSup").textContent="· "+d.full}
 function renderSupDetail(){const d=SUPS[selSup];const below=d.pass<95;
- document.getElementById("supDetail").innerHTML=`<b>${d.full}</b>　<span class="k">本季批次 ${d.lots} · 不合格 ${d.ng} 批 · 主要缺陷：${d.top}</span>${below?'<span class="ng">　合格率低于目标线</span>':""}
- <div class="act">处置建议：${d.act}</div>`}
+ document.getElementById("supDetail").innerHTML=`<b>${d.full}</b>　<span class="k">综合绩效 ${qdds(d)} 分 · 主要缺陷：${d.top}</span>${below?'<span class="ng">　合格率低于目标线</span>':""}
+ <div class="act">处置选项（引用规则）：${d.disp}</div>`}
 function pickSup(n){selSup=n;renderSup()}
 
 /* ─── 标签页 ─── */
 function switchTab(t){document.querySelectorAll(".tabs span").forEach(x=>x.classList.toggle("on",x.dataset.t===t));
- document.getElementById("tab-rpt").style.display=t==="rpt"?"block":"none";
- document.getElementById("tab-sup").style.display=t==="sup"?"block":"none";
+ ["rpt","led","sup"].forEach(k=>document.getElementById("tab-"+k).style.display=k===t?"block":"none");
  if(t==="sup")renderSup()}
 document.querySelectorAll(".tabs span").forEach(s=>s.onclick=()=>switchTab(s.dataset.t));
 
@@ -306,25 +359,33 @@ function aiSend(){const inp=document.getElementById("aiIn");const t=inp.value.tr
  box.appendChild(ty);box.scrollTop=box.scrollHeight;
  setTimeout(()=>{ty.remove();route(t)},650)}
 function route(t){
- if(/执行|开始|分析|跑/.test(t)){if(!document.getElementById("fls").children.length)addFiles();
-  aiSay("收到，按最佳实践流程执行批量分析：格式解析 → 按型号拆解 → 图纸匹配模板 → 数据校验复判 → 生成报告与根因建议。","已开始执行");runPipeline();return}
- if(/双语|英文|中英/.test(t)){if(!bi)toggleBi();aiSay("已将当前检验报告（"+cur+"）切换为<b>中英双语版</b>，检验项名称与结论均已对照翻译，可直接导出 PDF 随货发给国外客户。");return}
- if(/重新生成|重出|再生成/.test(t)){regen();aiSay("已重新生成 <b>"+cur+"</b> 检验报告（"+MODELS[cur].no+"），按最新解析数据复核，编号已升版。");return}
- if(/标红|低|合格率|供应商/.test(t)){switchTab("sup");selSup="供应商 A";renderSup();
-  aiSay("已定位：<b>供应商 A 合格率 91.2%</b>，低于目标线 95%（近 8 周持续下探）。已给出处置建议：加严检验 + 8D 整改跟踪，详见右下明细卡。");return}
- const m=t.match(/WM-[A-Z0-9]+/i);
- if(m||/型号|切换/.test(t)){const k=m?Object.keys(MODELS).find(x=>x.toLowerCase()===m[0].toLowerCase()):cur;
+ if(/临界|确认/.test(t)){switchTab("rpt");cur="30210630142";syncChips();renderReport();
+  if(mgDone)aiSay("临界项已处理：<b>"+mgBy+"</b>，结果已回写台账，无待办。");
+  else{aiSay("临界项 <b>1 项</b>：30210630142 插拔力 20.6N（标准 5-20N，超上限 +3%，±5% 带宽内）。<b>AI 只标记不裁决</b>——请你在报告页点「确认合格」或「判不合格」，确认后签字留痕并回写台账。","已定位临界项");
+   const el=document.querySelector(".mgbox");if(el)el.style.outline="2px solid #FDE68A",setTimeout(()=>el.style.outline="",1600)}return}
+ if(/台账|追溯/.test(t)){switchTab("led");
+  aiSay("台账当前 <b>"+ledger.length+" 条</b>（今日 +3 条为本次分析回写）。字段：日期 / 料号 / 物料名称 / 供应商 / 批次 / 检验项 / 实测 / 判定 / 检验员。覆盖率目标 <b>100%</b>，支撑 ISO 9001 批次追溯。");return}
+ if(/双语|英文|中英/.test(t)){if(!bi)toggleBi();aiSay("已将当前报告（"+cur+"）切换为<b>中英双语版</b>，可导出 XLSX（可选 PDF）。");return}
+ if(/重新生成|重出|再生成/.test(t)){regen();aiSay("已重新出 <b>"+cur+"</b> 报告（"+MODELS[cur].no+"），编号已升版。");return}
+ if(/依据|规则|根因|8D/.test(t)){aiSay("当前 MVP 采用<b>判定规则引擎</b>：判定依据=图纸公差 vs 实测（规则可配置），临界项人工确认。<b>根因分析与 8D 初稿属二期</b>，待台账数据积累 2–3 个月后启动。");return}
+ if(/月度|统计|出表/.test(t)){switchTab("led");
+  aiSay("月度统计三件套已可一键生成：合格率 / 及时率（95% 目标线）、QDDS 绩效评分卡（质量 50 / 交付 30 / 响应 20）、近 6 月趋势，<b>半天 → 10 分钟</b>。","已切到台账页");return}
+ if(/合格率|标红|供应商/.test(t)){switchTab("sup");selSup="供应商 A";renderSup();
+  aiSay("已定位：<b>供应商 A 合格率 91.2%</b>，低于 95% 目标线。处置选项（引用规则）：<b>退货 + 挑选使用</b>，加严检验并启动 8D 跟踪。");return}
+ const m=t.match(/\d{11}/);
+ if(m||/切换|料号/.test(t)){const k=m?Object.keys(MODELS).find(x=>x===m[0]):cur;
   if(k){cur=k;syncChips();switchTab("rpt");renderReport();
-   aiSay("已切换到 <b>"+k+"</b>：判定 <b>"+MODELS[k].vx+"</b>"+(MODELS[k].verdict==="ok"?"，全项合格无需开单。":"，不合格项已在报告中标红，附根因与处置建议。"));return}}
- if(/根因|原因|建议/.test(t)){switchTab("rpt");renderReport();
-  aiSay("当前 <b>"+cur+"</b> 根因：<b>"+MODELS[cur].root.c+"</b>（置信度 "+MODELS[cur].root.p+"）。建议已列在报告下方，共 "+MODELS[cur].root.sug.length+" 条。");return}
- if(/导出|下载|PDF/.test(t)){toast("报告已导出 · PDF ×1（模拟）");aiSay("已导出当前报告为 PDF。");return}
- aiSay("已收到。我可以直接执行：回复「<b>执行分析</b>」「重新生成报告」「报告改双语」「标红低合格率供应商」「切换 WM-C1206」，也可以让我修改报告内容后再出稿。")}
-const QCHIPS=["执行分析","报告改双语","标红低合格率供应商","切换 WM-C1206","重新生成报告"];
+   aiSay("已切换到料号 <b>"+k+"（"+MODELS[k].name+"）</b>：判定 <b>"+(MODELS[k].verdict==="warn"?(mgDone?"临界已确认":"临界待确认"):MODELS[k].vx)+"</b>。");return}}
+ if(/导出|下载/.test(t)){toast("报告已导出 · XLSX（模拟）");aiSay("已导出当前报告 XLSX。");return}
+ if(/执行|开始|分析|跑/.test(t)){if(!document.getElementById("fls").children.length)addFiles();
+  aiSay("收到，按 MVP 流程执行：格式归一 → 料号拆解（保真三查）→ 图纸套模板 → 判定引擎比对 → 临界项人工确认 → 入台账。","已开始执行");runPipeline();return}
+ aiSay("已收到。我可以直接执行：回复「<b>执行分析</b>」「临界项确认」「查台账」「报告改双语」「标红低合格率供应商」「月度统计出表」，也可以直接给 11 位料号切换报告。")}
+const QCHIPS=["执行分析","临界项确认","查台账","报告改双语","标红低合格率供应商","月度统计出表"];
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
-renderStages(0);renderReport();pushMsg("ai","你好，我是质检 AI 助手。上传检验报告后我可以<b>按最佳实践流程自动分析</b>，也可以按你的指令<b>执行与修改</b>——试试点下方快捷指令，或直接输入。");
+renderStages(0);renderReport();renderLedger();
+pushMsg("ai","你好，我是质检分析智能体。上传检验报告后我按 MVP 流程自动处理：<b>格式归一 → 料号拆解（保真三查）→ 图纸套模板 → 规则引擎判定 → 临界项交你确认 → 回写台账</b>。试试点下方快捷指令，或直接输入。");
 window.addEventListener("resize",()=>{if(document.getElementById("tab-sup").style.display!=="none")renderSup()});
 setTimeout(()=>{addFiles();setTimeout(runPipeline,1000)},600);
 </script></body></html>
