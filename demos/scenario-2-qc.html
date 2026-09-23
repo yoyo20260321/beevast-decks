@@ -1,137 +1,330 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 质量分析看板</title>
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 智能质检工作台（威贸电子）</title>
 <style>
-:root{--bg:#15171C;--pan:#1D2027;--pan2:#262A33;--bd:#333845;--ac:#F59E0B;--ac2:#FBBF24;--tx:#F3F4F6;--mut:#9CA3AF}
+:root{--bg:#F6F7FB;--pan:#FFFFFF;--pan2:#F8FAFC;--bd:#E2E8F0;--ac:#4F46E5;--ac2:#818CF8;--blue:#2563EB;--tx:#0F172A;--mut:#5B6B84;--ok:#15803D;--okbg:#F0FDF4;--warn:#B45309;--warnbg:#FFFBEB;--bad:#B91C1C;--badbg:#FEF2F2;--glow:rgba(99,102,241,.14)}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
 body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.top{display:flex;align-items:center;gap:14px;background:var(--pan);padding:12px 22px;border-bottom:1px solid var(--bd)}
-.logo{width:14px;height:14px;background:var(--ac);border-radius:4px}
-.top b{font-size:16px}.env{font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:12px;padding:3px 12px;margin-left:8px}
-.top .appr{margin-left:auto;font-size:12px;color:var(--ac2)}
-.kpis{display:flex;gap:14px;padding:16px 22px}
-.kpi{flex:1;background:var(--pan2);border:1px solid var(--bd);border-radius:12px;padding:14px 18px}
-.kpi b{font-size:26px;color:var(--ac)}.kpi i{font-style:normal;font-size:13px;color:#4AD98A;margin-left:8px}
-.kpi span{display:block;font-size:12.5px;color:var(--mut);margin-top:4px}
-.wrap{display:flex;flex:1;gap:16px;padding:0 22px 18px;min-height:0;overflow:hidden}
-.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;overflow:auto}
-.panel h3{font-size:14px;color:var(--tx);margin-bottom:12px;font-weight:600}
-.left{width:290px}.mid{flex:1.15}.right{width:340px}
-.lot{background:var(--pan2);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:1px solid transparent}
-.lot.on{border-color:var(--ac)}
-.lot .id{font-weight:700;font-size:13.5px}.lot .id i{font-style:normal;font-size:11px;border-radius:8px;padding:2px 8px;margin-left:8px}
-.hi{background:#3A1420;color:#F87171}.warn{background:#3A2E12;color:#FBBF24}.ok{background:#12321F;color:#34D399}
-.lot .m{font-size:12px;color:var(--mut);margin-top:5px}
+.ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.lg{width:20px;height:20px}
+.top{display:flex;align-items:center;gap:12px;background:var(--pan);padding:11px 22px;border-bottom:1px solid var(--bd)}
+.logo{width:16px;height:16px;background:var(--ac);border-radius:5px}
+.top b{font-size:16px}
+.toptag{font-size:12px;color:var(--ac);background:#EEF2FF;border:1px solid #E0E7FF;border-radius:9px;padding:3px 11px;font-weight:600}
+.apprchip{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--warn);background:var(--warnbg);border:1px solid #FDE68A;border-radius:9px;padding:5px 12px;cursor:pointer}
+.apprchip.done{color:var(--ok);background:var(--okbg);border-color:#BBF7D0}
+.kpis{display:flex;gap:14px;padding:14px 22px 0}
+.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:12px 18px}
+.kpi b{font-size:24px;color:var(--ac)}
+.kpi i{font-style:normal;font-size:12px;margin-left:8px;color:var(--ok)}
+.kpi i.dn{color:var(--bad)}
+.kpi span{display:block;font-size:12px;color:var(--mut);margin-top:3px}
+.wrap{display:flex;flex:1;gap:14px;padding:14px 22px 16px;min-height:0;overflow:hidden}
+.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
+.panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.panel h3 em{font-style:normal;font-size:11px;color:var(--mut);font-weight:400}
+.left{width:330px;flex:none}.mid{flex:1.25;min-width:0}.right{width:350px;flex:none}
+.sec{font-size:12px;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px;margin:10px 0 6px}
+.drop{border:1.5px dashed #C7D2FE;background:var(--pan2);border-radius:12px;padding:14px 12px;text-align:center;color:var(--mut);font-size:12.5px;cursor:pointer;transition:.15s}
+.drop:hover{background:#EEF2FF;border-color:var(--ac2)}
+.drop b{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--ac);font-size:13px;margin-bottom:4px}
+.drop .hint{display:block}
+.drop.up{padding:9px 12px}
+.drop.up .hint{display:none}
+.drop.up b{margin-bottom:0}
+.fl{display:flex;align-items:center;gap:8px;font-size:12px;background:var(--pan2);border:1px solid var(--bd);border-radius:9px;padding:5px 10px;margin-bottom:5px}
+.fls{margin-top:8px}
+.fl b{font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl .ext{font-size:10px;color:var(--ac);background:#EEF2FF;border-radius:5px;padding:1px 6px;font-weight:700;flex:none}
+.fl .fs{margin-left:auto;color:var(--mut);flex:none}
+.fl .fs.ok{color:var(--ok)}
+.fl .fs.run{color:var(--ac)}
+.stage{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed var(--bd)}
+.stage:last-child{border-bottom:none}
+.sic{width:28px;height:28px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);flex:none}
+.stage.run .sic{background:#EEF2FF;border-color:#C7D2FE;color:var(--ac)}
+.stage.done .sic{background:var(--okbg);border-color:#BBF7D0;color:var(--ok)}
+.sbody{flex:1;min-width:0}
+.sname{font-size:12.5px;font-weight:600;color:var(--mut)}
+.stage.run .sname{color:var(--ac)}
+.stage.done .sname{color:var(--tx)}
+.sstate{font-size:10.5px;margin-left:8px;font-weight:700}
+.stage.run .sstate{color:var(--ac)}
+.stage.done .sstate{color:var(--ok)}
+.ssum{font-size:11px;color:var(--mut);line-height:1.6;margin-top:3px;display:none}
+.stage.done .ssum{display:block}
+.dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ac);margin-right:5px;animation:pu 1s infinite}
+@keyframes pu{50%{opacity:.25}}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.mchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
+.mchip.on{border-color:var(--ac);color:var(--ac);background:#EEF2FF;font-weight:700}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:8px;padding:6px 13px;cursor:pointer}
+.btn.pri{background:var(--ac);color:#fff;font-weight:700}
+.btn.pri:hover{background:#4338CA}
+.btn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan)}
+.btn.ghost:hover{color:var(--ac);border-color:#C7D2FE}
+.btn.amber{background:var(--warnbg);color:var(--warn);border:1px solid #FDE68A;font-weight:600}
+.btn.amber.ok{background:var(--okbg);color:var(--ok);border-color:#BBF7D0}
 .tabs{display:flex;gap:8px;margin-bottom:12px}
-.tabs span{font-size:12px;border:1px solid var(--bd);border-radius:8px;padding:4px 12px;color:var(--mut);cursor:pointer}
-.tabs span.on{background:var(--ac);color:#15171C;font-weight:700;border-color:var(--ac)}
-.bars .r{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12.5px}
-.bars .r b{width:70px;color:var(--tx);font-weight:500}
-.bars .tr{flex:1;height:10px;background:var(--pan2);border-radius:5px}
-.bars .tr i{display:block;height:100%;border-radius:5px;background:var(--ac);transition:width .4s}
-.bars .p{width:42px;text-align:right;color:var(--mut)}
-.gauge{display:flex;align-items:center;gap:16px}
-.gtxt b{font-size:26px;color:var(--ac)}.gtxt span{display:block;font-size:12px;color:var(--mut)}
-.d8{background:var(--pan2);border-radius:10px;padding:12px 14px}
-.d8 .t{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px}
-.d8 .bar{height:9px;background:var(--pan2);border-radius:5px;margin:6px 0 10px}
-.d8 .bar i{display:block;height:100%;background:var(--ac);border-radius:5px;transition:width .4s}
-.d8 .sug{font-size:12.5px;color:#C9CDD6;line-height:1.7}
-.appr{margin-top:10px;font-size:12px;background:#3A2E12;color:#FBBF24;border-radius:8px;padding:6px 10px;text-align:center;cursor:pointer}
-.appr.done{background:#12321F;color:#34D399}
-.img{width:100%;height:140px;background:linear-gradient(135deg,#2E3340,#4A5164);border-radius:10px;position:relative;margin-bottom:10px}
-.det{position:absolute;border:2px solid #F87171;border-radius:6px}
-.det span{position:absolute;top:-20px;left:0;background:#F87171;color:#fff;font-size:11px;border-radius:4px;padding:1px 6px;white-space:nowrap}
-.det.y{border-color:#FBBF24}.det.y span{background:#FBBF24;color:#15171C}
-.dl{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+.tabs span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--bd);border-radius:9px;padding:6px 14px;color:var(--mut);cursor:pointer;background:var(--pan)}
+.tabs span.on{background:var(--ac);color:#fff;font-weight:700;border-color:var(--ac)}
+.rpt{border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.rpth{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
+.rpth b{font-size:14px}
+.rpth .no{font-size:11.5px;color:var(--mut)}
+.badge{margin-left:auto;font-size:11.5px;font-weight:700;border-radius:8px;padding:3px 10px}
+.badge.ok{background:var(--okbg);color:var(--ok)}
+.badge.warn{background:var(--warnbg);color:var(--warn)}
+.badge.hi{background:var(--badbg);color:var(--bad)}
+.rmeta{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);padding:9px 14px;border-bottom:1px solid var(--bd)}
+.rmeta b{color:var(--tx);font-weight:600}
+table.itt{width:100%;border-collapse:collapse;font-size:12px}
+.itt th{font-size:11px;color:var(--mut);text-align:left;font-weight:600;padding:7px 14px;background:var(--pan2);border-bottom:1px solid var(--bd)}
+.itt td{padding:7px 14px;border-bottom:1px solid var(--bd);color:var(--tx)}
+.itt td.mut{color:var(--mut)}
+.itt tr.ng td{background:var(--badbg)}
+.itt tr.ng td:first-child{color:var(--bad);font-weight:600}
+.itt td .en{display:block;font-size:10px;color:var(--mut)}
+.root{margin-top:12px;background:var(--pan2);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:10px;padding:11px 14px}
+.root .rt{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.root .p{font-size:11px;color:var(--ac);background:#EEF2FF;border-radius:7px;padding:1px 8px;font-weight:700}
+.root .ev{font-size:11.5px;color:var(--mut);margin:6px 0;line-height:1.65}
+.root ol{margin:4px 0 0 16px;font-size:12px;line-height:1.8;color:var(--tx)}
+.empty{color:var(--mut);font-size:12.5px;text-align:center;padding:26px 0;line-height:1.8}
+.empty .ic{width:26px;height:26px;display:block;margin:0 auto 8px;color:#C7D2FE}
+.supleg{display:flex;gap:14px;font-size:11px;color:var(--mut);margin-bottom:4px}
+.supleg i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px}
+.sbar{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:7px}
+.sbar b{width:64px;font-weight:600;color:var(--tx)}
+.sbar .tr{flex:1;height:9px;background:var(--pan2);border-radius:5px;overflow:hidden}
+.sbar .tr i{display:block;height:100%;border-radius:5px;transition:width .5s}
+.sbar .p{width:26px;text-align:right;color:var(--mut)}
+.aleg{display:flex;gap:14px;font-size:11px;color:var(--mut)}
+.aleg span{cursor:pointer;display:flex;align-items:center;gap:4px}
+.aleg span.on{color:var(--ac);font-weight:700}
+.sdt{margin-top:10px;background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:10px 13px;font-size:12px;line-height:1.75}
+.sdt b{font-size:12.5px}
+.sdt .k{color:var(--mut)}
+.sdt .ng{color:var(--bad);font-weight:700}
+.sdt .act{margin-top:5px;padding:7px 9px;background:var(--pan);border-left:3px solid var(--ac);border-radius:6px;color:var(--tx);font-size:11.5px;line-height:1.7}
+/* AI 对话 */
+.aiwrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.msgs{flex:1;overflow:auto;padding:2px 2px 8px;min-height:0}
+.msg{margin-bottom:10px;display:flex;gap:8px}
+.msg .av{width:24px;height:24px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:2px}
+.msg.ai .av{background:var(--ac)}
+.msg.user{flex-direction:row-reverse}
+.msg .bub{max-width:82%;font-size:12.5px;line-height:1.7;border-radius:11px;padding:8px 12px}
+.msg.ai .bub{background:var(--pan2);border:1px solid var(--bd);color:var(--tx)}
+.msg.ai .bub b{color:var(--ac)}
+.msg.user .bub{background:var(--ac);color:#fff}
+.msg.ai .bub .do{margin-top:6px;font-size:11px;color:var(--ac);display:flex;align-items:center;gap:5px;font-weight:600}
+.typing{display:inline-flex;gap:3px;padding:4px 2px}
+.typing i{width:5px;height:5px;border-radius:3px;background:var(--ac2);animation:ty 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes ty{40%{transform:translateY(-3px);opacity:.5}}
+.chipcol{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.qchip{font-size:11.5px;text-align:left;border:1px solid #C7D2FE;background:#EEF2FF;color:var(--ac);border-radius:9px;padding:6px 11px;cursor:pointer}
+.qchip:hover{background:#E0E7FF}
+.inrow{display:flex;gap:7px}
+.inrow input{flex:1;border:1px solid var(--bd);border-radius:9px;padding:8px 11px;font-size:12.5px;outline:none;color:var(--tx);background:var(--pan2)}
+.inrow input:focus{border-color:var(--ac);background:#fff}
+.inrow .send{width:34px;height:34px;border-radius:9px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.inrow .send:hover{background:#4338CA}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--tx);color:#fff;font-size:13px;font-weight:600;border-radius:10px;padding:10px 18px;display:none;z-index:99;box-shadow:0 8px 24px rgba(15,23,42,.25)}
 svg text{font-family:inherit}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 质量分析看板</b><span class="env">连接器制造 · 私有化部署 · Demo</span>
-<div class="appr">⚑ 待人工审批：1 项放行</div></div>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能质检工作台</b><span class="toptag">威贸电子</span>
+<div class="apprchip" id="apprChip" onclick="gotoApproval()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>待人工审批 · 1 项放行</div></div>
+
 <div class="kpis">
-<div class="kpi"><b>98%</b><i>▲2pt</i><span>判定一致率</span></div>
-<div class="kpi"><b>8min</b><i>▼52min</i><span>报告出稿时长</span></div>
-<div class="kpi"><b>-45%</b><span>漏检率</span></div>
-<div class="kpi"><b>12</b><span>本周质检批次</span></div></div>
+<div class="kpi"><b>98%</b><i>▲2pt</i><span>AI vs 人工判定一致率</span></div>
+<div class="kpi"><b>8min</b><i class="dn">▼52min</i><span>检验报告出稿时长</span></div>
+<div class="kpi"><b>-45%</b><span>漏检率（较人工抽检）</span></div>
+<div class="kpi"><b>12</b><span>本周质检批次 · 3 供应商</span></div></div>
+
 <div class="wrap">
-<div class="panel left"><h3>批次列表</h3><div id="lots"></div></div>
-<div class="panel mid"><h3>缺陷图像判定 · <span id="curLot">—</span></h3>
-<div class="img" id="imgBox"></div>
-<h3>缺陷类型分布 · 近 30 天</h3>
-<div class="tabs" id="ftabs"><span class="on" data-f="all">全部</span><span data-f="scratch">外观划痕</span><span data-f="coat">镀层偏薄</span><span data-f="dim">尺寸超差</span></div>
-<div class="bars" id="typeBars"></div>
-<h3 style="margin-top:14px">缺陷趋势 · 近 7 天（PPM）</h3>
-<svg id="trend" width="100%" height="130" viewBox="0 0 600 130" preserveAspectRatio="none"></svg>
-<h3 style="margin-top:14px">判定一致率</h3>
-<div class="gauge">
-<svg width="90" height="58" viewBox="0 0 90 58"><path d="M10 55 A38 38 0 0 1 80 55" fill="none" stroke="#333845" stroke-width="9" stroke-linecap="round"/><path d="M10 55 A38 38 0 0 1 80 55" fill="none" stroke="#F59E0B" stroke-width="9" stroke-linecap="round" stroke-dasharray="119 238"/></svg>
-<div class="gtxt"><b>98%</b><span>AI vs 人工判定一致</span></div></div></div>
-<div class="panel right">
-<h3>根因归因 · <span id="attrLot">—</span></h3>
-<div class="bars" id="attrBars"></div>
-<h3 style="margin-top:14px">8D 报告 · 自动生成</h3>
-<div class="d8"><div class="t"><span id="d8t">D1-D3 已完成</span><span style="color:#4AD98A" id="d8p">78%</span></div>
-<div class="bar"><i id="d8bar" style="width:78%"></i></div><div id="d8steps"></div>
-<div class="sug" id="d8sug"></div>
-<div class="appr" id="appr" onclick="approve()">高风险放行 / 停线决策 → 人工审批</div></div>
-<h3 style="margin-top:14px">交付物</h3>
-<div class="d8"><div class="t">📄 8D 报告初稿（2 页）</div><div class="t">📋 整改任务单 · 已分派质量部</div><div class="t">📬 客户回复函 · 中英双语待发</div></div></div>
+<div class="panel left">
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>来料检验 · 批量处理</h3>
+<div class="drop" id="drop" onclick="addFiles()"><b><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2M12 12v9"/><path d="M16 16l-4-4-4 4"/></svg>上传检验报告文件</b><span class="hint">点击或拖入 · 支持 PDF / Excel / 图片 / ZIP</span><div id="fls" class="fls"></div></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>自动化分析流程</div>
+<div id="stages"></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>按型号拆解 · <span id="mcount" style="color:var(--tx)">待分析</span></div>
+<div class="chips" id="mchips"></div>
+<div style="margin-top:12px" class="btnrow"><span class="btn pri" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>开始自动分析</span></div>
 </div>
+
+<div class="panel mid">
+<div class="tabs"><span class="on" data-t="rpt"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>检验报告 · 按型号</span><span data-t="sup"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>供应商来料质量</span></div>
+<div id="tab-rpt"><div class="empty" id="rptEmpty"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>上传文件并执行分析后<br>按图纸套用模板自动生成检验报告与根因建议</div><div id="rptBody" style="display:none"></div></div>
+<div id="tab-sup" style="display:none">
+<h3 style="margin-bottom:4px">供应商来料质量 · 本季<em>合格率 / 及时率（%）</em></h3>
+<div class="supleg"><span><i style="background:#4F46E5"></i>来料合格率</span><span><i style="background:#D97706"></i>交付及时率</span><span><i style="background:#CBD5E1"></i>目标 95%</span></div>
+<div id="gbar"></div>
+<div class="sec" style="margin-top:12px">综合绩效评分（百分制）</div>
+<div id="perfBars"></div>
+<div class="sec" style="margin-top:12px">来料合格率趋势 · 近 8 周<em id="trSup"></em><span class="aleg" id="aleg" style="margin-left:auto"></span></div>
+<svg id="trend" width="100%" height="120"></svg>
+<div class="sdt" id="supDetail"></div>
+</div></div>
+
+<div class="panel right">
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI 助手 · 质检<em>可执行 · 可修改</em></h3>
+<div class="aiwrap"><div class="msgs" id="msgs"></div>
+<div class="chipcol" id="qchips"></div>
+<div class="inrow"><input id="aiIn" placeholder="输入指令，如：执行分析 / 报告改双语 / 切换 WM-C1206" onkeydown="if(event.key==='Enter')aiSend()"><span class="send" onclick="aiSend()"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+</div></div>
+</div>
+<div class="toast" id="toast"></div>
+
 <script>
-const LOTS={
- B2209:{t:"外观划痕",lv:"hi",lvx:"NCR 已开",sup:"供应商 A",qty:"3,200 件",
-  dets:[["划痕",18,30,120,70,"外观划痕 · 0.92"],["偏移",58,55,90,56,"镶件偏移 · 0.74","y"]],
-  type:[["外观划痕",62],["镀层偏薄",25],["尺寸超差",13]],
-  trend:[320,280,410,360,520,480,610],
-  attr:[["供应商 A",62,"#F87171"],["工艺参数",25,"#FBBF24"],["来料运输",13,"#00ACBE"]],
-  d8:{p:78,t:"D1-D3 已完成",steps:[["D2 问题描述 · 自动生成",1],["D3 临时措施 · 全数复检",1],["D4 根因分析 · 生成中",0]],
-  sug:"整改建议 3 条：<br>1. 供应商 A 来料加严检验<br>2. 包装改为吸塑托盘<br>3. 运输振动测试复核"}},
- B2204:{t:"镀层偏薄",lv:"warn",lvx:"复检中",sup:"供应商 B",qty:"1,800 件",
-  dets:[["测厚",24,28,100,60,"镀层 2.1μm · 下限 2.5","y"]],
-  type:[["镀层偏薄",54],["外观变色",31],["尺寸超差",15]],
-  trend:[210,260,240,300,280,330,310],
-  attr:[["供应商 B",54,"#FBBF24"],["槽液老化",31,"#FBBF24"],["电流密度",15,"#00ACBE"]],
-  d8:{p:45,t:"D1-D2 已完成",steps:[["D2 问题描述 · 自动生成",1],["D3 围堵措施 · 复检中",0]],
-  sug:"整改建议 2 条：<br>1. 槽液浓度补正<br>2. 首件加测厚度"}},
- B2197:{t:"全项合格",lv:"ok",lvx:"自动放行",sup:"供应商 C",qty:"5,000 件",
-  dets:[],type:[["外观划痕",8],["尺寸超差",5],["其他",3]],
-  trend:[90,110,80,95,70,85,60],
-  attr:[["工艺稳定",70,"#34D399"],["来料合格",20,"#34D399"],["其他",10,"#34D399"]],
-  d8:{p:100,t:"无需开单",steps:[],sug:"全项合格 · 自动放行（AI 判定 + 抽检复核）"}}};
-let curLot="B2209",filter="all";
-function rsel(id){curLot=id;const L=LOTS[id];
- document.querySelectorAll(".lot").forEach(e=>e.classList.toggle("on",e.dataset.id===id));
- document.getElementById("curLot").textContent="LOT-"+id;
- document.getElementById("attrLot").textContent="LOT-"+id;
- const img=document.getElementById("imgBox");img.innerHTML="";
- L.dets.forEach(d=>{const b=document.createElement("div");b.className="det"+(d[5]?" y":"");
-  b.style.cssText=`left:${d[1]}%;top:${d[2]}%;width:${d[3]}px;height:${d[4]}px`;
-  b.innerHTML=`<span>${d[0]} · ${d[5].split(" · ")[1]}</span>`;img.appendChild(b);});
- const tb=document.getElementById("typeBars");tb.innerHTML="";
- L.type.filter(x=>filter==="all"||x[0].includes(filter==="scratch"?"划痕":filter==="coat"?"镀层":filter==="dim"?"尺寸":1))
- .forEach(x=>{tb.innerHTML+=`<div class="r"><b>${x[0]}</b><div class="tr"><i style="width:${x[1]}%"></i></div><span class="p">${x[1]}%</span></div>`;});
- drawTrend(L.trend);
- const ab=document.getElementById("attrBars");ab.innerHTML="";
- L.attr.forEach(x=>{ab.innerHTML+=`<div class="r"><b>${x[0]}</b><div class="tr"><i style="width:${x[1]}%;background:${x[2]}"></i></div><span class="p">${x[1]}%</span></div>`;});
- document.getElementById("d8t").textContent=L.d8.t;
- document.getElementById("d8p").textContent=L.d8.p+"%";
- document.getElementById("d8bar").style.width=L.d8.p+"%";
- const st=document.getElementById("d8steps");st.innerHTML="";
- L.d8.steps.forEach(s=>{st.innerHTML+=`<div class="step"><i style="background:${s[1]?"#34D399":"#FBBF24"}"></i>${s[0]}${s[1]?'<span class="dn"> ✓</span>':""}</div>`;});
- document.getElementById("d8sug").innerHTML=L.d8.sug;
- const ap=document.getElementById("appr");
- ap.classList.remove("done");ap.textContent="高风险放行 / 停线决策 → 人工审批";
-}
-function drawTrend(arr){const svg=document.getElementById("trend");const W=600,H=130,p=14,mx=Math.max(...arr)*1.15;
- const pts=arr.map((v,i)=>[p+i*(W-2*p)/(arr.length-1),H-p-v/mx*(H-2*p)]);
- svg.innerHTML=`<polyline points="${pts.map(x=>x.join(",")).join(" ")}" fill="none" stroke="#F59E0B" stroke-width="2.5"/>`+
- pts.map((x,i)=>`<circle cx="${x[0]}" cy="${x[1]}" r="3.5" fill="#FBBF24"/><text x="${x[0]}" y="${H-2}" font-size="10" fill="#9CA3AF" text-anchor="middle">周${["一","二","三","四","五","六","日"][i]}</text>`).join("");}
-function approve(){const a=document.getElementById("appr");a.classList.add("done");a.textContent="✓ 已批准放行 · 审批人：质量部 王工 · 09:41";}
-document.querySelectorAll(".tabs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".tabs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");filter=e.dataset.f;rsel(curLot);});
-document.getElementById("appr").onclick=approve;
-// build lot list
-const lt=document.getElementById("lots");
-Object.keys(LOTS).forEach(id=>{const L=LOTS[id];
- const d=document.createElement("div");d.className="lot"+(id===curLot?" on":"");d.dataset.id=id;
- d.innerHTML=`<div class="id">LOT-${id}<i class="${L.lv}">${L.lvx}</i></div><div class="m">${L.t} · ${L.sup} · ${L.qty}</div>`;
- d.onclick=()=>rsel(id);lt.appendChild(d);});
-rsel("B2209");
+const MODELS={
+ "WM-C0902":{no:"QR-WM-2026-0918-01",batch:"LOT-B2209 · 3,200 件",sup:"供应商 A · 苏州华辰",dwg:"DWG-C0902-R4",tpl:"连接器来料检验模板 V3.2",verdict:"hi",vx:"不合格",
+  items:[["外形尺寸","±0.05mm","3 件超差（0.02mm）","不合格"],["镀层厚度","≥2.5μm","2.1μm","不合格"],["外观（划痕）","无可见划痕","抽检 3 件","不合格"],["导通电阻","≤10mΩ","6.8mΩ","合格"],["盐雾试验","48h 无腐蚀","通过","合格"]],
+  itemsEn:[["Dimensions","±0.05mm","3 pcs oversize","NG"],["Plating thickness","≥2.5μm","2.1μm","NG"],["Appearance","No visible scratch","3 pcs found","NG"],["Contact resistance","≤10mΩ","6.8mΩ","OK"],["Salt spray","48h no corrosion","Pass","OK"]],
+  root:{c:"镀层槽液浓度衰减",p:"78%",ev:"近 3 批镀层厚度连续下探（2.6→2.3→2.1μm），与供应商 A 槽液更换周期（超期 9 天）吻合；划痕集中于同一包装托盘位。",sug:["槽液浓度补正，更换周期由 14 天缩短至 7 天","供应商 A 首件加测镀层厚度，连续 3 批合格后恢复抽检","该批来料加严检验（AQL 0.65→0.4），划痕批全数复检"]}},
+ "WM-C1206":{no:"QR-WM-2026-0918-02",batch:"LOT-B2204 · 1,800 件",sup:"供应商 B · 宁并茂联",dwg:"DWG-C1206-R2",tpl:"连接器来料检验模板 V3.2",verdict:"warn",vx:"让步接收 · 复审中",
+  items:[["插拔力","5-20N","20.6N（临界）","临界"],["绝缘耐压","≥500V","512V","合格"],["接触阻抗","≤30mΩ","24mΩ","合格"],["外观","无变形","合格","合格"],["包装标识","按图纸","合格","合格"]],
+  itemsEn:[["Insertion force","5-20N","20.6N (marginal)","Marginal"],["Dielectric","≥500V","512V","OK"],["Contact impedance","≤30mΩ","24mΩ","OK"],["Appearance","No deformation","OK","OK"],["Packaging","Per drawing","OK","OK"]],
+  root:{c:"端子模具磨损（冲压边缘毛刺）",p:"64%",ev:"插拔力呈单侧上偏，与模具寿命台账（已达 82%）一致；毛刺 0.04mm 接近上限。",sug:["供应商 B 模具检修并提交寿命确认报告","首件插拔力全检，稳定后恢复抽检","模具寿命预警纳入供应商准入条款"]}},
+ "WM-B1805":{no:"QR-WM-2026-0918-03",batch:"LOT-B2197 · 5,000 件",sup:"供应商 C · 东莞宏联",dwg:"DWG-B1805-R6",tpl:"线束端子检验模板 V1.8",verdict:"ok",vx:"合格 · 自动放行",
+  items:[["压接高度","按图纸公差","合格","合格"],["拉脱力","≥50N","58N","合格"],["外观","无变形氧化","合格","合格"],["尺寸","±0.1mm","合格","合格"],["包装","按图纸","合格","合格"]],
+  itemsEn:[["Crimp height","Per drawing","OK","OK"],["Pull-off force","≥50N","58N","OK"],["Appearance","No deformation","OK","OK"],["Dimensions","±0.1mm","OK","OK"],["Packaging","Per drawing","OK","OK"]],
+  root:{c:"无需开单",p:"—",ev:"全项合格 · AI 判定与抽检复核一致，自动放行。",sug:["维持现行检验频次","建议将该供应商列入季度免检候选"]}}};
+const SUPS={
+ "供应商 A":{full:"供应商 A · 苏州华辰",pass:91.2,ontime:96.4,perf:87,lots:38,ng:5,top:"镀层偏薄 · 外观划痕",act:"来料加严检验（AQL 0.65→0.4）+ 8D 整改跟踪 + 周度对账评审",trend:[93.5,92.8,92.1,91.6,90.9,91.8,91.4,91.2]},
+ "供应商 B":{full:"供应商 B · 宁并茂联",pass:96.8,ontime:92.1,perf:91,lots:26,ng:1,top:"尺寸临界 · 插拔力上偏",act:"交期专项改善（承诺 95%+），技术侧跟踪模具寿命",trend:[95.9,96.4,96.1,97.0,96.6,97.2,96.9,96.8]},
+ "供应商 C":{full:"供应商 C · 东莞宏联",pass:99.1,ontime:98.5,perf:96,lots:31,ng:0,top:"无显著缺陷",act:"维持现行频次，列入季度免检候选",trend:[98.6,98.9,99.0,98.7,99.2,99.0,99.1,99.1]}};
+const STAGES=[
+ ["格式识别与解析","M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2","PDF ×1 · Excel ×1 · 图片 OCR ×1 · 全部解析成功"],
+ ["按型号拆解归类","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","识别 3 个型号 · 107 项检验数据（WM-C0902 ×42 / WM-C1206 ×38 / WM-B1805 ×27）"],
+ ["图纸匹配与模板套用","M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z","图纸匹配 3/3 · 套用《连接器来料检验模板 V3.2》《线束端子检验模板 V1.8》"],
+ ["数据校验与 AI 复判","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","临界/疑似超标 2 项 → AI 交叉复核确认"],
+ ["检验报告生成","M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6","3 份检验报告 + 根因建议 · 待质量部复核签发"]];
+const FILES=[["IQC检验报告_0918批.pdf","PDF"],["来料检验数据_3供应商.xlsx","XLSX"],["外观抽检照片_B2209.zip","IMG"]];
+let cur="WM-C0902",bi=false,ran=false,pushed=false;
+
+/* ─── 左栏：上传 + 流水线 ─── */
+function addFiles(){const box=document.getElementById("fls");
+ if(box.children.length)return;
+ FILES.forEach((f,i)=>setTimeout(()=>{document.getElementById("drop").classList.add("up");
+  const d=document.createElement("div");d.className="fl";
+  d.innerHTML=`<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>${f[0]}</b><span class="ext">${f[1]}</span><span class="fs run">解析中…</span>`;
+  box.appendChild(d);
+  setTimeout(()=>{d.querySelector(".fs").className="fs ok";d.querySelector(".fs").textContent="已解析 ✓"},700+i*250)},i*260));}
+function renderStages(st){const box=document.getElementById("stages");box.innerHTML="";
+ STAGES.forEach((s,i)=>{const cls=st>i?"done":st===i?"run":"";
+  box.innerHTML+=`<div class="stage ${cls}"><div class="sic"><svg class="ic" viewBox="0 0 24 24">${st>i?'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3"/>':`<path d="${s[1]}"/>`}</svg></div>
+  <div class="sbody"><div class="sname">${s[0]}<span class="sstate">${st>i?"✓ 完成":st===i?'<span class="dot"></span>执行中':i===0?"待执行":"排队"}</span></div><div class="ssum">${s[2]}</div></div></div>`})}
+function runPipeline(){if(ran){renderStages(0);ran=false;setTimeout(runPipeline,80);return}
+ ran=true;document.getElementById("runBtn").innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新执行分析';
+ document.getElementById("mcount").textContent="识别 3 个型号";
+ let st=0;renderStages(0);
+ const step=()=>{if(st>STAGES.length){finishRun();return}
+  renderStages(st);st++;setTimeout(step,st===STAGES.length+1?500:1150)};step()}
+function finishRun(){renderStages(STAGES.length);
+ const mc=document.getElementById("mchips");
+ mc.innerHTML=Object.keys(MODELS).map(m=>`<span class="mchip ${m===cur?"on":""}" data-m="${m}">${m} <span style="color:var(--mut)">· {{n}} 项</span></span>`).join("")
+  .replace("{{n}}","42").replace("{{n}}","38").replace("{{n}}","27");
+ mc.querySelectorAll(".mchip").forEach(c=>c.onclick=()=>{cur=c.dataset.m;syncChips();renderReport()});
+ toast("分析完成 · 3 份检验报告已生成");renderReport();syncChips();
+ aiSay("<b>分析完成。</b>3 个型号 107 项数据已按图纸套用模板出稿：<b>WM-C0902 不合格</b>（镀层+划痕）、WM-C1206 让步接收（插拔力临界）、WM-B1805 合格放行。已生成根因建议，可回复「双语」切换报告语言。")}
+function syncChips(){document.querySelectorAll("#mchips .mchip").forEach(c=>c.classList.toggle("on",c.dataset.m===cur))}
+
+/* ─── 中栏：报告 ─── */
+function renderReport(){const d=MODELS[cur];const body=document.getElementById("rptBody");
+ document.getElementById("rptEmpty").style.display="none";body.style.display="block";
+ const items=bi?d.itemsEn:d.items;
+ const L=bi?{no:"Report No.",batch:"Batch",sup:"Supplier",dwg:"Drawing",tpl:"Template",it:"Inspection Items",std:"Standard",ms:"Measured",vd:"Verdict",rc:"AI Root Cause Analysis",ev:"Evidence",sug:"Recommended Actions",ok:"OK",ng:"NG"}:
+ {no:"报告编号",batch:"批次",sup:"供应商",dwg:"图纸",tpl:"模板",it:"检验项与结论",std:"标准要求",ms:"实测结果",vd:"单项判定",rc:"AI 根因分析与建议",ev:"判定依据",sug:"建议处置",ok:"合格",ng:"不合格"};
+ body.innerHTML=`<div class="rpt"><div class="rpth"><b>${cur}</b><span class="no">${L.no} ${d.no}${bi?"":" · V1.0"}</span><span class="badge ${d.verdict}">${d.vx}</span></div>
+ <div class="rmeta"><span>${L.batch} <b>${d.batch}</b></span><span>${L.sup} <b>${d.sup}</b></span><span>${L.dwg} <b>${d.dwg}</b></span><span>${L.tpl} <b>${d.tpl}</b></span></div>
+ <table class="itt"><tr><th>${bi?"Item":"检验项"}</th><th>${L.std}</th><th>${L.ms}</th><th>${L.vd}</th></tr>
+ ${items.map((it,i)=>{const ng=it[3]!=="合格"&&it[3]!=="OK";return `<tr class="${ng?"ng":""}"><td>${it[0]}${bi?'':`<span class="en">${d.itemsEn[i][0]}</span>`}</td><td class="mut">${it[1]}</td><td>${it[2]}</td><td style="color:${ng?"var(--bad)":"var(--ok)"};font-weight:600">${it[3]}</td></tr>`}).join("")}</table></div>
+ <div class="root"><div class="rt"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>${L.rc}<span class="p">${d.root.c==="无需开单"?"自动放行":"置信度 "+d.root.p}</span></div>
+ <div class="ev">${L.ev}：${d.root.ev}</div>
+ <div style="font-size:11.5px;color:var(--mut);font-weight:600">${L.sug}</div><ol>${d.root.sug.map(s=>`<li>${s}</li>`).join("")}</ol></div>
+ <div class="btnrow" style="margin-top:12px">
+ <span class="btn ghost" onclick="regen()"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新生成</span>
+ <span class="btn ghost" onclick="toggleBi()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>${bi?"中文版":"中英双语"}</span>
+ <span class="btn ghost" onclick="toast('报告已导出 · PDF ×1（模拟）')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>导出 PDF</span>
+ ${d.verdict==="ok"?"":`<span class="btn amber ${pushed?"ok":""}" id="apprBtn" onclick="approve()" style="margin-left:auto">${pushed?"✓ 已批准放行 · 质量部 王工":"高风险放行 / 停线决策 → 人工审批"}</span>`}</div>`}
+function regen(){const d=MODELS[cur];if(d.no.includes("V2"))d.no=d.no.replace("-V2","");else d.no=d.no+"-V2";renderReport();toast("报告已按最新数据重新生成 · "+d.no)}
+function toggleBi(){bi=!bi;renderReport();if(document.getElementById("tab-sup").style.display==="none")toast(bi?"检验报告已切换为中英双语":"检验报告已切回中文版")}
+function approve(){pushed=true;renderReport();document.getElementById("apprChip").className="apprchip done";document.getElementById("apprChip").innerHTML="✓ 放行审批已完成 · 质量部 王工 09:41";toast("已批准放行 · 审计留痕已记录")}
+function gotoApproval(){switchTab("rpt");cur="WM-C0902";syncChips();renderReport();const b=document.getElementById("apprBtn");if(b){b.style.outline="2px solid #FDE68A";setTimeout(()=>b.style.outline="",1600)}}
+
+/* ─── 中栏：供应商统计 ─── */
+let selSup="供应商 A";
+function renderSup(){const g=document.getElementById("gbar");
+ const names=Object.keys(SUPS),W=g.clientWidth||560,H=190,P={l:30,b:24,t:14};
+ const mx=100,y=v=>P.t+(H-P.t-P.b)*(1-v/mx),gw=(W-P.l)/names.length;
+ let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-6}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4" stroke-width="1.2"/><text x="${W-8}" y="${y(95)-4}" font-size="10" fill="#94A3B8" text-anchor="end">目标 95</text>`;
+ [0,25,50,75,100].forEach(t=>{s+=`<line x1="${P.l}" y1="${y(t)}" x2="${W-6}" y2="${y(t)}" stroke="#EEF2F7" stroke-width="1"/><text x="${P.l-6}" y="${y(t)+3.5}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
+ names.forEach((n,i)=>{const d=SUPS[n],cx=P.l+gw*i+gw/2,bw=30;
+  s+=`<g style="cursor:pointer" onclick="pickSup('${n}')"><rect x="${P.l+gw*i}" y="0" width="${gw}" height="${H}" fill="transparent"/><rect x="${cx-bw-3}" y="${y(d.pass)}" width="${bw}" height="${H-P.b-y(d.pass)}" rx="4" fill="${selSup===n?"#4F46E5":"#A5B4FC"}"><title>${n} 合格率 ${d.pass}%</title></rect>
+  <rect x="${cx+3}" y="${y(d.ontime)}" width="${bw}" height="${H-P.b-y(d.ontime)}" rx="4" fill="${selSup===n?"#D97706":"#FCD34D"}"><title>${n} 及时率 ${d.ontime}%</title></rect>
+  <text x="${cx-bw/2-3}" y="${y(d.pass)-5}" font-size="10.5" font-weight="700" fill="#4F46E5" text-anchor="middle">${d.pass}</text>
+  <text x="${cx+bw/2+3}" y="${y(d.ontime)-5}" font-size="10.5" font-weight="700" fill="#D97706" text-anchor="middle">${d.ontime}</text>
+  <text x="${cx}" y="${H-7}" font-size="11" fill="${selSup===n?"#0F172A":"#5B6B84"}" text-anchor="middle" font-weight="${selSup===n?"700":"400"}">${n}</text></g>`});
+ g.innerHTML=`<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
+ const pb=document.getElementById("perfBars");const rank=Object.entries(SUPS).sort((a,b)=>b[1].perf-a[1].perf);
+ const shade=["#312E81","#4F46E5","#818CF8"];
+ pb.innerHTML=rank.map((r,i)=>`<div class="sbar"><b>${r[0]}</b><div class="tr"><i style="width:${r[1].perf}%;background:${shade[i]}"></i></div><span class="p">${r[1].perf}</span></div>`).join("");
+ const lg=document.getElementById("aleg");
+ lg.innerHTML=names.map(n=>`<span class="${n===selSup?"on":""}" onclick="pickSup('${n}')"><i style="width:8px;height:8px;border-radius:3px;background:${n===selSup?"#4F46E5":"#CBD5E1"};display:inline-block"></i>${n}</span>`).join("");
+ renderTrend();renderSupDetail()}
+function renderTrend(){const svg=document.getElementById("trend");const d=SUPS[selSup];
+ const W=svg.clientWidth||560,H=120,P={l:28,b:18,t:10},lo=88,hi=100;
+ const x=i=>P.l+i*(W-P.l-8)/7,y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
+ let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-8}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4"/><text x="${W-10}" y="${y(95)-4}" font-size="9.5" fill="#94A3B8" text-anchor="end">目标 95%</text>`;
+ [88,92,96,100].forEach(t=>{s+=`<text x="${P.l-5}" y="${y(t)+3}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
+ s+=`<polyline points="${d.trend.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.4" stroke-linecap="round"/>`;
+ s+=d.trend.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#fff" stroke="#4F46E5" stroke-width="2"/><text x="${x(i)}" y="${H-4}" font-size="9" fill="#94A3B8" text-anchor="middle">W${i+1}</text>`).join("");
+ svg.innerHTML=s;document.getElementById("trSup").textContent="· "+SUPS[selSup].full}
+function renderSupDetail(){const d=SUPS[selSup];const below=d.pass<95;
+ document.getElementById("supDetail").innerHTML=`<b>${d.full}</b>　<span class="k">本季批次 ${d.lots} · 不合格 ${d.ng} 批 · 主要缺陷：${d.top}</span>${below?'<span class="ng">　合格率低于目标线</span>':""}
+ <div class="act">处置建议：${d.act}</div>`}
+function pickSup(n){selSup=n;renderSup()}
+
+/* ─── 标签页 ─── */
+function switchTab(t){document.querySelectorAll(".tabs span").forEach(x=>x.classList.toggle("on",x.dataset.t===t));
+ document.getElementById("tab-rpt").style.display=t==="rpt"?"block":"none";
+ document.getElementById("tab-sup").style.display=t==="sup"?"block":"none";
+ if(t==="sup")renderSup()}
+document.querySelectorAll(".tabs span").forEach(s=>s.onclick=()=>switchTab(s.dataset.t));
+
+/* ─── AI 对话 ─── */
+function pushMsg(cls,html,doTxt){const box=document.getElementById("msgs");const d=document.createElement("div");d.className="msg "+cls;
+ d.innerHTML=(cls==="ai"?`<div class="av"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>`:"")+
+ `<div class="bub">${html}${doTxt?`<div class="do"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>${doTxt}</div>`:""}</div>`;
+ box.appendChild(d);box.scrollTop=box.scrollHeight}
+function aiSay(html,doTxt){pushMsg("ai",html,doTxt)}
+function aiSend(){const inp=document.getElementById("aiIn");const t=inp.value.trim();if(!t)return;
+ inp.value="";pushMsg("user",t);
+ const box=document.getElementById("msgs");const ty=document.createElement("div");ty.className="msg ai";
+ ty.innerHTML=`<div class="av"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><div class="bub"><span class="typing"><i></i><i></i><i></i></span></div>`;
+ box.appendChild(ty);box.scrollTop=box.scrollHeight;
+ setTimeout(()=>{ty.remove();route(t)},650)}
+function route(t){
+ if(/执行|开始|分析|跑/.test(t)){if(!document.getElementById("fls").children.length)addFiles();
+  aiSay("收到，按最佳实践流程执行批量分析：格式解析 → 按型号拆解 → 图纸匹配模板 → 数据校验复判 → 生成报告与根因建议。","已开始执行");runPipeline();return}
+ if(/双语|英文|中英/.test(t)){if(!bi)toggleBi();aiSay("已将当前检验报告（"+cur+"）切换为<b>中英双语版</b>，检验项名称与结论均已对照翻译，可直接导出 PDF 随货发给国外客户。");return}
+ if(/重新生成|重出|再生成/.test(t)){regen();aiSay("已重新生成 <b>"+cur+"</b> 检验报告（"+MODELS[cur].no+"），按最新解析数据复核，编号已升版。");return}
+ if(/标红|低|合格率|供应商/.test(t)){switchTab("sup");selSup="供应商 A";renderSup();
+  aiSay("已定位：<b>供应商 A 合格率 91.2%</b>，低于目标线 95%（近 8 周持续下探）。已给出处置建议：加严检验 + 8D 整改跟踪，详见右下明细卡。");return}
+ const m=t.match(/WM-[A-Z0-9]+/i);
+ if(m||/型号|切换/.test(t)){const k=m?Object.keys(MODELS).find(x=>x.toLowerCase()===m[0].toLowerCase()):cur;
+  if(k){cur=k;syncChips();switchTab("rpt");renderReport();
+   aiSay("已切换到 <b>"+k+"</b>：判定 <b>"+MODELS[k].vx+"</b>"+(MODELS[k].verdict==="ok"?"，全项合格无需开单。":"，不合格项已在报告中标红，附根因与处置建议。"));return}}
+ if(/根因|原因|建议/.test(t)){switchTab("rpt");renderReport();
+  aiSay("当前 <b>"+cur+"</b> 根因：<b>"+MODELS[cur].root.c+"</b>（置信度 "+MODELS[cur].root.p+"）。建议已列在报告下方，共 "+MODELS[cur].root.sug.length+" 条。");return}
+ if(/导出|下载|PDF/.test(t)){toast("报告已导出 · PDF ×1（模拟）");aiSay("已导出当前报告为 PDF。");return}
+ aiSay("已收到。我可以直接执行：回复「<b>执行分析</b>」「重新生成报告」「报告改双语」「标红低合格率供应商」「切换 WM-C1206」，也可以让我修改报告内容后再出稿。")}
+const QCHIPS=["执行分析","报告改双语","标红低合格率供应商","切换 WM-C1206","重新生成报告"];
+document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
+ clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
+renderStages(0);renderReport();pushMsg("ai","你好，我是质检 AI 助手。上传检验报告后我可以<b>按最佳实践流程自动分析</b>，也可以按你的指令<b>执行与修改</b>——试试点下方快捷指令，或直接输入。");
+window.addEventListener("resize",()=>{if(document.getElementById("tab-sup").style.display!=="none")renderSup()});
+setTimeout(()=>{addFiles();setTimeout(runPipeline,1000)},600);
 </script></body></html>
