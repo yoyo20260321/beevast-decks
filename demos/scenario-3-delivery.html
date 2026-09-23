@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 交付风险预警中心（威贸电子）</title>
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 交付风险预警智能体（威贸电子）</title>
 <style>
-:root{--bg:#F6F7FB;--pan:#FFFFFF;--pan2:#F8FAFC;--bd:#E2E8F0;--ac:#4F46E5;--ac2:#818CF8;--blue:#2563EB;--tx:#0F172A;--mut:#5B6B84;--ok:#15803D;--okbg:#F0FDF4;--warn:#B45309;--warnbg:#FFFBEB;--bad:#B91C1C;--badbg:#FEF2F2}
+:root{--bg:#F6F7FB;--pan:#FFFFFF;--pan2:#F8FAFC;--bd:#E2E8F0;--ac:#4F46E5;--ac2:#818CF8;--blue:#2563EB;--tx:#0F172A;--mut:#5B6B84;--ok:#15803D;--okbg:#F0FDF4;--warn:#B45309;--warnbg:#FFFBEB;--bad:#B91C1C;--badbg:#FEF2F2;--infobg:#EFF6FF}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
 body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
@@ -9,66 +9,91 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .logo{width:16px;height:16px;background:var(--ac);border-radius:5px}
 .top b{font-size:16px}
 .toptag{font-size:12px;color:var(--ac);background:#EEF2FF;border:1px solid #E0E7FF;border-radius:9px;padding:3px 11px;font-weight:600}
-.top .right-info{margin-left:auto;font-size:12px;color:var(--mut);display:flex;align-items:center;gap:6px}
+.valwrap{position:relative;margin-left:auto}
+.valbtn{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ac);background:#EEF2FF;border:1px solid #E0E7FF;border-radius:9px;padding:5px 12px;cursor:pointer;font-weight:600}
+.valbtn:hover{background:#E0E7FF}
+.vpop{display:none;position:absolute;right:0;top:calc(100% + 8px);width:340px;background:var(--pan);border:1px solid var(--bd);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.16);padding:12px 14px;z-index:60}
+.vpop h5{font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.vpop h5 em{font-style:normal;font-size:10.5px;color:var(--mut);font-weight:400}
+.vrow{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;padding:5px 0;border-bottom:1px dashed var(--bd)}
+.vrow:last-of-type{border-bottom:none}
+.vrow b{color:var(--ac)}
+.vrow .base{color:var(--mut);font-size:11px}
+.vfoot{font-size:10px;color:#94A3B8;margin-top:7px;line-height:1.6}
+.rinfo{margin-left:14px;font-size:12px;color:var(--mut);display:flex;align-items:center;gap:6px;flex:none}
 .kpis{display:flex;gap:14px;padding:14px 22px 0}
-.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:12px 18px}
-.kpi b{font-size:24px;color:var(--ac)}
-.kpi i{font-style:normal;font-size:12px;margin-left:8px;color:var(--ok)}
-.kpi i.dn{color:var(--bad)}
-.kpi span{display:block;font-size:12px;color:var(--mut);margin-top:3px}
-.wrap{display:flex;flex:1;gap:14px;padding:14px 22px 16px;min-height:0;overflow:hidden}
-.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
-.panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:11px 18px;cursor:pointer}
+.kpi b{font-size:22px;color:var(--ac)}
+.kpi b.rd{color:var(--bad)}.kpi b.ye{color:var(--warn)}.kpi b.bl{color:var(--blue)}
+.kpi span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.wrap{display:flex;flex:1;gap:14px;padding:12px 22px 14px;min-height:0;overflow:hidden}
+.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:13px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
+.panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:9px}
 .panel h3 em{font-style:normal;font-size:11px;color:var(--mut);font-weight:400}
 .left{width:330px;flex:none}.mid{flex:1.3;min-width:0}.right{width:350px;flex:none}
 .sec{font-size:12px;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px;margin:10px 0 6px}
-.vbar{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:7px}
-.vbar b{width:44px;font-weight:600}
-.vbar .tr{flex:1;height:10px;background:var(--pan2);border-radius:5px;overflow:hidden}
-.vbar .tr i{display:block;height:100%;border-radius:5px;transition:width .5s}
-.vbar .n{width:44px;text-align:right;color:var(--mut)}
-.vbar .n small{font-size:10px;color:#94A3B8}
+.src{display:flex;align-items:center;gap:7px;font-size:11.5px;background:var(--pan2);border:1px solid var(--bd);border-radius:8px;padding:4px 9px;margin-bottom:4px}
+.src b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src .st{margin-left:auto;color:var(--ok);flex:none;font-size:10.5px}
+.src .st.conv{color:var(--warn)}
+.stage{display:flex;align-items:flex-start;gap:9px;padding:5px 0;border-bottom:1px dashed var(--bd)}
+.stage:last-child{border-bottom:none}
+.sic{width:26px;height:26px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);flex:none}
+.stage.run .sic{background:#EEF2FF;border-color:#C7D2FE;color:var(--ac)}
+.stage.done .sic{background:var(--okbg);border-color:#BBF7D0;color:var(--ok)}
+.sbody{flex:1;min-width:0}
+.sname{font-size:12px;font-weight:600;color:var(--mut)}
+.stage.run .sname{color:var(--ac)}
+.stage.done .sname{color:var(--tx)}
+.sstate{font-size:10.5px;margin-left:7px;font-weight:700}
+.stage.run .sstate{color:var(--ac)}
+.stage.done .sstate{color:var(--ok)}
+.ssum{font-size:10.5px;color:var(--mut);line-height:1.55;margin-top:2px;display:none}
+.stage.done .ssum{display:block}
+.dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ac);margin-right:5px;animation:pu 1s infinite}
+@keyframes pu{50%{opacity:.25}}
 .rchips{display:flex;gap:6px;flex-wrap:wrap}
 .rchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
 .rchip b{font-weight:700}
 .rchip.hi{border-color:#FECACA;background:var(--badbg);color:var(--bad)}
 .rchip.md{border-color:#FDE68A;background:var(--warnbg);color:var(--warn)}
-.rchip.lo{border-color:#BBF7D0;background:var(--okbg);color:var(--ok)}
-.dfoot{font-size:10.5px;color:#94A3B8;line-height:1.7;margin-top:auto;padding-top:8px}
-.oneline{margin-top:10px;display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.7;color:var(--tx);background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:8px 12px}
-.oneline .ic{color:var(--ac);margin-top:2px}
-.oneline b{color:var(--ac)}
-.srctag{font-size:10.5px;color:var(--blue);background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:1px 7px}
-/* 订单行 */
-.fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.fchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
-.fchip.on{border-color:var(--ac);color:var(--ac);background:#EEF2FF;font-weight:700}
-.orow{border:1px solid var(--bd);border-radius:11px;padding:10px 13px;margin-bottom:8px;background:var(--pan)}
-.orow.hi{border-left:4px solid #EF4444}
-.orow.md{border-left:4px solid #F59E0B}
-.orow.done{opacity:.62}
-.oh{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.oh .oid{font-weight:700;font-size:13px}
-.oh .cust{font-size:12px;color:var(--mut)}
-.oh .prod{font-size:11.5px;color:var(--mut);background:var(--pan2);border:1px solid var(--bd);border-radius:7px;padding:2px 8px}
-.badge{margin-left:auto;font-size:11.5px;font-weight:700;border-radius:8px;padding:3px 10px}
-.badge.ok{background:var(--okbg);color:var(--ok)}
-.badge.warn{background:var(--warnbg);color:var(--warn)}
-.badge.hi{background:var(--badbg);color:var(--bad)}
-.obar{display:flex;align-items:center;gap:8px;margin:8px 0 4px;font-size:11.5px;color:var(--mut)}
-.obar .track{flex:1;height:9px;background:var(--pan2);border-radius:5px;position:relative}
-.obar .track i{position:absolute;left:0;top:0;height:100%;border-radius:5px}
-.obar .dev{font-weight:700}
-.oev{font-size:11.5px;color:var(--mut);background:var(--pan2);border-left:3px solid var(--ac);border-radius:6px;padding:6px 10px;line-height:1.65;margin-top:6px}
-.oev b{color:var(--ac)}
-.btns{display:flex;gap:8px;margin-top:8px}
-.btn{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;border-radius:8px;padding:5px 12px;cursor:pointer}
+.rchip.lo{border-color:#BFDBFE;background:var(--infobg);color:var(--blue)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:8px;padding:6px 13px;cursor:pointer}
 .btn.pri{background:var(--ac);color:#fff;font-weight:700}
 .btn.pri:hover{background:#4338CA}
 .btn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan)}
-.btn.oks{background:var(--okbg);color:var(--ok);border:1px solid #BBF7D0;font-weight:600}
-.legend{display:flex;gap:14px;font-size:11px;color:var(--mut);margin-bottom:6px}
-.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}
+.btn.ghost:hover{color:var(--ac);border-color:#C7D2FE}
+.btn.sm{font-size:11.5px;padding:4px 11px}
+.fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.fchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
+.fchip.on{border-color:var(--ac);color:var(--ac);background:#EEF2FF;font-weight:700}
+.rrow{border:1px solid var(--bd);border-left-width:4px;border-radius:11px;padding:10px 13px;margin-bottom:8px;background:var(--pan)}
+.rrow.red{border-left-color:#EF4444}
+.rrow.yellow{border-left-color:#F59E0B}
+.rrow.blue{border-left-color:#3B82F6}
+.rrow.done{opacity:.6}
+.rh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lvb{font-size:11px;font-weight:700;border-radius:7px;padding:2px 9px}
+.lvb.red{background:var(--badbg);color:var(--bad)}
+.lvb.yellow{background:var(--warnbg);color:var(--warn)}
+.lvb.blue{background:var(--infobg);color:var(--blue)}
+.cat{font-size:11px;color:var(--ac);background:#EEF2FF;border-radius:7px;padding:2px 8px;font-weight:600}
+.rh .obj{font-weight:700;font-size:13px}
+.rh .imp{margin-left:auto;font-size:11px;color:var(--mut)}
+.rdesc{font-size:11.5px;color:var(--mut);line-height:1.65;margin-top:5px}
+.rdesc b{color:var(--tx)}
+.ract{margin-top:6px;font-size:11.5px;color:var(--tx);background:var(--pan2);border-left:3px solid var(--ac);border-radius:6px;padding:6px 10px;line-height:1.6}
+.ract b{color:var(--ac)}
+.rft{display:flex;align-items:center;gap:8px;margin-top:7px}
+.rft .own{font-size:11px;color:var(--mut)}
+.okmark{font-size:11.5px;color:var(--ok);font-weight:600}
+.dstrip{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--tx);background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:8px 12px}
+.dstrip b{color:var(--ac)}
+.oneline{margin-top:10px;display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.7;color:var(--tx);background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:8px 12px}
+.oneline .ic{color:var(--ac);margin-top:2px}
+.oneline b{color:var(--ac)}
+.dfoot{font-size:10.5px;color:#94A3B8;line-height:1.6;margin-top:auto;padding-top:8px}
 /* AI */
 .aiwrap{flex:1;display:flex;flex-direction:column;min-height:0}
 .msgs{flex:1;overflow:auto;padding:2px 2px 8px;min-height:0}
@@ -80,7 +105,6 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .msg.ai .bub{background:var(--pan2);border:1px solid var(--bd);color:var(--tx)}
 .msg.ai .bub b{color:var(--ac)}
 .msg.user .bub{background:var(--ac);color:#fff}
-.msg.ai .bub .do{margin-top:6px;font-size:11px;color:var(--ac);display:flex;align-items:center;gap:5px;font-weight:600}
 .typing{display:inline-flex;gap:3px;padding:4px 2px}
 .typing i{width:5px;height:5px;border-radius:3px;background:var(--ac2);animation:ty 1s infinite}
 .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
@@ -96,108 +120,106 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .toast{position:fixed;right:24px;bottom:24px;background:var(--tx);color:#fff;font-size:13px;font-weight:600;border-radius:10px;padding:10px 18px;display:none;z-index:99;box-shadow:0 8px 24px rgba(15,23,42,.25)}
 svg text{font-family:inherit}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 交付风险预警中心</b><span class="toptag">威贸电子</span>
-<div class="right-info"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>每日 08:30 自动穿透订单 / 物料 / 产能</div></div>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 交付风险预警智能体</b><span class="toptag">威贸电子</span>
+<div class="valwrap"><span class="valbtn" onclick="toggleVal(event)"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>效能与价值</span>
+<div class="vpop" id="vpop"><h5><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>效能与价值<em>MVP 目标口径</em></h5>
+<div class="vrow"><span>缺料风险暴露时长</span><span class="base">周更 ≤7 天 → <b>≤1 天</b></span></div>
+<div class="vrow"><span>风险清单自动匹配率</span><span class="base">有漏判案例 → <b>≥98%</b></span></div>
+<div class="vrow"><span>周例链路人工耗时</span><span class="base">3–4h/周 → <b>≤0.5h</b></span></div>
+<div class="vrow"><span>人工释放</span><span class="base"><b>约 60–80 人时/月</b>（推断）</span></div>
+<div class="vrow"><span>预警准确率</span><span class="base">无基线 → <b>≥90%</b>，误报 &lt;10%</span></div>
+<div class="vfoot">MVP 只做识别与预警，不做自动处置；未交订单逾期量上线 3 个月内目标下降 20%。</div></div></div>
+<div class="rinfo"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>每日 07:30 自动跑批 · 上传即跑</div></div>
 
 <div class="kpis">
-<div class="kpi"><b>94.2%</b><i>▲1.8pt</i><span>订单满足率（本季）</span></div>
-<div class="kpi"><b>91.8%</b><i>▲2.4pt</i><span>OTD 订单准时交付率</span></div>
-<div class="kpi"><b>93.5%</b><i class="dn">▼1.2pt</i><span>物料齐套率 · 交付卡点核心指标</span></div>
-<div class="kpi"><b id="kHi">2</b><span>高风险订单 · 待处置</span></div></div>
+<div class="kpi" onclick="setFilter('red')"><b class="rd">2 项</b><span>红色预警 · 已逾期 / 断料影响本周排产</span></div>
+<div class="kpi" onclick="setFilter('yellow')"><b class="ye">5 项</b><span>黄色预警 · 7 天内缺口 / 覆盖断点</span></div>
+<div class="kpi" onclick="setFilter('blue')"><b class="bl">3 项</b><span>口径异常 · 匹配待人工确认（不沉默）</span></div>
+<div class="kpi"><b>23 单</b><span>逾期未交订单 · 临期 7 天内 9 单</span></div></div>
 
 <div class="wrap">
 <div class="panel left">
-<h3><svg class="ic" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>交付判定 · 在制订单 8 张</h3>
-<div class="vbar"><b>提前</b><div class="tr"><i style="width:37.5%;background:#0D9488"></i></div><span class="n">3 <small>张</small></span></div>
-<div class="vbar"><b>按期</b><div class="tr"><i style="width:37.5%;background:#4F46E5"></i></div><span class="n">3 <small>张</small></span></div>
-<div class="vbar"><b>延迟</b><div class="tr"><i style="width:25%;background:#EF4444"></i></div><span class="n">2 <small>张</small></span></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>风险分布</div>
-<div class="rchips"><span class="rchip hi" onclick="setFilter('hi')">高 <b>2</b></span><span class="rchip md">中 <b>1</b></span><span class="rchip lo">低 <b>5</b></span></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>风险源头分布 · 本月在盯 27 项</div>
-<div id="srcbars"></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>订单满足率 · 近 8 周</div>
-<svg id="trend" width="100%" height="120"></svg>
-<div class="dfoot">判定口径：预计完工 − 承诺交期 ≤−1 天=提前，0~1 天=按期，≥2 天=延迟；满足=足量按期或提前交付。示意数据。</div>
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>多源归集 · 数据源</h3>
+<div id="srcs"></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>五项规则引擎跑批</div>
+<div id="stages"></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>三级分级汇总</div>
+<div class="rchips"><span class="rchip hi" onclick="setFilter('red')">红 <b>2</b></span><span class="rchip md" onclick="setFilter('yellow')">黄 <b>5</b></span><span class="rchip lo" onclick="setFilter('blue')">蓝 <b>3</b></span></div>
+<div style="margin-top:10px" class="btnrow"><span class="btn pri" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>立即跑批</span></div>
+<div class="dfoot">触发：每日 07:30 定时 · 上传即跑 · 手动；去抖：连续 2 次或持续 1 天才升级告警，防刷屏。人物与客户名为脱敏示意。</div>
 </div>
 
 <div class="panel mid">
-<h3><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>订单满足度<em>承诺交期 vs 预计完工 · 点击筛选</em></h3>
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>交付风险日报 · 风险清单<em>只识别预警 · 处置由责任人确认销项</em></h3>
 <div class="fbar" id="fbar"></div>
-<div id="olist"></div>
-<div class="legend" style="margin-top:4px"><span><i style="background:#4F46E5"></i>已投产</span><span><i style="background:#F59E0B"></i>物料/产能受限</span><span><i style="background:#EF4444"></i>延迟风险段</span></div>
+<div id="rlist"></div>
+<div class="dstrip"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg><span><b>《交付风险日报》已生成</b> · 红级即时推送：缺料负责人（断料）、排程负责人（差异）· 黄级推送销售（覆盖断点）· 周报沉淀缺料趋势与逾期消化进度</span></div>
 <div class="oneline"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg><span>制造业交付风险集中在<b>需求预测、供应链来料、排产冲突、设备停机、制程不良</b>五大卡点；AI 最擅长<b>预测预警、交期仿真、动态重排、根因挖掘</b>；核心衡量指标：<b>OTD 准时交付率 · 物料齐套率 · 延期天数 · 预警提前量</b></span></div>
 </div>
 
 <div class="panel right">
-<h3><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI 助手 · 交付<em>可执行 · 可修改</em></h3>
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI 助手 · 预警<em>问答与定位 · 不代处置</em></h3>
 <div class="aiwrap"><div class="msgs" id="msgs"></div>
 <div class="chipcol" id="qchips"></div>
-<div class="inrow"><input id="aiIn" placeholder="输入指令，如：看高风险订单 / 重排产 SO-2609-031" onkeydown="if(event.key==='Enter')aiSend()"><span class="send" onclick="aiSend()"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+<div class="inrow"><input id="aiIn" placeholder="输入：看红色预警 / 缺料匹配口径 / 覆盖断点" onkeydown="if(event.key==='Enter')aiSend()"><span class="send" onclick="aiSend()"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
 </div></div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const ORDERS=[
- {id:"SO-2609-021",cust:"客户 H2",prod:"WM-C1206",qty:"8 万件",promise:"09-30",eta:"10-02",dev:2,v:"late",vr:"延迟 2 天",risk:"h",rs:"高风险",done:false,src:"供应链 · 来料",
-  cause:"物料：端子镀层批次不合格（LOT-B2209 与质检联动），缺料 2 天",
-  sug:"<b>紧急调拨</b>兄弟厂库存 1.2 万件先行交付，余量 10-02 补齐；同步质检处置结果给客户"},
- {id:"SO-2609-031",cust:"客户 N2",prod:"WM-C1206",qty:"15 万件",promise:"10-20",eta:"10-26",dev:6,v:"late",vr:"延迟 6 天",risk:"h",rs:"高风险",done:false,src:"计划 · 排产",
-  cause:"产能：C1206 模具检修（供应商 B 检修窗口 3 天），排产顺延",
-  sug:"<b>重排产</b>至备线 B 并外协部分冲压件，可与客户协商分两批（10-20 交 60%，10-26 交余量）"},
- {id:"SO-2609-025",cust:"客户 H3",prod:"WM-B1805",qty:"30 万件",promise:"10-15",eta:"10-15",dev:0,v:"ontime",vr:"按期",risk:"l",rs:"低风险",done:false,cause:"产能正常 · 进度 62%",sug:"无需干预"},
- {id:"SO-2609-036",cust:"客户 H2",prod:"WM-C0902",qty:"3 万件",promise:"09-29",eta:"09-29",dev:0,v:"ontime",vr:"按期",risk:"l",rs:"低风险",done:false,cause:"进度正常 · 进度 88%",sug:"无需干预"},
- {id:"SO-2609-039",cust:"客户 N3",prod:"WM-B1805",qty:"10 万件",promise:"10-25",eta:"10-25",dev:0,v:"ontime",vr:"按期",risk:"m",rs:"中风险",done:false,src:"计划 · 排产",cause:"大单产能占用 · 与 SO-2609-025 共线监控中",sug:"已纳入共线产能监控，偏差 >1 天自动预警"},
- {id:"SO-2609-018",cust:"客户 H1",prod:"WM-C0902",qty:"12 万件",promise:"10-08",eta:"10-05",dev:-3,v:"early",vr:"提前 3 天",risk:"l",rs:"低风险",done:false,cause:"进度 94% · 预计提前 3 天完工",sug:"可提前发货，节省仓储 3 天（已同步销售确认）"},
- {id:"SO-2609-028",cust:"客户 H1",prod:"WM-C0902",qty:"5 万件",promise:"09-28",eta:"09-26",dev:-2,v:"early",vr:"提前 2 天",risk:"l",rs:"低风险",done:false,cause:"进度 97% · 预计提前 2 天",sug:"无需干预"},
- {id:"SO-2609-033",cust:"客户 H4",prod:"WM-B1805",qty:"6 万件",promise:"10-02",eta:"10-01",dev:-1,v:"early",vr:"提前 1 天",risk:"l",rs:"低风险",done:false,cause:"进度 91% · 预计提前 1 天",sug:"无需干预"}];
-const TREND=[90.1,90.8,91.5,92.0,92.8,93.4,93.9,94.2];
-const FILTERS=[["all","全部 8"],["late","延迟 2"],["ontime","按期 3"],["early","提前 3"],["hi","高风险 2"]];
+const SRCS=[["ERP · 未交订单","XLS→XLSX ✓"],["ERP · MRP","XLS→XLSX ✓"],["ERP · 库存展望","已解析 ✓"],["ERP · 在途采购","已解析 ✓"],["客户排程 ×5（专用格式）","字段映射 ✓"],["排程（内部）","已解析 ✓"]];
+const STAGES=[
+ ["缺料与匹配引擎","M21 8V21H3V8M1 3h22v5H1zM10 12h4","在途>缺料视为足额不告警 87 行；在途<缺料自动匹配 MRP 单号 14 项，匹配不上单列待确认 1 项（不沉默）"],
+ ["需求覆盖测算","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","客户滚动计划 vs 在手订单逐周比对：覆盖断点 2 处（W7 / W9）"],
+ ["未交订单账龄","M8 2v4M16 2v4M3 10h18","按应交期分月统计未交量：已逾期 23 单，临期 7 天内 9 单自动升级"],
+ ["一致性核对","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","客户计划未结 vs 内部排程未出货合计自动对平，差异行标红 1 行（差 170）"],
+ ["三级分级 + 去抖","M22 12h-4l-3 9L9 3l-3 9H2","红 2 / 黄 5 / 蓝 3；连续 2 次或持续 1 天才升级，正常静默"]];
+const RISKS=[
+ {lv:"red",cat:"缺料匹配",obj:"物料 11711000023",desc:"缺口 <b>1,200</b>（在途 800 < 缺料 2,000），已自动匹配 MRP 单号 PO-8871 / PO-8902",imp:"影响 09-26 排产",act:"<b>建议</b>：催交在途单，同步评估替代料",own:"缺料负责人"},
+ {lv:"red",cat:"一致性核对",obj:"客户 E · 计划分配",desc:"未结 4,320 vs 日计划未出货合计 4,150，<b>差 170</b>，差异行已标红",imp:"出货分配多发风险",act:"<b>建议</b>：核对差异行，确认后冲销，防多发",own:"排程负责人"},
+ {lv:"yellow",cat:"需求覆盖",obj:"客户 A · 10 周滚动计划",desc:"在手订单仅覆盖到 <b>W6</b>，<b>W7 起断点</b>，缺口 3,600",imp:"W7–W10 交付",act:"<b>建议</b>：评估插单产能，或与客户协商分批交期",own:"销售"},
+ {lv:"yellow",cat:"缺料匹配",obj:"物料 30210630142",desc:"7 天内缺口 800（在途让步接收中，联动质检 LOT-B2204）",imp:"影响 10-02 排产",act:"<b>建议</b>：跟在途 + 让步接收确认后冲抵缺口",own:"缺料负责人"},
+ {lv:"yellow",cat:"未交账龄",obj:"订单 SO-8821 · 客户 H2",desc:"已逾期 <b>3 天</b>，未交 300 件",imp:"本月准交率",act:"<b>建议</b>：抢排 + 向客户同步新交期",own:"销售"},
+ {lv:"yellow",cat:"未交账龄",obj:"临期汇总 · 9 单",desc:"7 天内到期未交合计 <b>2,150 件</b>",imp:"本周排产",act:"<b>建议</b>：纳入日跟踪清单",own:"计划"},
+ {lv:"yellow",cat:"需求覆盖",obj:"客户 C · 月度计划",desc:"W9 覆盖断点 1,200",imp:"W9 交付",act:"<b>建议</b>：评估备选产能",own:"销售"},
+ {lv:"blue",cat:"口径校验",obj:"物料 30210420125",desc:"在途 = 缺料，按固化口径<b>视为足额不告警</b>",imp:"—",act:"口径自动校验通过，无需处理",own:"—"},
+ {lv:"blue",cat:"匹配待确认",obj:"物料 40110810237",desc:"MRP 有在途单，但与缺料行<b>映射失败</b>——单列待确认，不沉默",imp:"可能掩盖真实缺口",act:"<b>建议</b>：人工确认料号映射后回写规则",own:"缺料负责人"},
+ {lv:"blue",cat:"口径校验",obj:"缺料表负数行",desc:"到货 &gt; 缺料 = 已足额（口径固化），自动识别 <b>87 行</b>不告警",imp:"—",act:"无需处理",own:"—"}];
+const FILTERS=[["all","全部 10"],["red","红 2"],["yellow","黄 5"],["blue","蓝 3"]];
 let filter="all";
 
-function stat(){return{late:ORDERS.filter(o=>o.v==="late").length,ontime:ORDERS.filter(o=>o.v==="ontime").length,
- early:ORDERS.filter(o=>o.v==="early").length,hi:ORDERS.filter(o=>o.risk==="h"&&!o.done).length}}
-function syncKpi(){const s=stat();document.getElementById("kHi").textContent=s.hi}
-function setFilter(f){filter=f;renderOrders()}
-function renderOrders(){const fb=document.getElementById("fbar");
- fb.innerHTML=FILTERS.map(f=>`<span class="fchip ${filter===f[0]?"on":""}" onclick="setFilter('${f[0]}')">${f[1]}</span>`).join("");
- const list=ORDERS.filter(o=>filter==="all"||(filter==="hi"?o.risk==="h":o.v===filter));
- const box=document.getElementById("olist");box.innerHTML="";
- if(!list.length){box.innerHTML='<div style="color:var(--mut);font-size:12.5px;text-align:center;padding:20px 0">该筛选下暂无在制订单</div>'}
- list.forEach(o=>{
-  const trackColor=o.v==="late"?"#EF4444":o.risk==="m"?"#F59E0B":"#4F46E5";
-  const prog=o.v==="late"?68:o.v==="ontime"?62:90;
-  const d=document.createElement("div");d.className="orow "+(o.done?"done":o.risk==="h"?"hi":o.risk==="m"?"md":"");
-  d.innerHTML=`<div class="oh"><span class="oid">${o.id}</span><span class="cust">${o.cust}</span><span class="prod">${o.prod} × ${o.qty}</span>${o.src?`<span class="srctag">${o.src}</span>`:""}
-  <span class="badge ${o.v==="late"?"hi":o.risk==="m"?"warn":"ok"}">${o.vr}${o.done?" · 已处置":""}</span></div>
-  <div class="obar"><span>承诺 ${o.promise}</span><div class="track"><i style="width:${prog}%;background:${trackColor}"></i></div><span>预计 ${o.eta}</span>
-  <span class="dev" style="color:${o.dev>0?"var(--bad)":o.dev<0?"var(--ok)":"var(--mut)"}">${o.dev>0?"+"+o.dev:o.dev} 天</span></div>
-  <div class="oev">${o.cause}　<b>AI 建议：</b>${o.sug}</div>
-  ${o.v==="late"||o.risk==="m"?`<div class="btns">${o.done?'<span class="btn oks">✓ 处置已执行 · 结果回流规则库</span>':`<span class="btn pri" onclick="adopt('${o.id}')">采纳并执行</span><span class="btn ghost" onclick="toast('已转人工确认 · 计划主管（模拟）')">调整建议</span>`}</div>`:""}`;
-  box.appendChild(d)})}
-function adopt(id){const o=ORDERS.find(x=>x.id===id);if(!o||o.done)return;
- o.done=true;syncKpi();renderOrders();
- toast(id+" 处置已执行 · 结果回流规则库");
- aiSay("<b>"+id+"</b> 处置方案已执行：相关方已通知（计划 / 采购 / 客户接口人），预计偏差收回后自动复判并更新判定。","已执行")}
-function renderTrend(){const svg=document.getElementById("trend");const W=svg.clientWidth||280,H=120,P={l:26,b:16,t:8},lo=88,hi=96;
- const x=i=>P.l+i*(W-P.l-6)/7,y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
- let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-6}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4"/><text x="${W-8}" y="${y(95)-4}" font-size="9" fill="#94A3B8" text-anchor="end">目标 95%</text>`;
- [88,92,96].forEach(t=>{s+=`<text x="${P.l-4}" y="${y(t)+3}" font-size="9" fill="#94A3B8" text-anchor="end">${t}</text>`});
- s+=`<polyline points="${TREND.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.4" stroke-linecap="round"/>`;
- s+=TREND.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.8" fill="#fff" stroke="#4F46E5" stroke-width="2"/><text x="${x(i)}" y="${H-3}" font-size="8.5" fill="#94A3B8" text-anchor="middle">W${i+1}</text>`).join("");
- svg.innerHTML=s}
+function renderSrcs(){document.getElementById("srcs").innerHTML=SRCS.map(s=>`<div class="src"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>${s[0]}</b><span class="st ${s[1].includes("XLS")?"conv":""}">${s[1]}</span></div>`).join("")}
+function renderStages(st){const box=document.getElementById("stages");box.innerHTML="";
+ STAGES.forEach((s,i)=>{const cls=st>i?"done":st===i?"run":"";
+  box.innerHTML+=`<div class="stage ${cls}"><div class="sic"><svg class="ic" viewBox="0 0 24 24">${st>i?'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3"/>':`<path d="${s[1]}"/>`}</svg></div>
+  <div class="sbody"><div class="sname">${s[0]}<span class="sstate">${st>i?"✓":st===i?'<span class="dot"></span>执行中':"排队"}</span></div><div class="ssum">${s[2]}</div></div></div>`})}
+function runPipeline(){if(ran){document.querySelectorAll(".rrow.done").forEach(r=>r.classList.remove("done"));
+ RISKS.forEach(r=>r.done=false);renderStages(0);ran=false;setTimeout(runPipeline,80);return}
+ ran=true;document.getElementById("runBtn").innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新跑批';
+ let st=0;renderStages(0);
+ const step=()=>{if(st>STAGES.length){renderStages(STAGES.length);renderList();toast("跑批完成 · 日报已生成并按级推送");return}
+  renderStages(st);st++;setTimeout(step,st===STAGES.length+1?500:900)};step()}
+let ran=false;
 
-const SRCS=[["供应链 · 来料",8],["计划 · 排程",6],["生产车间",5],["订单端",4],["仓储物流",3],["质量 · 售后",1]];
-const SRCC=["#312E81","#4F46E5","#6366F1","#818CF8","#A5B4FC","#C7D2FE"];
-function renderSrcBars(){const mx=Math.max(...SRCS.map(s=>s[1]));
- document.getElementById("srcbars").innerHTML=SRCS.map((s,i)=>`<div class="vbar"><b style="width:76px;font-weight:500">${s[0]}</b><div class="tr"><i style="width:${s[1]/mx*100}%;background:${SRCC[i]}"></i></div><span class="n">${s[1]} <small>项</small></span></div>`).join("")}
+function setFilter(f){filter=f;renderList()}
+function renderList(){document.getElementById("fbar").innerHTML=FILTERS.map(f=>`<span class="fchip ${filter===f[0]?"on":""}" onclick="setFilter('${f[0]}')">${f[1]}</span>`).join("");
+ const list=RISKS.filter(r=>filter==="all"||r.lv===filter);
+ const box=document.getElementById("rlist");box.innerHTML="";
+ list.forEach(r=>{const d=document.createElement("div");d.className="rrow "+r.lv+(r.done?" done":"");
+  d.innerHTML=`<div class="rh"><span class="lvb ${r.lv}">${r.lv==="red"?"红":r.lv==="yellow"?"黄":"蓝"}</span><span class="cat">${r.cat}</span><span class="obj">${r.obj}</span><span class="imp">${r.imp}</span></div>
+  <div class="rdesc">${r.desc}</div><div class="ract">${r.act}</div>
+  <div class="rft"><span class="own">责任人：${r.own}</span>${r.own==="—"?"":r.done?'<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>':`<span class="btn pri sm" onclick="closeRisk(this,'${r.obj}')">确认销项</span><span class="btn ghost sm" onclick="toast('已转发责任人处理（模拟推送）')">转发</span>`}</div>`;
+  box.appendChild(d)})}
+function closeRisk(btn,obj){const r=RISKS.find(x=>x.obj===obj);if(r){r.done=true}
+ const row=btn.closest(".rrow");row.classList.add("done");
+ btn.outerHTML='<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>';
+ toast("已销项 · 明日跑批自动复核，未销项持续升级")}
 
 /* ─── AI 对话 ─── */
-function pushMsg(cls,html,doTxt){const box=document.getElementById("msgs");const d=document.createElement("div");d.className="msg "+cls;
- d.innerHTML=(cls==="ai"?`<div class="av"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>`:"")+
- `<div class="bub">${html}${doTxt?`<div class="do"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>${doTxt}</div>`:""}</div>`;
+function pushMsg(cls,html){const box=document.getElementById("msgs");const d=document.createElement("div");d.className="msg "+cls;
+ d.innerHTML=(cls==="ai"?`<div class="av"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>`:"")+`<div class="bub">${html}</div>`;
  box.appendChild(d);box.scrollTop=box.scrollHeight}
-function aiSay(html,doTxt){pushMsg("ai",html,doTxt)}
+function aiSay(html){pushMsg("ai",html)}
 function aiSend(){const inp=document.getElementById("aiIn");const t=inp.value.trim();if(!t)return;
  inp.value="";pushMsg("user",t);
  const box=document.getElementById("msgs");const ty=document.createElement("div");ty.className="msg ai";
@@ -205,32 +227,31 @@ function aiSend(){const inp=document.getElementById("aiIn");const t=inp.value.tr
  box.appendChild(ty);box.scrollTop=box.scrollHeight;
  setTimeout(()=>{ty.remove();route(t)},650)}
 function route(t){
- const m=t.match(/SO-\d{4}-\d{3}/i);
- if(/重排|排产|换线|调拨|处置|执行/.test(t)&&m){const o=ORDERS.find(x=>x.id===m[0].toUpperCase());
-  if(o){if(/重排|排产|换线/.test(t)){o.eta="10-20";o.dev=0;o.v="ontime";o.vr="按期";o.risk="m";o.rs="中风险";
-    o.cause="已重排产至备线 B · 进度 62% · 承诺交期可达";
-    o.sug="分批方案已同步客户（10-20 交 60%）；外协冲压件询价中";
-    filter="all";renderOrders();syncKpi();
-    aiSay("<b>"+o.id+"</b> 已完成重排产：备线 B 排产成功，预计完工 <b>10-20</b>，判定由「延迟 6 天」改为<b>按期</b>，高风险订单 -1。分批交付建议已同步客户接口人。","已执行");}
-   else{adopt(o.id)}return}}
- if(/源头|风险清单|六大|分类/.test(t)){aiSay("按源头分类，本月在盯风险 <b>27 项</b>：<b>供应链来料 8</b>（最常见交付卡点）、计划排程 6、生产车间 5、订单端 4、仓储物流 3、质量售后 1。分布见左栏；延迟订单已标源头标签，可穿透到具体单据。");return}
- if(/齐套/.test(t)){aiSay("物料齐套率本季 <b>93.5%</b>（目标 95%）。缺料集中在镀层端子——与质检不合格批次 LOT-B2209 联动，SO-2609-021 调拨方案执行后预计回到 95%。");return}
- if(/高风险|风险订单/.test(t)){setFilter("hi");const s=stat();
-  aiSay("当前高风险订单 <b>"+s.hi+" 张</b>：SO-2609-021（物料缺料 2 天，建议紧急调拨先行交付）、SO-2609-031（模具检修致延迟 6 天，建议重排产+分批）。均可一键「采纳并执行」。","已筛选高风险");return}
- if(/延迟/.test(t)){setFilter("late");aiSay("延迟在制订单 <b>2 张</b>（合计影响满足率约 0.9pt）。SO-2609-021 走物料调拨可收回 2 天；SO-2609-031 建议重排产+分批。回复「重排产 SO-2609-031」可直接执行。","已筛选延迟");return}
- if(/按期/.test(t)){setFilter("ontime");aiSay("按期订单 <b>3 张</b>，其中 SO-2609-039 与 SO-2609-025 共线，已纳入产能监控，偏差超 1 天自动预警。");return}
- if(/提前/.test(t)){setFilter("early");aiSay("提前订单 <b>3 张</b>，合计可提前发货释放仓储 6 天；SO-2609-018（提前 3 天）建议优先安排发运。");return}
- if(/满足|满足率|达成/.test(t)){aiSay("本季<b>订单满足率 94.2%</b>（目标 95%，差 0.8pt），近 8 周连续回升。拖累项：2 张延迟单（物料缺料 + 模具检修）。若 SO-2609-031 重排产落地，预计回到 <b>95%+</b>。");return}
- if(/采纳|全部执行/.test(t)){const pend=ORDERS.filter(o=>(o.v==="late"||o.risk==="m")&&!o.done);
-  if(pend.length){pend.forEach(o=>{o.done=true});renderOrders();syncKpi();
-   aiSay("已批量采纳 <b>"+pend.length+" 条</b>处置建议：紧急调拨 + 重排产分批均已执行，相关方已通知，执行结果回流规则库。","已执行")}else aiSay("当前无待处置建议，全部订单已在轨。");return}
- if(/趋势|满足率走势|近期/.test(t)){aiSay("满足率近 8 周 <b>90.1% → 94.2%</b>，连续回升；本页左栏趋势图已高亮。距 95% 目标差 0.8pt，关键在两张延迟单的处置落地。");return}
- aiSay("已收到。我可以直接执行：回复「<b>看高风险订单</b>」「重排产 SO-2609-031」「处置 SO-2609-021」「按期/提前/延迟筛选」「本季满足度怎么样」，也可以让我批量采纳全部建议。")}
-const QCHIPS=["看高风险订单","重排产 SO-2609-031","处置 SO-2609-021","看延迟订单","本季满足度怎么样"];
+ if(/红色|红级|^红$/.test(t)){setFilter("red");
+  aiSay("红色预警 <b>2 项</b>：①物料 11711000023 缺口 1,200（在途不足，已匹配 MRP 单），影响 09-26 排产；②客户 E 计划分配差异 170，有出货多发风险。已即时推送缺料负责人与排程负责人。","已筛红色");return}
+ if(/黄色|黄级/.test(t)){setFilter("yellow");
+  aiSay("黄色预警 <b>5 项</b>：客户 A 覆盖断点（W7 起）、镀层端子 7 天内缺口 800、逾期单 SO-8821、临期 9 单汇总、客户 C 覆盖断点。7 天内缺口按规则自动升级。","已筛黄色");return}
+ if(/蓝色|口径|匹配|待确认/.test(t)){setFilter("blue");
+  aiSay("蓝色 <b>3 项</b>均为口径类：两处口径自动校验通过（足额不告警 87 行 / 负数含义），1 项 MRP 映射失败已单列<b>待人工确认</b>——规则是「匹配不上不沉默」，确认后回写规则库。","已筛蓝色");return}
+ if(/口径|规则|在途|负数/.test(t)){aiSay("已固化口径：<b>在途 &gt; 缺料 = 足额不告警</b>；在途 &lt; 缺料自动匹配 MRP 单号（多行 / 分隔）；到货 &gt; 缺料 = 已足额（负数行自动识别）。匹配不上单列待确认。原口径仅在个别同事脑中，现已沉淀为引擎规则。");return}
+ if(/覆盖|断点|滚动计划|周/.test(t)){setFilter("yellow");
+  aiSay("需求覆盖测算：客户 A 10 周滚动计划，在手订单覆盖到 <b>W6，W7 起断点 3,600</b>；客户 C W9 断点 1,200。已推送销售评估插单或协商分批。");return}
+ if(/账龄|逾期|未交/.test(t)){aiSay("未交订单按应交期分月统计：<b>已逾期 23 单</b>、临期 7 天内 9 单（合计 2,150 件）已升级黄色。上线 3 个月目标：逾期量环比下降 20%。");return}
+ if(/一致|对平|差异|排程/.test(t)){aiSay("一致性核对：客户 E 计划未结 4,320 vs 内部日计划未出货合计 4,150，<b>差异 170 已标红定位</b>。此类两套数对不平以前靠人工逐行找，现在差异行直出。");return}
+ if(/重跑|跑批|立即/.test(t)){aiSay("收到，立即重跑：多源归一 → 口径映射 → 五项规则引擎 → 三级分级 + 去抖。","已开始");runPipeline();return}
+ if(/日报|推送|周报/.test(t)){aiSay("输出三件：<b>①交付风险日报</b>（物料/订单/客户/缺口量/影响交期/等级/建议动作）②红黄级即时推送责任人，正常静默 ③<b>周报</b>沉淀缺料趋势与逾期消化进度。");return}
+ if(/处置|执行|自动/.test(t)){aiSay("MVP <b>只做识别与预警，不做自动处置</b>：预警由责任人在清单点「确认销项」，次日跑批自动复核，未销项持续升级。自动处置属后续规划。");return}
+ aiSay("已收到。可问我：<b>「看红色预警」「缺料匹配口径」「覆盖断点」「账龄」「一致性差异」「重跑批」</b>；本智能体只做识别预警，处置走责任人销项闭环。")}
+const QCHIPS=["看红色预警","缺料匹配口径","覆盖断点","匹配待确认","重跑批"];
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
+function toggleVal(e){e.stopPropagation();const p=document.getElementById("vpop");
+ p.style.display=p.style.display==="block"?"none":"block"}
+document.addEventListener("click",e=>{const p=document.getElementById("vpop");
+ if(p&&p.style.display==="block"&&!p.contains(e.target)&&!e.target.closest(".valbtn"))p.style.display="none"});
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
-renderOrders();renderTrend();renderSrcBars();
-pushMsg("ai","你好，我是交付 AI 助手。每日 08:30 自动穿透订单/物料/产能并给出判定，你可以让我<b>筛选、重排产、执行处置</b>——试试点下方快捷指令，或直接输入。");
-window.addEventListener("resize",()=>{renderTrend();renderSrcBars()});
+renderSrcs();renderStages(0);renderList();
+pushMsg("ai","你好，我是交付风险预警智能体。每日 07:30 自动归集 ERP 四件套与客户排程，跑<b>五项规则引擎</b>输出红黄蓝三级风险日报。口径我已固化（在途&gt;缺料=足额不告警），可以问我，也可以让我重跑批。");
+window.addEventListener("resize",()=>{});
+setTimeout(()=>{runPipeline()},600);
 </script></body></html>
