@@ -1,78 +1,137 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 质量分析看板</title>
 <style>
+:root{--bg:#15171C;--pan:#1D2027;--pan2:#262A33;--bd:#333845;--ac:#F59E0B;--ac2:#FBBF24;--tx:#F3F4F6;--mut:#9CA3AF}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
-body{background:#0D1526;color:#E8EEF9;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.top{display:flex;align-items:center;gap:14px;background:#101B36;padding:12px 22px;border-bottom:1px solid #22315E}
-.logo{width:14px;height:14px;background:#00ACBE;border-radius:4px}
-.top b{font-size:16px}.env{font-size:12px;color:#9FAFD2;border:1px solid #2A3A66;border-radius:12px;padding:3px 12px;margin-left:8px}
-.top . approvals{margin-left:auto;font-size:12px;color:#FFC539}
+body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;background:var(--pan);padding:12px 22px;border-bottom:1px solid var(--bd)}
+.logo{width:14px;height:14px;background:var(--ac);border-radius:4px}
+.top b{font-size:16px}.env{font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:12px;padding:3px 12px;margin-left:8px}
+.top .appr{margin-left:auto;font-size:12px;color:var(--ac2)}
 .kpis{display:flex;gap:14px;padding:16px 22px}
-.kpi{flex:1;background:#16264C;border:1px solid #2A3A66;border-radius:12px;padding:14px 18px}
-.kpi b{font-size:26px;color:#00ACBE}.kpi i{font-style:normal;font-size:13px;color:#4AD98A;margin-left:8px}
-.kpi span{display:block;font-size:12.5px;color:#9FAFD2;margin-top:4px}
-.wrap{display:flex;flex:1;gap:16px;padding:0 22px 18px;min-height:0}
-.panel{background:#101B36;border:1px solid #22315E;border-radius:14px;padding:16px 18px}
-.panel h3{font-size:14px;color:#C9D4E8;margin-bottom:12px;font-weight:600}
-.left{width:300px}.mid{flex:1}.right{width:330px}
-.lot{background:#16264C;border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
-.lot.on{border:1px solid #00ACBE}
+.kpi{flex:1;background:var(--pan2);border:1px solid var(--bd);border-radius:12px;padding:14px 18px}
+.kpi b{font-size:26px;color:var(--ac)}.kpi i{font-style:normal;font-size:13px;color:#4AD98A;margin-left:8px}
+.kpi span{display:block;font-size:12.5px;color:var(--mut);margin-top:4px}
+.wrap{display:flex;flex:1;gap:16px;padding:0 22px 18px;min-height:0;overflow:hidden}
+.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;overflow:auto}
+.panel h3{font-size:14px;color:var(--tx);margin-bottom:12px;font-weight:600}
+.left{width:290px}.mid{flex:1.15}.right{width:340px}
+.lot{background:var(--pan2);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:1px solid transparent}
+.lot.on{border-color:var(--ac)}
 .lot .id{font-weight:700;font-size:13.5px}.lot .id i{font-style:normal;font-size:11px;border-radius:8px;padding:2px 8px;margin-left:8px}
-.hi{background:#3A1420;color:#FF7B7B}.warn{background:#3A3212;color:#FFC539}.ok{background:#123A2E;color:#4AD98A}
-.lot .m{font-size:12px;color:#9FAFD2;margin-top:5px}
-.img{width:100%;height:130px;background:linear-gradient(135deg,#22315E,#41527F);border-radius:10px;position:relative;margin-bottom:10px}
-.det{position:absolute;border:2px solid #FF7B7B;border-radius:6px}
-.det span{position:absolute;top:-20px;left:0;background:#FF7B7B;color:#fff;font-size:11px;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.hi{background:#3A1420;color:#F87171}.warn{background:#3A2E12;color:#FBBF24}.ok{background:#12321F;color:#34D399}
+.lot .m{font-size:12px;color:var(--mut);margin-top:5px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs span{font-size:12px;border:1px solid var(--bd);border-radius:8px;padding:4px 12px;color:var(--mut);cursor:pointer}
+.tabs span.on{background:var(--ac);color:#15171C;font-weight:700;border-color:var(--ac)}
 .bars .r{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12.5px}
-.bars .r b{width:64px;color:#C9D4E8;font-weight:500}
-.bars .tr{flex:1;height:9px;background:#1A2A52;border-radius:5px}
-.bars .tr i{display:block;height:100%;border-radius:5px}
-.bars .p{width:40px;text-align:right;color:#9FAFD2}
-.step{display:flex;gap:10px;align-items:center;margin-bottom:9px;font-size:12.5px}
-.step i{width:11px;height:11px;border-radius:50%}
-.step .dn{color:#9FAFD2}
-.d8{background:#16264C;border-radius:10px;padding:12px 14px}
+.bars .r b{width:70px;color:var(--tx);font-weight:500}
+.bars .tr{flex:1;height:10px;background:var(--pan2);border-radius:5px}
+.bars .tr i{display:block;height:100%;border-radius:5px;background:var(--ac);transition:width .4s}
+.bars .p{width:42px;text-align:right;color:var(--mut)}
+.gauge{display:flex;align-items:center;gap:16px}
+.gtxt b{font-size:26px;color:var(--ac)}.gtxt span{display:block;font-size:12px;color:var(--mut)}
+.d8{background:var(--pan2);border-radius:10px;padding:12px 14px}
 .d8 .t{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px}
-.d8 .bar{height:9px;background:#1A2A52;border-radius:5px;margin:6px 0 10px}
-.d8 .bar i{display:block;height:100%;background:#00ACBE;border-radius:5px}
-.d8 .sug{font-size:12.5px;color:#B9C6E2;line-height:1.7}
-.appr{margin-top:10px;font-size:12px;background:#3A3212;color:#FFC539;border-radius:8px;padding:6px 10px;text-align:center}
+.d8 .bar{height:9px;background:var(--pan2);border-radius:5px;margin:6px 0 10px}
+.d8 .bar i{display:block;height:100%;background:var(--ac);border-radius:5px;transition:width .4s}
+.d8 .sug{font-size:12.5px;color:#C9CDD6;line-height:1.7}
+.appr{margin-top:10px;font-size:12px;background:#3A2E12;color:#FBBF24;border-radius:8px;padding:6px 10px;text-align:center;cursor:pointer}
+.appr.done{background:#12321F;color:#34D399}
+.img{width:100%;height:140px;background:linear-gradient(135deg,#2E3340,#4A5164);border-radius:10px;position:relative;margin-bottom:10px}
+.det{position:absolute;border:2px solid #F87171;border-radius:6px}
+.det span{position:absolute;top:-20px;left:0;background:#F87171;color:#fff;font-size:11px;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.det.y{border-color:#FBBF24}.det.y span{background:#FBBF24;color:#15171C}
+.dl{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+svg text{font-family:inherit}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 质量分析看板</b><span class="env">连接器制造 · 私有化部署</span>
-<div class="approvals">⚑ 待人工审批：1 项放行</div></div>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 质量分析看板</b><span class="env">连接器制造 · 私有化部署 · Demo</span>
+<div class="appr">⚑ 待人工审批：1 项放行</div></div>
 <div class="kpis">
 <div class="kpi"><b>98%</b><i>▲2pt</i><span>判定一致率</span></div>
 <div class="kpi"><b>8min</b><i>▼52min</i><span>报告出稿时长</span></div>
 <div class="kpi"><b>-45%</b><span>漏检率</span></div>
 <div class="kpi"><b>12</b><span>本周质检批次</span></div></div>
 <div class="wrap">
-<div class="panel left"><h3>批次列表</h3>
-<div class="lot on"><div class="id">LOT-B2209<i class="hi">NCR 已开</i></div><div class="m">外观划痕 · 供应商 A · 3,200 件</div></div>
-<div class="lot"><div class="id">LOT-B2204<i class="warn">复检中</i></div><div class="m">镀层偏薄 · 供应商 B · 1,800 件</div></div>
-<div class="lot"><div class="id">LOT-B2197<i class="ok">自动放行</i></div><div class="m">全项合格 · 供应商 C · 5,000 件</div></div>
-<div class="lot"><div class="id">LOT-B2193<i class="ok">自动放行</i></div><div class="m">全项合格 · 供应商 A · 2,600 件</div></div></div>
-<div class="panel mid"><h3>缺陷图像判定 · LOT-B2209</h3>
-<div class="img"><div class="det" style="left:18%;top:30%;width:120px;height:70px"><span>外观划痕 · 置信度 0.92</span></div>
-<div class="det" style="left:58%;top:55%;width:90px;height:56px;border-color:#FFC539"><span style="background:#FFC539;color:#3A3212">镶件偏移 · 0.74</span></div></div>
-<h3 style="margin-top:16px">缺陷类型分布 · 近 30 天</h3>
-<div class="bars">
-<div class="r"><b>外观划痕</b><div class="tr"><i style="width:62%;background:#FF7B7B"></i></div><span class="p">62%</span></div>
-<div class="r"><b>镀层偏薄</b><div class="tr"><i style="width:25%;background:#FFC539"></i></div><span class="p">25%</span></div>
-<div class="r"><b>尺寸超差</b><div class="tr"><i style="width:13%;background:#00ACBE"></i></div><span class="p">13%</span></div></div>
-<h3 style="margin-top:16px">根因归因 · LOT-B2209</h3>
-<div class="bars">
-<div class="r"><b>供应商 A</b><div class="tr"><i style="width:62%;background:#FF7B7B"></i></div><span class="p">62%</span></div>
-<div class="r"><b>工艺参数</b><div class="tr"><i style="width:25%;background:#FFC539"></i></div><span class="p">25%</span></div>
-<div class="r"><b>来料运输</b><div class="tr"><i style="width:13%;background:#00ACBE"></i></div><span class="p">13%</span></div></div></div>
-<div class="panel right"><h3>8D 报告 · 自动生成</h3>
-<div class="d8"><div class="t"><span>D1-D3 已完成</span><span style="color:#4AD98A">78%</span></div>
-<div class="bar"><i style="width:78%"></i></div>
-<div class="step"><i style="background:#4AD98A"></i>D2 问题描述 · 自动生成<span class="dn">✓</span></div>
-<div class="step"><i style="background:#4AD98A"></i>D3 临时措施 · 全数复检<span class="dn">✓</span></div>
-<div class="step"><i style="background:#FFC539"></i>D4 根因分析 · 生成中</div>
-<div class="sug">整改建议 3 条：<br>1. 供应商 A 来料加严检验<br>2. 包装方式改为吸塑托盘<br>3. 运输振动测试复核</div>
-<div class="appr">高风险放行 / 停线决策 → 人工审批</div></div>
-<h3 style="margin-top:16px">交付物</h3>
-<div class="lot"><div class="m">📄 8D 报告初稿 · 已生成（2 页）</div></div>
-<div class="lot"><div class="m">📋 整改任务单 · 已分派质量部</div></div>
-<div class="lot"><div class="m">📬 客户回复函 · 中英双语待发</div></div></div>
-</div></body></html>
+<div class="panel left"><h3>批次列表</h3><div id="lots"></div></div>
+<div class="panel mid"><h3>缺陷图像判定 · <span id="curLot">—</span></h3>
+<div class="img" id="imgBox"></div>
+<h3>缺陷类型分布 · 近 30 天</h3>
+<div class="tabs" id="ftabs"><span class="on" data-f="all">全部</span><span data-f="scratch">外观划痕</span><span data-f="coat">镀层偏薄</span><span data-f="dim">尺寸超差</span></div>
+<div class="bars" id="typeBars"></div>
+<h3 style="margin-top:14px">缺陷趋势 · 近 7 天（PPM）</h3>
+<svg id="trend" width="100%" height="130" viewBox="0 0 600 130" preserveAspectRatio="none"></svg>
+<h3 style="margin-top:14px">判定一致率</h3>
+<div class="gauge">
+<svg width="90" height="58" viewBox="0 0 90 58"><path d="M10 55 A38 38 0 0 1 80 55" fill="none" stroke="#333845" stroke-width="9" stroke-linecap="round"/><path d="M10 55 A38 38 0 0 1 80 55" fill="none" stroke="#F59E0B" stroke-width="9" stroke-linecap="round" stroke-dasharray="119 238"/></svg>
+<div class="gtxt"><b>98%</b><span>AI vs 人工判定一致</span></div></div></div>
+<div class="panel right">
+<h3>根因归因 · <span id="attrLot">—</span></h3>
+<div class="bars" id="attrBars"></div>
+<h3 style="margin-top:14px">8D 报告 · 自动生成</h3>
+<div class="d8"><div class="t"><span id="d8t">D1-D3 已完成</span><span style="color:#4AD98A" id="d8p">78%</span></div>
+<div class="bar"><i id="d8bar" style="width:78%"></i></div><div id="d8steps"></div>
+<div class="sug" id="d8sug"></div>
+<div class="appr" id="appr" onclick="approve()">高风险放行 / 停线决策 → 人工审批</div></div>
+<h3 style="margin-top:14px">交付物</h3>
+<div class="d8"><div class="t">📄 8D 报告初稿（2 页）</div><div class="t">📋 整改任务单 · 已分派质量部</div><div class="t">📬 客户回复函 · 中英双语待发</div></div></div>
+</div>
+<script>
+const LOTS={
+ B2209:{t:"外观划痕",lv:"hi",lvx:"NCR 已开",sup:"供应商 A",qty:"3,200 件",
+  dets:[["划痕",18,30,120,70,"外观划痕 · 0.92"],["偏移",58,55,90,56,"镶件偏移 · 0.74","y"]],
+  type:[["外观划痕",62],["镀层偏薄",25],["尺寸超差",13]],
+  trend:[320,280,410,360,520,480,610],
+  attr:[["供应商 A",62,"#F87171"],["工艺参数",25,"#FBBF24"],["来料运输",13,"#00ACBE"]],
+  d8:{p:78,t:"D1-D3 已完成",steps:[["D2 问题描述 · 自动生成",1],["D3 临时措施 · 全数复检",1],["D4 根因分析 · 生成中",0]],
+  sug:"整改建议 3 条：<br>1. 供应商 A 来料加严检验<br>2. 包装改为吸塑托盘<br>3. 运输振动测试复核"}},
+ B2204:{t:"镀层偏薄",lv:"warn",lvx:"复检中",sup:"供应商 B",qty:"1,800 件",
+  dets:[["测厚",24,28,100,60,"镀层 2.1μm · 下限 2.5","y"]],
+  type:[["镀层偏薄",54],["外观变色",31],["尺寸超差",15]],
+  trend:[210,260,240,300,280,330,310],
+  attr:[["供应商 B",54,"#FBBF24"],["槽液老化",31,"#FBBF24"],["电流密度",15,"#00ACBE"]],
+  d8:{p:45,t:"D1-D2 已完成",steps:[["D2 问题描述 · 自动生成",1],["D3 围堵措施 · 复检中",0]],
+  sug:"整改建议 2 条：<br>1. 槽液浓度补正<br>2. 首件加测厚度"}},
+ B2197:{t:"全项合格",lv:"ok",lvx:"自动放行",sup:"供应商 C",qty:"5,000 件",
+  dets:[],type:[["外观划痕",8],["尺寸超差",5],["其他",3]],
+  trend:[90,110,80,95,70,85,60],
+  attr:[["工艺稳定",70,"#34D399"],["来料合格",20,"#34D399"],["其他",10,"#34D399"]],
+  d8:{p:100,t:"无需开单",steps:[],sug:"全项合格 · 自动放行（AI 判定 + 抽检复核）"}};
+let curLot="B2209",filter="all";
+function rsel(id){curLot=id;const L=LOTS[id];
+ document.querySelectorAll(".lot").forEach(e=>e.classList.toggle("on",e.dataset.id===id));
+ document.getElementById("curLot").textContent="LOT-"+id;
+ document.getElementById("attrLot").textContent="LOT-"+id;
+ const img=document.getElementById("imgBox");img.innerHTML="";
+ L.dets.forEach(d=>{const b=document.createElement("div");b.className="det"+(d[5]?" y":"");
+  b.style.cssText=`left:${d[1]}%;top:${d[2]}%;width:${d[3]}px;height:${d[4]}px`;
+  b.innerHTML=`<span>${d[0]} · ${d[5].split(" · ")[1]}</span>`;img.appendChild(b);});
+ const tb=document.getElementById("typeBars");tb.innerHTML="";
+ L.type.filter(x=>filter==="all"||x[0].includes(filter==="scratch"?"划痕":filter==="coat"?"镀层":filter==="dim"?"尺寸":1))
+ .forEach(x=>{tb.innerHTML+=`<div class="r"><b>${x[0]}</b><div class="tr"><i style="width:${x[1]}%"></i></div><span class="p">${x[1]}%</span></div>`;});
+ drawTrend(L.trend);
+ const ab=document.getElementById("attrBars");ab.innerHTML="";
+ L.attr.forEach(x=>{ab.innerHTML+=`<div class="r"><b>${x[0]}</b><div class="tr"><i style="width:${x[1]}%;background:${x[2]}"></i></div><span class="p">${x[1]}%</span></div>`;});
+ document.getElementById("d8t").textContent=L.d8.t;
+ document.getElementById("d8p").textContent=L.d8.p+"%";
+ document.getElementById("d8bar").style.width=L.d8.p+"%";
+ const st=document.getElementById("d8steps");st.innerHTML="";
+ L.d8.steps.forEach(s=>{st.innerHTML+=`<div class="step"><i style="background:${s[1]?"#34D399":"#FBBF24"}"></i>${s[0]}${s[1]?'<span class="dn"> ✓</span>':""}</div>`;});
+ document.getElementById("d8sug").innerHTML=L.d8.sug;
+ const ap=document.getElementById("appr");
+ ap.classList.remove("done");ap.textContent="高风险放行 / 停线决策 → 人工审批";
+}
+function drawTrend(arr){const svg=document.getElementById("trend");const W=600,H=130,p=14,mx=Math.max(...arr)*1.15;
+ const pts=arr.map((v,i)=>[p+i*(W-2*p)/(arr.length-1),H-p-v/mx*(H-2*p)]);
+ svg.innerHTML=`<polyline points="${pts.map(x=>x.join(",")).join(" ")}" fill="none" stroke="#F59E0B" stroke-width="2.5"/>`+
+ pts.map((x,i)=>`<circle cx="${x[0]}" cy="${x[1]}" r="3.5" fill="#FBBF24"/><text x="${x[0]}" y="${H-2}" font-size="10" fill="#9CA3AF" text-anchor="middle">周${["一","二","三","四","五","六","日"][i]}</text>`).join("");}
+function approve(){const a=document.getElementById("appr");a.classList.add("done");a.textContent="✓ 已批准放行 · 审批人：质量部 王工 · 09:41";}
+document.querySelectorAll(".tabs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".tabs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");filter=e.dataset.f;rsel(curLot);});
+document.getElementById("appr").onclick=approve;
+// build lot list
+const lt=document.getElementById("lots");
+Object.keys(LOTS).forEach(id=>{const L=LOTS[id];
+ const d=document.createElement("div");d.className="lot"+(id===curLot?" on":"");d.dataset.id=id;
+ d.innerHTML=`<div class="id">LOT-${id}<i class="${L.lv}">${L.lvx}</i></div><div class="m">${L.t} · ${L.sup} · ${L.qty}</div>`;
+ d.onclick=()=>rsel(id);lt.appendChild(d);});
+rsel("B2209");
+</script></body></html>

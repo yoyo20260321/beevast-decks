@@ -1,77 +1,112 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 交付风险预警中心</title>
 <style>
+:root{--bg:#12101F;--pan:#1A1730;--pan2:#241F3D;--bd:#352F55;--ac:#818CF8;--ac2:#A78BFA;--tx:#EDEBFA;--mut:#A5A0C4}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
-body{background:#0D1526;color:#E8EEF9;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.top{display:flex;align-items:center;gap:14px;background:#101B36;padding:12px 22px;border-bottom:1px solid #22315E}
-.logo{width:14px;height:14px;background:#00ACBE;border-radius:4px}
-.top b{font-size:16px}.env{font-size:12px;color:#9FAFD2;border:1px solid #2A3A66;border-radius:12px;padding:3px 12px;margin-left:8px}
-.top .rule{margin-left:auto;font-size:12px;color:#9FAFD2}
+body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;background:var(--pan);padding:12px 22px;border-bottom:1px solid var(--bd)}
+.logo{width:14px;height:14px;background:var(--ac);border-radius:4px}
+.top b{font-size:16px}.env{font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:12px;padding:3px 12px;margin-left:8px}
+.top .rule{margin-left:auto;font-size:12px;color:var(--ac2)}
 .kpis{display:flex;gap:14px;padding:16px 22px}
-.kpi{flex:1;background:#16264C;border:1px solid #2A3A66;border-radius:12px;padding:14px 18px}
-.kpi b{font-size:26px;color:#00ACBE}.kpi i{font-style:normal;font-size:13px;color:#4AD98A;margin-left:8px}
-.kpi span{display:block;font-size:12.5px;color:#9FAFD2;margin-top:4px}
+.kpi{flex:1;background:var(--pan2);border:1px solid var(--bd);border-radius:12px;padding:14px 18px}
+.kpi b{font-size:26px;color:var(--ac)}.kpi i{font-style:normal;font-size:13px;color:#4ADE80;margin-left:8px}
+.kpi span{display:block;font-size:12.5px;color:var(--mut);margin-top:4px}
 .wrap{display:flex;flex:1;gap:16px;padding:0 22px 18px;min-height:0}
-.panel{background:#101B36;border:1px solid #22315E;border-radius:14px;padding:16px 18px}
-.panel h3{font-size:14px;color:#C9D4E8;margin-bottom:12px;font-weight:600}
+.panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;overflow:auto}
+.panel h3{font-size:14px;color:var(--tx);margin-bottom:12px;font-weight:600}
 .risks{flex:1}
-.rk{background:#16264C;border-radius:12px;padding:14px 16px;margin-bottom:12px;border-left:4px solid #FF7B7B}
-.rk.m{border-left-color:#FFC539}.rk.l{border-left-color:#4AD98A}
+.rk{background:var(--pan2);border-radius:12px;padding:14px 16px;margin-bottom:12px;border-left:4px solid #F87171;cursor:pointer}
+.rk.m{border-left-color:#FBBF24}.rk.l{border-left-color:#4ADE80}
+.rk.on{outline:1px solid var(--ac)}
 .rk .h{display:flex;align-items:center;gap:10px;margin-bottom:7px}
-.rk .id{font-weight:700;font-size:14px}
-.rk .lv{font-size:11.5px;border-radius:8px;padding:2px 9px}
-.lv.h{background:#3A1420;color:#FF7B7B}.lv.m{background:#3A3212;color:#FFC539}.lv.l{background:#123A2E;color:#4AD98A}
-.rk .c{font-size:12.5px;color:#B9C6E2}.rk .d{font-size:11.5px;color:#5E6D92;margin-top:4px}
-.rk .sug{margin-top:8px;font-size:12.5px;background:#101B36;border-radius:8px;padding:8px 12px}
-.rk .sug b{color:#00ACBE;font-weight:600}
+.rk .id{font-weight:700;font-size:14px}.rk .lv{font-size:11.5px;border-radius:8px;padding:2px 9px}
+.lv.h{background:#3A1420;color:#F87171}.lv.m{background:#3A2E12;color:#FBBF24}.lv.l{background:#0F2E1C;color:#4ADE80}
+.rk .c{font-size:12.5px;color:#C0BBDF}.rk .d{font-size:11.5px;color:var(--mut);margin-top:4px}
+.rk .sug{margin-top:8px;font-size:12.5px;background:var(--bg);border-radius:8px;padding:8px 12px}
+.rk .sug b{color:var(--ac2);font-weight:600}
 .btns{display:flex;gap:8px;margin-top:8px}
-.btns span{font-size:12px;border:1px solid #2A3A66;border-radius:7px;padding:4px 12px;color:#9FAFD2}
-.btns span.do{background:#00ACBE;color:#04182E;font-weight:700;border-color:#00ACBE}
+.btns span{font-size:12px;border:1px solid var(--bd);border-radius:7px;padding:4px 12px;color:var(--mut);cursor:pointer}
+.btns span.do{background:var(--ac);color:#12101F;font-weight:700;border-color:var(--ac)}
+.btns span.done{background:#0F2E1C;color:#4ADE80;border-color:#0F2E1C}
 .right{width:400px}
 .tl{position:relative;padding-left:18px}
-.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:#2A3A66}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--bd)}
 .ev{position:relative;margin-bottom:14px;font-size:12.5px}
-.ev i{position:absolute;left:-18px;top:3px;width:11px;height:11px;border-radius:50%;background:#101B36;border:2.5px solid #00ACBE}
-.ev .d{color:#9FAFD2;margin-top:3px}
-.gantt{margin:10px 0 4px}
+.ev i{position:absolute;left:-18px;top:3px;width:11px;height:11px;border-radius:50%;background:var(--pan);border:2.5px solid var(--ac)}
+.ev .d{color:var(--mut);margin-top:3px}
 .g .r{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:9px}
-.g .r b{width:70px;color:#C9D4E8;font-weight:500}
-.g .tr{flex:1;height:14px;background:#1A2A52;border-radius:7px;position:relative}
+.g .r b{width:70px;color:var(--tx);font-weight:500}
+.g .tr{flex:1;height:14px;background:var(--pan2);border-radius:7px;position:relative}
 .g .tr i{position:absolute;left:0;top:0;height:100%;border-radius:7px}
-.g .mk{position:absolute;top:-4px;width:2px;height:22px;background:#FF7B7B}
-.legend{font-size:11px;color:#9FAFD2;display:flex;gap:14px;margin-top:4px}
+.g .mk{position:absolute;top:-4px;width:2px;height:22px;background:#F87171}
+.legend{font-size:11px;color:var(--mut);display:flex;gap:14px;margin-top:4px}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+.rule{display:flex;align-items:center;justify-content:space-between;background:var(--pan2);border-radius:10px;padding:10px 14px;font-size:12.5px;margin-bottom:8px}
+.rule .sw{width:34px;height:18px;border-radius:9px;background:var(--ac);position:relative;cursor:pointer}
+.rule .sw i{position:absolute;top:2px;left:18px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s}
+.rule .sw.off{background:var(--bd)}.rule .sw.off i{left:2px}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 交付风险预警中心</b><span class="env">制造业 · 私有化部署</span>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 交付风险预警中心</b><span class="env">制造业 · 私有化部署 · Demo</span>
 <div class="rule">预警规则库 27 条 · 处置结果自动回流</div></div>
 <div class="kpis">
-<div class="kpi"><b>5天</b><i>▲2天</i><span>风险提前发现</span></div>
+<div class="kpi"><b id="k1">5天</b><i>▲2天</i><span>风险提前发现</span></div>
 <div class="kpi"><b>95%</b><span>预警准确率</span></div>
 <div class="kpi"><b>95%</b><i>▲6pt</i><span>准时交付率</span></div>
-<div class="kpi"><b>12</b><span>在盯订单</span></div></div>
+<div class="kpi"><b id="k4">12</b><span>在盯订单</span></div></div>
 <div class="wrap">
-<div class="panel risks"><h3>风险订单 · 分级预警</h3>
-<div class="rk"><div class="h"><span class="id">SO-8821 · 某汽车电子 Tier1</span><span class="lv h">高风险</span></div>
-<div class="c">物料延迟 4 天（供应商 A 加急中）· 影响批次 3,000 件</div><div class="d">识别时间 09:12 · 比客户投诉提前 5 天</div>
-<div class="sug"><b>AI 建议：</b>追料（A 厂加急）+ 备产线切换，可挽回 3 天</div>
-<div class="btns"><span class="do">采纳并执行</span><span>调整交期</span><span>通知客户接口人</span></div></div>
-<div class="rk m"><div class="h"><span class="id">SO-8790 · 工业控制模块</span><span class="lv m">中风险</span></div>
-<div class="c">产能冲突 · 与 SO-8815 共线，排产重叠 1.5 天</div>
-<div class="sug"><b>AI 建议：</b>切换备产线 B，交期不受影响</div>
-<div class="btns"><span class="do">切换产线</span><span>保持现状</span></div></div>
-<div class="rk l"><div class="h"><span class="id">SO-8766 · 海外分销商</span><span class="lv l">低风险</span></div>
-<div class="c">交期确认 · 预计提前 1 天完工</div>
-<div class="btns"><span class="do">提前发货</span><span>按原计划</span></div></div></div>
-<div class="panel right"><h3>交期穿透 · SO-8821</h3>
-<div class="gantt">
-<div class="r"><b>物料到位</b><div class="tr"><i style="width:55%;background:#FF7B7B"></i><span class="mk" style="left:48%"></span></div></div>
-<div class="r"><b>SMT 贴片</b><div class="tr"><i style="width:30%;left:55%;position:absolute;background:#FFC539"></i></div></div>
-<div class="r"><b>组装测试</b><div class="tr"><i style="width:26%;left:74%;background:#00ACBE"></i></div></div></div>
-<div class="legend"><span><i style="background:#FF7B7B"></i>已延迟</span><span><i style="background:#FFC539"></i>进行中</span><span><i style="background:#00ACBE"></i>计划</span><span class="mk" style="background:#FF7B7B"></span>承诺交期 11-04</span></div>
-<h3 style="margin-top:14px">处置时间线</h3>
-<div class="tl">
-<div class="ev"><i></i><b>09:12 风险识别</b><div class="d">AI 穿透订单/物料/产能数据，自动比对交期</div></div>
-<div class="ev"><i></i><b>09:13 预警推送</b><div class="d">已通知计划员 · 客户接口人 · 供应商 A</div></div>
-<div class="ev"><i></i><b>09:20 人工决策</b><div class="d">追料方案经计划主管审批后执行</div></div></div>
-<h3 style="margin-top:14px">闭环回流</h3>
-<div class="panel" style="margin-top:8px;font-size:12.5px;color:#B9C6E2">处置结果已沉淀为预警规则 <b style="color:#00ACBE">#R-17</b>：供应商 A 交期承诺置信度下调，同类订单提前 7 天监控</div></div>
-</div></body></html>
+<div class="panel risks"><h3>风险订单 · 分级预警（点击查看详情）</h3><div id="rlist"></div></div>
+<div class="panel right">
+<h3>交期穿透 · <span id="dId">—</span></h3>
+<div class="g" id="gantt"></div>
+<div class="legend"><span><i style="background:#F87171"></i>已延迟</span><span><i style="background:#FBBF24"></i>进行中</span><span><i style="background:#818CF8"></i>计划</span><span><i class="mk" style="background:#F87171"></i>承诺交期</span></div>
+<h3 style="margin-top:14px">处置时间线</h3><div class="tl" id="tl"></div>
+<h3 style="margin-top:6px">闭环回流</h3>
+<div class="panel" style="margin-top:8px;font-size:12.5px;color:#C0BBDF" id="loop">—</div>
+<h3 style="margin-top:10px">预警规则</h3>
+<div class="rule"><span>#R-17 · 供应商 A 交期置信度下调</span><span class="sw" onclick="tog(this)"><i></i></span></div>
+<div class="rule"><span>#R-09 · 插单产能冲突 &gt;1.5 天</span><span class="sw" onclick="tog(this)"><i></i></span></div></div>
+</div>
+<script>
+const RK={
+ SO8821:{id:"SO-8821 · 某汽车电子 Tier1",lv:["h","高风险"],c:"物料延迟 4 天（供应商 A 加急中）· 影响批次 3,000 件",d:"识别时间 09:12 · 比客户投诉提前 5 天",
+  sug:"追料（A 厂加急）+ 备产线切换，可挽回 3 天",
+  g:[["物料到位",55,"#F87171"],["SMT 贴片",30,55,"#FBBF24"],["组装测试",26,74,"#818CF8"]],mk:"承诺交期 11-04",
+  tl:[["09:12 风险识别","AI 穿透订单/物料/产能数据，自动比对交期"],["09:13 预警推送","已通知计划员 · 客户接口人 · 供应商 A"],["09:20 人工决策","追料方案经计划主管审批后执行"]],
+  loop:"处置结果已沉淀为预警规则 <b style='color:#A78BFA'>#R-17</b>：供应商 A 交期承诺置信度下调，同类订单提前 7 天监控"},
+ SO8790:{id:"SO-8790 · 工业控制模块",lv:["m","中风险"],c:"产能冲突 · 与 SO-8815 共线，排产重叠 1.5 天",d:"识别时间 08:47",
+  sug:"切换备产线 B，交期不受影响",
+  g:[["备产线 B",70,"#818CF8"],["主线让位",30,0,"#FBBF24"]],mk:"承诺交期 11-12",
+  tl:[["08:47 冲突识别","排产穿透发现共线重叠 1.5 天"],["08:48 建议","切换备产线 B · 主线保 SO-8815"]],
+  loop:"切换后预计 0 延误 · 复盘：备产线 B 产能上限需补录规则库"},
+ SO8766:{id:"SO-8766 · 海外分销商",lv:["l","低风险"],c:"交期确认 · 预计提前 1 天完工",d:"识别时间 08:30",
+  sug:"可提前发货，节省仓储 1 天",
+  g:[["完工待发",88,"#4ADE80"]],mk:"承诺交期 11-15",
+  tl:[["08:30 扫描","预计完工 11-14 · 早于承诺交期"]],
+  loop:"建议已同步销售 · 客户确认后执行提前发货"}};
+let cur="SO8821";
+function draw(id){cur=id;const R=RK[id];
+ document.getElementById("dId").textContent=id;
+ document.getElementById("gantt").innerHTML=R.g.map(g=>{
+  const off=g[2]&&typeof g[2]==="number"&&g.length===4;
+  return off?`<div class="r"><b>${g[0]}</b><div class="tr"><i style="width:${g[1]}%;background:${g[3]}"></i><i style="left:${g[2]}%;width:${100-g[2]}%;background:${g[3]}33"></i></div></div>`
+   :`<div class="r"><b>${g[0]}</b><div class="tr"><i style="width:${g[1]}%;background:${g[2]}"></i></div></div>`;}).join("")
+  +(R.mk?`<div class="legend"><i class="mk" style="background:#F87171"></i>${R.mk}</div>`:"");
+ document.getElementById("tl").innerHTML=R.tl.map(e=>`<div class="ev"><i></i><b>${e[0]}</b><div class="d">${e[1]}</div></div>`).join("");
+ document.getElementById("loop").innerHTML=R.loop;}
+function render(){const box=document.getElementById("rlist");box.innerHTML="";
+ Object.keys(RK).forEach(id=>{const R=RK[id];
+  const d=document.createElement("div");d.className="rk "+R.lv[0]+(id===cur?" on":"");d.dataset.id=id;
+  d.innerHTML=`<div class="h"><span class="id">${R.id}</span><span class="lv ${R.lv[0]}">${R.lv[1]}</span></div>
+  <div class="c">${R.c}</div><div class="d">${R.d}</div>
+  <div class="sug"><b>AI 建议：</b>${R.sug}</div>
+  <div class="btns"><span class="do" onclick="exec(event,'${id}')">采纳并执行</span><span onclick="event.stopPropagation()">调整建议</span></div>`;
+  d.onclick=()=>{cur=id;draw(cur);render();};
+  box.appendChild(d);});
+ draw(cur);}
+function exec(e,id){e.stopPropagation();RK[id].done=true;render();
+ const k4=document.getElementById("k4");k4.textContent=Math.max(0,parseInt(k4.textContent)-1)+"";
+ const t=document.createElement("div");t.style.cssText="position:fixed;right:24px;bottom:24px;background:#818CF8;color:#12101F;font-weight:700;padding:10px 18px;border-radius:10px;z-index:9";
+ t.textContent=id+" 处置已执行 · 结果回流规则库";document.body.appendChild(t);setTimeout(()=>t.remove(),2000);draw(cur);}
+function tog(el){el.classList.toggle("off")}
+render();
+</script></body></html>
