@@ -33,6 +33,8 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .m.ai .b{background:var(--pan2);border:1px solid var(--bd)}
 .m.sys{max-width:92%}.m.sys .b{background:#0F2A22;border:1px solid #1F5C44;color:#B9E8D2;font-size:12.5px}
 .composer{border-top:1px solid var(--bd);padding:12px 16px}
+.composer .cin{width:100%;border:1px solid var(--bd);border-radius:9px;background:var(--pan2);color:var(--tx);font-size:13px;padding:8px 11px;outline:none;resize:vertical;min-height:52px;max-height:150px;font-family:inherit;line-height:1.5;margin-bottom:8px}
+.composer .cin:focus{border-color:var(--ac);background:var(--pan)}
 .ai-draft{background:var(--pan);border:1px dashed var(--ac);border-radius:10px;padding:10px 14px;font-size:13px;color:#C9D4E8;margin-bottom:10px}
 .ai-draft b{color:var(--ac);font-size:12px}
 .btns{display:flex;gap:8px}
@@ -142,6 +144,7 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 <div class="msgs" id="msgs"></div>
 <div class="composer">
 <div class="ai-draft" id="draft"><b>AI 建议回复</b> · <span id="draftBody">—</span></div>
+<textarea class="cin" id="cin" rows="2" placeholder="输入回复（留空则发送 AI 草稿）· Enter 发送 · 可拖拽拉高" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"></textarea>
 <div class="btns"><span class="send" onclick="send()">发送</span><span class="ghost" onclick="transfer()">转人工</span><span class="ghost" onclick="openTicket()">建单催办</span><span class="ghost">补偿申请</span></div></div></div>
 <div class="ctx">
 <div class="strips"><div class="strip"><b>30s</b><span>首次响应</span></div><div class="strip"><b>92%</b><span>一次解决率</span></div></div>
@@ -339,7 +342,9 @@ function renderMsgs(){const d=DATA[cur];const box=document.getElementById("msgs"
  d.msgs.forEach(m=>{const div=document.createElement("div");div.className="m "+m[0];
  div.innerHTML=`<div class="who">${m[1]}</div><div class="b">${m[2]}</div>`;box.appendChild(div)});box.scrollTop=box.scrollHeight}
 function setDraft(){document.getElementById("draftBody").textContent=DATA[cur].drafts[lang]}
-function send(){const d=DATA[cur];d.msgs.push(["ai","已发送 · "+({zh:"中文",en:"EN",ru:"РУС"})[lang],d.drafts[lang]]);renderMsgs();
+function send(){const d=DATA[cur];const el=document.getElementById("cin");
+ const body=el.value.trim()||d.drafts[lang];el.value="";
+ d.msgs.push(["ai","已发送 · "+({zh:"中文",en:"EN",ru:"РУС"})[lang],body]);renderMsgs();
  setTimeout(()=>{d.msgs.push(["cu","客户","OK, thank you! 👍"]);if(cur==="c1")renderMsgs()},900)}
 function transfer(){toast("已转人工 · 专员 张敏 接手")}
 document.querySelectorAll(".langs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".langs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");lang=e.dataset.l;setDraft()});
