@@ -98,6 +98,22 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .oneline .ic{color:var(--ac);margin-top:2px}
 .oneline b{color:var(--ac)}
 .dfoot{font-size:10.5px;color:#94A3B8;line-height:1.6;margin-top:auto;padding-top:8px}
+/* 日报图表 */
+.charts{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:10px;margin-bottom:11px}
+.chart{background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:9px 11px;min-width:0}
+.chart h6{font-size:11.5px;font-weight:700;display:flex;align-items:baseline;gap:6px;margin-bottom:7px}
+.chart h6 em{font-style:normal;font-size:10px;color:var(--mut);font-weight:400}
+.hbar{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:5px}
+.hbar b{width:88px;font-weight:500;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{flex:1;height:9px;background:#fff;border:1px solid var(--bd);border-radius:5px;overflow:hidden}
+.hbar .tr i{display:block;height:100%;background:#EF4444;border-radius:5px}
+.hbar .v{width:52px;text-align:right;color:var(--bad);font-weight:600;flex:none}
+.dwrap2{display:flex;align-items:center;gap:8px}
+.dl2{flex:1;font-size:11px}
+.dl2 div{display:flex;align-items:center;gap:6px;padding:3px 0}
+.dl2 i{width:8px;height:8px;border-radius:3px;flex:none}
+.dl2 span{color:var(--mut)}
+.dl2 b{margin-left:auto;color:var(--tx)}
 /* AI */
 .aiwrap{flex:1;display:flex;flex-direction:column;min-height:0}
 .msgs{flex:1;overflow:auto;padding:2px 2px 8px;min-height:0}
@@ -158,6 +174,11 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 
 <div class="panel mid">
 <h3><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>交付风险日报 · 风险清单<em>只识别预警 · 处置由责任人确认销项</em></h3>
+<div class="charts">
+<div class="chart"><h6>缺口 Top 5 物料<em>超出数量 · 还原口径</em></h6><div id="chGap"></div></div>
+<div class="chart"><h6>生管结论构成 · 本周 141 行<em>可结构化为四类规则</em></h6><div class="dwrap2"><div id="chDonut"></div><div class="dl2" id="chGen"></div></div></div>
+<div class="chart"><h6>无在途缺料行占比 · 近 8 期<em>断料先行指标，越高越危险</em></h6><svg id="chTrend" width="100%" height="86"></svg></div>
+</div>
 <div class="fbar" id="fbar"></div>
 <div id="rlist"></div>
 <div class="dstrip"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg><span><b>《交付风险日报》已生成</b> · 红级即时推送：缺料负责人（断料）、排程负责人（差异）· 黄级推送销售（覆盖断点）· 周报沉淀缺料趋势与逾期消化进度</span></div>
@@ -241,6 +262,28 @@ function closeRisk(btn,obj){const r=RISKS.find(x=>x.obj===obj);if(r)r.done=true;
  btn.outerHTML='<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>';
  toast("已销项 · 明日跑批自动复核，未销项持续升级")}
 
+/* ─── 日报图表（真实样本口径 · 脱敏）─── */
+const GAP_TOP=[["AMP 连接器端子",-447611],["热缩管 φ3（批次1）",-415055],["热缩管 φ3（批次2）",-415028],["热缩管 φ4",-295473],["JST 端子",-217504]];
+const GEN_CONC=[["缺料表无此料",61,"#312E81"],["缺料不足",60,"#4F46E5"],["提前到货",17,"#818CF8"],["计划未排",3,"#C7D2FE"]];
+const NO_TR=[58,60,59,62,64,66,68,71];
+function renderCharts(){
+ const mx=Math.abs(GAP_TOP[GAP_TOP.length-1][1]);
+ document.getElementById("chGap").innerHTML=GAP_TOP.map(g=>`<div class="hbar" title="${g[0]} 超出数量 ${g[1]}"><b>${g[0]}</b><div class="tr"><i style="width:${Math.abs(g[1])/Math.abs(GAP_TOP[0][1])*100}%"></i></div><span class="v">${(g[1]/10000).toFixed(1)}万</span></div>`).join("");
+ const S=104,R=S/2-9,C=2*Math.PI*R,cx=S/2,cy=S/2,tot=GEN_CONC.reduce((s,g)=>s+g[1],0);
+ let off=0,donut=`<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">`;
+ GEN_CONC.forEach(g=>{const len=C*g[1]/tot;
+  donut+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${g[2]}" stroke-width="15" stroke-dasharray="${len-1.5} ${C-len+1.5}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"><title>${g[0]} ${g[1]} 行</title></circle>`;off+=len});
+ donut+=`<g transform="translate(${cx},${cy})" style="pointer-events:none"><text text-anchor="middle" y="4" font-size="19" font-weight="700" fill="#0F172A">${tot}</text><text text-anchor="middle" y="20" font-size="9" fill="#5B6B84">行</text></g></svg>`;
+ document.getElementById("chDonut").innerHTML=donut;
+ document.getElementById("chGen").innerHTML=GEN_CONC.map(g=>`<div><i style="background:${g[2]}"></i><span>${g[0]}</span><b>${g[1]}</b></div>`).join("");
+ const svg=document.getElementById("chTrend");const W=svg.clientWidth||220,H=86,P={l:26,b:14,t:8},lo=50,hi=76;
+ const x=i=>P.l+i*(W-P.l-6)/7,y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
+ let s=`<line x1="${P.l}" y1="${y(71)}" x2="${W-6}" y2="${y(71)}" stroke="#FCA5A5" stroke-dasharray="4 4"/><text x="${W-8}" y="${y(71)-4}" font-size="9" fill="#EF4444" text-anchor="end">本期 71%</text>`;
+ [50,60,70].forEach(t=>{s+=`<text x="${P.l-4}" y="${y(t)+3}" font-size="9" fill="#94A3B8" text-anchor="end">${t}</text>`});
+ s+=`<polyline points="${NO_TR.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.2" stroke-linecap="round"/>`;
+ s+=NO_TR.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="#fff" stroke="#4F46E5" stroke-width="2"/>${i%2===0||i===7?`<text x="${x(i)}" y="${H-3}" font-size="8.5" fill="#94A3B8" text-anchor="middle">第${i+1}期</text>`:""}`).join("");
+ svg.innerHTML=s}
+
 /* ─── AI 对话 ─── */
 function pushMsg(cls,html){const box=document.getElementById("msgs");const d=document.createElement("div");d.className="msg "+cls;
  d.innerHTML=(cls==="ai"?`<div class="av"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>`:"")+`<div class="bub">${html}</div>`;
@@ -278,7 +321,8 @@ document.addEventListener("click",e=>{const p=document.getElementById("vpop");
  if(p&&p.style.display==="block"&&!p.contains(e.target)&&!e.target.closest(".valbtn"))p.style.display="none"});
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
-renderSrcs();renderStages(0);renderList();
+renderSrcs();renderStages(0);renderList();renderCharts();
+window.addEventListener("resize",renderCharts);
 pushMsg("ai","你好，我是交付风险预警智能体。左侧数据接入两种方式：<b>「一键直连 ERP」自动拉取</b>或<b>「上传文件」即时跑批</b>（.xls 自动转 .xlsx）。跑完输出红黄蓝三级风险日报，可以问我口径与定位，也可以让我重跑批。");
 setTimeout(()=>{connectERP()},800);
 </script></body></html>
