@@ -151,8 +151,8 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 
 <div class="kpis">
 <div class="kpi" onclick="setFilter('red')"><b class="rd">2 项</b><span>红色预警 · 已逾期 / 断料影响本周排产</span></div>
-<div class="kpi" onclick="setFilter('yellow')"><b class="ye">5 项</b><span>黄色预警 · 7 天内缺口 / 覆盖断点</span></div>
-<div class="kpi" onclick="setFilter('blue')"><b class="bl">3 项</b><span>格式与口径异常 · 待人工确认（不沉默）</span></div>
+<div class="kpi" onclick="setFilter('yellow')"><b class="ye">6 项</b><span>黄色预警 · 缺口 / 覆盖断点 / 排产回填</span></div>
+<div class="kpi" onclick="setFilter('blue')"><b class="bl">4 项</b><span>格式与口径异常 · 待人工确认（不沉默）</span></div>
 <div class="kpi"><b>23 单</b><span>逾期未交订单 · 临期 7 天内 9 单</span></div></div>
 
 <div class="wrap">
@@ -167,7 +167,7 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 <div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>五项规则引擎跑批</div>
 <div id="stages"></div>
 <div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>三级分级汇总</div>
-<div class="rchips"><span class="rchip hi" onclick="setFilter('red')">红 <b>2</b></span><span class="rchip md" onclick="setFilter('yellow')">黄 <b>5</b></span><span class="rchip lo" onclick="setFilter('blue')">蓝 <b>3</b></span></div>
+<div class="rchips"><span class="rchip hi" onclick="setFilter('red')">红 <b>2</b></span><span class="rchip md" onclick="setFilter('yellow')">黄 <b>6</b></span><span class="rchip lo" onclick="setFilter('blue')">蓝 <b>4</b></span></div>
 <div style="margin-top:10px" class="btnrow"><span class="abtn ghost" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>重新跑批</span></div>
 <div class="dfoot">触发：每日 07:30 定时 · 上传即跑 · 手动；去抖：连续 2 次或持续 1 天才升级。数据结构取自真实周例样本（缺料表 / 入库汇总 / 更新计划），客户与物料已脱敏。</div>
 </div>
@@ -195,12 +195,12 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 <div class="toast" id="toast"></div>
 
 <script>
-const SRCS=[["缺料表 0911（931 行 · 806 料号）",0],["采购入库汇总（351 料 · 98 供应商）",0],["入库明细（1,071 行）",0],["客户滚动计划（10 周）",0],["更新计划 0917（急料 29 行）",0],["未交订单明细",0]];
+const SRCS=[["缺料表 0911（931 行 · 806 料号）",0],["采购入库汇总（351 料 · 98 供应商）",0],["入库明细（1,071 行）",0],["客户滚动计划（10 周）",0],["更新计划 0917（急料 29 行）",0],["GOAT 产能表（16 产品 · 8 工序）",0],["GOAT 排产表（12 产品 × 9 天）",0],["未交订单明细",0]];
 const STAGES=[
  ["缺料与匹配引擎","M21 8V21H3V8M1 3h22v5H1zM10 12h4","缺料表 931 行/806 料号：无在途 575 行（71%）标黄；明细表去重 268 行后统计，防缺口翻倍；在途>缺料足额不告警 87 行"],
  ["需求覆盖测算","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","客户 10 周滚动计划 vs 在手订单逐周比对：覆盖断点 2 处（W7 / W9）"],
  ["未交订单账龄","M8 2v4M16 2v4M3 10h18","按应交期分月统计未交量：已逾期 23 单，临期 7 天内 9 单自动升级"],
- ["一致性核对","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","客户计划未结 vs 内部排程未出货合计自动对平，差异行标红 1 行（差 170）"],
+ ["一致性核对","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","客户计划未结 vs 内部排程未出货合计自动对平，差异行标红 1 行（差 170）；GOAT 排产表 12 产品 × 9 天接入核查"],
  ["三级分级 + 去抖","M22 12h-4l-3 9L9 3l-3 9H2","红 2 / 黄 5 / 蓝 3；连续 2 次或持续 1 天才升级，正常静默"]];
 const RISKS=[
  {lv:"red",cat:"缺料匹配",obj:"客户 B 急料 · 导线 2 行",desc:"缺料 <b>12,143 / 13,329 M</b>，供应商回复「预计 9/24，等通知到货」——未承诺确定日期",imp:"影响本周排产",act:"<b>建议</b>：锁定确定到货日并同步排产，否则断料",own:"缺料负责人"},
@@ -209,11 +209,13 @@ const RISKS=[
  {lv:"yellow",cat:"口径校验",obj:"到货 63 料号 · 缺料表无此料",desc:"入库汇总 351 料号中 <b>63 个不在缺料表</b>（与到货明细 61 行回复互证）——缺料表与实际入库脱节",imp:"缺口被掩盖",act:"<b>建议</b>：回写缺料表并核对 MRP 匹配规则",own:"计划"},
  {lv:"yellow",cat:"明细去重",obj:"入库明细 · 268 行",desc:"明细 1,071 行中 <b>268 行完全重复</b>（同单号同料同数量，约 25%），已在统计前剔除",imp:"不剔除则缺口翻倍",act:"<b>建议</b>：去重规则固化进格式归一",own:"—"},
  {lv:"yellow",cat:"需求覆盖",obj:"客户 A · 10 周滚动计划",desc:"在手订单仅覆盖到 <b>W6</b>，<b>W7 起断点</b>，缺口 3,600",imp:"W7–W10 交付",act:"<b>建议</b>：评估插单产能，或与客户协商分批交期",own:"销售"},
+ {lv:"yellow",cat:"排产回填",obj:"GOAT 排产表 · 12 产品 × 9 天",desc:"「计划数量 / 实际产出」<b>108 个格子零回填</b>——内部排程未数字化落表，一致性核对无据可对",imp:"排程对数失据",act:"<b>建议</b>：排产回填纳入日例，或引擎从 MES/排程文件自动抓取",own:"排程负责人"},
  {lv:"yellow",cat:"未交账龄",obj:"临期汇总 · 9 单",desc:"7 天内到期未交合计 <b>2,150 件</b>，另已逾期 23 单",imp:"本周排产",act:"<b>建议</b>：纳入日跟踪清单",own:"计划"},
  {lv:"blue",cat:"口径校验",obj:"缺料表负数行",desc:"到货 &gt; 缺料 = 已足额（口径固化），自动识别 <b>87 行</b>不告警",imp:"—",act:"无需处理",own:"—"},
  {lv:"blue",cat:"格式归一",obj:"需求日期 · 格式混用",desc:"真日期与 Excel 序列号（如 46276）混存，已自动归一为标准日期",imp:"—",act:"归一规则已入库",own:"—"},
- {lv:"blue",cat:"格式归一",obj:"更新计划 · 供应倍数 #N/A 2 行",desc:"供应倍数公式缺失导致包装量折算失败，交货数不可信，已标记",imp:"交货数不可信",act:"<b>建议</b>：人工补录倍数后重算覆盖",own:"计划"}];
-const FILTERS=[["all","全部 10"],["red","红 2"],["yellow","黄 5"],["blue","蓝 3"]];
+ {lv:"blue",cat:"格式归一",obj:"更新计划 · 供应倍数 #N/A 2 行",desc:"供应倍数公式缺失导致包装量折算失败，交货数不可信，已标记",imp:"交货数不可信",act:"<b>建议</b>：人工补录倍数后重算覆盖",own:"计划"},
+ {lv:"blue",cat:"产能公式校验",obj:"GOAT 产能表 · 3344019000",desc:"小时产能 = 0 引发 <b>#DIV/0!</b>，日产能折算链路断；全表 8 道工序工时模型已解析",imp:"产能仿真不可用",act:"<b>建议</b>：公式校验兜底 + 补录该产品标准工时",own:"计划"}];
+const FILTERS=[["all","全部 12"],["red","红 2"],["yellow","黄 6"],["blue","蓝 4"]];
 let filter="all",ran=false,erpOn=false;
 
 function renderSrcs(){document.getElementById("srcs").innerHTML=SRCS.map(s=>{
@@ -301,19 +303,21 @@ function route(t){
  if(/红色|红级|^红$/.test(t)){setFilter("red");
   aiSay("红色预警 <b>2 项</b>：①物料 11711000023 缺口 1,200（在途不足，已匹配 MRP 单），影响 09-26 排产；②客户 E 计划分配差异 170，有出货多发风险。已即时推送缺料负责人与排程负责人。");return}
  if(/黄色|黄级/.test(t)){setFilter("yellow");
-  aiSay("黄色预警 <b>5 项</b>：客户 A 覆盖断点（W7 起）、镀层端子 7 天内缺口 800、逾期单 SO-8821、临期 9 单汇总、客户 C 覆盖断点。7 天内缺口按规则自动升级。");return}
+  aiSay("黄色预警 <b>6 项</b>：无在途缺料 575 行汇总、63 料号缺料表无此料、明细去重 268 行、客户 A 覆盖断点 W7、<b>GOAT 排产表零回填</b>、临期 9 单。7 天内缺口按规则自动升级。");return}
  if(/蓝色|口径|匹配|待确认/.test(t)){setFilter("blue");
-  aiSay("蓝色 <b>3 项</b>均为口径类：两处口径自动校验通过（足额不告警 87 行 / 负数含义），1 项 MRP 映射失败已单列<b>待人工确认</b>——规则是「匹配不上不沉默」，确认后回写规则库。");return}
+  aiSay("蓝色 <b>4 项</b>均为口径与格式类：足额不告警 87 行、需求日期格式归一、供应倍数 #N/A 2 行、GOAT 产能表 #DIV/0! 断链。其中 MRP 映射失败 1 项单列<b>待人工确认</b>——「匹配不上不沉默」。");return}
+ if(/GOAT|产能|排产表|回填/.test(t)){setFilter("yellow");
+  aiSay("GOAT 两表已接入：<b>产能表</b> 16 产品 × 8 工序工时模型（可做插单产能仿真，1 处 #DIV/0! 已标）；<b>排产表</b> 12 产品 × 9 天「计划/实际」<b>108 格零回填</b>——内部排程未落表，正是「两套数对不平」的结构性原因，已列黄色预警。");return}
  if(/口径|规则|在途|负数/.test(t)){aiSay("已固化口径：<b>在途 &gt; 缺料 = 足额不告警</b>；在途 &lt; 缺料自动匹配 MRP 单号（多行 / 分隔）；到货 &gt; 缺料 = 已足额（负数行自动识别）。匹配不上单列待确认。原口径仅在个别同事脑中，现已沉淀为引擎规则。");return}
  if(/覆盖|断点|滚动计划/.test(t)){setFilter("yellow");
   aiSay("需求覆盖测算：客户 A 10 周滚动计划，在手订单覆盖到 <b>W6，W7 起断点 3,600</b>；客户 C W9 断点 1,200。已推送销售评估插单或协商分批。");return}
  if(/账龄|逾期|未交/.test(t)){aiSay("未交订单按应交期分月统计：<b>已逾期 23 单</b>、临期 7 天内 9 单（合计 2,150 件）已升级黄色。上线 3 个月目标：逾期量环比下降 20%。");return}
- if(/一致|对平|差异/.test(t)){aiSay("一致性核对：客户 E 计划未结 4,320 vs 内部日计划未出货合计 4,150，<b>差异 170 已标红定位</b>。此类两套数对不平以前靠人工逐行找，现在差异行直出。");return}
+ if(/一致|对平|差异/.test(t)){aiSay("一致性核对：客户 E 计划未结 4,320 vs 内部日计划未出货合计 4,150，<b>差异 170 已标红定位</b>；GOAT 排产表 12 产品 × 9 天已接入核查。此类两套数对不平以前靠人工逐行找，现在差异行直出。");return}
  if(/重跑|跑批/.test(t)){aiSay("收到，立即重跑：多源归一 → 口径映射 → 五项规则引擎 → 三级分级 + 去抖 → 日报推送。","已开始");runPipeline();return}
  if(/日报|推送|周报/.test(t)){aiSay("输出三件：<b>①交付风险日报</b>（物料/订单/客户/缺口量/影响交期/等级/建议动作）②红黄级即时推送责任人，正常静默 ③<b>周报</b>沉淀缺料趋势与逾期消化进度。");return}
  if(/处置|执行|自动/.test(t)){aiSay("MVP <b>只做识别与预警，不做自动处置</b>：预警由责任人在清单点「确认销项」，次日跑批自动复核，未销项持续升级。自动处置属后续规划。");return}
  aiSay("已收到。可问我：<b>「看红色预警」「缺料匹配口径」「覆盖断点」「账龄」「一致性差异」「重跑批」</b>；数据接入支持「一键直连 ERP」或「上传文件」，两种都会即时跑批。")}
-const QCHIPS=["看红色预警","缺料匹配口径","覆盖断点","匹配待确认","一键直连 ERP","上传文件跑批"];
+const QCHIPS=["看红色预警","缺料匹配口径","覆盖断点","匹配待确认","GOAT 排产零回填","一键直连 ERP","上传文件跑批"];
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toggleVal(e){e.stopPropagation();const p=document.getElementById("vpop");
  p.style.display=p.style.display==="block"?"none":"block"}
