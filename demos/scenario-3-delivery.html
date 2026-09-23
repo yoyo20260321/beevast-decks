@@ -35,6 +35,10 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .rchip.md{border-color:#FDE68A;background:var(--warnbg);color:var(--warn)}
 .rchip.lo{border-color:#BBF7D0;background:var(--okbg);color:var(--ok)}
 .dfoot{font-size:10.5px;color:#94A3B8;line-height:1.7;margin-top:auto;padding-top:8px}
+.oneline{margin-top:10px;display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.7;color:var(--tx);background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:8px 12px}
+.oneline .ic{color:var(--ac);margin-top:2px}
+.oneline b{color:var(--ac)}
+.srctag{font-size:10.5px;color:var(--blue);background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:1px 7px}
 /* 订单行 */
 .fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .fchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
@@ -97,8 +101,8 @@ svg text{font-family:inherit}
 
 <div class="kpis">
 <div class="kpi"><b>94.2%</b><i>▲1.8pt</i><span>订单满足率（本季）</span></div>
-<div class="kpi"><b>91.8%</b><i>▲2.4pt</i><span>准时交付率</span></div>
-<div class="kpi"><b>2.3天</b><i class="dn">▼1.1天</i><span>平均交期偏差（延迟单）</span></div>
+<div class="kpi"><b>91.8%</b><i>▲2.4pt</i><span>OTD 订单准时交付率</span></div>
+<div class="kpi"><b>93.5%</b><i class="dn">▼1.2pt</i><span>物料齐套率 · 交付卡点核心指标</span></div>
 <div class="kpi"><b id="kHi">2</b><span>高风险订单 · 待处置</span></div></div>
 
 <div class="wrap">
@@ -109,6 +113,8 @@ svg text{font-family:inherit}
 <div class="vbar"><b>延迟</b><div class="tr"><i style="width:25%;background:#EF4444"></i></div><span class="n">2 <small>张</small></span></div>
 <div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>风险分布</div>
 <div class="rchips"><span class="rchip hi" onclick="setFilter('hi')">高 <b>2</b></span><span class="rchip md">中 <b>1</b></span><span class="rchip lo">低 <b>5</b></span></div>
+<div class="sec"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>风险源头分布 · 本月在盯 27 项</div>
+<div id="srcbars"></div>
 <div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>订单满足率 · 近 8 周</div>
 <svg id="trend" width="100%" height="120"></svg>
 <div class="dfoot">判定口径：预计完工 − 承诺交期 ≤−1 天=提前，0~1 天=按期，≥2 天=延迟；满足=足量按期或提前交付。示意数据。</div>
@@ -119,6 +125,7 @@ svg text{font-family:inherit}
 <div class="fbar" id="fbar"></div>
 <div id="olist"></div>
 <div class="legend" style="margin-top:4px"><span><i style="background:#4F46E5"></i>已投产</span><span><i style="background:#F59E0B"></i>物料/产能受限</span><span><i style="background:#EF4444"></i>延迟风险段</span></div>
+<div class="oneline"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg><span>制造业交付风险集中在<b>需求预测、供应链来料、排产冲突、设备停机、制程不良</b>五大卡点；AI 最擅长<b>预测预警、交期仿真、动态重排、根因挖掘</b>；核心衡量指标：<b>OTD 准时交付率 · 物料齐套率 · 延期天数 · 预警提前量</b></span></div>
 </div>
 
 <div class="panel right">
@@ -132,15 +139,15 @@ svg text{font-family:inherit}
 
 <script>
 const ORDERS=[
- {id:"SO-2609-021",cust:"客户 H2",prod:"WM-C1206",qty:"8 万件",promise:"09-30",eta:"10-02",dev:2,v:"late",vr:"延迟 2 天",risk:"h",rs:"高风险",done:false,
+ {id:"SO-2609-021",cust:"客户 H2",prod:"WM-C1206",qty:"8 万件",promise:"09-30",eta:"10-02",dev:2,v:"late",vr:"延迟 2 天",risk:"h",rs:"高风险",done:false,src:"供应链 · 来料",
   cause:"物料：端子镀层批次不合格（LOT-B2209 与质检联动），缺料 2 天",
   sug:"<b>紧急调拨</b>兄弟厂库存 1.2 万件先行交付，余量 10-02 补齐；同步质检处置结果给客户"},
- {id:"SO-2609-031",cust:"客户 N2",prod:"WM-C1206",qty:"15 万件",promise:"10-20",eta:"10-26",dev:6,v:"late",vr:"延迟 6 天",risk:"h",rs:"高风险",done:false,
+ {id:"SO-2609-031",cust:"客户 N2",prod:"WM-C1206",qty:"15 万件",promise:"10-20",eta:"10-26",dev:6,v:"late",vr:"延迟 6 天",risk:"h",rs:"高风险",done:false,src:"计划 · 排产",
   cause:"产能：C1206 模具检修（供应商 B 检修窗口 3 天），排产顺延",
   sug:"<b>重排产</b>至备线 B 并外协部分冲压件，可与客户协商分两批（10-20 交 60%，10-26 交余量）"},
  {id:"SO-2609-025",cust:"客户 H3",prod:"WM-B1805",qty:"30 万件",promise:"10-15",eta:"10-15",dev:0,v:"ontime",vr:"按期",risk:"l",rs:"低风险",done:false,cause:"产能正常 · 进度 62%",sug:"无需干预"},
  {id:"SO-2609-036",cust:"客户 H2",prod:"WM-C0902",qty:"3 万件",promise:"09-29",eta:"09-29",dev:0,v:"ontime",vr:"按期",risk:"l",rs:"低风险",done:false,cause:"进度正常 · 进度 88%",sug:"无需干预"},
- {id:"SO-2609-039",cust:"客户 N3",prod:"WM-B1805",qty:"10 万件",promise:"10-25",eta:"10-25",dev:0,v:"ontime",vr:"按期",risk:"m",rs:"中风险",done:false,cause:"大单产能占用 · 与 SO-2609-025 共线监控中",sug:"已纳入共线产能监控，偏差 >1 天自动预警"},
+ {id:"SO-2609-039",cust:"客户 N3",prod:"WM-B1805",qty:"10 万件",promise:"10-25",eta:"10-25",dev:0,v:"ontime",vr:"按期",risk:"m",rs:"中风险",done:false,src:"计划 · 排产",cause:"大单产能占用 · 与 SO-2609-025 共线监控中",sug:"已纳入共线产能监控，偏差 >1 天自动预警"},
  {id:"SO-2609-018",cust:"客户 H1",prod:"WM-C0902",qty:"12 万件",promise:"10-08",eta:"10-05",dev:-3,v:"early",vr:"提前 3 天",risk:"l",rs:"低风险",done:false,cause:"进度 94% · 预计提前 3 天完工",sug:"可提前发货，节省仓储 3 天（已同步销售确认）"},
  {id:"SO-2609-028",cust:"客户 H1",prod:"WM-C0902",qty:"5 万件",promise:"09-28",eta:"09-26",dev:-2,v:"early",vr:"提前 2 天",risk:"l",rs:"低风险",done:false,cause:"进度 97% · 预计提前 2 天",sug:"无需干预"},
  {id:"SO-2609-033",cust:"客户 H4",prod:"WM-B1805",qty:"6 万件",promise:"10-02",eta:"10-01",dev:-1,v:"early",vr:"提前 1 天",risk:"l",rs:"低风险",done:false,cause:"进度 91% · 预计提前 1 天",sug:"无需干预"}];
@@ -161,7 +168,7 @@ function renderOrders(){const fb=document.getElementById("fbar");
   const trackColor=o.v==="late"?"#EF4444":o.risk==="m"?"#F59E0B":"#4F46E5";
   const prog=o.v==="late"?68:o.v==="ontime"?62:90;
   const d=document.createElement("div");d.className="orow "+(o.done?"done":o.risk==="h"?"hi":o.risk==="m"?"md":"");
-  d.innerHTML=`<div class="oh"><span class="oid">${o.id}</span><span class="cust">${o.cust}</span><span class="prod">${o.prod} × ${o.qty}</span>
+  d.innerHTML=`<div class="oh"><span class="oid">${o.id}</span><span class="cust">${o.cust}</span><span class="prod">${o.prod} × ${o.qty}</span>${o.src?`<span class="srctag">${o.src}</span>`:""}
   <span class="badge ${o.v==="late"?"hi":o.risk==="m"?"warn":"ok"}">${o.vr}${o.done?" · 已处置":""}</span></div>
   <div class="obar"><span>承诺 ${o.promise}</span><div class="track"><i style="width:${prog}%;background:${trackColor}"></i></div><span>预计 ${o.eta}</span>
   <span class="dev" style="color:${o.dev>0?"var(--bad)":o.dev<0?"var(--ok)":"var(--mut)"}">${o.dev>0?"+"+o.dev:o.dev} 天</span></div>
@@ -179,6 +186,11 @@ function renderTrend(){const svg=document.getElementById("trend");const W=svg.cl
  s+=`<polyline points="${TREND.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.4" stroke-linecap="round"/>`;
  s+=TREND.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.8" fill="#fff" stroke="#4F46E5" stroke-width="2"/><text x="${x(i)}" y="${H-3}" font-size="8.5" fill="#94A3B8" text-anchor="middle">W${i+1}</text>`).join("");
  svg.innerHTML=s}
+
+const SRCS=[["供应链 · 来料",8],["计划 · 排程",6],["生产车间",5],["订单端",4],["仓储物流",3],["质量 · 售后",1]];
+const SRCC=["#312E81","#4F46E5","#6366F1","#818CF8","#A5B4FC","#C7D2FE"];
+function renderSrcBars(){const mx=Math.max(...SRCS.map(s=>s[1]));
+ document.getElementById("srcbars").innerHTML=SRCS.map((s,i)=>`<div class="vbar"><b style="width:76px;font-weight:500">${s[0]}</b><div class="tr"><i style="width:${s[1]/mx*100}%;background:${SRCC[i]}"></i></div><span class="n">${s[1]} <small>项</small></span></div>`).join("")}
 
 /* ─── AI 对话 ─── */
 function pushMsg(cls,html,doTxt){const box=document.getElementById("msgs");const d=document.createElement("div");d.className="msg "+cls;
@@ -201,6 +213,8 @@ function route(t){
     filter="all";renderOrders();syncKpi();
     aiSay("<b>"+o.id+"</b> 已完成重排产：备线 B 排产成功，预计完工 <b>10-20</b>，判定由「延迟 6 天」改为<b>按期</b>，高风险订单 -1。分批交付建议已同步客户接口人。","已执行");}
    else{adopt(o.id)}return}}
+ if(/源头|风险清单|六大|分类/.test(t)){aiSay("按源头分类，本月在盯风险 <b>27 项</b>：<b>供应链来料 8</b>（最常见交付卡点）、计划排程 6、生产车间 5、订单端 4、仓储物流 3、质量售后 1。分布见左栏；延迟订单已标源头标签，可穿透到具体单据。");return}
+ if(/齐套/.test(t)){aiSay("物料齐套率本季 <b>93.5%</b>（目标 95%）。缺料集中在镀层端子——与质检不合格批次 LOT-B2209 联动，SO-2609-021 调拨方案执行后预计回到 95%。");return}
  if(/高风险|风险订单/.test(t)){setFilter("hi");const s=stat();
   aiSay("当前高风险订单 <b>"+s.hi+" 张</b>：SO-2609-021（物料缺料 2 天，建议紧急调拨先行交付）、SO-2609-031（模具检修致延迟 6 天，建议重排产+分批）。均可一键「采纳并执行」。","已筛选高风险");return}
  if(/延迟/.test(t)){setFilter("late");aiSay("延迟在制订单 <b>2 张</b>（合计影响满足率约 0.9pt）。SO-2609-021 走物料调拨可收回 2 天；SO-2609-031 建议重排产+分批。回复「重排产 SO-2609-031」可直接执行。","已筛选延迟");return}
@@ -216,7 +230,7 @@ const QCHIPS=["看高风险订单","重排产 SO-2609-031","处置 SO-2609-021",
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
-renderOrders();renderTrend();
+renderOrders();renderTrend();renderSrcBars();
 pushMsg("ai","你好，我是交付 AI 助手。每日 08:30 自动穿透订单/物料/产能并给出判定，你可以让我<b>筛选、重排产、执行处置</b>——试试点下方快捷指令，或直接输入。");
-window.addEventListener("resize",renderTrend);
+window.addEventListener("resize",()=>{renderTrend();renderSrcBars()});
 </script></body></html>
