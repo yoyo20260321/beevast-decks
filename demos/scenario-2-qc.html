@@ -16,7 +16,20 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .kpi b{font-size:22px;color:var(--ac)}
 .kpi i{font-style:normal;font-size:12px;margin-left:8px;color:var(--ok)}
 .kpi i.dn{color:var(--mut)}
+.kpi i.wn{color:var(--warn)}
+.kpi i.bd{color:var(--bad)}
 .kpi span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.valwrap{position:relative;margin-left:auto}
+.valbtn{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ac);background:#EEF2FF;border:1px solid #E0E7FF;border-radius:9px;padding:5px 12px;cursor:pointer;font-weight:600}
+.valbtn:hover{background:#E0E7FF}
+.vpop{display:none;position:absolute;right:0;top:calc(100% + 8px);width:330px;background:var(--pan);border:1px solid var(--bd);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.16);padding:12px 14px;z-index:60}
+.vpop h5{font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.vpop h5 em{font-style:normal;font-size:10.5px;color:var(--mut);font-weight:400}
+.vrow{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;padding:5px 0;border-bottom:1px dashed var(--bd)}
+.vrow:last-of-type{border-bottom:none}
+.vrow b{color:var(--ac)}
+.vrow .base{color:var(--mut);font-size:11px}
+.vfoot{font-size:10px;color:#94A3B8;margin-top:7px;line-height:1.6}
 .wrap{display:flex;flex:1;gap:14px;padding:12px 22px 14px;min-height:0;overflow:hidden}
 .panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:13px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
 .panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:9px}
@@ -151,13 +164,21 @@ table.ldb{width:100%;border-collapse:collapse;font-size:11px}
 svg text{font-family:inherit}
 </style></head><body>
 <div class="top"><div class="logo"></div><b>群蜂云枢 · 智能质检分析智能体</b><span class="toptag">威贸电子 · IQC</span>
+<div class="valwrap"><span class="valbtn" onclick="toggleVal(event)"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>效能与价值</span>
+<div class="vpop" id="vpop"><h5><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>效能与价值<em>对外汇报口径 · MVP 目标</em></h5>
+<div class="vrow"><span>品质部月度工时</span><span class="base">62h → <b>≤20h</b>（省 44h · -70%）</span></div>
+<div class="vrow"><span>单份图纸套模板报告</span><span class="base">30 分钟 → <b>3 分钟</b></span></div>
+<div class="vrow"><span>格式保真一次通过率</span><span class="base"><b>≥95%</b>（保真三查）</span></div>
+<div class="vrow"><span>批量处理覆盖率</span><span class="base"><b>78%</b>（目标 80%）</span></div>
+<div class="vrow"><span>月度统计三件套</span><span class="base">半天 → <b>10 分钟</b></span></div>
+<div class="vfoot">效率口径为 MVP 目标值（示意）；日常业务数据见首屏卡片与各页签。</div></div></div>
 <div class="apprchip" id="apprChip" onclick="gotoMarginal()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>临界项待人工确认 · 1 项</div></div>
 
 <div class="kpis">
-<div class="kpi"><b>≤20h</b><i class="dn">基线 62h/月</i><span>品质部月度工时 · 省 44h（-70%）</span></div>
-<div class="kpi"><b>3min</b><i class="dn">基线 30 分钟</i><span>单份图纸套模板报告（端到端）</span></div>
-<div class="kpi"><b>≥95%</b><span>格式保真一次通过率（保真三查）</span></div>
-<div class="kpi"><b>78%</b><span>批量处理覆盖率（目标 80%）</span></div></div>
+<div class="kpi" style="cursor:pointer" onclick="switchTab('led')"><b>286 份</b><i class="dn">12 批次</i><span>本月已检 · 智能体处理 78%</span></div>
+<div class="kpi" style="cursor:pointer" onclick="gotoMarginal()"><b>1 项</b><i class="wn">待办</i><span>临界项待人工确认（插拔力 +3%）</span></div>
+<div class="kpi" style="cursor:pointer" onclick="switchTab('led')"><b>3 批</b><i class="wn">处置中 1</i><span>本月不合格批次 · 已处置 2</span></div>
+<div class="kpi" style="cursor:pointer" onclick="switchTab('sup')"><b>94.8%</b><i class="bd">目标 95%</i><span>本月来料合格率 · 主因供应商 A</span></div></div>
 
 <div class="wrap">
 <div class="panel left">
@@ -384,6 +405,10 @@ const QCHIPS=["执行分析","临界项确认","查台账","报告改双语","�
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
+function toggleVal(e){e.stopPropagation();const p=document.getElementById("vpop");
+ p.style.display=p.style.display==="block"?"none":"block"}
+document.addEventListener("click",e=>{const p=document.getElementById("vpop");
+ if(p&&p.style.display==="block"&&!p.contains(e.target)&&!e.target.closest(".valbtn"))p.style.display="none"});
 renderStages(0);renderReport();renderLedger();
 pushMsg("ai","你好，我是质检分析智能体。上传检验报告后我按 MVP 流程自动处理：<b>格式归一 → 料号拆解（保真三查）→ 图纸套模板 → 规则引擎判定 → 临界项交你确认 → 回写台账</b>。试试点下方快捷指令，或直接输入。");
 window.addEventListener("resize",()=>{if(document.getElementById("tab-sup").style.display!=="none")renderSup()});
