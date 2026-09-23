@@ -21,50 +21,48 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .vrow .base{color:var(--mut);font-size:11px}
 .vfoot{font-size:10px;color:#94A3B8;margin-top:7px;line-height:1.6}
 .rinfo{margin-left:14px;font-size:12px;color:var(--mut);display:flex;align-items:center;gap:6px;flex:none}
-.kpis{display:flex;gap:14px;padding:14px 22px 0}
-.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:11px 18px;cursor:pointer}
-.kpi b{font-size:22px;color:var(--ac)}
+.kpis{display:flex;gap:14px;padding:12px 22px 0}
+.kpi{flex:1;background:var(--pan);border:1px solid var(--bd);border-radius:12px;padding:10px 18px;cursor:pointer}
+.kpi b{font-size:21px;color:var(--ac)}
 .kpi b.rd{color:var(--bad)}.kpi b.ye{color:var(--warn)}.kpi b.bl{color:var(--blue)}
-.kpi span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.kpi span{display:block;font-size:11.5px;color:var(--mut);margin-top:2px}
+/* 接入带 */
+.accessbar{display:flex;align-items:center;gap:10px;background:var(--pan);border:1px solid var(--bd);border-radius:12px;margin:12px 22px 0;padding:9px 14px;flex-wrap:wrap}
+.abtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:9px;padding:6px 13px;cursor:pointer;font-weight:700}
+.abtn.pri{background:var(--ac);color:#fff}
+.abtn.pri:hover{background:#4338CA}
+.abtn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan);font-weight:600}
+.abtn.ghost:hover{color:var(--ac);border-color:#C7D2FE}
+.abtn.on{background:var(--okbg);color:var(--ok);border:1px solid #BBF7D0}
+.adiv{width:1px;height:22px;background:var(--bd);margin:0 2px}
+.srcchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;border:1px solid var(--bd);border-radius:8px;padding:4px 9px;color:var(--mut);background:var(--pan2)}
+.srcchip i{width:7px;height:7px;border-radius:4px;background:#CBD5E1;flex:none}
+.srcchip.ok{color:var(--tx);border-color:#BBF7D0;background:var(--okbg)}
+.srcchip.ok i{background:var(--ok)}
+.srcchip .cv{color:var(--warn);font-size:10px;font-weight:700}
+.abarlast{margin-left:auto;font-size:11.5px;color:var(--mut);display:flex;align-items:center;gap:6px}
+/* 流水线 */
+.pipe{display:flex;align-items:stretch;gap:0;background:var(--pan);border:1px solid var(--bd);border-radius:12px;margin:10px 22px 0;padding:10px 14px}
+.pstep{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.pnum{width:24px;height:24px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;flex:none}
+.pstep.run .pnum{background:#EEF2FF;border-color:#C7D2FE;color:var(--ac)}
+.pstep.done .pnum{background:var(--okbg);border-color:#BBF7D0;color:var(--ok)}
+.pbody{min-width:0}
+.pname{font-size:12px;font-weight:600;color:var(--mut);white-space:nowrap}
+.pstep.run .pname{color:var(--ac)}
+.pstep.done .pname{color:var(--tx)}
+.pstat{font-size:10px;color:#94A3B8;white-space:nowrap}
+.pstep.run .pstat{color:var(--ac)}
+.pstep.done .pstat{color:var(--ok)}
+.parr{display:flex;align-items:center;padding:0 8px;color:#CBD5E1;flex:none}
+.dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ac);margin-right:4px;animation:pu 1s infinite}
+@keyframes pu{50%{opacity:.25}}
+/* 主区 */
 .wrap{display:flex;flex:1;gap:14px;padding:12px 22px 14px;min-height:0;overflow:hidden}
 .panel{background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:13px 16px;overflow:auto;display:flex;flex-direction:column;min-height:0}
 .panel h3{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:9px}
 .panel h3 em{font-style:normal;font-size:11px;color:var(--mut);font-weight:400}
-.left{width:330px;flex:none}.mid{flex:1.3;min-width:0}.right{width:350px;flex:none}
-.sec{font-size:12px;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px;margin:10px 0 6px}
-.src{display:flex;align-items:center;gap:7px;font-size:11.5px;background:var(--pan2);border:1px solid var(--bd);border-radius:8px;padding:4px 9px;margin-bottom:4px}
-.src b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.src .st{margin-left:auto;color:var(--ok);flex:none;font-size:10.5px}
-.src .st.conv{color:var(--warn)}
-.stage{display:flex;align-items:flex-start;gap:9px;padding:5px 0;border-bottom:1px dashed var(--bd)}
-.stage:last-child{border-bottom:none}
-.sic{width:26px;height:26px;border-radius:8px;background:var(--pan2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);flex:none}
-.stage.run .sic{background:#EEF2FF;border-color:#C7D2FE;color:var(--ac)}
-.stage.done .sic{background:var(--okbg);border-color:#BBF7D0;color:var(--ok)}
-.sbody{flex:1;min-width:0}
-.sname{font-size:12px;font-weight:600;color:var(--mut)}
-.stage.run .sname{color:var(--ac)}
-.stage.done .sname{color:var(--tx)}
-.sstate{font-size:10.5px;margin-left:7px;font-weight:700}
-.stage.run .sstate{color:var(--ac)}
-.stage.done .sstate{color:var(--ok)}
-.ssum{font-size:10.5px;color:var(--mut);line-height:1.55;margin-top:2px;display:none}
-.stage.done .ssum{display:block}
-.dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ac);margin-right:5px;animation:pu 1s infinite}
-@keyframes pu{50%{opacity:.25}}
-.rchips{display:flex;gap:6px;flex-wrap:wrap}
-.rchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
-.rchip b{font-weight:700}
-.rchip.hi{border-color:#FECACA;background:var(--badbg);color:var(--bad)}
-.rchip.md{border-color:#FDE68A;background:var(--warnbg);color:var(--warn)}
-.rchip.lo{border-color:#BFDBFE;background:var(--infobg);color:var(--blue)}
-.btnrow{display:flex;gap:8px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:8px;padding:6px 13px;cursor:pointer}
-.btn.pri{background:var(--ac);color:#fff;font-weight:700}
-.btn.pri:hover{background:#4338CA}
-.btn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan)}
-.btn.ghost:hover{color:var(--ac);border-color:#C7D2FE}
-.btn.sm{font-size:11.5px;padding:4px 11px}
+.mid{flex:1.55;min-width:0}.right{width:350px;flex:none}
 .fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .fchip{font-size:11.5px;border:1px solid var(--bd);border-radius:9px;padding:5px 11px;color:var(--mut);cursor:pointer;background:var(--pan2)}
 .fchip.on{border-color:var(--ac);color:var(--ac);background:#EEF2FF;font-weight:700}
@@ -84,16 +82,20 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .rdesc{font-size:11.5px;color:var(--mut);line-height:1.65;margin-top:5px}
 .rdesc b{color:var(--tx)}
 .ract{margin-top:6px;font-size:11.5px;color:var(--tx);background:var(--pan2);border-left:3px solid var(--ac);border-radius:6px;padding:6px 10px;line-height:1.6}
-.ract b{color:var(--ac)}
 .rft{display:flex;align-items:center;gap:8px;margin-top:7px}
 .rft .own{font-size:11px;color:var(--mut)}
 .okmark{font-size:11.5px;color:var(--ok);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;border-radius:8px;padding:4px 11px;cursor:pointer}
+.btn.pri{background:var(--ac);color:#fff;font-weight:700}
+.btn.ghost{border:1px solid var(--bd);color:var(--mut);background:var(--pan)}
 .dstrip{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--tx);background:var(--pan2);border:1px solid var(--bd);border-radius:10px;padding:8px 12px}
 .dstrip b{color:var(--ac)}
 .oneline{margin-top:10px;display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.7;color:var(--tx);background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:8px 12px}
 .oneline .ic{color:var(--ac);margin-top:2px}
 .oneline b{color:var(--ac)}
 .dfoot{font-size:10.5px;color:#94A3B8;line-height:1.6;margin-top:auto;padding-top:8px}
+.upfiles{display:flex;gap:6px;flex-wrap:wrap;margin-left:4px}
+.upfile{font-size:10.5px;color:var(--warn);background:var(--warnbg);border:1px solid #FDE68A;border-radius:7px;padding:2px 8px;font-weight:600}
 /* AI */
 .aiwrap{flex:1;display:flex;flex-direction:column;min-height:0}
 .msgs{flex:1;overflow:auto;padding:2px 2px 8px;min-height:0}
@@ -116,9 +118,7 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .inrow input{flex:1;border:1px solid var(--bd);border-radius:9px;padding:8px 11px;font-size:12.5px;outline:none;color:var(--tx);background:var(--pan2)}
 .inrow input:focus{border-color:var(--ac);background:#fff}
 .inrow .send{width:34px;height:34px;border-radius:9px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
-.inrow .send:hover{background:#4338CA}
 .toast{position:fixed;right:24px;bottom:24px;background:var(--tx);color:#fff;font-size:13px;font-weight:600;border-radius:10px;padding:10px 18px;display:none;z-index:99;box-shadow:0 8px 24px rgba(15,23,42,.25)}
-svg text{font-family:inherit}
 </style></head><body>
 <div class="top"><div class="logo"></div><b>群蜂云枢 · 交付风险预警智能体</b><span class="toptag">威贸电子</span>
 <div class="valwrap"><span class="valbtn" onclick="toggleVal(event)"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>效能与价值</span>
@@ -129,7 +129,7 @@ svg text{font-family:inherit}
 <div class="vrow"><span>人工释放</span><span class="base"><b>约 60–80 人时/月</b>（推断）</span></div>
 <div class="vrow"><span>预警准确率</span><span class="base">无基线 → <b>≥90%</b>，误报 &lt;10%</span></div>
 <div class="vfoot">MVP 只做识别与预警，不做自动处置；未交订单逾期量上线 3 个月内目标下降 20%。</div></div></div>
-<div class="rinfo"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>每日 07:30 自动跑批 · 上传即跑</div></div>
+<div class="rinfo"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="runInfo">上次跑批：今日 07:30 · 耗时 42s</span></div></div>
 
 <div class="kpis">
 <div class="kpi" onclick="setFilter('red')"><b class="rd">2 项</b><span>红色预警 · 已逾期 / 断料影响本周排产</span></div>
@@ -137,18 +137,19 @@ svg text{font-family:inherit}
 <div class="kpi" onclick="setFilter('blue')"><b class="bl">3 项</b><span>口径异常 · 匹配待人工确认（不沉默）</span></div>
 <div class="kpi"><b>23 单</b><span>逾期未交订单 · 临期 7 天内 9 单</span></div></div>
 
-<div class="wrap">
-<div class="panel left">
-<h3><svg class="ic" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>多源归集 · 数据源</h3>
-<div id="srcs"></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h16"/></svg>五项规则引擎跑批</div>
-<div id="stages"></div>
-<div class="sec"><svg class="ic" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>三级分级汇总</div>
-<div class="rchips"><span class="rchip hi" onclick="setFilter('red')">红 <b>2</b></span><span class="rchip md" onclick="setFilter('yellow')">黄 <b>5</b></span><span class="rchip lo" onclick="setFilter('blue')">蓝 <b>3</b></span></div>
-<div style="margin-top:10px" class="btnrow"><span class="btn pri" id="runBtn" onclick="runPipeline()"><svg class="ic" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>立即跑批</span></div>
-<div class="dfoot">触发：每日 07:30 定时 · 上传即跑 · 手动；去抖：连续 2 次或持续 1 天才升级告警，防刷屏。人物与客户名为脱敏示意。</div>
+<div class="accessbar">
+<span class="abtn pri" id="erpBtn" onclick="connectERP()"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>一键直连 ERP</span>
+<span class="abtn ghost" onclick="document.getElementById('upIn').click()"><svg class="ic" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2M12 12v9"/><path d="M16 16l-4-4-4 4"/></svg>上传文件</span>
+<input type="file" id="upIn" multiple accept=".xls,.xlsx,.csv,.pdf,.zip" style="display:none" onchange="onUpload(this)">
+<span class="upfiles" id="upfiles"></span>
+<span class="adiv"></span>
+<span class="srcchip" data-s="0"><i></i>未交订单</span><span class="srcchip" data-s="1"><i></i>MRP</span><span class="srcchip" data-s="2"><i></i>库存展望</span><span class="srcchip" data-s="3"><i></i>在途采购</span><span class="srcchip" data-s="4"><i></i>客户排程 ×5</span><span class="srcchip" data-s="5"><i></i>内部排程</span>
+<span class="abarlast"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="lastRun">未直连 · 支持每日 07:30 自动跑批</span></span>
 </div>
 
+<div class="pipe" id="pipe"></div>
+
+<div class="wrap">
 <div class="panel mid">
 <h3><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>交付风险日报 · 风险清单<em>只识别预警 · 处置由责任人确认销项</em></h3>
 <div class="fbar" id="fbar"></div>
@@ -167,13 +168,12 @@ svg text{font-family:inherit}
 <div class="toast" id="toast"></div>
 
 <script>
-const SRCS=[["ERP · 未交订单","XLS→XLSX ✓"],["ERP · MRP","XLS→XLSX ✓"],["ERP · 库存展望","已解析 ✓"],["ERP · 在途采购","已解析 ✓"],["客户排程 ×5（专用格式）","字段映射 ✓"],["排程（内部）","已解析 ✓"]];
-const STAGES=[
- ["缺料与匹配引擎","M21 8V21H3V8M1 3h22v5H1zM10 12h4","在途>缺料视为足额不告警 87 行；在途<缺料自动匹配 MRP 单号 14 项，匹配不上单列待确认 1 项（不沉默）"],
- ["需求覆盖测算","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","客户滚动计划 vs 在手订单逐周比对：覆盖断点 2 处（W7 / W9）"],
- ["未交订单账龄","M8 2v4M16 2v4M3 10h18","按应交期分月统计未交量：已逾期 23 单，临期 7 天内 9 单自动升级"],
- ["一致性核对","M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3","客户计划未结 vs 内部排程未出货合计自动对平，差异行标红 1 行（差 170）"],
- ["三级分级 + 去抖","M22 12h-4l-3 9L9 3l-3 9H2","红 2 / 黄 5 / 蓝 3；连续 2 次或持续 1 天才升级，正常静默"]];
+const PIPES=[
+ ["多源归一 · 格式归一","ERP 四件套 + 客户排程 ×5 + 内部排程 · .xls 无损转 .xlsx"],
+ ["字段口径映射","ERP 编码 / 客户料号 / 应交期 / 在途量"],
+ ["五项规则引擎","缺料匹配 · 需求覆盖 · 未交账龄 · 一致性核对 · 口径校验"],
+ ["三级分级 + 去抖","红 2 / 黄 5 / 蓝 3 · 连续 2 次或持续 1 天才升级"],
+ ["日报生成 + 推送","缺料负责人 / 排程负责人 / 销售 · 正常静默"]];
 const RISKS=[
  {lv:"red",cat:"缺料匹配",obj:"物料 11711000023",desc:"缺口 <b>1,200</b>（在途 800 < 缺料 2,000），已自动匹配 MRP 单号 PO-8871 / PO-8902",imp:"影响 09-26 排产",act:"<b>建议</b>：催交在途单，同步评估替代料",own:"缺料负责人"},
  {lv:"red",cat:"一致性核对",obj:"客户 E · 计划分配",desc:"未结 4,320 vs 日计划未出货合计 4,150，<b>差 170</b>，差异行已标红",imp:"出货分配多发风险",act:"<b>建议</b>：核对差异行，确认后冲销，防多发",own:"排程负责人"},
@@ -186,21 +186,37 @@ const RISKS=[
  {lv:"blue",cat:"匹配待确认",obj:"物料 40110810237",desc:"MRP 有在途单，但与缺料行<b>映射失败</b>——单列待确认，不沉默",imp:"可能掩盖真实缺口",act:"<b>建议</b>：人工确认料号映射后回写规则",own:"缺料负责人"},
  {lv:"blue",cat:"口径校验",obj:"缺料表负数行",desc:"到货 &gt; 缺料 = 已足额（口径固化），自动识别 <b>87 行</b>不告警",imp:"—",act:"无需处理",own:"—"}];
 const FILTERS=[["all","全部 10"],["red","红 2"],["yellow","黄 5"],["blue","蓝 3"]];
-let filter="all";
+let filter="all",ran=false;
 
-function renderSrcs(){document.getElementById("srcs").innerHTML=SRCS.map(s=>`<div class="src"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>${s[0]}</b><span class="st ${s[1].includes("XLS")?"conv":""}">${s[1]}</span></div>`).join("")}
-function renderStages(st){const box=document.getElementById("stages");box.innerHTML="";
- STAGES.forEach((s,i)=>{const cls=st>i?"done":st===i?"run":"";
-  box.innerHTML+=`<div class="stage ${cls}"><div class="sic"><svg class="ic" viewBox="0 0 24 24">${st>i?'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3"/>':`<path d="${s[1]}"/>`}</svg></div>
-  <div class="sbody"><div class="sname">${s[0]}<span class="sstate">${st>i?"✓":st===i?'<span class="dot"></span>执行中':"排队"}</span></div><div class="ssum">${s[2]}</div></div></div>`})}
-function runPipeline(){if(ran){document.querySelectorAll(".rrow.done").forEach(r=>r.classList.remove("done"));
- RISKS.forEach(r=>r.done=false);renderStages(0);ran=false;setTimeout(runPipeline,80);return}
- ran=true;document.getElementById("runBtn").innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>重新跑批';
- let st=0;renderStages(0);
- const step=()=>{if(st>STAGES.length){renderStages(STAGES.length);renderList();toast("跑批完成 · 日报已生成并按级推送");return}
-  renderStages(st);st++;setTimeout(step,st===STAGES.length+1?500:900)};step()}
-let ran=false;
-
+function renderPipe(st){document.getElementById("pipe").innerHTML=PIPES.map((p,i)=>{
+  const cls=st>i?"done":st===i?"run":"";
+  const stat=st>i?"✓ 完成":st===i?'<span class="dot"></span>执行中':"排队";
+  return `<div class="pstep ${cls}" title="${p[1]}"><div class="pnum">${st>i?"✓":i+1}</div><div class="pbody"><div class="pname">${p[0]}</div><div class="pstat">${stat}</div></div></div>${i<PIPES.length-1?'<div class="parr"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>':""}`}).join("")}
+function runPipeline(){if(ran){RISKS.forEach(r=>r.done=false);renderPipe(0);ran=false;setTimeout(runPipeline,80);return}
+ ran=true;
+ let st=0;renderPipe(0);
+ const step=()=>{if(st>PIPES.length){renderPipe(PIPES.length);renderList();
+  document.getElementById("lastRun").textContent="上次跑批：刚刚 · 耗时 38s";
+  document.getElementById("runInfo").textContent="上次跑批：刚刚 · 耗时 38s";
+  toast("跑批完成 · 日报已生成并按级推送");return}
+  renderPipe(st);st++;setTimeout(step,st===PIPES.length+1?400:850)};step()}
+function connectERP(){const btn=document.getElementById("erpBtn");
+ if(btn.classList.contains("on")){toast("ERP 直连正常 · 上次同步 今日 07:30（模拟）");return}
+ btn.innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>连接中…';
+ btn.style.opacity=".7";
+ setTimeout(()=>{btn.className="abtn on";btn.innerHTML='<svg class="ic" viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3"/></svg>ERP 已直连 · 每日 07:30 自动';
+  document.querySelectorAll(".srcchip").forEach(c=>{c.classList.add("ok");
+   if(c.dataset.s==="0"||c.dataset.s==="1")c.innerHTML=c.innerHTML.replace("</i>","</i><span class='cv'>XLS→XLSX</span>")||c.innerHTML});
+  document.getElementById("lastRun").textContent="已直连 · 6 个数据源已同步";
+  toast("ERP 直连成功 · 6 个数据源已同步，开始跑批");
+  aiSay("<b>ERP 已直连。</b>6 个数据源完成同步（含 2 份 .xls 自动转 .xlsx），开始按五项规则引擎跑批。");runPipeline()},1100)}
+function onUpload(inp){const fs=[...inp.files];const box=document.getElementById("upfiles");
+ fs.forEach(f=>{const d=document.createElement("span");d.className="upfile";
+  const isXls=/\.xls$/i.test(f.name);
+  d.textContent=f.name+(isXls?" .xls→.xlsx":" ✓");box.appendChild(d)});
+ if(fs.length){toast("已接收 "+fs.length+" 个文件 · 开始即时跑批");
+  aiSay("已接收上传文件 "+fs.length+" 个"+(fs.some(f=>/\.xls$/i.test(f.name))?"（含 .xls 已自动转 .xlsx）":"")+"，按五项规则引擎即时跑批。");runPipeline()}
+ inp.value=""}
 function setFilter(f){filter=f;renderList()}
 function renderList(){document.getElementById("fbar").innerHTML=FILTERS.map(f=>`<span class="fchip ${filter===f[0]?"on":""}" onclick="setFilter('${f[0]}')">${f[1]}</span>`).join("");
  const list=RISKS.filter(r=>filter==="all"||r.lv===filter);
@@ -208,10 +224,10 @@ function renderList(){document.getElementById("fbar").innerHTML=FILTERS.map(f=>`
  list.forEach(r=>{const d=document.createElement("div");d.className="rrow "+r.lv+(r.done?" done":"");
   d.innerHTML=`<div class="rh"><span class="lvb ${r.lv}">${r.lv==="red"?"红":r.lv==="yellow"?"黄":"蓝"}</span><span class="cat">${r.cat}</span><span class="obj">${r.obj}</span><span class="imp">${r.imp}</span></div>
   <div class="rdesc">${r.desc}</div><div class="ract">${r.act}</div>
-  <div class="rft"><span class="own">责任人：${r.own}</span>${r.own==="—"?"":r.done?'<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>':`<span class="btn pri sm" onclick="closeRisk(this,'${r.obj}')">确认销项</span><span class="btn ghost sm" onclick="toast('已转发责任人处理（模拟推送）')">转发</span>`}</div>`;
+  <div class="rft"><span class="own">责任人：${r.own}</span>${r.own==="—"?"":r.done?'<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>':`<span class="btn pri" onclick="closeRisk(this,'${r.obj}')">确认销项</span><span class="btn ghost" onclick="toast('已转发责任人处理（模拟推送）')">转发</span>`}</div>`;
   box.appendChild(d)})}
-function closeRisk(btn,obj){const r=RISKS.find(x=>x.obj===obj);if(r){r.done=true}
- const row=btn.closest(".rrow");row.classList.add("done");
+function closeRisk(btn,obj){const r=RISKS.find(x=>x.obj===obj);if(r)r.done=true;
+ btn.closest(".rrow").classList.add("done");
  btn.outerHTML='<span class="okmark">✓ 已销项 · 次日跑批自动复核</span>';
  toast("已销项 · 明日跑批自动复核，未销项持续升级")}
 
@@ -227,22 +243,24 @@ function aiSend(){const inp=document.getElementById("aiIn");const t=inp.value.tr
  box.appendChild(ty);box.scrollTop=box.scrollHeight;
  setTimeout(()=>{ty.remove();route(t)},650)}
 function route(t){
+ if(/直连|连接|ERP/.test(t)){connectERP();aiSay("已在页顶一键直连 ERP：同步未交订单 / MRP / 库存展望 / 在途采购 + 客户排程 ×5 + 内部排程，直连后每日 07:30 自动跑批。");return}
+ if(/上传|文件/.test(t)){aiSay("两种方式都可以：顶栏「<b>上传文件</b>」选 ERP 导出或客户排程（.xls 自动转 .xlsx），选完即时跑批；或「<b>一键直连 ERP</b>」自动拉取，无需手工导出。");return}
  if(/红色|红级|^红$/.test(t)){setFilter("red");
-  aiSay("红色预警 <b>2 项</b>：①物料 11711000023 缺口 1,200（在途不足，已匹配 MRP 单），影响 09-26 排产；②客户 E 计划分配差异 170，有出货多发风险。已即时推送缺料负责人与排程负责人。","已筛红色");return}
+  aiSay("红色预警 <b>2 项</b>：①物料 11711000023 缺口 1,200（在途不足，已匹配 MRP 单），影响 09-26 排产；②客户 E 计划分配差异 170，有出货多发风险。已即时推送缺料负责人与排程负责人。","");return}
  if(/黄色|黄级/.test(t)){setFilter("yellow");
-  aiSay("黄色预警 <b>5 项</b>：客户 A 覆盖断点（W7 起）、镀层端子 7 天内缺口 800、逾期单 SO-8821、临期 9 单汇总、客户 C 覆盖断点。7 天内缺口按规则自动升级。","已筛黄色");return}
+  aiSay("黄色预警 <b>5 项</b>：客户 A 覆盖断点（W7 起）、镀层端子 7 天内缺口 800、逾期单 SO-8821、临期 9 单汇总、客户 C 覆盖断点。7 天内缺口按规则自动升级。","");return}
  if(/蓝色|口径|匹配|待确认/.test(t)){setFilter("blue");
-  aiSay("蓝色 <b>3 项</b>均为口径类：两处口径自动校验通过（足额不告警 87 行 / 负数含义），1 项 MRP 映射失败已单列<b>待人工确认</b>——规则是「匹配不上不沉默」，确认后回写规则库。","已筛蓝色");return}
+  aiSay("蓝色 <b>3 项</b>均为口径类：两处口径自动校验通过（足额不告警 87 行 / 负数含义），1 项 MRP 映射失败已单列<b>待人工确认</b>——规则是「匹配不上不沉默」，确认后回写规则库。","");return}
  if(/口径|规则|在途|负数/.test(t)){aiSay("已固化口径：<b>在途 &gt; 缺料 = 足额不告警</b>；在途 &lt; 缺料自动匹配 MRP 单号（多行 / 分隔）；到货 &gt; 缺料 = 已足额（负数行自动识别）。匹配不上单列待确认。原口径仅在个别同事脑中，现已沉淀为引擎规则。");return}
- if(/覆盖|断点|滚动计划|周/.test(t)){setFilter("yellow");
+ if(/覆盖|断点|滚动计划/.test(t)){setFilter("yellow");
   aiSay("需求覆盖测算：客户 A 10 周滚动计划，在手订单覆盖到 <b>W6，W7 起断点 3,600</b>；客户 C W9 断点 1,200。已推送销售评估插单或协商分批。");return}
  if(/账龄|逾期|未交/.test(t)){aiSay("未交订单按应交期分月统计：<b>已逾期 23 单</b>、临期 7 天内 9 单（合计 2,150 件）已升级黄色。上线 3 个月目标：逾期量环比下降 20%。");return}
- if(/一致|对平|差异|排程/.test(t)){aiSay("一致性核对：客户 E 计划未结 4,320 vs 内部日计划未出货合计 4,150，<b>差异 170 已标红定位</b>。此类两套数对不平以前靠人工逐行找，现在差异行直出。");return}
- if(/重跑|跑批|立即/.test(t)){aiSay("收到，立即重跑：多源归一 → 口径映射 → 五项规则引擎 → 三级分级 + 去抖。","已开始");runPipeline();return}
+ if(/一致|对平|差异/.test(t)){aiSay("一致性核对：客户 E 计划未结 4,320 vs 内部日计划未出货合计 4,150，<b>差异 170 已标红定位</b>。此类两套数对不平以前靠人工逐行找，现在差异行直出。");return}
+ if(/重跑|跑批|流水线/.test(t)){aiSay("收到，立即重跑：多源归一 → 口径映射 → 五项规则引擎 → 三级分级 + 去抖 → 日报推送。","已开始");runPipeline();return}
  if(/日报|推送|周报/.test(t)){aiSay("输出三件：<b>①交付风险日报</b>（物料/订单/客户/缺口量/影响交期/等级/建议动作）②红黄级即时推送责任人，正常静默 ③<b>周报</b>沉淀缺料趋势与逾期消化进度。");return}
  if(/处置|执行|自动/.test(t)){aiSay("MVP <b>只做识别与预警，不做自动处置</b>：预警由责任人在清单点「确认销项」，次日跑批自动复核，未销项持续升级。自动处置属后续规划。");return}
- aiSay("已收到。可问我：<b>「看红色预警」「缺料匹配口径」「覆盖断点」「账龄」「一致性差异」「重跑批」</b>；本智能体只做识别预警，处置走责任人销项闭环。")}
-const QCHIPS=["看红色预警","缺料匹配口径","覆盖断点","匹配待确认","重跑批"];
+ aiSay("已收到。可问我：<b>「看红色预警」「缺料匹配口径」「覆盖断点」「账龄」「一致性差异」「重跑批」</b>；数据接入支持「一键直连 ERP」或「上传文件」，两种都会即时跑批。")}
+const QCHIPS=["看红色预警","缺料匹配口径","覆盖断点","匹配待确认","一键直连 ERP","上传文件跑批"];
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toggleVal(e){e.stopPropagation();const p=document.getElementById("vpop");
  p.style.display=p.style.display==="block"?"none":"block"}
@@ -250,8 +268,7 @@ document.addEventListener("click",e=>{const p=document.getElementById("vpop");
  if(p&&p.style.display==="block"&&!p.contains(e.target)&&!e.target.closest(".valbtn"))p.style.display="none"});
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
-renderSrcs();renderStages(0);renderList();
-pushMsg("ai","你好，我是交付风险预警智能体。每日 07:30 自动归集 ERP 四件套与客户排程，跑<b>五项规则引擎</b>输出红黄蓝三级风险日报。口径我已固化（在途&gt;缺料=足额不告警），可以问我，也可以让我重跑批。");
-window.addEventListener("resize",()=>{});
-setTimeout(()=>{runPipeline()},600);
+renderPipe(0);renderList();
+pushMsg("ai","你好，我是交付风险预警智能体。数据接入两种方式：<b>「一键直连 ERP」自动拉取</b>或<b>「上传文件」即时跑批</b>（.xls 自动转 .xlsx）。跑完输出红黄蓝三级风险日报，可以问我口径与定位，也可以让我重跑批。");
+setTimeout(()=>{connectERP()},800);
 </script></body></html>
