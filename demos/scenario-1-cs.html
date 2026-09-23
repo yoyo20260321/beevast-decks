@@ -1,40 +1,37 @@
 <!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 智能客服工作台</title>
 <style>
-:root{--bg:#0D1526;--pan:#101B36;--pan2:#16264C;--bd:#22315E;--ac:#00ACBE;--tx:#E8EEF9;--mut:#9FAFD2}
+:root{--bg:#0D1526;--pan:#101B36;--pan2:#16264C;--bd:#22315E;--ac:#00ACBE;--tx:#E8EEF9;--mut:#9FAFD2;--ok:#4AD98A;--warn:#FF7B7B;--gold:#FFC539}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
 body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .top{display:flex;align-items:center;gap:14px;background:var(--pan);padding:12px 22px;border-bottom:1px solid var(--bd)}
 .logo{width:14px;height:14px;background:var(--ac);border-radius:4px}
-.top b{font-size:16px}.env{font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:12px;padding:3px 12px;margin-left:8px}
+.top b{font-size:16px}
 .langs{margin-left:auto;display:flex;gap:8px;font-size:12px}
 .langs span{padding:3px 10px;border-radius:10px;border:1px solid var(--bd);color:var(--mut);cursor:pointer}
 .langs span.on{background:var(--ac);color:#04182E;font-weight:700;border-color:var(--ac)}
-.online{font-size:12px;color:#4AD98A}
+.online{font-size:12px;color:var(--ok)}
+.qbtn{font-size:12.5px;font-weight:700;background:var(--ac);color:#04182E;border-radius:9px;padding:6px 14px;cursor:pointer;margin-left:12px}
+.qbtn:hover{filter:brightness(1.08)}
 .wrap{display:flex;flex:1;min-height:0}
 .side{width:170px;background:var(--pan);border-right:1px solid var(--bd);padding:14px 10px}
 .side div{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:13.5px;color:var(--mut);margin-bottom:4px;cursor:pointer}
-.side div i{width:14px;height:14px;border:1.6px solid var(--mut);border-radius:4px}
-.side div.on{background:#16264C;color:#fff}.side div.on i{border-color:var(--ac)}
-.side div .bdg{margin-left:auto;background:#FF7B7B;color:#fff;font-size:10.5px;border-radius:8px;padding:1px 7px}
-.conv{width:250px;border-right:1px solid var(--bd);overflow:auto;padding:12px}
-.cv{background:var(--pan2);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
-.cv.on{border:1px solid var(--ac)}
-.cv .n{font-size:13.5px;font-weight:700}.cv .n i{font-style:normal;font-size:10.5px;color:#0D1526;background:#FFC539;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700}
-.cv .m{font-size:12px;color:var(--mut);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cv .t{font-size:11px;color:#5E6D92;margin-top:4px}
-.chat{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--bd)}
+.side div i{width:14px;height:14px;border:1.6px solid var(--mut);border-radius:4px;flex:none}
+.side div.on{background:var(--pan2);color:#fff}.side div.on i{border-color:var(--ac)}
+.side div .bdg{margin-left:auto;background:var(--warn);color:#fff;font-size:10.5px;border-radius:8px;padding:1px 7px}
+.view{flex:1;display:flex;min-width:0}
+.chat{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--bd);min-width:0}
 .chead{padding:13px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
-.chead b{font-size:14.5px}.chead .st{font-size:12px;color:#4AD98A}
+.chead b{font-size:14.5px}.chead .st{font-size:12px;color:var(--ok)}
 .chead .act{margin-left:auto;display:flex;gap:8px}
 .chead .act span{font-size:12px;border:1px solid var(--bd);border-radius:8px;padding:4px 10px;color:var(--mut);cursor:pointer}
-.chead .act span.hot{border-color:#FF7B7B;color:#FF7B7B}
+.chead .act span.hot{border-color:var(--warn);color:var(--warn)}
 .msgs{flex:1;padding:18px;overflow:auto}
 .m{max-width:72%;margin-bottom:14px;font-size:13.5px;line-height:1.55}
 .m .who{font-size:11px;color:#5E6D92;margin-bottom:4px}
 .m .b{border-radius:12px;padding:11px 14px}
 .m.cu{margin-left:auto}.m.cu .b{background:#1E3A6E}
 .m.ai .b{background:var(--pan2);border:1px solid var(--bd)}
-.m.ai .sop{margin-top:8px;font-size:11.5px;color:#4AD98A}
+.m.sys{max-width:92%}.m.sys .b{background:#0F2A22;border:1px solid #1F5C44;color:#B9E8D2;font-size:12.5px}
 .composer{border-top:1px solid var(--bd);padding:12px 16px}
 .ai-draft{background:var(--pan);border:1px dashed var(--ac);border-radius:10px;padding:10px 14px;font-size:13px;color:#C9D4E8;margin-bottom:10px}
 .ai-draft b{color:var(--ac);font-size:12px}
@@ -49,26 +46,103 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 .strips{display:flex;gap:8px;margin-top:10px}
 .strip{flex:1;background:var(--pan2);border-radius:9px;padding:8px;text-align:center}
 .strip b{display:block;font-size:16px;color:var(--ac)}.strip span{font-size:10.5px;color:var(--mut)}
-.toast{position:fixed;right:24px;bottom:24px;background:var(--ac);color:#04182E;font-weight:700;font-size:13px;border-radius:10px;padding:10px 18px;display:none}
+/* ─── 数据分析视图 ─── */
+.dwrap{flex:1;display:flex;flex-direction:column;gap:12px;padding:14px 16px;min-width:0;overflow:auto}
+.dhead{display:flex;align-items:baseline;gap:12px}
+.dhead b{font-size:16px}.dhead span{font-size:12px;color:var(--mut)}
+.rng{margin-left:auto;display:flex;border:1px solid var(--bd);border-radius:9px;overflow:hidden}
+.rng span{font-size:12px;padding:5px 14px;color:var(--mut);cursor:pointer}
+.rng span.on{background:var(--ac);color:#04182E;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--pan2);border:1px solid transparent;border-radius:12px;padding:12px 16px;transition:transform .15s,border-color .15s}
+.kpi:hover{transform:translateY(-2px);border-color:var(--bd)}
+.kpi .l{font-size:12px;color:var(--mut)}
+.kpi .v{font-size:26px;font-weight:700;margin:4px 0 2px}
+.kpi .v small{font-size:13px;font-weight:500;color:var(--mut);margin-left:2px}
+.kpi .d{font-size:11.5px}.kpi .d.up{color:var(--ok)}.kpi .d.dn{color:var(--warn)}
+.kpi .d.good{color:var(--ok)}
+.dgrid{flex:1;display:grid;grid-template-columns:1.65fr 1fr;grid-template-rows:1.05fr 1fr;gap:12px;min-height:540px}
+.pane{background:var(--pan2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;min-height:0}
+.pane h5{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.pane h5 em{font-style:normal;font-size:11px;color:var(--mut);font-weight:400}
+.legend{margin-left:auto;display:flex;gap:12px;font-size:11.5px;color:var(--mut)}
+.legend span{cursor:pointer;display:flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.legend span.off{opacity:.38}
+.legend span:not(.off){color:#C9D4E8}
+.tbox{flex:1;position:relative;min-height:0}
+.tbox svg{display:block}
+.tip{position:absolute;pointer-events:none;background:#0A1224;border:1px solid var(--bd);border-radius:8px;padding:7px 10px;font-size:11.5px;line-height:1.7;display:none;white-space:nowrap;z-index:5;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.tip b{color:#fff}
+.dfoot{font-size:10.5px;color:#5E6D92;margin-top:2px}
+.bars{flex:1;display:flex;align-items:flex-end;gap:14px;padding:8px 6px 0;min-height:0}
+.bwrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;cursor:pointer}
+.bwrap .bv{font-size:12px;color:#C9D4E8;font-weight:600}
+.bwrap .bar{width:70%;max-width:44px;background:var(--ac);border-radius:6px 6px 2px 2px;opacity:.42;transition:opacity .15s,height .4s}
+.bwrap.sel .bar{opacity:1}
+.bwrap:hover .bar{opacity:.85}
+.bwrap.sel .bv{color:#fff}
+.bwrap .bn{font-size:11px;color:var(--mut);white-space:nowrap}
+.dpanel{gap:10px}
+.dpanel .dt{font-size:14px;font-weight:700}
+.dpanel .row{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 2px;border-bottom:1px dashed #22315E}
+.dpanel .row span{color:var(--mut)}
+.dpanel .row b{color:#fff}
+.dpanel .act{font-size:12px;line-height:1.7;color:#B9E8D2;background:#0F2A22;border-left:3px solid var(--ok);border-radius:6px;padding:8px 10px;margin-top:2px}
+.donutbox{flex:1;display:flex;align-items:center;gap:10px;min-height:0}
+.dcenter{position:absolute;text-align:center;pointer-events:none}
+.dcenter b{font-size:22px}.dcenter span{display:block;font-size:10.5px;color:var(--mut)}
+.dl{flex:1;font-size:12px}
+.dl div{display:flex;align-items:center;gap:7px;padding:5px 2px;cursor:pointer;border-radius:6px}
+.dl div:hover{background:#1B2C55}
+.dl i{width:9px;height:9px;border-radius:3px;flex:none}
+.dl span{color:var(--mut)}.dl b{margin-left:auto;color:#fff}
+/* ─── 建单弹层 ─── */
+.ovl{position:fixed;inset:0;background:rgba(4,10,24,.66);display:none;align-items:center;justify-content:center;z-index:50}
+.ovl.show{display:flex}
+.modal{width:580px;max-height:88vh;overflow:auto;background:var(--pan);border:1px solid var(--bd);border-radius:14px;padding:18px 20px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.mhd{display:flex;align-items:center;margin-bottom:12px}
+.mhd b{font-size:15px}
+.mhd .x{margin-left:auto;color:var(--mut);cursor:pointer;font-size:16px;padding:2px 8px}
+.aibar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ac);background:rgba(0,172,190,.08);border:1px dashed var(--ac);border-radius:9px;padding:8px 12px;margin-bottom:14px}
+.aibar.done{color:#B9E8D2;border-color:#1F5C44;background:#0F2A22;border-style:solid}
+.shim{flex:none;width:60px;height:6px;border-radius:3px;background:linear-gradient(90deg,rgba(0,172,190,.15),rgba(0,172,190,.65),rgba(0,172,190,.15));background-size:200% 100%;animation:sh 1s linear infinite}
+@keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.fi label{display:block;font-size:11.5px;color:var(--mut);margin-bottom:5px}
+.fi input,.fi textarea{width:100%;background:var(--pan2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-size:12.5px;padding:7px 10px;outline:none;font-family:inherit}
+.fi input:focus,.fi textarea:focus{border-color:var(--ac)}
+.fi .full{grid-column:1/-1}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips span{font-size:11.5px;border:1px solid var(--bd);border-radius:8px;padding:4px 10px;color:var(--mut);cursor:pointer}
+.chips span.on{border-color:var(--ac);color:var(--ac);background:rgba(0,172,190,.1);font-weight:700}
+.chips span.on.hi{border-color:var(--warn);color:var(--warn);background:rgba(255,123,123,.08)}
+.chips span.on.md{border-color:var(--gold);color:var(--gold);background:rgba(255,197,57,.08)}
+.mft{display:flex;gap:8px;margin-top:16px;align-items:center}
+.mft .note{font-size:11px;color:#5E6D92;margin-right:auto}
+.mfade{opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.mfade.in{opacity:1;transform:none}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--ac);color:#04182E;font-weight:700;font-size:13px;border-radius:10px;padding:10px 18px;display:none;z-index:99}
 </style></head><body>
-<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能客服工作台</b><span class="env">跨境物流 · 私有化部署 · Demo</span>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能客服工作台</b><span class="qbtn" onclick="openTicket()">＋ 快速建单</span>
 <div class="langs"><span class="on" data-l="zh">中文</span><span data-l="en">EN</span><span data-l="ru">РУС</span></div><span class="online">● 在线 · 7×24</span></div>
 <div class="wrap">
-<div class="side">
-<div class="on"><i></i>会话工作台</div>
-<div><i></i>工单中心<span class="bdg">3</span></div>
-<div><i></i>知识库</div>
-<div><i></i>多语言话术</div>
-<div><i></i>数据分析</div>
-<div><i></i>设置</div></div>
-<div class="conv" id="clist"></div>
+<div class="side" id="side">
+<div class="on" data-v="chat"><i></i>会话工作台</div>
+<div data-v="none"><i></i>工单中心<span class="bdg" id="woBdg">3</span></div>
+<div data-v="none"><i></i>知识库</div>
+<div data-v="none"><i></i>多语言话术</div>
+<div data-v="data"><i></i>数据分析</div>
+<div data-v="none"><i></i>设置</div></div>
+
+<div class="view" id="viewChat">
 <div class="chat">
 <div class="chead"><b id="cname">—</b><span class="st">● AI 协同中</span>
 <div class="act"><span>识别运单 ✓</span><span>关联订单 ✓</span><span class="hot" onclick="transfer()">转人工</span></div></div>
 <div class="msgs" id="msgs"></div>
 <div class="composer">
 <div class="ai-draft" id="draft"><b>AI 建议回复</b> · <span id="draftBody">—</span></div>
-<div class="btns"><span class="send" onclick="send()">发送</span><span class="ghost" onclick="transfer()">转人工</span><span class="ghost">建单催办</span><span class="ghost">补偿申请</span></div></div></div>
+<div class="btns"><span class="send" onclick="send()">发送</span><span class="ghost" onclick="transfer()">转人工</span><span class="ghost" onclick="openTicket()">建单催办</span><span class="ghost">补偿申请</span></div></div></div>
 <div class="ctx">
 <div class="strips"><div class="strip"><b>30s</b><span>首次响应</span></div><div class="strip"><b>92%</b><span>一次解决率</span></div></div>
 <h4>客户上下文 · 自动聚合</h4>
@@ -76,9 +150,47 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 <h4>今日工作台</h4>
 <div class="card">会话 128 · AI 独立解决 81%<br>转人工 24 · 均已响应</div>
 <h4>处理实效</h4>
-<div class="card">较人工坐席：首响 <b style="color:#4AD98A">-96%</b> · 夜间无人值守 <b style="color:#4AD98A">0</b> · 单坐席承载 <b style="color:#4AD98A">3×</b></div></div>
+<div class="card">较人工坐席：首响 <b style="color:var(--ok)">-96%</b> · 夜间无人值守 <b style="color:var(--ok)">0</b> · 单坐席承载 <b style="color:var(--ok)">3×</b></div></div>
 </div>
-<div class="toast" id="toast">已转人工 · 专员 张敏 接手</div>
+
+<div class="view" id="viewData" style="display:none">
+<div class="dwrap">
+<div class="dhead"><b>数据分析</b><span>全渠道客服效能 · IM / 邮件 / 工单实时聚合</span>
+<div class="rng"><span class="on" data-r="7d">近 7 天</span><span data-r="30d">近 30 天</span></div></div>
+<div class="kpis" id="kpis"></div>
+<div class="dgrid">
+<div class="pane"><h5>处理时长趋势<em>客诉处理 · 异常闭环（小时）</em>
+<div class="legend" id="trendLeg"></div></h5><div class="tbox" id="trendBox"><div class="tip" id="tip"></div></div></div>
+<div class="pane"><h5>解决构成<em>本期会话占比</em></h5>
+<div class="donutbox"><div style="position:relative;flex:none" id="donutBox"></div><div class="dl" id="donutLg"></div></div>
+<div class="dfoot">自助解决 = AI 全程独立办结，无需人工介入</div></div>
+<div class="pane"><h5>客诉类型分布<em>点击类型查看明细</em></h5>
+<div class="bars" id="bars"></div></div>
+<div class="pane dpanel" id="dpanel"></div>
+</div>
+<div class="dfoot">示意数据 · 口径：处理时长 = 首次响应 → 解决；闭环时长 = 建单 → 客户确认；满意度 = 会话结束评价均值（5 分制）</div>
+</div></div>
+</div>
+
+<div class="ovl" id="ovl"><div class="modal">
+<div class="mhd"><b>AI 快速建单</b><span class="x" onclick="closeTicket()">✕</span></div>
+<div class="aibar" id="aibar"><div class="shim" id="shim"></div><span id="aibarTx">AI 正在分析会话上下文…</span></div>
+<div class="fgrid mfade" id="mform">
+<div class="fi"><label>客户</label><input id="fCu"></div>
+<div class="fi"><label>关联单号</label><input id="fRef"></div>
+<div class="fi full"><label>问题类型</label><div class="chips" id="fType"></div></div>
+<div class="fi full"><label>优先级</label><div class="chips" id="fPri"></div></div>
+<div class="fi full"><label>工单标题</label><input id="fTitle"></div>
+<div class="fi full"><label>问题描述</label><textarea id="fDesc" rows="3"></textarea></div>
+<div class="fi full"><label>AI 建议处置</label><div class="dpanel" style="background:transparent;padding:0"><div class="act" id="fAct"></div></div></div>
+</div>
+<div class="mft"><span class="note">AI 生成内容可编辑 · 创建后自动分派并同步客户</span>
+<span class="ghost" style="font-size:12.5px;border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer" onclick="genTicket()">↻ 重新生成</span>
+<span class="ghost" style="font-size:12.5px;border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer" onclick="closeTicket()">取消</span>
+<span class="send" style="font-size:12.5px;border-radius:8px;padding:6px 16px;cursor:pointer" onclick="createTicket()">创建工单</span></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
 <script>
 const DATA={
  c1:{n:"Anastasia · 莫斯科",tag:"RU",ctx:"运单 WB-2041 · 莫斯科<br>状态 清关异常（2 天）<br>历史工单 2 条 · 均已闭环",
@@ -102,19 +214,161 @@ const DATA={
  drafts:{zh:"已为您重开 VAT 发票 #8821-V2（地址已更正），将发送至您的邮箱。",
  en:"VAT invoice #8821-V2 has been re-issued with the corrected address and sent to your email.",
  ru:"VAT invoice #8821-V2 re-issued with corrected address, sent to your email."}}};
+
+const WO={
+ c1:{cu:"Anastasia · 莫斯科（RU）",ref:"运单 WB-2041",type:"清关异常",pri:"高",
+ title:"WB-2041 莫斯科清关异常 2 天 · 客户二次进线",
+ desc:"客户反馈运单 WB-2041 清关滞留 2 天，为该客户历史第 2 次异常，情绪升级并要求明确送达时间，建议按赔付预审流程处理。",
+ act:"口岸代理催办（2h 内答复）→ 高风险赔付预审（需人工审批）→ 主动同步清关进度至客户"},
+ c2:{cu:"张先生 · 马德里（ES）",ref:"运单 SB-8871",type:"末端延误",pri:"中",
+ title:"SB-8871 马德里末端派送 3 天未妥投",
+ desc:"包裹 SB-8871 进入末端派送已 3 天未妥投，客户催问送达时间；AI 已发起末端催办，若 24h 内仍未妥投将自动转申诉。",
+ act:"末端网点催办 → 24h 未妥投自动申诉 → 向客户同步预计送达窗口"},
+ c3:{cu:"李女士 · 汉堡（EN）",ref:"订单 #8821",type:"发票账单",pri:"低",
+ title:"#8821 VAT 发票地址错误 · 申请重开",
+ desc:"客户申请重开 VAT 发票（原发票收件地址错误）；AI 已完成 #8821-V2 重开、地址更正并同步 ERP，待客户邮箱确认。",
+ act:"ERP 自动重开发票 → 邮件送达 → 次日自动回访确认"}};
+
+/* ───────── 数据分析 ───────── */
+const AN={
+ "7d":{kpi:[["客诉处理时长","4.2","h","较上周 -38%",1],["自助解决率","81","%","较上周 +6pt",1],["客户满意度","4.7","/5","较上周 +0.3",1],["异常闭环时长","18.5","h","较上周 -42%",1]],
+  days:["09-17","09-18","09-19","09-20","09-21","09-22","09-23"],
+  handle:[6.8,6.1,5.4,4.9,4.6,4.4,4.2],loop:[30,28,26,23,21,19.5,18.5],
+  types:[["清关异常",34],["末端延误",27],["退换货",18],["发票账单",13],["其他",8]],
+  solve:[["AI 自助解决",81,"#00ACBE"],["AI 起草 · 人工发出",15,"#5D93D8"],["转人工",4,"#9FAFD2"]]},
+ "30d":{kpi:[["客诉处理时长","5.8","h","较上月 -31%",1],["自助解决率","78","%","较上月 +9pt",1],["客户满意度","4.6","/5","较上月 +0.4",1],["异常闭环时长","24.6","h","较上月 -38%",1]],
+  days:Array.from({length:30},(_,i)=>{const d=new Date(2026,8,23-29+i);return (d.getMonth()+1)+"-"+d.getDate()}),
+  handle:Array.from({length:30},(_,i)=>+(9.5-3.7*i/29+(i%3?0.3:-0.2)).toFixed(1)),
+  loop:Array.from({length:30},(_,i)=>+(46-21.4*i/29+(i%4?1.5:-1)).toFixed(1)),
+  types:[["清关异常",142],["末端延误",118],["退换货",76],["发票账单",52],["其他",33]],
+  solve:[["AI 自助解决",78,"#00ACBE"],["AI 起草 · 人工发出",17,"#5D93D8"],["转人工",5,"#9FAFD2"]]}};
+AN["30d"].handle[29]=5.8;AN["30d"].loop[29]=24.6;
+const TYPE_DETAIL={
+ "清关异常":{avg:"5.1 h",loop:"22 h",sop:"92%",act:"口岸代理催办（2h 答复）→ 赔付预审（人工审批）→ 主动同步进度"},
+ "末端延误":{avg:"3.2 h",loop:"14 h",sop:"95%",act:"自动催办末端网点 → 24h 未妥投自动申诉 → 同步送达窗口"},
+ "退换货":{avg:"2.8 h",loop:"12 h",sop:"89%",act:"退货预审 → 换货补发自动下单 → 物流跟踪回传"},
+ "发票账单":{avg:"1.6 h",loop:"6 h",sop:"97%",act:"ERP 自动重开 → 邮件送达 → 回访确认"},
+ "其他":{avg:"2.4 h",loop:"9 h",sop:"84%",act:"知识库兜底应答 → 低置信自动转人工"}};
+const C_BLUE="#5D93D8",C_ORN="#F5A455";
+let range="7d",selType="清关异常",showH=true,showL=true,dataDrawn=false;
+
+function tween(el,from,to,dec){const t0=performance.now();
+ (function f(t){const p=Math.min(1,(t-t0)/450),e=1-Math.pow(1-p,3);
+  el.textContent=(from+(to-from)*e).toFixed(dec);if(p<1)requestAnimationFrame(f)})(t0)}
+function renderKpis(){const box=document.getElementById("kpis");const k=AN[range].kpi;
+ box.innerHTML=k.map(x=>`<div class="kpi"><div class="l">${x[0]}</div><div class="v"><span>0</span><small>${x[2]}</small></div><div class="d ${x[4]?"good":"dn"}">${/-/.test(x[3])?"▼ ":"▲ "}${x[3]}</div></div>`).join("");
+ box.querySelectorAll(".v span").forEach((s,i)=>{const to=parseFloat(k[i][1]);tween(s,0,to,to%1?1:0)});}
+function svgEl(w,h){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("width",w);s.setAttribute("height",h);return s}
+function renderTrend(){const box=document.getElementById("trendBox");const tip=document.getElementById("tip");
+ box.querySelectorAll("svg").forEach(x=>x.remove());
+ const W=box.clientWidth||600,H=box.clientHeight||220,P={l:34,r:52,t:12,b:24};
+ const svg=svgEl(W,H);const a=AN[range];const n=a.days.length;
+ const mx=range==="7d"?32:48,y=v=>P.t+(H-P.t-P.b)*(1-v/mx),x=i=>P.l+(W-P.l-P.r)*(n<2?0:i/(n-1));
+ for(let g=0;g<=4;g++){const gy=y(g*mx/4);
+  svg.innerHTML+=`<line x1="${P.l}" y1="${gy}" x2="${W-P.r}" y2="${gy}" stroke="#22315E" stroke-dasharray="3 4" stroke-width="1"/>`+
+  `<text x="${P.l-7}" y="${gy+3.5}" fill="#5E6D92" font-size="10" text-anchor="end">${g*mx/4}</text>`}
+ const step=n>10?5:1;
+ a.days.forEach((d,i)=>{if(i%step===0||i===n-1)svg.innerHTML+=`<text x="${x(i)}" y="${H-7}" fill="#5E6D92" font-size="10" text-anchor="middle">${d}</text>`});
+ const line=(arr,color,vis)=>{if(!vis)return"";
+  let p=`<polyline fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="`;
+  p+=arr.map((v,i)=>x(i)+","+y(v)).join(" ")+`"/>`;
+  p+=arr.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#101B36" stroke="${color}" stroke-width="2"/>`).join("");
+  p+=`<text x="${x(n-1)+8}" y="${y(arr[n-1])+4}" fill="${color}" font-size="11" font-weight="700">${arr[n-1]}h</text>`;
+  return p};
+ svg.innerHTML+=line(a.handle,C_BLUE,showH)+line(a.loop,C_ORN,showL);
+ const guide=`<line id="gline" x1="0" y1="${P.t}" x2="0" y2="${H-P.b}" stroke="#3A4C7E" stroke-width="1" visibility="hidden"/>`;
+ svg.innerHTML+=guide;box.appendChild(svg);
+ const gl=svg.querySelector("#gline");
+ svg.onmousemove=e=>{const r=svg.getBoundingClientRect();const i=Math.max(0,Math.min(n-1,Math.round((e.clientX-r.left-P.l)/((W-P.l-P.r)/(n-1)))));
+  gl.setAttribute("x1",x(i));gl.setAttribute("x2",x(i));gl.setAttribute("visibility","visible");
+  tip.style.display="block";const bx=box.getBoundingClientRect();
+  tip.style.left=Math.min(x(i)+12,bx.width-150)+"px";tip.style.top=(e.clientY-bx.top-14)+"px";
+  tip.innerHTML=`<b>${a.days[i]}</b><br>`+(showH?`<span style="color:${C_BLUE}">●</span> 客诉处理 ${a.handle[i]}h<br>`:"")+(showL?`<span style="color:${C_ORN}">●</span> 异常闭环 ${a.loop[i]}h`:"")};
+ svg.onmouseleave=()=>{gl.setAttribute("visibility","hidden");tip.style.display="none"}}
+function renderLegend(){const lg=document.getElementById("trendLeg");
+ lg.innerHTML=`<span data-s="h" class="${showH?"":"off"}"><i style="background:${C_BLUE}"></i>客诉处理时长</span>
+ <span data-s="l" class="${showL?"":"off"}"><i style="background:${C_ORN}"></i>异常闭环时长</span>`;
+ lg.querySelectorAll("span").forEach(s=>s.onclick=()=>{if(s.dataset.s==="h")showH=!showH;else showL=!showL;renderLegend();renderTrend()})}
+function renderDonut(){const box=document.getElementById("donutBox");box.innerHTML="";
+ const S=Math.min(box.parentElement.clientHeight-6,150),R=S/2-8,C=2*Math.PI*R,cx=S/2,cy=S/2;
+ const sol=AN[range].solve;let off=0;const svg=svgEl(S,S);
+ sol.forEach((sg,i)=>{const len=C*sg[1]/100;
+  svg.innerHTML+=`<circle data-i="${i}" cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${sg[2]}" stroke-width="17" stroke-dasharray="${len-2} ${C-len+2}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})" style="cursor:pointer;transition:opacity .15s"><title>${sg[0]} ${sg[1]}%</title></circle>`;
+  off+=len});
+ svg.innerHTML+=`<g class="dctr" transform="translate(${cx},${cy})" style="pointer-events:none"><text text-anchor="middle" y="2" fill="#E8EEF9" font-size="24" font-weight="700">${sol[0][1]}%</text><text text-anchor="middle" y="19" fill="#9FAFD2" font-size="10.5">自助解决</text></g>`;
+ box.appendChild(svg);
+ const ctr=svg.querySelector(".dctr");
+ svg.querySelectorAll("circle").forEach(c=>{c.onmouseenter=()=>{const sg=sol[+c.dataset.i];
+  ctr.querySelectorAll("text")[0].textContent=sg[1]+"%";ctr.querySelectorAll("text")[1].textContent=sg[0];
+  c.style.opacity=1;svg.querySelectorAll("circle").forEach(o=>{if(o!==c)o.style.opacity=.45})};
+  c.onmouseleave=()=>{ctr.querySelectorAll("text")[0].textContent=sol[0][1]+"%";ctr.querySelectorAll("text")[1].textContent="自助解决";
+  svg.querySelectorAll("circle").forEach(o=>o.style.opacity=1)}});
+ const lg=document.getElementById("donutLg");
+ lg.innerHTML=sol.map(sg=>`<div><i style="background:${sg[2]}"></i><span>${sg[0]}</span><b>${sg[1]}%</b></div>`).join("")}
+function renderBars(){const box=document.getElementById("bars");const t=AN[range].types;const mx=Math.max(...t.map(x=>x[1]));
+ box.innerHTML=t.map(x=>`<div class="bwrap ${x[0]===selType?"sel":""}" data-t="${x[0]}"><div class="bv">${x[1]}</div><div class="bar" style="height:${Math.max(8,x[1]/mx*100)}%"></div><div class="bn">${x[0]}</div></div>`).join("");
+ box.querySelectorAll(".bwrap").forEach(b=>b.onclick=()=>{selType=b.dataset.t;renderBars();renderDetail()})}
+function renderDetail(){const d=TYPE_DETAIL[selType];const t=AN[range].types.find(x=>x[0]===selType);
+ const tot=AN[range].types.reduce((s,x)=>s+x[1],0);
+ document.getElementById("dpanel").innerHTML=`<div class="dt">${selType} <span style="font-size:11.5px;color:var(--mut);font-weight:400">· 占比 ${Math.round(t[1]/tot*100)}%</span></div>
+ <div class="row"><span>平均处理时长</span><b>${d.avg}</b></div>
+ <div class="row"><span>平均闭环时长</span><b>${d.loop}</b></div>
+ <div class="row"><span>SOP 命中率</span><b>${d.sop}</b></div>
+ <div class="row"><span>本期工单量</span><b>${t[1]} 单</b></div>
+ <div style="font-size:11.5px;color:var(--mut)">AI 标准处置链路</div><div class="act">${d.act}</div>`}
+function renderData(){renderKpis();renderLegend();renderTrend();renderDonut();renderBars();renderDetail();dataDrawn=true}
+
+/* ───────── 视图/菜单 ───────── */
+document.querySelectorAll("#side div").forEach(d=>d.onclick=()=>{
+ if(d.dataset.v==="none"){toast("Demo 演示 · 该模块未开放");return}
+ document.querySelectorAll("#side div").forEach(x=>x.classList.remove("on"));d.classList.add("on");
+ const v=d.dataset.v;document.getElementById("viewChat").style.display=v==="chat"?"flex":"none";
+ document.getElementById("viewData").style.display=v==="data"?"flex":"none";
+ if(v==="data"&&!dataDrawn)renderData();else if(v==="data")renderData()});
+document.querySelectorAll(".rng span").forEach(s=>s.onclick=()=>{
+ document.querySelectorAll(".rng span").forEach(x=>x.classList.remove("on"));s.classList.add("on");range=s.dataset.r;renderData()});
+window.addEventListener("resize",()=>{if(document.getElementById("viewData").style.display!=="none"&&dataDrawn){renderTrend();renderDonut()}});
+
+/* ───────── 会话 ───────── */
 let cur="c1",lang="zh";
 function loadC(id){cur=id;const d=DATA[id];
  document.getElementById("cname").textContent=d.n;
  document.getElementById("ctxCard").innerHTML=d.ctx;
- renderMsgs();setDraft();
- document.querySelectorAll(".cv").forEach(e=>e.classList.toggle("on",e.dataset.id===id));}
+ renderMsgs();setDraft()}
 function renderMsgs(){const d=DATA[cur];const box=document.getElementById("msgs");box.innerHTML="";
  d.msgs.forEach(m=>{const div=document.createElement("div");div.className="m "+m[0];
- div.innerHTML=`<div class="who">${m[1]}</div><div class="b">${m[2]}</div>`;box.appendChild(div);});box.scrollTop=box.scrollHeight;}
-function setDraft(){document.getElementById("draftBody").textContent=DATA[cur].drafts[lang];}
+ div.innerHTML=`<div class="who">${m[1]}</div><div class="b">${m[2]}</div>`;box.appendChild(div)});box.scrollTop=box.scrollHeight}
+function setDraft(){document.getElementById("draftBody").textContent=DATA[cur].drafts[lang]}
 function send(){const d=DATA[cur];d.msgs.push(["ai","已发送 · "+({zh:"中文",en:"EN",ru:"РУС"})[lang],d.drafts[lang]]);renderMsgs();
- setTimeout(()=>{d.msgs.push(["cu","客户","OK, thank you! 👍"]);if(cur==="c1")renderMsgs();},900);}
-function transfer(){const t=document.getElementById("toast");t.style.display="block";setTimeout(()=>t.style.display="none",2200);}
-document.querySelectorAll(".langs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".langs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");lang=e.dataset.l;setDraft();});
+ setTimeout(()=>{d.msgs.push(["cu","客户","OK, thank you! 👍"]);if(cur==="c1")renderMsgs()},900)}
+function transfer(){toast("已转人工 · 专员 张敏 接手")}
+document.querySelectorAll(".langs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".langs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");lang=e.dataset.l;setDraft()});
+
+/* ───────── 快速建单 ───────── */
+let nextWo=2045,genTimer=null;
+const TYPE_OPTS=["清关异常","末端延误","退换货","发票账单","其他"],PRI_OPTS=["高","中","低"];
+function openTicket(){document.getElementById("ovl").classList.add("show");genTicket()}
+function closeTicket(){document.getElementById("ovl").classList.remove("show");clearTimeout(genTimer)}
+function genTicket(){const w=WO[cur];const bar=document.getElementById("aibar"),tx=document.getElementById("aibarTx"),sh=document.getElementById("shim"),form=document.getElementById("mform");
+ bar.classList.remove("done");sh.style.display="block";tx.textContent="AI 正在分析会话上下文（客户 / 单号 / 情绪 / 历史）…";
+ form.classList.remove("in");
+ genTimer=setTimeout(()=>{sh.style.display="none";bar.classList.add("done");tx.textContent="✓ 已从当前会话提取关键信息，生成工单草稿（可编辑）";
+  document.getElementById("fCu").value=w.cu;document.getElementById("fRef").value=w.ref;
+  renderChips("fType",TYPE_OPTS,w.type,"");renderChips("fPri",PRI_OPTS,w.pri,w.pri==="高"?"hi":w.pri==="中"?"md":"");
+  document.getElementById("fTitle").value=w.title;document.getElementById("fDesc").value=w.desc;
+  document.getElementById("fAct").textContent=w.act;
+  form.classList.add("in")},900)}
+function renderChips(id,opts,sel,cls){const box=document.getElementById(id);box.innerHTML="";
+ opts.forEach(o=>{const s=document.createElement("span");s.textContent=o;
+  if(o===sel){s.className="on "+cls}s.onclick=()=>{box.querySelectorAll("span").forEach(x=>x.className="");
+   s.className="on "+(id==="fPri"?(o==="高"?"hi":o==="中"?"md":""):"");};
+  box.appendChild(s)})}
+function createTicket(){const pri=document.querySelector("#fPri .on");const ty=document.querySelector("#fType .on");
+ const wo="WO-"+(nextWo++);closeTicket();
+ const bdg=document.getElementById("woBdg");bdg.textContent=+bdg.textContent+1;
+ DATA[cur].msgs.push(["sys","系统动作","AI 快速建单 "+wo+"（"+(ty?ty.textContent:"")+" · 优先级 "+(pri?pri.textContent:"中")+"）→ 已自动分派处理人 · 已同步客户"]);
+ renderMsgs();toast("✓ 工单 "+wo+" 已创建 · 已自动分派并同步客户")}
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
+ clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
 loadC("c1");
 </script></body></html>
