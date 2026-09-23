@@ -95,7 +95,7 @@ const LOTS={
   dets:[],type:[["外观划痕",8],["尺寸超差",5],["其他",3]],
   trend:[90,110,80,95,70,85,60],
   attr:[["工艺稳定",70,"#34D399"],["来料合格",20,"#34D399"],["其他",10,"#34D399"]],
-  d8:{p:100,t:"无需开单",steps:[],sug:"全项合格 · 自动放行（AI 判定 + 抽检复核）"}};
+  d8:{p:100,t:"无需开单",steps:[],sug:"全项合格 · 自动放行（AI 判定 + 抽检复核）"}}};
 let curLot="B2209",filter="all";
 function rsel(id){curLot=id;const L=LOTS[id];
  document.querySelectorAll(".lot").forEach(e=>e.classList.toggle("on",e.dataset.id===id));
