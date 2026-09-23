@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 智能客服工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
+body{background:#0D1526;color:#E8EEF9;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;background:#101B36;padding:12px 22px;border-bottom:1px solid #22315E}
+.logo{width:14px;height:14px;background:#00ACBE;border-radius:4px}
+.top b{font-size:16px}
+.env{font-size:12px;color:#9FAFD2;border:1px solid #2A3A66;border-radius:12px;padding:3px 12px;margin-left:8px}
+.langs{margin-left:auto;display:flex;gap:8px;font-size:12px}
+.langs span{padding:3px 10px;border-radius:10px;border:1px solid #2A3A66;color:#9FAFD2}
+.langs span.on{background:#00ACBE;color:#04182E;font-weight:700;border-color:#00ACBE}
+.online{font-size:12px;color:#4AD98A}
+.wrap{display:flex;flex:1;min-height:0}
+.side{width:170px;background:#101B36;border-right:1px solid #22315E;padding:14px 10px}
+.side div{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:13.5px;color:#9FAFD2;margin-bottom:4px}
+.side div i{width:14px;height:14px;border:1.6px solid #9FAFD2;border-radius:4px}
+.side div.on{background:#16264C;color:#fff}.side div.on i{border-color:#00ACBE}
+.side div .bdg{margin-left:auto;background:#FF7B7B;color:#fff;font-size:10.5px;border-radius:8px;padding:1px 7px}
+.main{flex:1;display:flex;min-width:0}
+ conv{width:250px}
+.conv{width:250px;border-right:1px solid #22315E;overflow:auto;padding:12px}
+.cv{background:#16264C;border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.cv.on{border:1px solid #00ACBE}
+.cv .n{font-size:13.5px;font-weight:700}.cv .n i{font-style:normal;font-size:10.5px;color:#0D1526;background:#FFC539;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700}
+.cv .m{font-size:12px;color:#9FAFD2;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv .t{font-size:11px;color:#5E6D92;margin-top:4px}
+.chat{flex:1;display:flex;flex-direction:column;border-right:1px solid #22315E}
+.chead{padding:13px 18px;border-bottom:1px solid #22315E;display:flex;align-items:center;gap:10px}
+.chead b{font-size:14.5px}.chead .st{font-size:12px;color:#4AD98A}
+.chead .act{margin-left:auto;display:flex;gap:8px}
+.chead .act span{font-size:12px;border:1px solid #2A3A66;border-radius:8px;padding:4px 10px;color:#9FAFD2}
+.chead .act span.hot{border-color:#FF7B7B;color:#FF7B7B}
+.msgs{flex:1;padding:18px;overflow:auto}
+.m{max-width:72%;margin-bottom:14px;font-size:13.5px;line-height:1.55}
+.m .who{font-size:11px;color:#5E6D92;margin-bottom:4px}
+.m .b{border-radius:12px;padding:11px 14px}
+.m.cu{margin-left:auto}.m.cu .b{background:#1E3A6E}
+.m.ai .b{background:#16264C;border:1px solid #2A3A66}
+.m.ai .sop{margin-top:8px;font-size:11.5px;color:#4AD98A}
+.composer{border-top:1px solid #22315E;padding:12px 16px}
+.ai-draft{background:#101B36;border:1px dashed #00ACBE;border-radius:10px;padding:10px 14px;font-size:13px;color:#C9D4E8;margin-bottom:10px}
+.ai-draft b{color:#00ACBE;font-size:12px}
+.btns{display:flex;gap:8px}
+.btns span{font-size:12.5px;border-radius:8px;padding:6px 14px}
+.send{background:#00ACBE;color:#04182E;font-weight:700}
+.ghost{border:1px solid #2A3A66;color:#9FAFD2}
+.ctx{width:250px;border-left:1px solid #22315E;padding:14px;overflow:auto}
+.ctx h4{font-size:12px;color:#9FAFD2;margin:12px 0 8px;font-weight:500}
+.card{background:#16264C;border-radius:10px;padding:11px 13px;font-size:12.5px;margin-bottom:8px;line-height:1.6}
+.card b{color:#fff}
+.card .k{color:#9FAFD2}
+.strips{display:flex;gap:8px;margin-top:10px}
+.strip{flex:1;background:#16264C;border-radius:9px;padding:8px;text-align:center}
+.strip b{display:block;font-size:16px;color:#00ACBE}.strip span{font-size:10.5px;color:#9FAFD2}
+</style></head><body>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 智能客服工作台</b><span class="env">跨境物流 · 私有化部署</span>
+<div class="langs"><span class="on">中文</span><span>EN</span><span>РУС</span><span>ES</span></div><span class="online">● 在线 · 7×24</span></div>
+<div class="wrap">
+<div class="side">
+<div class="on"><i></i>会话工作台</div>
+<div><i></i>工单中心<span class="bdg">3</span></div>
+<div><i></i>知识库</div>
+<div><i></i>多语言话术</div>
+<div><i></i>数据分析</div>
+<div><i></i>设置</div></div>
+<div class="conv">
+<div class="cv on"><div class="n">Anastasia · 莫斯科<i>RU</i></div><div class="m">Заказ WB-2041 задерживается…</div><div class="t">中转场 · 清关异常 · 高风险</div></div>
+<div class="cv"><div class="n">张先生 · 马德里<i>ES</i></div><div class="m">¿Cuándo llegará mi pedido?</div><div class="t">末端派送 · 催办中</div></div>
+<div class="cv"><div class="n">李女士 · 汉堡<i>EN</i></div><div class="m">Need invoice for order #8821</div><div class="t">已闭环 · 8 分钟</div></div></div>
+<div class="chat">
+<div class="chead"><b>Anastasia · WB-2041</b><span class="st">● AI 协同中</span>
+<div class="act"><span>识别运单 ✓</span><span>关联订单 ✓</span><span class="hot">转人工</span></div></div>
+<div class="msgs">
+<div class="m cu"><div class="who">客户 · RU</div><div class="b">Заказ WB-2041 задерживается на таможне. Когда прибудет? Это уже второй раз!</div></div>
+<div class="m ai"><div class="who">智能客服 · AI 草稿（依据售后 SOP）</div><div class="b">Анна, приносим извинения. Посылка WB-2041 проходит таможенное оформление, ожидаемая задержка — 2 дня. Мы уже создали заявку WO-2041 и уведомим вас автоматически.</div>
+<div class="sop">✓ SOP 命中 96% · 识别运单 ✓ · 关联历史工单 2 条 · 情绪安抚策略已应用</div></div>
+<div class="m ai"><div class="who">系统动作</div><div class="b">异常建单 WO-2041 → 已分派口岸代理 · 高风险赔付承诺需 <b style="color:#FFC539">人工审批</b> 后发出</div></div></div>
+<div class="composer">
+<div class="ai-draft"><b>AI 建议回复</b> · RU · 可直接发送或编辑：Анна, статус вашего заказа обновлён…</div>
+<div class="btns"><span class="send">发送</span><span class="ghost">转人工</span><span class="ghost">建单催办</span><span class="ghost">补偿申请</span></div></div></div>
+<div class="ctx">
+<div class="strips"><div class="strip"><b>30s</b><span>首次响应</span></div><div class="strip"><b>92%</b><span>一次解决率</span></div></div>
+<h4>客户上下文 · 自动聚合</h4>
+<div class="card"><span class="k">运单</span> WB-2041 · 莫斯科<br><span class="k">状态</span> 清关异常（2 天）<br><span class="k">历史工单</span> 2 条 · 均已闭环</div>
+<div class="card"><span class="k">偏好</span> 俄语 · 夜间活跃<br><span class="k">会员</span> 金牌 · 投保理赔</div>
+<h4>今日工作台</h4>
+<div class="card">会话 128 · AI 独立解决 81%<br>转人工 24 · 均已响应</div></div>
+</div></body></html>

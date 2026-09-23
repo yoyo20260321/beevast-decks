@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>群蜂云枢 · 质量分析看板</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
+body{background:#0D1526;color:#E8EEF9;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;background:#101B36;padding:12px 22px;border-bottom:1px solid #22315E}
+.logo{width:14px;height:14px;background:#00ACBE;border-radius:4px}
+.top b{font-size:16px}.env{font-size:12px;color:#9FAFD2;border:1px solid #2A3A66;border-radius:12px;padding:3px 12px;margin-left:8px}
+.top . approvals{margin-left:auto;font-size:12px;color:#FFC539}
+.kpis{display:flex;gap:14px;padding:16px 22px}
+.kpi{flex:1;background:#16264C;border:1px solid #2A3A66;border-radius:12px;padding:14px 18px}
+.kpi b{font-size:26px;color:#00ACBE}.kpi i{font-style:normal;font-size:13px;color:#4AD98A;margin-left:8px}
+.kpi span{display:block;font-size:12.5px;color:#9FAFD2;margin-top:4px}
+.wrap{display:flex;flex:1;gap:16px;padding:0 22px 18px;min-height:0}
+.panel{background:#101B36;border:1px solid #22315E;border-radius:14px;padding:16px 18px}
+.panel h3{font-size:14px;color:#C9D4E8;margin-bottom:12px;font-weight:600}
+.left{width:300px}.mid{flex:1}.right{width:330px}
+.lot{background:#16264C;border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.lot.on{border:1px solid #00ACBE}
+.lot .id{font-weight:700;font-size:13.5px}.lot .id i{font-style:normal;font-size:11px;border-radius:8px;padding:2px 8px;margin-left:8px}
+.hi{background:#3A1420;color:#FF7B7B}.warn{background:#3A3212;color:#FFC539}.ok{background:#123A2E;color:#4AD98A}
+.lot .m{font-size:12px;color:#9FAFD2;margin-top:5px}
+.img{width:100%;height:130px;background:linear-gradient(135deg,#22315E,#41527F);border-radius:10px;position:relative;margin-bottom:10px}
+.det{position:absolute;border:2px solid #FF7B7B;border-radius:6px}
+.det span{position:absolute;top:-20px;left:0;background:#FF7B7B;color:#fff;font-size:11px;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.bars .r{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12.5px}
+.bars .r b{width:64px;color:#C9D4E8;font-weight:500}
+.bars .tr{flex:1;height:9px;background:#1A2A52;border-radius:5px}
+.bars .tr i{display:block;height:100%;border-radius:5px}
+.bars .p{width:40px;text-align:right;color:#9FAFD2}
+.step{display:flex;gap:10px;align-items:center;margin-bottom:9px;font-size:12.5px}
+.step i{width:11px;height:11px;border-radius:50%}
+.step .dn{color:#9FAFD2}
+.d8{background:#16264C;border-radius:10px;padding:12px 14px}
+.d8 .t{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px}
+.d8 .bar{height:9px;background:#1A2A52;border-radius:5px;margin:6px 0 10px}
+.d8 .bar i{display:block;height:100%;background:#00ACBE;border-radius:5px}
+.d8 .sug{font-size:12.5px;color:#B9C6E2;line-height:1.7}
+.appr{margin-top:10px;font-size:12px;background:#3A3212;color:#FFC539;border-radius:8px;padding:6px 10px;text-align:center}
+</style></head><body>
+<div class="top"><div class="logo"></div><b>群蜂云枢 · 质量分析看板</b><span class="env">连接器制造 · 私有化部署</span>
+<div class="approvals">⚑ 待人工审批：1 项放行</div></div>
+<div class="kpis">
+<div class="kpi"><b>98%</b><i>▲2pt</i><span>判定一致率</span></div>
+<div class="kpi"><b>8min</b><i>▼52min</i><span>报告出稿时长</span></div>
+<div class="kpi"><b>-45%</b><span>漏检率</span></div>
+<div class="kpi"><b>12</b><span>本周质检批次</span></div></div>
+<div class="wrap">
+<div class="panel left"><h3>批次列表</h3>
+<div class="lot on"><div class="id">LOT-B2209<i class="hi">NCR 已开</i></div><div class="m">外观划痕 · 供应商 A · 3,200 件</div></div>
+<div class="lot"><div class="id">LOT-B2204<i class="warn">复检中</i></div><div class="m">镀层偏薄 · 供应商 B · 1,800 件</div></div>
+<div class="lot"><div class="id">LOT-B2197<i class="ok">自动放行</i></div><div class="m">全项合格 · 供应商 C · 5,000 件</div></div>
+<div class="lot"><div class="id">LOT-B2193<i class="ok">自动放行</i></div><div class="m">全项合格 · 供应商 A · 2,600 件</div></div></div>
+<div class="panel mid"><h3>缺陷图像判定 · LOT-B2209</h3>
+<div class="img"><div class="det" style="left:18%;top:30%;width:120px;height:70px"><span>外观划痕 · 置信度 0.92</span></div>
+<div class="det" style="left:58%;top:55%;width:90px;height:56px;border-color:#FFC539"><span style="background:#FFC539;color:#3A3212">镶件偏移 · 0.74</span></div></div>
+<h3 style="margin-top:16px">缺陷类型分布 · 近 30 天</h3>
+<div class="bars">
+<div class="r"><b>外观划痕</b><div class="tr"><i style="width:62%;background:#FF7B7B"></i></div><span class="p">62%</span></div>
+<div class="r"><b>镀层偏薄</b><div class="tr"><i style="width:25%;background:#FFC539"></i></div><span class="p">25%</span></div>
+<div class="r"><b>尺寸超差</b><div class="tr"><i style="width:13%;background:#00ACBE"></i></div><span class="p">13%</span></div></div>
+<h3 style="margin-top:16px">根因归因 · LOT-B2209</h3>
+<div class="bars">
+<div class="r"><b>供应商 A</b><div class="tr"><i style="width:62%;background:#FF7B7B"></i></div><span class="p">62%</span></div>
+<div class="r"><b>工艺参数</b><div class="tr"><i style="width:25%;background:#FFC539"></i></div><span class="p">25%</span></div>
+<div class="r"><b>来料运输</b><div class="tr"><i style="width:13%;background:#00ACBE"></i></div><span class="p">13%</span></div></div></div>
+<div class="panel right"><h3>8D 报告 · 自动生成</h3>
+<div class="d8"><div class="t"><span>D1-D3 已完成</span><span style="color:#4AD98A">78%</span></div>
+<div class="bar"><i style="width:78%"></i></div>
+<div class="step"><i style="background:#4AD98A"></i>D2 问题描述 · 自动生成<span class="dn">✓</span></div>
+<div class="step"><i style="background:#4AD98A"></i>D3 临时措施 · 全数复检<span class="dn">✓</span></div>
+<div class="step"><i style="background:#FFC539"></i>D4 根因分析 · 生成中</div>
+<div class="sug">整改建议 3 条：<br>1. 供应商 A 来料加严检验<br>2. 包装方式改为吸塑托盘<br>3. 运输振动测试复核</div>
+<div class="appr">高风险放行 / 停线决策 → 人工审批</div></div>
+<h3 style="margin-top:16px">交付物</h3>
+<div class="lot"><div class="m">📄 8D 报告初稿 · 已生成（2 页）</div></div>
+<div class="lot"><div class="m">📋 整改任务单 · 已分派质量部</div></div>
+<div class="lot"><div class="m">📬 客户回复函 · 中英双语待发</div></div></div>
+</div></body></html>
