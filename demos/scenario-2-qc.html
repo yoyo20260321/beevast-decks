@@ -127,6 +127,30 @@ table.itt{width:100%;border-collapse:collapse;font-size:11.5px}
 .sdt .k{color:var(--mut)}
 .sdt .ng{color:var(--bad);font-weight:700}
 .sdt .act{margin-top:5px;padding:6px 9px;background:var(--pan);border-left:3px solid var(--ac);border-radius:6px;color:var(--tx);font-size:11.5px;line-height:1.65}
+/* 绩效评定（样本7口径） */
+.scalestrip{font-size:11px;color:var(--mut);background:var(--pan2);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;display:inline-block;margin-bottom:9px}
+.scrow{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:7px;cursor:pointer}
+.scrow b{width:58px;font-weight:600;flex:none}
+.scrow.sel b{color:var(--ac)}
+.scbar{flex:1;height:16px;background:var(--pan2);border-radius:5px;display:flex;overflow:hidden;border:1px solid var(--bd)}
+.scbar i{display:block;height:100%}
+.scbar .lost{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 3px,#E2E8F0 3px,#E2E8F0 6px)}
+.scrow .st{width:24px;text-align:right;font-weight:700;color:var(--ac);flex:none}
+.sg{font-size:10.5px;border-radius:6px;padding:1px 7px;font-weight:700;flex:none}
+.sg.a{background:var(--okbg);color:var(--ok)}
+.sg.b{background:var(--warnbg);color:var(--warn)}
+.sg.c{background:#FDF2F8;color:#BE185D}
+.sg.d{background:var(--badbg);color:var(--bad)}
+.ldb td .dm{color:#94A3B8;font-size:9.5px}
+.ldb td.vd{color:var(--bad);font-weight:600}
+.ldb tr.seltr td{background:#EEF2FF}
+.autostrip{margin-top:10px;border:1px solid #C7D2FE;background:#EEF2FF;border-radius:10px;padding:9px 12px;font-size:11.5px;line-height:1.7;color:var(--tx)}
+.autostrip b{color:var(--ac)}
+.srcchips{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.srcchips span{font-size:10.5px;background:#fff;border:1px solid #C7D2FE;color:var(--ac);border-radius:7px;padding:2px 8px}
+.legend{display:flex;gap:12px;font-size:10.5px;color:var(--mut);margin-bottom:4px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;flex:none}
+.legend .lostlg{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 2px,#CBD5E1 2px,#CBD5E1 4px)}
 /* 台账 */
 .led{border:1px solid var(--bd);border-radius:10px;overflow:auto}
 table.ldb{width:100%;border-collapse:collapse;font-size:11px}
@@ -200,14 +224,17 @@ svg text{font-family:inherit}
 <div class="btnrow" style="margin-top:10px"><span class="btn pri" onclick="toast('月度统计三件套已生成 · XLSX ×1（10 分钟口径，模拟）')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>一键生成月度统计三件套</span><span class="dfoot" style="margin-top:6px">台账覆盖率目标 100%：拆解 / 判定结果随批自动回写</span></div>
 </div>
 <div id="tab-sup" style="display:none">
-<h3 style="margin-bottom:2px">供应商月度质量统计 · 一页版<em>基于台账按月生成</em></h3>
-<div class="supleg"><span><i style="background:#4F46E5"></i>来料合格率</span><span><i style="background:#D97706"></i>交付及时率</span><span><i style="background:#CBD5E1"></i>目标 95%</span></div>
-<div id="gbar"></div>
-<div class="sec" style="margin-top:10px">供应商绩效评分卡（QDDS 权重）<em>质量 50% · 交付 30% · 响应 20%</em></div>
-<div class="qw">综合分 = <b>合格率×50%</b> + <b>及时率×30%</b> + <b>响应×20%</b>（权重可配置）</div>
-<div id="perfBars"></div>
-<div class="sec" style="margin-top:8px">来料合格率趋势 · 近 6 个月<em id="trSup"></em><span class="aleg" id="aleg" style="margin-left:auto"></span></div>
-<svg id="trend" width="100%" height="108"></svg>
+<h3 style="margin-bottom:4px">供应商绩效评定 · 2026-09<em>口径同贵司《供应商绩效评定表》· 100 分制扣分制</em></h3>
+<div class="scalestrip">实际规模：190 家供应商 · 1,779 批次/月（贵司 2026-07 样本）· 本页示意 3 家</div>
+<div class="sec">评分构成<em>色块 = 已得分 · 斜纹 = 被扣分（点击供应商看扣分明细）</em></div>
+<div id="scbars"></div>
+<div class="legend" style="margin:4px 0 2px;flex-wrap:wrap" id="scLegend"></div>
+<div class="sec" style="margin-top:10px">评定明细<em id="gradeLg"></em></div>
+<div class="led" style="max-height:170px;overflow:auto"><table class="ldb"><thead><tr><th>供应商</th><th>合格分 30</th><th>及时率 30</th><th>整改 20</th><th>服务 10</th><th>文件 5</th><th>成本 5</th><th>总分</th><th>等级</th></tr></thead><tbody id="scTable"></tbody></table></div>
+<div class="sec" style="margin-top:10px">来料合格率趋势 · 近 6 个月（台账按月聚合）</div>
+<svg id="trend" width="100%" height="100"></svg>
+<div class="autostrip"><b>45 分空缺 · 智能体自动归集</b>：贵司现行表中「交货及时率 30 + 服务 10 + 成本优势 5」全月空置（2026-07 样本：190 家未填），评定实际 55 分封顶。智能体自动归集：
+<div class="srcchips"><span>及时率 ← 交付/物流数据（联动交付预警中心）</span><span>服务 ← 会话响应记录</span><span>成本 ← 采购比价</span></div></div>
 <div class="sdt" id="supDetail"></div>
 </div></div>
 
@@ -236,9 +263,12 @@ const MODELS={
   rules:[["全项","各检验项均落在公差带内","规则引擎全量比对通过 → 合格，自动放行"]]}};
 const OCR_LOW={"30210630142":[1],"40110810237":[0]};
 const SUPS={
- "供应商 A":{full:"供应商 A · 苏州华辰",pass:91.2,ontime:96.4,resp:82,top:"镀层偏薄 · 外观划痕",disp:"退货 + 挑选使用（加严检验），启动 8D 跟踪",trend:[93.5,92.8,92.1,91.6,90.9,91.8,91.4,91.2]},
- "供应商 B":{full:"供应商 B · 宁并茂联",pass:96.8,ontime:92.1,resp:90,top:"尺寸临界 · 插拔力上偏",disp:"让步接收（临界项确认后），交期专项改善",trend:[95.9,96.4,96.1,97.0,96.6,97.2,96.9,96.8]},
- "供应商 C":{full:"供应商 C · 东莞宏联",pass:99.1,ontime:98.5,resp:96,top:"无显著缺陷",disp:"维持现行频次，列入季度免检候选",trend:[98.6,98.9,99.0,98.7,99.2,99.0,99.1,99.1]}};
+ "供应商 A":{full:"供应商 A · 苏州华辰",s:[15,24,10,8,5,5],note:"扣分：来料合格分 -15（不良 2 批 + 客诉 1）· 及时率 -6（92%）· 问题整改 -10（8D 逾期）",disp:"退货 + 挑选使用（加严检验），启动 8D 跟踪",trend:[93.5,92.8,92.1,91.6,90.9,91.8]},
+ "供应商 B":{full:"供应商 B · 宁并茂联",s:[27,24,20,10,5,3],note:"扣分：来料合格分 -3（临界让步）· 及时率 -6（92%）· 成本优势 -2（比价劣势）",disp:"让步接收（临界项确认后），交期专项改善",trend:[95.9,96.4,96.1,97.0,96.6,97.2]},
+ "供应商 C":{full:"供应商 C · 东莞宏联",s:[30,30,20,10,5,4],note:"扣分：成本优势 -1（无突出比价优势）",disp:"维持现行频次，列入季度免检候选",trend:[98.6,98.9,99.0,98.7,99.2,99.0]}};
+const DIMS=[["来料合格分",30],["交货及时率",30],["问题整改",20],["服务",10],["提交文件",5],["成本优势",5]];
+const DIMC=["#312E81","#4F46E5","#818CF8","#A5B4FC","#C7D2FE","#E0E7FF"];
+function grade(t){return t>=90?["绿 A","a"]:t>=70?["黄 B","b"]:t>=50?["粉 C","c"]:["红 D","d"]}
 const STAGES=[
  ["批量接入与格式归一","M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2","PDF ×1 · Excel ×1（.xls 已无损转 .xlsx）· 图片 OCR ×1 · 逐文件状态回执"],
  ["按 11 位料号拆解 · 保真三查","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5","拆出 3 个料号 107 项数据；三查：可打开无弹窗 ✓ / 徽章勾选框合并单元格在位 ✓ / 行格式与模板一致 ✓"],
@@ -329,35 +359,27 @@ function renderLedger(){const tb=document.getElementById("ledBody");
 
 /* ─── 供应商统计 ─── */
 let selSup="供应商 A";
-function qdds(s){return Math.round(s.pass*0.5+s.ontime*0.3+s.resp*0.2)}
-function renderSup(){const g=document.getElementById("gbar");
- const names=Object.keys(SUPS),W=g.clientWidth||560,H=180,P={l:30,b:22,t:14};
- const mx=100,y=v=>P.t+(H-P.t-P.b)*(1-v/mx),gw=(W-P.l)/names.length;
- let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-6}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4" stroke-width="1.2"/><text x="${W-8}" y="${y(95)-4}" font-size="10" fill="#94A3B8" text-anchor="end">目标 95</text>`;
- [0,25,50,75,100].forEach(t=>{s+=`<line x1="${P.l}" y1="${y(t)}" x2="${W-6}" y2="${y(t)}" stroke="#EEF2F7" stroke-width="1"/><text x="${P.l-6}" y="${y(t)+3.5}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
- names.forEach((n,i)=>{const d=SUPS[n],cx=P.l+gw*i+gw/2,bw=30;
-  s+=`<g style="cursor:pointer" onclick="pickSup('${n}')"><rect x="${P.l+gw*i}" y="0" width="${gw}" height="${H}" fill="transparent"/><rect x="${cx-bw-3}" y="${y(d.pass)}" width="${bw}" height="${H-P.b-y(d.pass)}" rx="4" fill="${selSup===n?"#4F46E5":"#A5B4FC"}"><title>${n} 合格率 ${d.pass}%</title></rect>
-  <rect x="${cx+3}" y="${y(d.ontime)}" width="${bw}" height="${H-P.b-y(d.ontime)}" rx="4" fill="${selSup===n?"#D97706":"#FCD34D"}"><title>${n} 及时率 ${d.ontime}%</title></rect>
-  <text x="${cx-bw/2-3}" y="${y(d.pass)-5}" font-size="10.5" font-weight="700" fill="#4F46E5" text-anchor="middle">${d.pass}</text>
-  <text x="${cx+bw/2+3}" y="${y(d.ontime)-5}" font-size="10.5" font-weight="700" fill="#D97706" text-anchor="middle">${d.ontime}</text>
-  <text x="${cx}" y="${H-7}" font-size="11" fill="${selSup===n?"#0F172A":"#5B6B84"}" text-anchor="middle" font-weight="${selSup===n?"700":"400"}">${n}</text></g>`});
- g.innerHTML=`<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
- const pb=document.getElementById("perfBars");const rank=Object.entries(SUPS).sort((a,b)=>qdds(b[1])-qdds(a[1]));
- const shade=["#312E81","#4F46E5","#818CF8"];
- pb.innerHTML=rank.map((r,i)=>`<div class="sbar"><b>${r[0]}</b><div class="tr"><i style="width:${qdds(r[1])}%;background:${shade[i]}"></i></div><span class="p">${qdds(r[1])}</span></div>`).join("");
- const lg=document.getElementById("aleg");
- lg.innerHTML=names.map(n=>`<span class="${n===selSup?"on":""}" onclick="pickSup('${n}')"><i style="width:8px;height:8px;border-radius:3px;background:${n===selSup?"#4F46E5":"#CBD5E1"};display:inline-block"></i>${n}</span>`).join("");
+function renderSup(){const names=Object.keys(SUPS);
+ const sb=document.getElementById("scbars");
+ sb.innerHTML=names.map(n=>{const d=SUPS[n];const t=d.s.reduce((a,b)=>a+b,0);const g=grade(t);
+  const segs=d.s.map((v,i)=>`<i style="width:${v}%;background:${DIMC[i]}" title="${DIMS[i][0]} ${v}/${DIMS[i][1]}"></i>`).join("");
+  return `<div class="scrow ${selSup===n?"sel":""}" onclick="pickSup('${n}')"><b>${n}</b><div class="scbar">${segs}<i class="lost" style="width:${100-t}%"></i></div><span class="st">${t}</span><span class="sg ${g[1]}">${g[0]}</span></div>`}).join("");
+ document.getElementById("scLegend").innerHTML=DIMS.map((d,i)=>`<span><i style="background:${DIMC[i]}"></i>${d[0]} ${d[1]}</span>`).join("")+`<span><i class="lostlg"></i>被扣分</span>`;
+ document.getElementById("gradeLg").textContent="绿 A ≥90 · 黄 B 70-89 · 粉 C 50-69 · 红 D <50（档位示意，正式档位以贵司制度为准）";
+ document.getElementById("scTable").innerHTML=names.map(n=>{const d=SUPS[n];const t=d.s.reduce((a,b)=>a+b,0);const g=grade(t);
+  return `<tr class="${selSup===n?"seltr":""}" onclick="pickSup('${n}')"><td><b>${n}</b></td>${d.s.map(v=>`<td class="${v===0?"vd":""}">${v}</td>`).join("")}<td><b>${t}</b></td><td><span class="sg ${g[1]}">${g[0]}</span></td></tr>`}).join("");
  renderTrend();renderSupDetail()}
 function renderTrend(){const svg=document.getElementById("trend");const d=SUPS[selSup];
- const W=svg.clientWidth||560,H=108,P={l:26,b:16,t:8},lo=88,hi=100;
+ const W=svg.clientWidth||560,H=100,P={l:26,b:14,t:8},lo=88,hi=100;
  const x=i=>P.l+i*(W-P.l-8)/(d.trend.length-1),y=v=>P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));
  let s=`<line x1="${P.l}" y1="${y(95)}" x2="${W-8}" y2="${y(95)}" stroke="#CBD5E1" stroke-dasharray="4 4"/><text x="${W-10}" y="${y(95)-4}" font-size="9.5" fill="#94A3B8" text-anchor="end">目标 95%</text>`;
  [88,92,96,100].forEach(t=>{s+=`<text x="${P.l-5}" y="${y(t)+3}" font-size="9.5" fill="#94A3B8" text-anchor="end">${t}</text>`});
  s+=`<polyline points="${d.trend.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="#4F46E5" stroke-width="2.4" stroke-linecap="round"/>`;
  s+=d.trend.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.8" fill="#fff" stroke="#4F46E5" stroke-width="2"/>`).join("");
- svg.innerHTML=s;document.getElementById("trSup").textContent="· "+d.full}
-function renderSupDetail(){const d=SUPS[selSup];const below=d.pass<95;
- document.getElementById("supDetail").innerHTML=`<b>${d.full}</b>　<span class="k">综合绩效 ${qdds(d)} 分 · 主要缺陷：${d.top}</span>${below?'<span class="ng">　合格率低于目标线</span>':""}
+ svg.innerHTML=s}
+function renderSupDetail(){const d=SUPS[selSup];const t=d.s.reduce((a,b)=>a+b,0);const g=grade(t);
+ document.getElementById("supDetail").innerHTML=`<b>${d.full}</b>　<span class="k">总分 ${t}/100 · 等级 ${g[0]}</span>
+ <div class="k" style="margin-top:3px">${d.note}</div>
  <div class="act">处置选项（引用规则）：${d.disp}</div>`}
 function pickSup(n){selSup=n;renderSup()}
 
@@ -391,8 +413,10 @@ function route(t){
  if(/依据|规则|根因|8D/.test(t)){aiSay("当前 MVP 采用<b>判定规则引擎</b>：判定依据=图纸公差 vs 实测（规则可配置），临界项人工确认。<b>根因分析与 8D 初稿属二期</b>，待台账数据积累 2–3 个月后启动。");return}
  if(/月度|统计|出表/.test(t)){switchTab("led");
   aiSay("月度统计三件套已可一键生成：合格率 / 及时率（95% 目标线）、QDDS 绩效评分卡（质量 50 / 交付 30 / 响应 20）、近 6 月趋势，<b>半天 → 10 分钟</b>。","已切到台账页");return}
+ if(/等级|绩效|评分|评定/.test(t)){switchTab("sup");
+  aiSay("绩效评定已按贵司《供应商绩效评定表》口径：100 分制（合格 30 / 及时 30 / 整改 20 / 服务 10 / 文件 5 / 成本 5），扣分制 + 四级色标（绿 A / 黄 B / 粉 C / 红 D）。本月：供应商 C <b>99 绿 A</b>、供应商 B <b>89 黄 B</b>、供应商 A <b>67 粉 C</b>。45 分空缺维度（及时/服务/成本）已自动归集。");return}
  if(/合格率|标红|供应商/.test(t)){switchTab("sup");selSup="供应商 A";renderSup();
-  aiSay("已定位：<b>供应商 A 合格率 91.2%</b>，低于 95% 目标线。处置选项（引用规则）：<b>退货 + 挑选使用</b>，加严检验并启动 8D 跟踪。");return}
+  aiSay("已定位：<b>供应商 A 总分 67（粉 C）</b>。扣分：来料合格分 -15（不良 2 批 + 客诉 1）、交货及时率 -6、问题整改 -10（8D 逾期）。处置选项（引用规则）：<b>退货 + 挑选使用</b>，加严检验并启动 8D。");return}
  const m=t.match(/\d{11}/);
  if(m||/切换|料号/.test(t)){const k=m?Object.keys(MODELS).find(x=>x===m[0]):cur;
   if(k){cur=k;syncChips();switchTab("rpt");renderReport();
@@ -401,7 +425,7 @@ function route(t){
  if(/执行|开始|分析|跑/.test(t)){if(!document.getElementById("fls").children.length)addFiles();
   aiSay("收到，按 MVP 流程执行：格式归一 → 料号拆解（保真三查）→ 图纸套模板 → 判定引擎比对 → 临界项人工确认 → 入台账。","已开始执行");runPipeline();return}
  aiSay("已收到。我可以直接执行：回复「<b>执行分析</b>」「临界项确认」「查台账」「报告改双语」「标红低合格率供应商」「月度统计出表」，也可以直接给 11 位料号切换报告。")}
-const QCHIPS=["执行分析","临界项确认","查台账","报告改双语","标红低合格率供应商","月度统计出表"];
+const QCHIPS=["执行分析","临界项确认","查台账","标红低合格率供应商","绩效评定口径","月度统计出表"];
 document.getElementById("qchips").innerHTML=QCHIPS.map(q=>`<span class="qchip" onclick="document.getElementById('aiIn').value='${q}';aiSend()">${q}</span>`).join("");
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
