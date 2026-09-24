@@ -139,45 +139,45 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 
 <div class="view" id="viewChat">
 <div class="chat">
-<div class="chead"><b id="cname">—</b><span class="st">● AI 协同中</span>
-<div class="act"><span>识别运单 ✓</span><span>关联订单 ✓</span><span class="hot" onclick="transfer()">转人工</span></div></div>
+<div class="chead"><b id="cname">—</b><span class="st">● AI 协助中</span>
+<div class="act"><span>运单已识别 ✓</span><span>订单已关联 ✓</span><span class="hot" onclick="transfer()">转人工</span></div></div>
 <div class="msgs" id="msgs"></div>
 <div class="composer">
-<div class="ai-draft" id="draft"><b>AI 建议回复</b> · <span id="draftBody">—</span></div>
-<textarea class="cin" id="cin" rows="2" placeholder="输入回复（留空则发送 AI 草稿）· Enter 发送 · 可拖拽拉高" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"></textarea>
+<div class="ai-draft" id="draft"><b>AI 草稿</b> · <span id="draftBody">—</span></div>
+<textarea class="cin" id="cin" rows="2" placeholder="输入回复，留空则发送 AI 草稿；Enter 发送" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"></textarea>
 <div class="btns"><span class="send" onclick="send()">发送</span><span class="ghost" onclick="transfer()">转人工</span><span class="ghost" onclick="openTicket()">建单催办</span><span class="ghost">补偿申请</span></div></div></div>
 <div class="ctx">
 <div class="strips"><div class="strip"><b>30s</b><span>首次响应</span></div><div class="strip"><b>92%</b><span>一次解决率</span></div></div>
-<h4>客户上下文 · 自动聚合</h4>
+<h4>客户资料 · 自动带出</h4>
 <div class="card" id="ctxCard"></div>
 <h4>今日工作台</h4>
-<div class="card">会话 128 · AI 独立解决 81%<br>转人工 24 · 均已响应</div>
-<h4>处理实效</h4>
-<div class="card">较人工坐席：首响 <b style="color:var(--ok)">-96%</b> · 夜间无人值守 <b style="color:var(--ok)">0</b> · 单坐席承载 <b style="color:var(--ok)">3×</b></div></div>
+<div class="card">今日会话 128 · AI 处理完 104<br>转人工 24 · 均已回复</div>
+<h4>效率对比</h4>
+<div class="card">人工首响约 12 分钟，AI <b style="color:var(--ok)">30s</b><br>夜间会话由 AI 值守 · <b style="color:var(--ok)">无漏接</b><br>同样人力可承接约 <b style="color:var(--ok)">3 倍</b> 会话量</div></div>
 </div>
 
 <div class="view" id="viewData" style="display:none">
 <div class="dwrap">
-<div class="dhead"><b>数据分析</b><span>全渠道客服效能 · IM / 邮件 / 工单实时聚合</span>
+<div class="dhead"><b>数据分析</b><span>IM、邮件与工单渠道汇总</span>
 <div class="rng"><span class="on" data-r="7d">近 7 天</span><span data-r="30d">近 30 天</span></div></div>
 <div class="kpis" id="kpis"></div>
 <div class="dgrid">
-<div class="pane"><h5>处理时长趋势<em>客诉处理 · 异常闭环（小时）</em>
+<div class="pane"><h5>处理时长趋势<em>客诉处理 · 异常办结（小时）</em>
 <div class="legend" id="trendLeg"></div></h5><div class="tbox" id="trendBox"><div class="tip" id="tip"></div></div></div>
 <div class="pane"><h5>解决构成<em>本期会话占比</em></h5>
 <div class="donutbox"><div style="position:relative;flex:none" id="donutBox"></div><div class="dl" id="donutLg"></div></div>
-<div class="dfoot">自助解决 = AI 全程独立办结，无需人工介入</div></div>
-<div class="pane"><h5>客诉类型分布<em>点击类型查看明细</em></h5>
+<div class="dfoot">自助解决：AI 全程处理、未转人工的会话</div></div>
+<div class="pane"><h5>客诉类型分布<em>点击柱形查看明细</em></h5>
 <div class="bars" id="bars"></div></div>
 <div class="pane dpanel" id="dpanel"></div>
 </div>
-<div class="dfoot">示意数据 · 口径：处理时长 = 首次响应 → 解决；闭环时长 = 建单 → 客户确认；满意度 = 会话结束评价均值（5 分制）</div>
+<div class="dfoot">示意数据。口径：处理时长从首次响应到解决；办结时长从建单到客户确认；满意度为会话结束评价均分（5 分制）</div>
 </div></div>
 </div>
 
 <div class="ovl" id="ovl"><div class="modal">
-<div class="mhd"><b>AI 快速建单</b><span class="x" onclick="closeTicket()">✕</span></div>
-<div class="aibar" id="aibar"><div class="shim" id="shim"></div><span id="aibarTx">AI 正在分析会话上下文…</span></div>
+<div class="mhd"><b>快速建单</b><span class="x" onclick="closeTicket()">✕</span></div>
+<div class="aibar" id="aibar"><div class="shim" id="shim"></div><span id="aibarTx">AI 正在读取会话内容…</span></div>
 <div class="fgrid mfade" id="mform">
 <div class="fi"><label>客户</label><input id="fCu"></div>
 <div class="fi"><label>关联单号</label><input id="fRef"></div>
@@ -185,9 +185,9 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 <div class="fi full"><label>优先级</label><div class="chips" id="fPri"></div></div>
 <div class="fi full"><label>工单标题</label><input id="fTitle"></div>
 <div class="fi full"><label>问题描述</label><textarea id="fDesc" rows="3"></textarea></div>
-<div class="fi full"><label>AI 建议处置</label><div class="dpanel" style="background:transparent;padding:0"><div class="act" id="fAct"></div></div></div>
+<div class="fi full"><label>建议处理方式</label><div class="dpanel" style="background:transparent;padding:0"><div class="act" id="fAct"></div></div></div>
 </div>
-<div class="mft"><span class="note">AI 生成内容可编辑 · 创建后自动分派并同步客户</span>
+<div class="mft"><span class="note">内容由 AI 生成，可修改；提交后自动派单并回复客户</span>
 <span class="ghost" style="font-size:12.5px;border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer" onclick="genTicket()">↻ 重新生成</span>
 <span class="ghost" style="font-size:12.5px;border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer" onclick="closeTicket()">取消</span>
 <span class="send" style="font-size:12.5px;border-radius:8px;padding:6px 16px;cursor:pointer" onclick="createTicket()">创建工单</span></div>
@@ -196,50 +196,50 @@ body{background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-directi
 
 <script>
 const DATA={
- c1:{n:"Anastasia · 莫斯科",tag:"RU",ctx:"运单 WB-2041 · 莫斯科<br>状态 清关异常（2 天）<br>历史工单 2 条 · 均已闭环",
+ c1:{n:"Anastasia · 莫斯科",tag:"RU",ctx:"运单 WB-2041 · 莫斯科<br>状态 清关异常（2 天）<br>历史工单 2 条 · 均已办结",
  msgs:[["cu","客户 · RU","Заказ WB-2041 задерживается на таможне. Когда прибудет? Это уже второй раз!"],
- ["ai","智能客服 · AI 草稿（依据售后 SOP）","Anna, приносим извинения. Посылка WB-2041 проходит таможенное оформление, ожидаемая задержка — 2 дня. Заявка WO-2041 уже создана."],
- ["sys","系统动作","异常建单 WO-2041 → 已分派口岸代理 · 高风险赔付承诺需 人工审批 后发出"]],
- drafts:{zh:"安娜，很抱歉。您的运单 WB-2041 正在清关，预计延误 2 天，已建单 WO-2041 并安排催办，我们会主动同步进度。",
- en:"Anna, sorry for the delay. WB-2041 is under customs clearance (ETA +2 days). Ticket WO-2041 created and being expedited.",
- ru:"Анна, извините. WB-2041 на таможенном оформлении, задержка 2 дня. Заявка WO-2041 создана, мы держим вас в курсе."}},
+ ["ai","AI 草稿（依据售后 SOP）","Анна, здравствуйте. Приносим извинения — посылка WB-2041 всё ещё на таможенном оформлении, задержка около 2 дней. Заявка WO-2041 уже создана, мы ускоряем процесс."],
+ ["sys","系统动作","已建单 WO-2041，分派口岸代理；赔付承诺需人工审批后才能发出"]],
+ drafts:{zh:"安娜您好，很抱歉，您的包裹 WB-2041 还卡在海关清关，预计还要 2 天。我们已建单 WO-2041 安排催办，一有进展就主动告诉您。",
+ en:"Hi Anna, sorry about the delay — WB-2041 is still in customs, about 2 more days. We've opened ticket WO-2041 to expedite it and will keep you posted.",
+ ru:"Анна, извините за задержку: WB-2041 ещё на таможенном оформлении, около 2 дней. Заявка WO-2041 создана, мы ускоряем оформление и сообщим, как только посылка поедет дальше."}},
  c2:{n:"张先生 · 马德里",tag:"ES",ctx:"运单 SB-8871 · 马德里<br>状态 末端派送 · 催办中<br>历史工单 0 条",
  msgs:[["cu","客户 · ES","¿Cuándo llegará mi pedido? Lleva 3 días en reparto."],
- ["ai","智能客服 · AI 草稿","Su pedido SB-8871 está en reparto desde ayer. Si hoy no se entrega, abriremos una reclamación automáticamente."],
- ["sys","系统动作","已向末端网点发起催办 · 预计 24h 内送达"]],
- drafts:{zh:"您的包裹 SB-8871 已于昨日开始派送，如今日未送达，我们将自动发起申诉并优先处理。",
- en:"Your parcel SB-8871 went out for delivery yesterday. If not delivered today, we will auto-escalate.",
- ru:"Su paquete SB-8871 está en reparto. Si no llega hoy, escalaremos automáticamente."}},
- c3:{n:"李女士 · 汉堡",tag:"EN",ctx:"订单 #8821 · 汉堡<br>请求 发票重开<br>历史工单 1 条 · 已闭环",
+ ["ai","AI 草稿","Su pedido SB-8871 está en reparto desde ayer. Si hoy no se entrega, abriremos una reclamación automáticamente."],
+ ["sys","系统动作","已催办末端网点，预计 24 小时内送达"]],
+ drafts:{zh:"您的包裹 SB-8871 昨天已交由末端派送。如果今天还没送到，我们会自动向网点发起申诉、优先安排，请您再稍等。",
+ en:"Your parcel SB-8871 went out for delivery yesterday. If it hasn't arrived by tonight, we'll escalate it with the courier automatically.",
+ ru:"Посылка SB-8871 передана курьеру вчера. Если она не придёт сегодня, мы автоматически направим претензию в службу доставки."}},
+ c3:{n:"李女士 · 汉堡",tag:"EN",ctx:"订单 #8821 · 汉堡<br>请求 发票重开<br>历史工单 1 条 · 已办结",
  msgs:[["cu","客户 · EN","Need a VAT invoice for order #8821, the old one has a wrong address."],
- ["ai","智能客服 · AI 草稿","Sure — I've re-issued VAT invoice #8821-V2 with the corrected address. It's on its way to your email."],
- ["sys","系统动作","发票重开 ✓ · 已同步 ERP"]],
- drafts:{zh:"已为您重开 VAT 发票 #8821-V2（地址已更正），将发送至您的邮箱。",
+ ["ai","AI 草稿","Sure — I've re-issued VAT invoice #8821-V2 with the corrected address. It's on its way to your email."],
+ ["sys","系统动作","发票已重开，已同步 ERP"]],
+ drafts:{zh:"VAT 发票已重开（#8821-V2），地址已改好，马上发到您的邮箱。",
  en:"VAT invoice #8821-V2 has been re-issued with the corrected address and sent to your email.",
  ru:"VAT invoice #8821-V2 re-issued with corrected address, sent to your email."}}};
 
 const WO={
  c1:{cu:"Anastasia · 莫斯科（RU）",ref:"运单 WB-2041",type:"清关异常",pri:"高",
  title:"WB-2041 莫斯科清关异常 2 天 · 客户二次进线",
- desc:"客户反馈运单 WB-2041 清关滞留 2 天，为该客户历史第 2 次异常，情绪升级并要求明确送达时间，建议按赔付预审流程处理。",
- act:"口岸代理催办（2h 内答复）→ 高风险赔付预审（需人工审批）→ 主动同步清关进度至客户"},
+ desc:"客户反馈 WB-2041 在海关滞留 2 天，这是他第二次遇到清关异常，情绪有些激动，要求给出明确的送达时间，建议走赔付预审流程。",
+ act:"催口岸代理 2 小时内答复；赔付预审需人工审批；清关进度主动同步客户"},
  c2:{cu:"张先生 · 马德里（ES）",ref:"运单 SB-8871",type:"末端延误",pri:"中",
  title:"SB-8871 马德里末端派送 3 天未妥投",
  desc:"包裹 SB-8871 进入末端派送已 3 天未妥投，客户催问送达时间；AI 已发起末端催办，若 24h 内仍未妥投将自动转申诉。",
- act:"末端网点催办 → 24h 未妥投自动申诉 → 向客户同步预计送达窗口"},
+ act:"催办末端网点；24 小时仍未妥投就自动申诉；同步预计送达时间"},
  c3:{cu:"李女士 · 汉堡（EN）",ref:"订单 #8821",type:"发票账单",pri:"低",
  title:"#8821 VAT 发票地址错误 · 申请重开",
  desc:"客户申请重开 VAT 发票（原发票收件地址错误）；AI 已完成 #8821-V2 重开、地址更正并同步 ERP，待客户邮箱确认。",
- act:"ERP 自动重开发票 → 邮件送达 → 次日自动回访确认"}};
+ act:"ERP 重开发票，邮件送达后次日回访确认"}};
 
 /* ───────── 数据分析 ───────── */
 const AN={
- "7d":{kpi:[["客诉处理时长","4.2","h","较上周 -38%",1],["自助解决率","81","%","较上周 +6pt",1],["客户满意度","4.7","/5","较上周 +0.3",1],["异常闭环时长","18.5","h","较上周 -42%",1]],
+ "7d":{kpi:[["客诉处理时长","4.2","h","较上周 -38%",1],["自助解决率","81","%","较上周 +6pt",1],["客户满意度","4.7","/5","较上周 +0.3",1],["异常办结时长","18.5","h","较上周 -42%",1]],
   days:["09-17","09-18","09-19","09-20","09-21","09-22","09-23"],
   handle:[6.8,6.1,5.4,4.9,4.6,4.4,4.2],loop:[30,28,26,23,21,19.5,18.5],
   types:[["清关异常",34],["末端延误",27],["退换货",18],["发票账单",13],["其他",8]],
   solve:[["AI 自助解决",81,"#00ACBE"],["AI 起草 · 人工发出",15,"#5D93D8"],["转人工",4,"#9FAFD2"]]},
- "30d":{kpi:[["客诉处理时长","5.8","h","较上月 -31%",1],["自助解决率","78","%","较上月 +9pt",1],["客户满意度","4.6","/5","较上月 +0.4",1],["异常闭环时长","24.6","h","较上月 -38%",1]],
+ "30d":{kpi:[["客诉处理时长","5.8","h","较上月 -31%",1],["自助解决率","78","%","较上月 +9pt",1],["客户满意度","4.6","/5","较上月 +0.4",1],["异常办结时长","24.6","h","较上月 -38%",1]],
   days:Array.from({length:30},(_,i)=>{const d=new Date(2026,8,23-29+i);return (d.getMonth()+1)+"-"+d.getDate()}),
   handle:Array.from({length:30},(_,i)=>+(9.5-3.7*i/29+(i%3?0.3:-0.2)).toFixed(1)),
   loop:Array.from({length:30},(_,i)=>+(46-21.4*i/29+(i%4?1.5:-1)).toFixed(1)),
@@ -247,11 +247,11 @@ const AN={
   solve:[["AI 自助解决",78,"#00ACBE"],["AI 起草 · 人工发出",17,"#5D93D8"],["转人工",5,"#9FAFD2"]]}};
 AN["30d"].handle[29]=5.8;AN["30d"].loop[29]=24.6;
 const TYPE_DETAIL={
- "清关异常":{avg:"5.1 h",loop:"22 h",sop:"92%",act:"口岸代理催办（2h 答复）→ 赔付预审（人工审批）→ 主动同步进度"},
- "末端延误":{avg:"3.2 h",loop:"14 h",sop:"95%",act:"自动催办末端网点 → 24h 未妥投自动申诉 → 同步送达窗口"},
- "退换货":{avg:"2.8 h",loop:"12 h",sop:"89%",act:"退货预审 → 换货补发自动下单 → 物流跟踪回传"},
- "发票账单":{avg:"1.6 h",loop:"6 h",sop:"97%",act:"ERP 自动重开 → 邮件送达 → 回访确认"},
- "其他":{avg:"2.4 h",loop:"9 h",sop:"84%",act:"知识库兜底应答 → 低置信自动转人工"}};
+ "清关异常":{avg:"5.1 h",loop:"22 h",sop:"92%",act:"催口岸代理 2 小时内答复；赔付走人工审批；进度主动同步客户"},
+ "末端延误":{avg:"3.2 h",loop:"14 h",sop:"95%",act:"催办末端网点；24 小时未妥投自动申诉；同步预计送达时间"},
+ "退换货":{avg:"2.8 h",loop:"12 h",sop:"89%",act:"预审退货申请；换货补发自动下单；物流状态回传跟单"},
+ "发票账单":{avg:"1.6 h",loop:"6 h",sop:"97%",act:"ERP 自动重开，邮件送达后回访确认"},
+ "其他":{avg:"2.4 h",loop:"9 h",sop:"84%",act:"先按知识库应答，置信度低时自动转人工"}};
 const C_BLUE="#5D93D8",C_ORN="#F5A455";
 let range="7d",selType="清关异常",showH=true,showL=true,dataDrawn=false;
 
@@ -286,11 +286,11 @@ function renderTrend(){const box=document.getElementById("trendBox");const tip=d
   gl.setAttribute("x1",x(i));gl.setAttribute("x2",x(i));gl.setAttribute("visibility","visible");
   tip.style.display="block";const bx=box.getBoundingClientRect();
   tip.style.left=Math.min(x(i)+12,bx.width-150)+"px";tip.style.top=(e.clientY-bx.top-14)+"px";
-  tip.innerHTML=`<b>${a.days[i]}</b><br>`+(showH?`<span style="color:${C_BLUE}">●</span> 客诉处理 ${a.handle[i]}h<br>`:"")+(showL?`<span style="color:${C_ORN}">●</span> 异常闭环 ${a.loop[i]}h`:"")};
+  tip.innerHTML=`<b>${a.days[i]}</b><br>`+(showH?`<span style="color:${C_BLUE}">●</span> 客诉处理 ${a.handle[i]}h<br>`:"")+(showL?`<span style="color:${C_ORN}">●</span> 异常办结 ${a.loop[i]}h`:"")};
  svg.onmouseleave=()=>{gl.setAttribute("visibility","hidden");tip.style.display="none"}}
 function renderLegend(){const lg=document.getElementById("trendLeg");
  lg.innerHTML=`<span data-s="h" class="${showH?"":"off"}"><i style="background:${C_BLUE}"></i>客诉处理时长</span>
- <span data-s="l" class="${showL?"":"off"}"><i style="background:${C_ORN}"></i>异常闭环时长</span>`;
+ <span data-s="l" class="${showL?"":"off"}"><i style="background:${C_ORN}"></i>异常办结时长</span>`;
  lg.querySelectorAll("span").forEach(s=>s.onclick=()=>{if(s.dataset.s==="h")showH=!showH;else showL=!showL;renderLegend();renderTrend()})}
 function renderDonut(){const box=document.getElementById("donutBox");box.innerHTML="";
  const S=Math.min(box.parentElement.clientHeight-6,150),R=S/2-8,C=2*Math.PI*R,cx=S/2,cy=S/2;
@@ -315,15 +315,15 @@ function renderDetail(){const d=TYPE_DETAIL[selType];const t=AN[range].types.fin
  const tot=AN[range].types.reduce((s,x)=>s+x[1],0);
  document.getElementById("dpanel").innerHTML=`<div class="dt">${selType} <span style="font-size:11.5px;color:var(--mut);font-weight:400">· 占比 ${Math.round(t[1]/tot*100)}%</span></div>
  <div class="row"><span>平均处理时长</span><b>${d.avg}</b></div>
- <div class="row"><span>平均闭环时长</span><b>${d.loop}</b></div>
+ <div class="row"><span>平均办结时长</span><b>${d.loop}</b></div>
  <div class="row"><span>SOP 命中率</span><b>${d.sop}</b></div>
  <div class="row"><span>本期工单量</span><b>${t[1]} 单</b></div>
- <div style="font-size:11.5px;color:var(--mut)">AI 标准处置链路</div><div class="act">${d.act}</div>`}
+ <div style="font-size:11.5px;color:var(--mut)">AI 处理步骤</div><div class="act">${d.act}</div>`}
 function renderData(){renderKpis();renderLegend();renderTrend();renderDonut();renderBars();renderDetail();dataDrawn=true}
 
 /* ───────── 视图/菜单 ───────── */
 document.querySelectorAll("#side div").forEach(d=>d.onclick=()=>{
- if(d.dataset.v==="none"){toast("Demo 演示 · 该模块未开放");return}
+ if(d.dataset.v==="none"){toast("该模块在演示中未开放");return}
  document.querySelectorAll("#side div").forEach(x=>x.classList.remove("on"));d.classList.add("on");
  const v=d.dataset.v;document.getElementById("viewChat").style.display=v==="chat"?"flex":"none";
  document.getElementById("viewData").style.display=v==="data"?"flex":"none";
@@ -346,7 +346,7 @@ function send(){const d=DATA[cur];const el=document.getElementById("cin");
  const body=el.value.trim()||d.drafts[lang];el.value="";
  d.msgs.push(["ai","已发送 · "+({zh:"中文",en:"EN",ru:"РУС"})[lang],body]);renderMsgs();
  setTimeout(()=>{d.msgs.push(["cu","客户","OK, thank you! 👍"]);if(cur==="c1")renderMsgs()},900)}
-function transfer(){toast("已转人工 · 专员 张敏 接手")}
+function transfer(){toast("已转人工，专员张敏接手")}
 document.querySelectorAll(".langs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".langs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");lang=e.dataset.l;setDraft()});
 
 /* ───────── 快速建单 ───────── */
@@ -355,9 +355,9 @@ const TYPE_OPTS=["清关异常","末端延误","退换货","发票账单","其�
 function openTicket(){document.getElementById("ovl").classList.add("show");genTicket()}
 function closeTicket(){document.getElementById("ovl").classList.remove("show");clearTimeout(genTimer)}
 function genTicket(){const w=WO[cur];const bar=document.getElementById("aibar"),tx=document.getElementById("aibarTx"),sh=document.getElementById("shim"),form=document.getElementById("mform");
- bar.classList.remove("done");sh.style.display="block";tx.textContent="AI 正在分析会话上下文（客户 / 单号 / 情绪 / 历史）…";
+ bar.classList.remove("done");sh.style.display="block";tx.textContent="AI 正在从会话里提取客户、单号和历史记录…";
  form.classList.remove("in");
- genTimer=setTimeout(()=>{sh.style.display="none";bar.classList.add("done");tx.textContent="✓ 已从当前会话提取关键信息，生成工单草稿（可编辑）";
+ genTimer=setTimeout(()=>{sh.style.display="none";bar.classList.add("done");tx.textContent="✓ 草稿已按会话内容填好，可直接修改";
   document.getElementById("fCu").value=w.cu;document.getElementById("fRef").value=w.ref;
   renderChips("fType",TYPE_OPTS,w.type,"");renderChips("fPri",PRI_OPTS,w.pri,w.pri==="高"?"hi":w.pri==="中"?"md":"");
   document.getElementById("fTitle").value=w.title;document.getElementById("fDesc").value=w.desc;
@@ -371,8 +371,8 @@ function renderChips(id,opts,sel,cls){const box=document.getElementById(id);box.
 function createTicket(){const pri=document.querySelector("#fPri .on");const ty=document.querySelector("#fType .on");
  const wo="WO-"+(nextWo++);closeTicket();
  const bdg=document.getElementById("woBdg");bdg.textContent=+bdg.textContent+1;
- DATA[cur].msgs.push(["sys","系统动作","AI 快速建单 "+wo+"（"+(ty?ty.textContent:"")+" · 优先级 "+(pri?pri.textContent:"中")+"）→ 已自动分派处理人 · 已同步客户"]);
- renderMsgs();toast("✓ 工单 "+wo+" 已创建 · 已自动分派并同步客户")}
+ DATA[cur].msgs.push(["sys","系统动作","已建单 "+wo+"（"+(ty?ty.textContent:"")+"，优先级 "+(pri?pri.textContent:"中")+"），已自动派单并同步客户"]);
+ renderMsgs();toast("工单 "+wo+" 已创建，已派单并同步客户")}
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";
  clearTimeout(toast._t);toast._t=setTimeout(()=>el.style.display="none",2400)}
 loadC("c1");
