@@ -40,13 +40,19 @@
 | `--muted` | `#66716D` | 次要正文 |
 | `--nav-text` | `#BFC8C4` | 导航默认文字 |
 | `--divider` | `#D8D5CA` | 分割线与必要控件边界 |
+| `--control-border` | `#7D8581` | 输入框、按钮等必要控件边界 |
+| `--chart-blue` | `#697B8A` | 图表辅助序列一 |
+| `--chart-warm` | `#94704A` | 图表辅助序列二 |
 | `--success` | `#2F6B4F` | 已完成、安全、成功 |
 | `--danger` | `#A43D34` | 风险、错误、升级 |
 | `--warning` | `#8A5C18` | 待确认、等待 |
-| `--focus` | `rgba(29,90,80,.30)` | 3px 键盘焦点环 |
+| `--focus-light` | `#1D5A50` | 浅色面 2px 键盘焦点实线 |
+| `--focus-dark` | `#D5B977` | 深色导航 2px 键盘焦点实线 |
 | `--shadow` | `0 16px 40px rgba(22,33,31,.10)` | 弹层和必要浮层 |
 
-关键对比组合按实现前计算值验收：`--text`/`--surface` 15.62:1，`--muted`/`--surface` 4.81:1，`--nav-text`/`--nav` 9.65:1，`--champagne`/`--nav` 8.68:1，白色/`--jade` 7.98:1。香槟金禁止作为浅色背景上的正文颜色。
+关键对比组合按实现前计算值验收：`--text`/`--surface` 15.62:1，`--muted`/`--surface` 4.81:1，`--nav-text`/`--nav` 9.65:1，`--champagne`/`--nav` 8.68:1，白色/`--jade` 7.98:1，`--control-border`/`--surface` 3.60:1，`--chart-blue`/`--surface` 4.15:1，`--chart-warm`/`--surface` 4.26:1，`--focus-light`/`--surface` 7.58:1，`--focus-dark`/`--nav` 8.68:1。香槟金禁止作为浅色背景上的正文颜色。
+
+焦点样式使用“2px 实色轮廓 + 3px 半透明外晕”：浅色面使用 `--focus-light`，深色导航使用 `--focus-dark`。`--divider` 只作结构分隔，不得承担必要控件边界；输入框、次要按钮和其他需要可感知边界的控件使用 `--control-border`。
 
 交互色与状态色严格分工：墨玉色只表达主操作、选中和键盘焦点；完成/安全使用独立 `--success`，风险使用 `--danger`，等待使用 `--warning`，不得用墨玉色冒充业务完成状态。
 
