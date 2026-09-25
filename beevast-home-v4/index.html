@@ -61,19 +61,19 @@
   --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif;
   --font-serif:'Songti SC','STSong','SimSun',serif;
   --font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace;
-  --bg:#FFFFFF;                  /* 暖纸底 */
-  --bg-2:#F6F5F1;                /* 次级面 / 分区底 */
-  --bg-3:#FFFFFF;                /* 卡片面 */
-  --text:#1A1A1A;                /* 炭黑 ink */
-  --text-2:#5F5C54;              /* 次级文字 */
-  --text-3:#8A8780;              /* 辅助/占位 */
-  --primary:#EAA230;             /* 品牌珊瑚橙（唯一彩色） */
-  --primary-2:#BE8320;           /* 珊瑚深 */
-  --gold-v:#ffb700;              /* BEEVAST 字母 V 品牌金（admin5 0822 钦定） */
-  --navy:#0B1220;                /* 深色 section 主背景（Trust navy） */
-  --navy-2:#141C2E;              /* 深色卡片面 */
-  --navy-3:#1E293B;             /* 深色副面 */
-  --blue:#0369A1;               /* Trust blue（次级 CTA / 链接） */
+  --bg:#FFFFFF;
+  --bg-2:#F6F5F1;
+  --bg-3:#FFFFFF;
+  --text:#1A1A1A;
+  --text-2:#5F5C54;
+  --text-3:#8A8780;
+  --primary:#EAA230;
+  --primary-2:#BE8320;
+  --gold-v:#ffb700;
+  --navy:#0B1220;
+  --navy-2:#141C2E;
+  --navy-3:#1E293B;
+  --blue:#0369A1;
   --blue-2:#0EA5E9;
   --green:#15803D;
   --border:rgba(28,26,23,0.08);
@@ -109,8 +109,7 @@ section,nav,footer{position:relative;z-index:1}
 .hero-actions .ha-primary:active,.mf-submit:active,.nav-cta:active,.case-arw:active{transform:scale(.97)}
 footer.bv-foot::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAA230 18%,#ffb700 50%,#EAA230 82%,transparent)}
 
-/* ===== LOGO 规范 =====
-   nav：六边形徽标 assets/logo-lockup.jpg（admin5 0822 上传，像素验真为纯图标无字标）+ HTML 字标「群蜂智能」上 /「BEEVAST」下（七字母两端对齐同宽，V 用 --gold-v）——admin5 0822 钦定组合。favicon：assets/logo-fav.png。footer：assets/logo-foot.jpg。 */
+
 .nav-brand{display:flex;align-items:center;gap:11px}
 .brand-mark{display:block;height:46px;width:45px;flex:none}
 .brand-logo{display:block;height:46px;width:45px;transition:opacity .2s}
@@ -122,7 +121,7 @@ a.nav-brand:hover .brand-logo{opacity:.84}
 .brand-sub i.v{color:var(--gold-v)}
 @media(max-width:520px){.brand-mark,.brand-logo{height:38px;width:37px}.brand-word{font-size:20px;letter-spacing:1.5px}.brand-text{gap:4px}}
 
-/* ===== NAV ===== */
+
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 var(--pad-x);height:68px;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
 nav::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(234,162,48,0.5) 50%,transparent);pointer-events:none}
 nav.scrolled{background:#FFFFFF;border-bottom-color:var(--border-glow);box-shadow:0 1px 30px rgba(234,162,48,0.08)}
@@ -146,7 +145,7 @@ nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)
 }
 section[id]{scroll-margin-top:96px}
 
-/* ===== HERO (深 navy) ===== */
+
 .hero{background:linear-gradient(180deg,#243553,var(--navy) 62%);color:#fff;padding:96px var(--pad-x) 56px;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:920px;height:760px;background:radial-gradient(circle,rgba(234,162,48,.18),transparent 66%);pointer-events:none}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(#000,transparent 76%);pointer-events:none}
@@ -168,7 +167,7 @@ section[id]{scroll-margin-top:96px}
 .hstat .k{display:block;font-size:var(--fs-xs);color:rgba(255,255,255,0.74);margin-top:6px;letter-spacing:0.4px}
 @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
 
-/* ===== SECTIONS BASE ===== */
+
 section{padding:92px var(--pad-x)}
 section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 720px}
 @media(max-width:640px){section{padding:40px var(--pad-x)}}
@@ -189,12 +188,12 @@ section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 720px}
 .section-navy .section-desc{color:rgba(255,255,255,0.82)}
 .section-navy .section-tag{background:rgba(234,162,48,0.10);border-color:rgba(234,162,48,0.30)}
 
-/* ===== TRUST（资质带） ===== */
+
 .hero-trust{max-width:1200px;margin:36px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 32px;position:relative;z-index:1}
 .cert-item{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:600;color:rgba(255,255,255,0.88)}
 .cert-item svg{width:16px;height:16px;color:var(--primary)}
 
-/* ===== SOLUTIONS (深) ===== */
+
 .solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .solution-card{display:flex;flex-direction:column;padding:28px 24px;background:var(--navy-2);border:1px solid var(--border-navy);border-radius:var(--radius);transition:all .35s;position:relative;overflow:hidden}
 .solution-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);background:var(--navy-3)}
@@ -236,7 +235,7 @@ a,button{touch-action:manipulation}
 @media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:40px}}
 @media(max-width:640px){.hero{padding:80px var(--pad-x) 48px}.section-head{margin-bottom:28px}.hero-trust{gap:12px 20px}}
 
-/* ===== CASES ===== */
+
 .case-study{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(28,26,23,.07),0 1px 3px rgba(28,26,23,.04);margin-bottom:28px}
 .case-study-head{padding:34px 38px 24px;border-bottom:1px solid var(--border)}
 .case-study-head .case-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -268,20 +267,18 @@ a,button{touch-action:manipulation}
 .roi-big{font-family:var(--font-sans);font-size:var(--fs-2xl);font-weight:800;background:var(--grad-cyber);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px;letter-spacing:-1px;position:relative;z-index:1}
 .roi-label{font-size:var(--fs-xs);color:var(--text-2);line-height:1.6;position:relative;z-index:1}
 .case-foot{padding:14px 38px;background:var(--bg-2);border-top:1px solid var(--border);font-size:var(--fs-xs);color:var(--text-3);line-height:1.6;letter-spacing:.02em}
-.scenario-card{border-color:rgba(11,18,32,.16);box-shadow:var(--shadow)}
-.scenario-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border)}
-.scenario-step{position:relative;padding:28px 30px;background:#fff;min-height:150px}
-.scenario-step b{display:block;width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;text-align:center;line-height:28px;font-family:var(--font-mono);font-size:12px;margin-bottom:18px}
-.scenario-step h4{font-size:17px;margin-bottom:8px;color:var(--text)}
-.scenario-step p{font-size:var(--fs-sm);color:var(--text-2);line-height:1.7}
-.scenario-step:not(:last-child)::after{content:'→';position:absolute;right:-13px;top:62px;z-index:2;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;text-align:center;line-height:26px;font-weight:800}
-.scenario-metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border)}
-.scenario-metrics span{padding:15px 18px;text-align:center;font-size:13px;font-weight:700;color:var(--text-2);border-right:1px solid var(--border)}
-.scenario-metrics span:last-child{border-right:0}
+.scenario-slide{background:#fff;border:1px solid rgba(11,18,32,.16);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.scenario-slide[hidden]{display:none}
+.scenario-body{display:grid;grid-template-columns:1fr 1.08fr;gap:32px;padding:34px;align-items:center}
+.scenario-copy h3{font-size:28px;line-height:1.2;margin:10px 0}.scenario-copy>p{color:var(--text-2);font-size:14px;line-height:1.75}
+.scenario-flow{display:flex;align-items:center;gap:7px;margin:20px 0;font-size:13px;font-weight:800}.scenario-flow span{white-space:nowrap}.scenario-flow i{font-style:normal;color:var(--primary)}
+.scenario-metrics{display:flex;gap:7px;flex-wrap:wrap}.scenario-metrics span{padding:6px 10px;border:1px solid var(--border-strong);border-radius:8px;font-size:12px;color:var(--text-2);font-weight:700}
+.scenario-shot{background:var(--navy);border-radius:12px;padding:8px;box-shadow:0 16px 32px rgba(11,18,32,.18)}.scenario-shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:7px;background:var(--bg-2)}
+.scenario-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px}.scenario-dots{display:flex;gap:5px}.scenario-dot{width:32px;height:38px;border:0;background:transparent;padding:16px 6px;background-clip:content-box}.scenario-dot::after{content:'';display:block;width:100%;height:6px;border-radius:9px;background:rgba(28,26,23,.2)}.scenario-dot[aria-current="true"]{width:44px}.scenario-dot[aria-current="true"]::after{background:var(--primary)}
 @media(max-width:860px){.case-study-body{grid-template-columns:1fr}.case-col.after{border-left:none;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}}
-@media(max-width:860px){.scenario-flow{grid-template-columns:1fr}.scenario-step{min-height:0}.scenario-step:not(:last-child)::after{content:'↓';right:auto;left:31px;top:auto;bottom:-13px}.scenario-metrics{grid-template-columns:1fr 1fr}.scenario-metrics span:nth-child(2){border-right:0}}
+@media(max-width:760px){.scenario-body{grid-template-columns:1fr;padding:22px;gap:22px}.scenario-shot{order:-1}.scenario-copy h3{font-size:24px}.scenario-flow{flex-wrap:wrap}}
 
-/* ===== ADVANTAGES (深) ===== */
+
 .adv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .adv-card{padding:32px 26px;background:var(--navy-2);border:1px solid var(--border-navy);border-radius:var(--radius);transition:all .3s;position:relative;overflow:hidden}
 .adv-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:0;background:var(--grad-cyber);transition:height .35s}
@@ -300,7 +297,7 @@ a,button{touch-action:manipulation}
 @media(max-width:900px){.adv-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:540px){.adv-grid{grid-template-columns:1fr}}
 
-/* ===== PROCESS（服务流程·合作路径，growclaw 三卡） ===== */
+
 .pc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;position:relative}
 .pc-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 26px;position:relative;transition:transform .2s ease,box-shadow .2s ease}
 .pc-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,10,24,.08)}
@@ -319,7 +316,7 @@ a,button{touch-action:manipulation}
 .pc-foot{margin-top:2px;padding:13px 16px;border-radius:12px;font-size:var(--fs-sm);font-weight:700;text-align:center;display:block;text-decoration:none}
 @media(max-width:900px){.pc-grid{grid-template-columns:1fr}}
 
-/* ===== FAQ ===== */
+
 .faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:1120px;margin:0 auto;align-items:start}
 .faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
 .faq-item[open]{border-color:var(--border-glow);box-shadow:var(--shadow)}
@@ -331,15 +328,15 @@ a,button{touch-action:manipulation}
 .faq-a{padding:0 20px 16px 20px;font-size:var(--fs-sm);color:var(--text-2);line-height:1.7}
 @media(max-width:760px){.faq-list{grid-template-columns:1fr}}
 
-/* footer / cta-final 样式已移至页脚 .bv-foot 内联 style（growclaw 风格，见文末） */
 
-/* ===== reveal animation (stagger) ===== */
+
+
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .3s ease-out,transform .3s ease-out}
 .reveal.in{opacity:1;transform:translateY(0)}
 .reveal.d1{transition-delay:.04s}.reveal.d2{transition-delay:.08s}.reveal.d3{transition-delay:.12s}.reveal.d4{transition-delay:.16s}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4{transition-delay:0s}}
 
-/* ===== sticky mobile CTA ===== */
+
 .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:90;display:none;padding:10px var(--pad-x) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-top:1px solid var(--border-glow);box-shadow:0 -8px 24px rgba(0,0,0,0.06)}
 .sticky-cta a{flex:1;text-align:center;padding:13px;border-radius:10px;font-size:var(--fs-sm);font-weight:800}
 .sticky-cta .sc-primary{background:var(--primary);color:#fff}
@@ -359,7 +356,7 @@ body::before,body::after{display:none}
 .hero-badge,.hstat,.modal-mask{backdrop-filter:none}
 }
 
-/* ===== nav CTA / 内联 CTA / 表单 modal / lightbox / 岗位折叠 / 能力一行 / 案例轮播 ===== */
+
 .nav-cta{margin-left:18px;padding:9px 20px;border-radius:10px;background:var(--primary);color:#fff;font-weight:800;font-size:var(--fs-sm);flex:none;transition:background .2s}
 .nav-cta:hover{background:var(--primary-2)}
 .cta-inline{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:15px;color:var(--text-2);text-align:right}
@@ -568,6 +565,7 @@ body::before,body::after{display:none}
     .sc-div{height:1px;background:rgba(0,0,0,0.07);margin:14px 0}
     .sc-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
     .sc-list li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(10,10,24,0.72)}
+    .sc-list li::before{content:'✓';color:#15803d;font-weight:800}
     .sc-list svg{width:15px;height:15px;flex:none}
     .sc-cap{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
     .sc-cap-head{display:flex;align-items:center;gap:11px;margin-bottom:8px}
@@ -591,9 +589,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">80%</span><span class="sc-stat-lbl">报价周期平均缩短</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升报价准确率</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低经验依赖</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>加快客户响应速度</span></li>
+          <li><span>提升报价准确率</span></li>
+          <li><span>降低经验依赖</span></li>
+          <li><span>加快客户响应速度</span></li>
         </ul>
       </div>
       <div class="sc-card reveal">
@@ -602,9 +600,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">7×24</span><span class="sc-stat-lbl">全天候服务响应</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升客户满意度</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>减少重复咨询</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>沉淀客户知识</span></li>
+          <li><span>提升客户满意度</span></li>
+          <li><span>减少重复咨询</span></li>
+          <li><span>沉淀客户知识</span></li>
         </ul>
       </div>
       <div class="sc-card reveal">
@@ -614,9 +612,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">50%</span><span class="sc-stat-lbl">采购协同效率提升</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>缩短采购周期</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>规范采购流程</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#92600f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低沟通成本</span></li>
+          <li><span>缩短采购周期</span></li>
+          <li><span>规范采购流程</span></li>
+          <li><span>降低沟通成本</span></li>
         </ul>
       </div>
       <div class="sc-card reveal sc-fold">
@@ -625,9 +623,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">3×</span><span class="sc-stat-lbl">招聘处理效率提升</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>统一评估标准</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>优化候选人体验</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6b5066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>沉淀招聘知识</span></li>
+          <li><span>统一评估标准</span></li>
+          <li><span>优化候选人体验</span></li>
+          <li><span>沉淀招聘知识</span></li>
         </ul>
       </div>
       <div class="sc-card reveal sc-fold">
@@ -636,9 +634,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">90%</span><span class="sc-stat-lbl">重复录入自动完成</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>减少人为差错</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提高核算效率</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>加快经营分析</span></li>
+          <li><span>减少人为差错</span></li>
+          <li><span>提高核算效率</span></li>
+          <li><span>加快经营分析</span></li>
         </ul>
       </div>
       <div class="sc-card reveal sc-fold">
@@ -647,9 +645,9 @@ body::before,body::after{display:none}
         <div><span class="sc-stat-num">70%</span><span class="sc-stat-lbl">审查时间缩短</span></div>
         <div class="sc-div"></div>
         <ul class="sc-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>统一审核标准</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>提升合规水平</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>降低合同风险</span></li>
+          <li><span>统一审核标准</span></li>
+          <li><span>提升合规水平</span></li>
+          <li><span>降低合同风险</span></li>
         </ul>
       </div>
     </div>
@@ -671,19 +669,19 @@ body::before,body::after{display:none}
       <h2 class="section-title reveal">典型行业<span class="accent">场景</span></h2>
     </div>
 
-    <div class="case-study scenario-card reveal">
-      <div class="case-study-head">
-        <div class="case-tags"><span class="case-tag">跨境物流</span><span class="case-tag">智能售后</span><span class="case-tag">异常协同</span></div>
-        <h3>智能售后客服</h3>
-        <p><strong>业务问题：</strong>跨时区、人员流动和系统割裂，让售后响应与异常处理长期依赖老员工。</p>
+    <div id="scenarioCarousel" role="region" aria-roledescription="轮播" aria-label="三个典型行业场景">
+      <div id="scenarioTrack">
+        <article class="scenario-slide" data-scenario-step role="group" aria-roledescription="幻灯片" aria-label="1 / 3 · 智能客服工作台">
+          <div class="scenario-body"><div class="scenario-copy"><div class="case-tags"><span class="case-tag">跨境电商</span><span class="case-tag">智能客服</span></div><h3>智能客服工作台</h3><p>跨语言接待、知识检索、快速建单与人工协同；高风险承诺始终由人确认。</p><div class="scenario-flow"><span>识别诉求</span><i>→</i><span>知识回复</span><i>→</i><span>建单 / 转人工</span></div><div class="scenario-metrics"><span>首次响应时间</span><span>一次解决率</span><span>人工介入率</span><span>新人独立接待周期</span></div></div><div class="scenario-shot"><img src="../demos/scenario-1-cs.png" alt="智能客服工作台产品界面" width="1440" height="900"></div></div>
+        </article>
+        <article class="scenario-slide" data-scenario-step role="group" aria-roledescription="幻灯片" aria-label="2 / 3 · 来料质检分析" hidden>
+          <div class="scenario-body"><div class="scenario-copy"><div class="case-tags"><span class="case-tag">制造业</span><span class="case-tag">IQC 来料质检</span></div><h3>来料质检分析</h3><p>批量解析检验报告与料号，按图纸和规则判定；临界项由质检人员确认。</p><div class="scenario-flow"><span>报告归一</span><i>→</i><span>规则判定</span><i>→</i><span>临界复核 / 回写台账</span></div><div class="scenario-metrics"><span>报告处理时长</span><span>规则命中率</span><span>临界项复核率</span><span>台账完整率</span></div></div><div class="scenario-shot"><img src="../demos/scenario-2-qc.png" alt="来料质检分析产品界面" width="1440" height="900" loading="lazy"></div></div>
+        </article>
+        <article class="scenario-slide" data-scenario-step role="group" aria-roledescription="幻灯片" aria-label="3 / 3 · 交付风险预警" hidden>
+          <div class="scenario-body"><div class="scenario-copy"><div class="case-tags"><span class="case-tag">制造业</span><span class="case-tag">供应链交付</span></div><h3>交付风险预警</h3><p>汇总订单、库存、来料和排程数据，识别红黄蓝风险；处置与销项由责任人确认。</p><div class="scenario-flow"><span>多源归一</span><i>→</i><span>风险分级</span><i>→</i><span>责任推送 / 闭环跟踪</span></div><div class="scenario-metrics"><span>OTD 准时交付率</span><span>物料齐套率</span><span>预警提前量</span><span>逾期消化周期</span></div></div><div class="scenario-shot"><img src="../demos/scenario-3-delivery.png" alt="交付风险预警产品界面" width="1440" height="900" loading="lazy"></div></div>
+        </article>
       </div>
-      <div class="scenario-flow">
-        <div class="scenario-step"><b>01</b><h4>客户询问 · 识别运单</h4><p>识别运单与诉求，关联订单和服务记录。</p></div>
-        <div class="scenario-step"><b>02</b><h4>聚合节点 · 判断异常 · 回复</h4><p>汇总运输、清关、仓储状态，依据 SOP 回复。</p></div>
-        <div class="scenario-step"><b>03</b><h4>建单分派 · 催办闭环 · 人工审批</h4><p>异常建单并追踪；高风险承诺转人工。</p></div>
-      </div>
-      <div class="scenario-metrics" aria-label="Pilot 验证指标"><span>首次响应时间</span><span>一次解决率</span><span>新人独立接待周期</span><span>异常闭环时长</span></div>
-      <p class="case-foot">先用历史工单验证，再接入业务系统；高风险承诺由人工审批。</p>
+      <div class="scenario-nav" aria-label="场景切换"><button class="case-arw" type="button" data-scenario-nav="-1" aria-label="上一个场景">‹</button><div class="scenario-dots" id="scenarioDots"><button class="scenario-dot" type="button" data-scenario-nav="0" aria-label="场景 1：智能客服工作台" aria-current="true"></button><button class="scenario-dot" type="button" data-scenario-nav="1" aria-label="场景 2：来料质检分析"></button><button class="scenario-dot" type="button" data-scenario-nav="2" aria-label="场景 3：交付风险预警"></button></div><button class="case-arw" type="button" data-scenario-nav="1" aria-label="下一个场景">›</button></div>
     </div>
 
     <div class="sc-sub reveal"><h3>真实案例 · 用结果证明交付能力</h3></div>
@@ -1119,7 +1117,6 @@ if ('IntersectionObserver' in window) {
 <div class="lb" id="lb" role="dialog" aria-label="产品截图放大"><img src="" alt="产品截图放大视图"></div>
 
 <script>
-// ===== 转化 modal =====
 const mask = document.getElementById('leadModal');
 function openModal() {
   mask.classList.add('open'); document.body.style.overflow = 'hidden';
@@ -1132,7 +1129,6 @@ document.addEventListener('click', e => {
 });
 mask.addEventListener('click', e => { if (e.target === mask || e.target.closest('.modal-x')) closeModal(); });
 
-// ===== lightbox =====
 const lb = document.getElementById('lb');
 document.addEventListener('click', e => {
   const im = e.target.closest('.hero-video-frame img');
@@ -1141,7 +1137,6 @@ document.addEventListener('click', e => {
 lb.addEventListener('click', () => lb.classList.remove('open'));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); lb.classList.remove('open'); } });
 
-// ===== 表单提交（静态站：复制到剪贴板 + 成功态 + 企微引导） =====
 document.getElementById('leadForm').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target;
@@ -1150,7 +1145,6 @@ document.getElementById('leadForm').addEventListener('submit', e => {
   if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, done); else done();
 });
 
-// ===== 岗位折叠（入口在采购卡右上角） =====
 const tog = document.querySelector('.sc-more-link');
 if (tog) tog.addEventListener('click', e => {
   e.preventDefault();
@@ -1160,7 +1154,16 @@ if (tog) tog.addEventListener('click', e => {
   tog.textContent = open ? '收起岗位列表' : '查看全部岗位助手';
 });
 
-// ===== 案例轮播（默认国际物流 + 自动轮播） =====
+const scenarioTrack=document.getElementById('scenarioTrack');
+if(scenarioTrack){
+  const slides=[...scenarioTrack.children],dots=[...document.querySelectorAll('.scenario-dot')];let scene=0,touchX=0;
+  function goScenario(i){scene=(i+slides.length)%slides.length;slides.forEach((s,j)=>{s.hidden=j!==scene;s.setAttribute('aria-hidden',j!==scene)});dots.forEach((d,j)=>j===scene?d.setAttribute('aria-current','true'):d.removeAttribute('aria-current'))}
+  document.querySelectorAll('[data-scenario-nav]').forEach(b=>b.addEventListener('click',()=>goScenario(b.classList.contains('scenario-dot')?+b.dataset.scenarioNav:scene+(+b.dataset.scenarioNav))));
+  scenarioTrack.addEventListener('touchstart',e=>touchX=e.changedTouches[0].clientX,{passive:true});
+  scenarioTrack.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>45)goScenario(scene+(dx<0?1:-1))},{passive:true});
+  goScenario(0);
+}
+
 const rail = document.getElementById('caseRail');
 if (rail) {
   const cards = [...rail.children], dots = document.getElementById('caseDots');

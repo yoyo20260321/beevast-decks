@@ -33,6 +33,27 @@ for (const marker of [
   check(!html.includes(marker), `removed capability marker remains: ${marker}`);
 }
 
+for (const marker of [
+  'id="scenarioCarousel"',
+  'id="scenarioTrack"',
+  'id="scenarioDots"',
+  'data-scenario-step',
+  '智能客服工作台',
+  '来料质检分析',
+  '交付风险预警',
+  '../demos/scenario-1-cs.png',
+  '../demos/scenario-2-qc.png',
+  '../demos/scenario-3-delivery.png',
+  'aria-current',
+]) {
+  check(html.includes(marker), `missing scenario carousel marker: ${marker}`);
+}
+const scenarioBlock = html.match(/<div id="scenarioCarousel"[\s\S]*?<div class="sc-sub/);
+check(Boolean(scenarioBlock), "scenario carousel block is not isolated before customer cases");
+if (scenarioBlock) {
+  check(!/体验\s*Demo|查看详情/.test(scenarioBlock[0]), "scenario carousel contains a prohibited detail/demo entry");
+}
+
 const imagePairs = [
   { webp: "assets/hero-poster.webp", jpeg: "assets/hero-poster.jpg" },
   { webp: "assets/logo-lockup.webp", jpeg: "assets/logo-lockup.jpg" },
