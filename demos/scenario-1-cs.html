@@ -50,17 +50,44 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke
 .side div[data-v].on svg{stroke:var(--ac)}
 .side div[data-v].on::before{content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--ac)}
 .bdg{margin-left:auto;background:#E15A6B;color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 7px;min-width:18px;text-align:center}
+/* ─── 会话列表 / SLA / 审计边界 ─── */
+.threads{width:210px;flex:none;background:var(--pan);border-right:1px solid var(--bd);display:flex;flex-direction:column;min-height:0}
+.threads-head{padding:13px 14px 10px;border-bottom:1px solid var(--bd);flex:none}
+.threads-head b{font-size:13px}
+.threads-head span{display:block;font-size:11px;color:var(--tx3);margin-top:3px}
+.thread-list{flex:1;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:4px}
+.thread{display:block;width:100%;text-align:left;background:none;font-family:inherit;color:var(--tx2);border:1px solid transparent;border-radius:10px;padding:10px 11px;cursor:pointer;transition:all .15s}
+.thread:hover{background:var(--pan2)}
+.thread.on{background:linear-gradient(90deg,rgba(47,197,216,.13),rgba(47,197,216,.02));border-color:rgba(47,197,216,.32)}
+.thread-top{display:flex;align-items:baseline;gap:8px}
+.thread-name{font-size:12.5px;font-weight:600;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thread-time{margin-left:auto;flex:none;font-size:10.5px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.thread-preview{font-size:11.5px;color:var(--tx2);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thread-meta{display:flex;gap:5px;margin-top:7px}
+.ttag{font-size:10px;font-weight:600;border-radius:5px;padding:1.5px 7px;border:1px solid var(--bd);color:var(--tx3)}
+.ttag.risk{color:#F7A5AC;border-color:rgba(242,112,122,.4);background:rgba(242,112,122,.09)}
+.ttag.wait{color:var(--gold);border-color:rgba(233,185,89,.4);background:rgba(233,185,89,.09)}
+.chead .act span.sla{cursor:default;background:var(--inset);gap:6px;font-weight:600;font-variant-numeric:tabular-nums}
+.chead .act span.sla svg{stroke:var(--gold);stroke-width:2.1}
+.chead .act span.sla b{font-weight:700;color:var(--tx)}
+.chead .act span.sla.warn{color:var(--gold);border-color:rgba(233,185,89,.45)}
+.chead .act span.sla.warn b{color:var(--gold)}
+.chead .act span.sla.over{color:#F7A5AC;border-color:rgba(242,112,122,.5)}
+.chead .act span.sla.over b{color:#F7A5AC}
+.card.audit{border-left:3px solid var(--blue);background:linear-gradient(180deg,rgba(91,141,239,.09),var(--pan2))}
+.audit-foot{margin-top:9px;padding-top:9px;border-top:1px dashed var(--bd)}
+@media(max-width:1240px){.threads{display:none}}
 /* ─── 会话区 ─── */
 .view{flex:1;display:flex;min-width:0}
 .chat{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--bd);min-width:0;background:var(--bg)}
-.chead{height:58px;flex:none;padding:0 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:11px;background:var(--pan)}
+.chead{height:58px;flex:none;padding:0 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:9px;background:var(--pan)}
 .cava{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#2E4A78,#22345A);display:grid;place-items:center;font-size:14px;font-weight:700;color:#D7E4F8;border:1px solid var(--bd2)}
-.chead b{font-size:14.5px}
-.tagchip{font-size:10.5px;font-weight:700;color:var(--tx3);border:1px solid var(--bd);border-radius:6px;padding:1px 6px}
-.st{font-size:12px;color:var(--ok);display:flex;align-items:center;gap:7px;margin-left:6px;font-weight:500}
+.chead b{font-size:14.5px;white-space:nowrap}
+.tagchip{font-size:10.5px;font-weight:700;color:var(--tx3);border:1px solid var(--bd);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.st{font-size:12px;color:var(--ok);display:flex;align-items:center;gap:7px;margin-left:2px;font-weight:500;white-space:nowrap;flex:none}
 .st .dot{animation-duration:2.8s}
 .chead .act{margin-left:auto;display:flex;gap:8px}
-.chead .act span{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid var(--bd);border-radius:8px;padding:5px 11px;color:var(--tx2);cursor:pointer;background:var(--pan2);transition:all .16s}
+.chead .act span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;border:1px solid var(--bd);border-radius:8px;padding:4px 9px;color:var(--tx2);cursor:pointer;background:var(--pan2);transition:all .16s;white-space:nowrap;flex:none}
 .chead .act span svg{width:12px;height:12px;stroke:var(--ok);stroke-width:2.2}
 .chead .act span:hover{border-color:var(--bd2);background:var(--pan3)}
 .chead .act span.hot{border-color:rgba(242,112,122,.4);color:#F7A5AC}
@@ -93,7 +120,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke
 .send svg{width:13px;height:13px;stroke:var(--ac-tx);stroke-width:2}
 .send:hover{filter:brightness(1.06)}
 /* ─── 右栏上下文 ─── */
-.ctx{width:266px;flex:none;border-left:1px solid var(--bd);padding:16px 14px;overflow:auto;background:var(--pan)}
+.ctx{width:252px;flex:none;border-left:1px solid var(--bd);padding:16px 14px;overflow:auto;background:var(--pan)}
 .ctx h4{font-size:11px;color:var(--tx3);margin:18px 2px 8px;font-weight:600;letter-spacing:.1em;display:flex;align-items:center;gap:6px}
 .ctx h4:first-child{margin-top:0}
 .ctx h4 svg{width:13px;height:13px;stroke:var(--tx3)}
@@ -226,9 +253,16 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke
 </div>
 
 <div class="view" id="viewChat">
+<aside class="threads" aria-label="会话列表">
+<div class="threads-head"><b>待处理会话</b><span>按风险与响应时限排序</span></div>
+<div class="thread-list">
+<button class="thread on" type="button" data-c="c1"><div class="thread-top"><span class="thread-name">Anastasia · 莫斯科</span><span class="thread-time">14:33</span></div><div class="thread-preview">清关滞留 2 天，客户二次进线</div><div class="thread-meta"><span class="ttag risk">高风险</span><span class="ttag">RU</span></div></button>
+<button class="thread" type="button" data-c="c2"><div class="thread-top"><span class="thread-name">张先生 · 马德里</span><span class="thread-time">09:16</span></div><div class="thread-preview">末端派送 3 天未妥投</div><div class="thread-meta"><span class="ttag wait">催办中</span><span class="ttag">ES</span></div></button>
+<button class="thread" type="button" data-c="c3"><div class="thread-top"><span class="thread-name">李女士 · 汉堡</span><span class="thread-time">16:41</span></div><div class="thread-preview">VAT 发票地址错误，申请重开</div><div class="thread-meta"><span class="ttag">普通</span><span class="ttag">EN</span></div></button>
+</div></aside>
 <div class="chat">
 <div class="chead"><div class="cava" id="cava">A</div><b id="cname">—</b><span class="tagchip" id="ctag"></span><span class="st"><i class="dot"></i>AI 协助中</span>
-<div class="act"><span><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>运单已识别</span><span><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>订单已关联</span><span class="hot" onclick="transfer()"><svg class="i" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>转人工</span></div></div>
+<div class="act"><span class="sla" id="sla" title="承诺答复剩余时限 · 示意数据"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>SLA <b id="slaVal">01:42:18</b></span><span><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>运单已识别</span><span><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>订单已关联</span><span class="hot" onclick="transfer()"><svg class="i" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>转人工</span></div></div>
 <div class="msgs" id="msgs"></div>
 <div class="composer">
 <div class="ai-draft" id="draft"><b><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>AI 草稿</b><span id="draftBody">—</span></div>
@@ -248,6 +282,9 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke
 <div class="prow"><span>AI 首响</span><b class="g">30s</b></div>
 <div class="prow"><span>夜间值守</span><b class="g">AI · 无漏接</b></div>
 <div class="prow"><span>同等人力承接</span><b class="g">约 3 倍</b></div></div>
+<h4><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/></svg>审计与边界</h4>
+<div class="card audit">查询、草稿、建单、转人工全程留痕，可追溯；赔付承诺与高风险处置必须人工审批。
+<div class="audit-foot"><div class="krow"><span>本会话动作留痕</span><b id="auditN">4 条</b></div></div></div>
 </div>
 </div>
 
@@ -291,7 +328,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke
 
 <script>
 const DATA={
- c1:{n:"Anastasia · 莫斯科",tag:"RU",ctx:"运单 WB-2041 · 莫斯科<br>状态 清关异常（2 天）<br>历史工单 2 条 · 均已办结",
+ c1:{n:"Anastasia · 莫斯科",tag:"RU",sla:"01:42:18",ctx:"运单 WB-2041 · 莫斯科<br>状态 清关异常（2 天）<br>历史工单 2 条 · 均已办结",
  msgs:[["cu","客户 · RU · 14:30","Заказ WB-2041 задерживается на таможне. Когда прибудет? Это уже второй раз!"],
  ["ai","AI 草稿 · 依据售后 SOP · 14:30","Анна, здравствуйте. Приносим извинения — посылка WB-2041 всё ещё на таможенном оформлении, задержка около 2 дней. Заявка WO-2041 уже создана, мы ускоряем процесс."],
  ["cu","客户 · RU · 14:32","Спасибо. Но мне нужна точная дата прибытия посылки."],
@@ -299,7 +336,7 @@ const DATA={
  drafts:{zh:"安娜您好，很抱歉，您的包裹 WB-2041 还卡在海关清关，预计还要 2 天。我们已建单 WO-2041 安排催办，一有进展就主动告诉您。",
  en:"Hi Anna, sorry about the delay — WB-2041 is still in customs, about 2 more days. We've opened ticket WO-2041 to expedite it and will keep you posted.",
  ru:"Анна, извините за задержку: WB-2041 ещё на таможенном оформлении, около 2 дней. Заявка WO-2041 создана, мы ускоряем оформление и сообщим, как только посылка поедет дальше."}},
- c2:{n:"张先生 · 马德里",tag:"ES",ctx:"运单 SB-8871 · 马德里<br>状态 末端派送 · 催办中<br>历史工单 0 条",
+ c2:{n:"张先生 · 马德里",tag:"ES",sla:"03:18:44",ctx:"运单 SB-8871 · 马德里<br>状态 末端派送 · 催办中<br>历史工单 0 条",
  msgs:[["cu","客户 · ES · 09:12","¿Cuándo llegará mi pedido? Lleva 3 días en reparto."],
  ["ai","AI 草稿 · 09:12","Su pedido SB-8871 está en reparto desde ayer. Si hoy no se entrega, abriremos una reclamación automáticamente."],
  ["cu","客户 · ES · 09:15","Es demasiado lento, necesito el paquete antes del viernes."],
@@ -307,7 +344,7 @@ const DATA={
  drafts:{zh:"您的包裹 SB-8871 昨天已交由末端派送。如果今天还没送到，我们会自动向网点发起申诉、优先安排，请您再稍等。",
  en:"Your parcel SB-8871 went out for delivery yesterday. If it hasn't arrived by tonight, we'll escalate it with the courier automatically.",
  ru:"Посылка SB-8871 передана курьеру вчера. Если она не придёт сегодня, мы автоматически направим претензию в службу доставки."}},
- c3:{n:"李女士 · 汉堡",tag:"EN",ctx:"订单 #8821 · 汉堡<br>请求 发票重开<br>历史工单 1 条 · 已办结",
+ c3:{n:"李女士 · 汉堡",tag:"EN",sla:"05:06:12",ctx:"订单 #8821 · 汉堡<br>请求 发票重开<br>历史工单 1 条 · 已办结",
  msgs:[["cu","客户 · EN · 16:40","Need a VAT invoice for order #8821, the old one has a wrong address."],
  ["ai","AI 草稿 · 16:41","Sure — I've re-issued VAT invoice #8821-V2 with the corrected address. It's on its way to your email."],
  ["sys","系统动作 · 16:41","发票已重开，已同步 ERP"]],
@@ -440,15 +477,25 @@ window.addEventListener("resize",()=>{if(document.getElementById("viewData").sty
 
 /* ───────── 会话 ───────── */
 let cur="c1",lang="zh";
+let slaLeft=0,slaTimer=null;
+function slaStr(v){const p=n=>String(n).padStart(2,"0");return p(Math.floor(v/3600))+":"+p(Math.floor(v%3600/60))+":"+p(v%60)}
+function startSla(str){clearInterval(slaTimer);slaLeft=str.split(":").reduce((s,x)=>s*60+ +x,0);paintSla();
+ slaTimer=setInterval(()=>{if(slaLeft>0){slaLeft--;paintSla()}else clearInterval(slaTimer)},1000)}
+function paintSla(){const box=document.getElementById("sla"),val=document.getElementById("slaVal");
+ if(slaLeft<=0){val.textContent="已超时";box.classList.add("over");box.classList.remove("warn");return}
+ val.textContent=slaStr(slaLeft);box.classList.toggle("warn",slaLeft<3600);box.classList.remove("over")}
 function loadC(id){cur=id;const d=DATA[id];
  document.getElementById("cname").textContent=d.n;
  document.getElementById("cava").textContent=d.n[0];
  document.getElementById("ctag").textContent=d.tag;
  document.getElementById("ctxCard").innerHTML=d.ctx;
+ document.querySelectorAll(".thread").forEach(x=>x.classList.toggle("on",x.dataset.c===id));
+ startSla(d.sla);
  renderMsgs();setDraft()}
 function renderMsgs(){const d=DATA[cur];const box=document.getElementById("msgs");box.innerHTML="";
  d.msgs.forEach(m=>{const div=document.createElement("div");div.className="m "+m[0];
- div.innerHTML=`<div class="who">${m[1]}</div><div class="b">${m[2]}</div>`;box.appendChild(div)});box.scrollTop=box.scrollHeight}
+ div.innerHTML=`<div class="who">${m[1]}</div><div class="b">${m[2]}</div>`;box.appendChild(div)});
+ document.getElementById("auditN").textContent=d.msgs.length+" 条";box.scrollTop=box.scrollHeight}
 function setDraft(){document.getElementById("draftBody").textContent=DATA[cur].drafts[lang]}
 function send(){const d=DATA[cur];const el=document.getElementById("cin");
  const body=el.value.trim()||d.drafts[lang];el.value="";
@@ -456,6 +503,7 @@ function send(){const d=DATA[cur];const el=document.getElementById("cin");
  setTimeout(()=>{d.msgs.push(["cu","客户 · "+hhmm(),"OK, thank you! 👍"]);if(cur==="c1")renderMsgs()},900)}
 function transfer(){toast("已转人工，专员张敏接手")}
 document.querySelectorAll(".langs span").forEach(e=>e.onclick=()=>{document.querySelectorAll(".langs span").forEach(x=>x.classList.remove("on"));e.classList.add("on");lang=e.dataset.l;setDraft()});
+document.querySelectorAll(".thread").forEach(b=>b.onclick=()=>loadC(b.dataset.c));
 
 /* ───────── 快速建单 ───────── */
 let nextWo=2045,genTimer=null;
