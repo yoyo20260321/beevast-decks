@@ -130,15 +130,19 @@ h2.sl{font-family:var(--serif);font-size:40px;font-weight:900;letter-spacing:-1.
 .gchips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .gchip{padding:7px 16px;border-radius:8px;background:var(--gold-soft);border:1px solid var(--gold-line);font-size:13.5px;font-weight:600;color:var(--gold)}
 
-/* S8 下一步 */
-.steps{list-style:none;counter-reset:n}
-.steps li{counter-increment:n;display:grid;grid-template-columns:52px 1fr;gap:18px;align-items:center;padding:12.5px 0;border-top:1px solid var(--border)}
-.steps li:first-child{border-top:none}
-.steps li::before{content:counter(n);width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid var(--gold-line);color:var(--gold);font-family:var(--mono);font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center}
-.steps .tx{font-size:17.5px;color:var(--t2)}
-.steps .tx b{color:var(--t1);font-weight:800}
-.ask{margin-top:18px;border:1px solid var(--gold-line);background:var(--gold-soft);border-radius:12px;padding:15px 22px;font-size:15.5px;color:var(--t1)}
-.ask b{color:var(--gold)}
+/* S8 培训前后事项清单 */
+.cl{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.col{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 26px}
+.col.hi{background:var(--gold-soft);border-color:var(--gold-line)}
+.col .ch{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.col .ch h3{font-size:20px;font-weight:800;color:var(--t1)}
+.col .ch .en{font-family:var(--mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
+.citem{display:grid;grid-template-columns:20px 1fr;gap:12px;padding:8.5px 0;border-top:1px solid var(--border);align-items:start}
+.citem:first-of-type{border-top:none}
+.citem .bx{width:15px;height:15px;border:1.5px solid var(--gold-line);border-radius:5px;margin-top:4px;background:rgba(228,191,122,.18)}
+.citem .tt{display:block;font-size:15px;font-weight:700;color:var(--t1);line-height:1.4}
+.citem .tt small{font-weight:500;font-size:12.5px;color:var(--t3);margin-left:8px}
+.citem .dd{display:block;font-size:12px;color:var(--t3);margin-top:2px;line-height:1.45}
 
 /* 打印：一页一 slide */
 @page{size:1280px 720px;margin:0}
@@ -344,23 +348,34 @@ h2.sl{font-family:var(--serif);font-size:40px;font-weight:900;letter-spacing:-1.
   <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>07 / 08</b></span></div>
 </section>
 
-<!-- S8 下一步 -->
+<!-- S8 培训前后事项清单 -->
 <section class="slide" id="p8">
   <div class="in">
-    <div class="kicker">07 · 下一步</div>
-    <h2 class="sl">本周只需一个决定：<b style="color:var(--gold)">安排 30 分钟沟通</b></h2>
+    <div class="kicker">07 · 事项清单</div>
+    <h2 class="sl">签约到开课 <b style="color:var(--gold)">6 件事</b>，结课一周内 <b style="color:var(--gold)">5 项交付</b></h2>
     <div class="grow">
-      <ol class="steps">
-        <li><span class="tx"><b>约 20–30 分钟沟通</b>——确认人数、痛点、培训时间、预算与采购流程</span></li>
-        <li><span class="tx"><b>提交方案与正式报价单</b>——本方案可直接用于内部汇报审批</span></li>
-        <li><span class="tx"><b>演示 2–3 个实战示例</b>——看清培训后员工能完成哪些工作</span></li>
-        <li><span class="tx"><b>确认预算与签约路径</b>——比价、供应商准入、合同审核、开票资料</span></li>
-        <li><span class="tx"><b>签约收款后启动定制</b>——调研、课件、工具测试、交付按合同推进</span></li>
-      </ol>
-      <div class="ask">请负责人确认三件事：<b>培训时间窗口</b> · <b>预算审批路径</b> · <b>参训学员名单</b></div>
+      <div class="cl">
+        <div class="col">
+          <div class="ch"><h3>培训前</h3><span class="en">Before · 签约 → 开课</span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">需求沟通<small>20–30 分钟</small></span><span class="dd">确认人数、业务场景、培训目标、现场/线上形式</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">提交三份材料</span><span class="dd">《培训方案》《培训报价单》《培训服务合同》</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">确认预算与采购路径</span><span class="dd">预算审批、签字人、比价 / 供应商准入、开票资料</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">启动会<small>签约后 1–2 天</small></span><span class="dd">确认负责人、学员名单、培训日期与场地</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">定制案例包<small>开课前 5–7 天</small></span><span class="dd">收集典型任务与痛点，制作脱敏案例、实操题、提示词</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">环境检查<small>开课前 1–2 天</small></span><span class="dd">网络、AI 工具账号、投屏与操作环境逐一测通</span></span></div>
+        </div>
+        <div class="col hi">
+          <div class="ch"><h3>培训后</h3><span class="en">After · 结课 1 周内</span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">交付课件与模板</span><span class="dd">培训课件、常用提示词模板、个人 AI 应用清单</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">输出培训总结</span><span class="dd">课堂情况、学员反馈、后续应用建议</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">课堂成果归档</span><span class="dd">练习成果留存，供负责人按清单验收</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">明确服务边界</span><span class="dd">答疑、二次培训、提示词库扩充等另行约定</span></span></div>
+          <div class="citem"><span class="bx"></span><span><span class="tt">可选：线上答疑复盘<small>1 次</small></span><span class="dd">培训后 1–2 周内开展，巩固落地效果</span></span></div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="foot"><span>群蜂智能 · AI 转型咨询与培训 · 杨道利</span><span>2026-10 · <b>08 / 08</b></span></div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>08 / 08</b></span></div>
 </section>
 
 <script>
