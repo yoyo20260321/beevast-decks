@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业 AI 实战培训 · 汇报版（8 页）| 群蜂智能</title>
+<meta name="description" content="企业 AI 实战培训建议方案 · 汇报版。8 页 16:9 单页式，每页可直接作为 PPT 单页使用。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050510; --bg2:#0a0a18;
+  --surface:rgba(255,255,255,.045); --border:rgba(255,255,255,.09); --border-hi:rgba(255,255,255,.18);
+  --t1:#fff; --t2:rgba(255,255,255,.74); --t3:rgba(255,255,255,.44);
+  --grad:linear-gradient(135deg,#6366f1,#a855f7);
+  --grad-hero:linear-gradient(135deg,#818cf8 0%,#c084fc 50%,#e4bf7a 100%);
+  --gold:#e4bf7a; --gold-soft:rgba(228,191,122,.12); --gold-line:rgba(228,191,122,.38);
+  --ok:#34d399;
+  --sans:'Outfit','Noto Sans SC',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  --serif:'Noto Serif SC','Songti SC','STSong','SimSun',serif;
+  --mono:'JetBrains Mono','SF Mono',ui-monospace,'Menlo',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+body{background:#020208;color:var(--t2);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+.slide{width:1280px;height:720px;background:var(--bg);margin:28px auto;position:relative;overflow:hidden;
+  scroll-snap-align:center;padding:58px 72px 66px;display:flex;flex-direction:column;
+  outline:1px solid rgba(255,255,255,.05)}
+.slide::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 42% at 78% -8%,rgba(99,102,241,.14),transparent 70%);pointer-events:none}
+.slide>.in{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-height:0}
+
+/* 页眉页脚 */
+.kicker{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+h1.big{font-family:var(--serif);font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1.14;color:var(--t1)}
+h1.big .g{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+h2.sl{font-family:var(--serif);font-size:40px;font-weight:900;letter-spacing:-1.2px;line-height:1.18;color:var(--t1);margin-bottom:8px}
+.sub{font-size:16.5px;color:var(--t3);line-height:1.7}
+.foot{position:absolute;left:72px;right:72px;bottom:24px;display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:var(--t3);border-top:1px solid var(--border);padding-top:12px;z-index:1}
+.foot b{color:var(--gold);font-weight:700}
+
+/* 通用块 */
+.chip{display:inline-block;padding:8px 18px;border-radius:9px;background:var(--surface);border:1px solid var(--border);font-size:15px;font-weight:500;color:var(--t2)}
+.chip.hot{border-color:var(--gold-line);color:var(--gold);background:var(--gold-soft);font-weight:700}
+.note{font-size:12.5px;color:var(--t3);line-height:1.65}
+.badge{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:3px 11px;white-space:nowrap}
+.badge.p1{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line)}
+.badge.low{background:rgba(52,211,153,.1);color:var(--ok);border:1px solid rgba(52,211,153,.3)}
+.badge.mid{background:rgba(129,140,248,.12);color:#a5b4fc;border:1px solid rgba(129,140,248,.32)}
+
+/* ---- S1 封面 ---- */
+.cover{justify-content:center}
+.cover .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.cover .course{margin-top:26px;font-size:16px;color:var(--t3)}
+.cover .course b{color:var(--gold);font-weight:700}
+.cover-rule{width:88px;height:4px;background:var(--grad);border-radius:2px;margin:30px 0 26px}
+
+/* ---- 通用栅格 ---- */
+.grow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+
+/* S2 价值三行 */
+.vrow{display:grid;grid-template-columns:74px 1fr 1fr 96px;gap:20px;align-items:center;padding:17px 6px;border-top:1px solid var(--border)}
+.vrow:last-of-type{border-bottom:1px solid var(--border)}
+.vrow .p{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--gold)}
+.vrow .s{font-size:19px;font-weight:700;color:var(--t1);line-height:1.4}
+.vrow .v{font-size:15px;color:var(--t2);line-height:1.5}
+
+/* S3 四象限 */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px}
+.q .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.q h3{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px}
+.q p{font-size:14.5px;color:var(--t2);line-height:1.65}
+.q.lead{background:var(--gold-soft);border-color:var(--gold-line)}
+.q.lead p{color:var(--t1)}
+
+/* S4 提纲行 */
+.crow{display:grid;grid-template-columns:86px 1fr 340px;gap:18px;align-items:center;padding:11.5px 6px;border-top:1px solid var(--border)}
+.crow:last-of-type{border-bottom:1px solid var(--border)}
+.crow .t{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--gold)}
+.crow .n{font-size:17.5px;font-weight:700;color:var(--t1)}
+.crow .n small{font-weight:500;font-size:13px;color:var(--t3);margin-left:10px}
+.crow .o{font-size:13.5px;color:var(--t2)}
+.crow .o b{color:var(--gold);font-weight:700;margin-right:6px}
+.ratio{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:16px 0 8px}
+.ratio i{display:block;height:100%}
+.rlegend{display:flex;gap:24px;font-size:12.5px;color:var(--t3)}
+.rlegend b{color:var(--t2)}
+.rlegend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+
+/* S5 流程四列 */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.f{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 18px;display:flex;flex-direction:column}
+.f .no{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px}
+.f h3{font-size:18px;font-weight:800;color:var(--t1);margin-bottom:3px}
+.f .en{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:12px}
+.f ul{list-style:none;flex:1}
+.f ul li{font-size:13px;color:var(--t2);padding:2.5px 0 2.5px 14px;position:relative;line-height:1.5}
+.f ul li::before{content:'';position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:2px;background:var(--gold);opacity:.55}
+.f .out{font-size:12px;color:var(--gold);border-top:1px solid var(--border);padding-top:10px;line-height:1.5}
+.callout{border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;padding:13px 20px;font-size:14px;color:var(--t1)}
+
+/* S6 报价 */
+.price-grid{display:grid;grid-template-columns:1.06fr 1fr;gap:20px;flex:1;min-height:0}
+.price-card{border:1px solid var(--gold-line);background:var(--gold-soft);border-radius:18px;padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+.pnum{font-size:72px;font-weight:900;letter-spacing:-3px;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums}
+.pnum small{font-size:24px;font-weight:700;color:var(--t3);letter-spacing:0;margin-left:6px}
+.punit{font-size:15px;color:var(--t2);margin:8px 0 16px}
+.incl{list-style:none}
+.incl li{font-size:14.5px;color:var(--t1);padding:3.5px 0 3.5px 24px;position:relative}
+.incl li::before{content:'✓';position:absolute;left:0;color:var(--ok);font-weight:700}
+.tiers{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px 28px;display:flex;flex-direction:column;justify-content:center}
+.trow{display:grid;grid-template-columns:1fr 130px;gap:12px;padding:12px 2px;border-top:1px solid var(--border);align-items:center}
+.trow:first-of-type{border-top:none}
+.trow .tn{font-size:16.5px;font-weight:700;color:var(--t2)}
+.trow .tv{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--t2);text-align:right}
+.trow.hi{background:var(--gold-soft);border-radius:10px;border-top:none;padding:12px 14px;margin:0 -14px}
+.trow.hi .tn{color:var(--t1)}
+.trow.hi .tn em{font-style:normal;font-size:11px;color:var(--gold);border:1px solid var(--gold-line);border-radius:5px;padding:1px 7px;margin-left:8px;vertical-align:2px}
+.trow.hi .tv{color:var(--gold)}
+
+/* S7 保障 */
+.trow2{display:grid;grid-template-columns:170px 1fr 210px;gap:18px;padding:10.5px 6px;border-top:1px solid var(--border);align-items:center}
+.trow2:last-of-type{border-bottom:1px solid var(--border)}
+.trow2 .w{font-family:var(--mono);font-size:14.5px;font-weight:700;color:var(--gold)}
+.trow2 .a{font-size:16px;color:var(--t1);font-weight:500}
+.trow2 .d{font-size:13px;color:var(--t3);text-align:right}
+.gchips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.gchip{padding:7px 16px;border-radius:8px;background:var(--gold-soft);border:1px solid var(--gold-line);font-size:13.5px;font-weight:600;color:var(--gold)}
+
+/* S8 下一步 */
+.steps{list-style:none;counter-reset:n}
+.steps li{counter-increment:n;display:grid;grid-template-columns:52px 1fr;gap:18px;align-items:center;padding:12.5px 0;border-top:1px solid var(--border)}
+.steps li:first-child{border-top:none}
+.steps li::before{content:counter(n);width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid var(--gold-line);color:var(--gold);font-family:var(--mono);font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center}
+.steps .tx{font-size:17.5px;color:var(--t2)}
+.steps .tx b{color:var(--t1);font-weight:800}
+.ask{margin-top:18px;border:1px solid var(--gold-line);background:var(--gold-soft);border-radius:12px;padding:15px 22px;font-size:15.5px;color:var(--t1)}
+.ask b{color:var(--gold)}
+
+/* 打印：一页一 slide */
+@page{size:1280px 720px;margin:0}
+@media print{
+  body{background:#fff}
+  .slide{margin:0;outline:none;page-break-after:always;break-after:page}
+  .slide:last-child{page-break-after:auto}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- S1 封面 -->
+<section class="slide" id="p1">
+  <div class="in cover">
+    <div class="kicker">建议方案 · 提交销售部负责人审议</div>
+    <h1 class="big">企业 AI 实战培训<br><span class="g">建议方案</span></h1>
+    <div class="cover-rule"></div>
+    <p class="sub" style="max-width:720px">让销售把 AI 真正用起来——不是听一遍工具，而是当场把活干出来。<br>单场 4 小时实战培训，成果可验收、能力可沉淀。</p>
+    <p class="course">首发课程：<b>《AI 不只是聊天：跨境物流销售如何用 AI 提升工作效能》</b></p>
+    <div class="meta">
+      <span class="chip hot">单场 4 小时</span>
+      <span class="chip">20–30 人 / 场</span>
+      <span class="chip">现场或线上</span>
+      <span class="chip hot">标准实战培训 ¥9,800 / 场</span>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · AI 转型咨询与培训 · 汇报人 杨道利</span><span>2026-10 · <b>01 / 08</b></span></div>
+</section>
+
+<!-- S2 业务价值 -->
+<section class="slide" id="p2">
+  <div class="in">
+    <div class="kicker">01 · 业务价值</div>
+    <h2 class="sl">AI 先接管销售<b style="color:var(--gold)">最费时</b>的三类工作</h2>
+    <p class="sub">按「短期可落地、使用频率高、无需接内部系统」排序</p>
+    <div class="grow">
+      <div class="vrow">
+        <span class="p">P1</span>
+        <span class="s">邮件、微信回复、客户跟进话术</span>
+        <span class="v">少写快回，沟通更专业——文字撰写时间直接压缩</span>
+        <span class="badge low">难度 低</span>
+      </div>
+      <div class="vrow">
+        <span class="p">P2</span>
+        <span class="s">会议纪要、跟进任务、销售周报</span>
+        <span class="v">整理与汇报工作大幅减少，把时间还给客户</span>
+        <span class="badge low">难度 低</span>
+      </div>
+      <div class="vrow">
+        <span class="p">P3</span>
+        <span class="s">客户背景研究、需求与痛点分析</span>
+        <span class="v">拜访准备更充分，切入点更准</span>
+        <span class="badge mid">难度 中</span>
+      </div>
+    </div>
+    <p class="note">P4–P6（异议处理、方案材料、客户筛选）随团队掌握程度逐步引入　|　运价、时效承诺、清关等业务结论必须人工核验后对外</p>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>02 / 08</b></span></div>
+</section>
+
+<!-- S3 培训方案 -->
+<section class="slide" id="p3">
+  <div class="in">
+    <div class="kicker">02 · 培训方案</div>
+    <h2 class="sl">一场 4 小时实战训练，<b style="color:var(--gold)">不是工具宣讲</b></h2>
+    <div class="grow">
+      <div class="quad">
+        <div class="q lead">
+          <div class="k">Goal · 目标</div>
+          <p style="font-size:17px"><b>会用 AI 干销售活：</b>客户开发、客户沟通、需求分析、方案撰写、客户跟进——效率和转化能力双提升。</p>
+        </div>
+        <div class="q">
+          <div class="k">Audience · 对象</div>
+          <p>销售代表、客户经理、销售主管；以 AI 零基础或初级使用者为主。</p>
+        </div>
+        <div class="q">
+          <div class="k">Method · 方式</div>
+          <p><b style="color:var(--t1)">30% 讲解 · 60% 实操 · 10% 总结</b>——讲解示范 + 现场实操 + 案例演练 + 成果点评。</p>
+        </div>
+        <div class="q">
+          <div class="k">Outcome · 成果</div>
+          <p>每人带走：可复用提示词模板 + 工作方法 + 个人应用清单；<b style="color:var(--t1)">课堂成果可直接验收</b>。</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <span class="chip">不接企业内部系统</span>
+        <span class="chip">不改业务流程</span>
+        <span class="chip">豆包 / DeepSeek 等通用工具</span>
+        <span class="chip">单场交付 · 单场验收</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>03 / 08</b></span></div>
+</section>
+
+<!-- S4 课程提纲 -->
+<section class="slide" id="p4">
+  <div class="in">
+    <div class="kicker">03 · 课程安排（4 小时）</div>
+    <h2 class="sl">240 分钟 · 6 个模块，<b style="color:var(--gold)">每个模块留下成果</b></h2>
+    <div class="grow">
+      <div class="crow"><span class="t">30′</span><span class="n">模块一 · 建立认知<small>AI 能为销售做什么</small></span><span class="o"><b>成果</b>明确自己最值得用 AI 改善的任务</span></div>
+      <div class="crow"><span class="t">45′</span><span class="n">模块二 · 掌握方法<small>如何让 AI 真正干好活</small></span><span class="o"><b>成果</b>一套可重复使用的 AI 工作方法</span></div>
+      <div class="crow"><span class="t">60′</span><span class="n">实战一 · 客户开发与线索研究</span><span class="o"><b>成果</b>目标客户研究 + 拜访准备材料</span></div>
+      <div class="crow"><span class="t">60′</span><span class="n">实战二 · 客户沟通与商机推进</span><span class="o"><b>成果</b>沟通话术 + 商机跟进方案</span></div>
+      <div class="crow"><span class="t">35′</span><span class="n">实战三 · 销售方案与日常提效</span><span class="o"><b>成果</b>一份销售文档或工作汇报</span></div>
+      <div class="crow"><span class="t">10′</span><span class="n">总结与行动计划</span><span class="o"><b>带走</b>3 个个人场景 + 优先尝试清单</span></div>
+      <div style="margin-top:18px">
+        <div class="ratio"><i style="width:30%;background:rgba(129,140,248,.75)"></i><i style="width:60%;background:var(--gold)"></i><i style="width:10%;background:rgba(192,132,252,.75)"></i></div>
+        <div class="rlegend"><span><i style="background:rgba(129,140,248,.75)"></i><b>30%</b> 讲解示范</span><span><i style="background:var(--gold)"></i><b>60%</b> 现场实操</span><span><i style="background:rgba(192,132,252,.75)"></i><b>10%</b> 总结沉淀</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>04 / 08</b></span></div>
+</section>
+
+<!-- S5 实施流程 -->
+<section class="slide" id="p5">
+  <div class="in">
+    <div class="kicker">04 · 实施流程</div>
+    <h2 class="sl">课前轻调研 · 课中强实操 · <b style="color:var(--gold)">课后可复用</b></h2>
+    <div class="grow">
+      <div class="flow">
+        <div class="f">
+          <div class="no">01</div><h3>签约前</h3><div class="en">Pre-contract</div>
+          <ul><li>摸清人数、业务与 AI 基础</li><li>确认场景、目标与期望</li><li>提交方案、报价、合同</li></ul>
+          <div class="out">产出：方案 · 报价单 · 合同草案</div>
+        </div>
+        <div class="f">
+          <div class="no">02</div><h3>签约后</h3><div class="en">Preparation</div>
+          <ul><li>收集典型任务与痛点</li><li>确定案例、工具、设备</li><li>微调课程与练习材料</li></ul>
+          <div class="out">产出：定制课件 · 实操手册 · 任务</div>
+        </div>
+        <div class="f">
+          <div class="no">03</div><h3>培训当天</h3><div class="en">Delivery · 4h</div>
+          <ul><li>认知 + 方法 + 案例演示</li><li>跟练、分组任务、点评</li><li>总结可迁移的用法</li></ul>
+          <div class="out">产出：课堂成果 · 学员反馈</div>
+        </div>
+        <div class="f">
+          <div class="no">04</div><h3>培训后</h3><div class="en">Follow-up</div>
+          <ul><li>交付课件、模板、清单</li><li>汇总反馈与应用建议</li><li>可选 1 次线上答疑</li></ul>
+          <div class="out">产出：培训总结 · 改善建议</div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px">签约前只做必要沟通；深入调研、案例开发、定制课件一律在签约后开展——投入与合同保障对齐。</div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>05 / 08</b></span></div>
+</section>
+
+<!-- S6 费用预算 -->
+<section class="slide" id="p6">
+  <div class="in">
+    <div class="kicker">05 · 费用预算</div>
+    <h2 class="sl">单场 <b style="color:var(--gold)">¥9,800</b>，课前到课后全部包含</h2>
+    <div class="grow">
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="pnum">¥9,800<small>/ 场 · 4 小时</small></div>
+          <div class="punit">标准实战培训（建议方案）</div>
+          <ul class="incl">
+            <li>1 次培训前需求沟通</li>
+            <li>1 场 4 小时现场或线上培训</li>
+            <li>跨境物流销售案例演示与实操</li>
+            <li>1 套课件 + 常用提示词模板</li>
+            <li>1 份培训总结与应用建议</li>
+          </ul>
+        </div>
+        <div class="tiers">
+          <div class="trow"><span class="tn">基础培训</span><span class="tv">¥6,800</span></div>
+          <div class="trow hi"><span class="tn">标准实战培训<em>主推</em></span><span class="tv">¥9,800</span></div>
+          <div class="trow"><span class="tn">定制提升培训</span><span class="tv">¥12,800–16,800</span></div>
+          <p class="note" style="margin-top:14px">假设 20–30 人 / 场，超出需评估辅导强度；差旅、税费、额外定制以正式报价单与合同为准。预算有限时调定制深度，不降交付标准。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>06 / 08</b></span></div>
+</section>
+
+<!-- S7 实施保障 -->
+<section class="slide" id="p7">
+  <div class="in">
+    <div class="kicker">06 · 实施保障</div>
+    <h2 class="sl">签约后一周内<b style="color:var(--gold)">即可开课</b></h2>
+    <div class="grow">
+      <div class="trow2"><span class="w">签约后 1–2 天</span><span class="a">启动会：确认负责人、名单、日期、场地</span><span class="d">→ 项目执行计划</span></div>
+      <div class="trow2"><span class="w">培训前 5–7 天</span><span class="a">收集典型任务、难点、使用习惯</span><span class="d">→ 培训需求汇总</span></div>
+      <div class="trow2"><span class="w">培训前 3–5 天</span><span class="a">制作客户适用案例、实操题、提示词</span><span class="d">→ 定制化案例包</span></div>
+      <div class="trow2"><span class="w">培训前 1–2 天</span><span class="a">测试网络、AI 工具账号、投屏环境</span><span class="d">→ 环境检查表</span></div>
+      <div class="trow2"><span class="w">培训当天</span><span class="a">授课、组织练习、收集反馈</span><span class="d">→ 课堂成果 · 签到反馈</span></div>
+      <div class="trow2"><span class="w">培训后 1–3 天</span><span class="a">交付材料、培训总结及建议</span><span class="d">→ 课件 · 模板 · 总结</span></div>
+      <div class="gchips">
+        <span class="gchip">脱敏案例 · 不取客户敏感数据</span>
+        <span class="gchip">工具提前测通</span>
+        <span class="gchip">成果可验收</span>
+        <span class="gchip">服务边界写进合同</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · 企业 AI 实战培训建议方案</span><span><b>07 / 08</b></span></div>
+</section>
+
+<!-- S8 下一步 -->
+<section class="slide" id="p8">
+  <div class="in">
+    <div class="kicker">07 · 下一步</div>
+    <h2 class="sl">本周只需一个决定：<b style="color:var(--gold)">安排 30 分钟沟通</b></h2>
+    <div class="grow">
+      <ol class="steps">
+        <li><span class="tx"><b>约 20–30 分钟沟通</b>——确认人数、痛点、培训时间、预算与采购流程</span></li>
+        <li><span class="tx"><b>提交方案与正式报价单</b>——本方案可直接用于内部汇报审批</span></li>
+        <li><span class="tx"><b>演示 2–3 个实战示例</b>——看清培训后员工能完成哪些工作</span></li>
+        <li><span class="tx"><b>确认预算与签约路径</b>——比价、供应商准入、合同审核、开票资料</span></li>
+        <li><span class="tx"><b>签约收款后启动定制</b>——调研、课件、工具测试、交付按合同推进</span></li>
+      </ol>
+      <div class="ask">请负责人确认三件事：<b>培训时间窗口</b> · <b>预算审批路径</b> · <b>参训学员名单</b></div>
+    </div>
+  </div>
+  <div class="foot"><span>群蜂智能 · AI 转型咨询与培训 · 杨道利</span><span>2026-10 · <b>08 / 08</b></span></div>
+</section>
+
+<script>
+// 键盘翻页（浏览用，不影响截图/打印）
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0;
+  function cur(){var best=0,bd=1e9;slides.forEach(function(s,k){var d=Math.abs(s.getBoundingClientRect().top);if(d<bd){bd=d;best=k;}});return best;}
+  document.addEventListener('keydown',function(e){
+    i=cur();
+    if(e.key==='ArrowDown'||e.key==='PageDown'||e.key==='ArrowRight'){i=Math.min(i+1,slides.length-1);slides[i].scrollIntoView({behavior:'smooth'});e.preventDefault();}
+    if(e.key==='ArrowUp'||e.key==='PageUp'||e.key==='ArrowLeft'){i=Math.max(i-1,0);slides[i].scrollIntoView({behavior:'smooth'});e.preventDefault();}
+  });
+})();
+</script>
+</body>
+</html>
