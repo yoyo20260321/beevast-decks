@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>群蜂智能 · 研发工作流数字孪生 · Mock Demo</title>
+<style>
+:root{
+  --bg0:#080b12;--bg1:#0c111b;--panel:rgba(255,255,255,.035);--panel2:rgba(255,255,255,.055);
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --tx:#e8edf4;--tx2:#8a94a6;--tx3:#5b6474;
+  --admin5:#f5c451;--zwen:#5ac8fa;--qareview:#b07dff;--te:#4ade80;--qaarch:#ff8a5c;--ocr:#ff6b8a;
+  --ok:#3ddc97;--warn:#f5c451;--err:#ff6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 80% -10%,rgba(90,200,250,.07),transparent 60%),
+    radial-gradient(900px 500px at 10% 110%,rgba(176,125,255,.06),transparent 60%),
+    var(--bg0);
+  color:var(--tx);overflow:hidden;
+}
+/* ── 布局 ── */
+#app{display:flex;flex-direction:column;height:100vh;padding:14px 18px;gap:12px}
+header{display:flex;align-items:center;gap:16px;flex-shrink:0;position:relative;padding-bottom:10px}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line2) 20%,rgba(90,200,250,.5) 50%,var(--line2) 80%,transparent)}
+h1{font-size:17px;font-weight:650;letter-spacing:.5px}
+h1 .en{color:var(--tx3);font-weight:400;font-size:12px;margin-left:10px}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid rgba(245,196,81,.4);color:var(--warn);letter-spacing:1.5px}
+.spacer{flex:1}
+#clock{font-variant-numeric:tabular-nums;color:var(--tx2);font-size:12px}
+.kpis{display:flex;gap:10px;flex-shrink:0}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 14px;text-align:center;min-width:76px}
+.kpi b{display:block;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi span{font-size:10px;color:var(--tx3);letter-spacing:1px}
+.kpi.hot b{color:var(--warn)}
+.kpi.ok b{color:var(--ok)}
+
+main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-height:0}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0}
+.col-title{font-size:11px;color:var(--tx3);letter-spacing:2px;padding:2px 4px;display:flex;align-items:center;gap:6px}
+.col-title::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--tx3)}
+
+/* ── 角色卡 ── */
+.role{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;
+  transition:border-color .25s,background .25s,transform .15s;position:relative;overflow:hidden}
+.role:hover{border-color:var(--line2);background:var(--panel2)}
+.role.sel{border-color:var(--rc);box-shadow:0 0 0 1px var(--rc),0 0 18px -6px var(--rc)}
+.role .top{display:flex;align-items:center;gap:9px}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#0a0e15;flex-shrink:0;position:relative}
+.avatar::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px solid var(--rc);opacity:.35}
+.role.on .avatar::after{opacity:1;animation:ringpulse 1.8s infinite}
+@keyframes ringpulse{0%,100%{box-shadow:0 0 0 0 var(--rc-glow)}50%{box-shadow:0 0 0 5px transparent}}
+.role .nm{font-size:12.5px;font-weight:600;line-height:1.2}
+.role .st{font-size:10.5px;color:var(--tx2);margin-top:1px;display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot.on{animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.busy{margin-top:8px}
+.busy .lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:3px}
+.busy .lbl b{color:var(--tx2);font-variant-numeric:tabular-nums}
+.bar{height:4px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;border-radius:4px;background:var(--rc);width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);position:relative}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  animation:shimmer 2.4s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+.role .cur{margin-top:7px;font-size:10.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.role .cur b{color:var(--rc);font-weight:500}
+
+/* ── 泳道 ── */
+.lanes{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;flex:1;min-height:0;position:relative;overflow:hidden}
+.lanes::before{content:"";position:absolute;top:46px;left:16px;right:16px;height:1.5px;
+  background:repeating-linear-gradient(90deg,rgba(90,200,250,.35) 0 8px,transparent 8px 16px);
+  animation:flow 1.2s linear infinite;opacity:.5}
+@keyframes flow{to{background-position:16px 0}}
+.lane{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.lane .hd{text-align:center;padding-bottom:8px;position:relative;z-index:1}
+.lane .hd .n{font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.lane .hd .t{font-size:11.5px;font-weight:600;margin-top:2px;letter-spacing:.5px}
+.lane.star .hd .t{color:var(--warn)}
+.lane .cnt{font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.lane .body{flex:1;display:flex;flex-direction:column;gap:6px;overflow-y:auto;padding:2px}
+.chip{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:9px;padding:8px 9px;cursor:pointer;
+  transition:transform .15s,border-color .2s,background .2s;animation:chipin .5s cubic-bezier(.3,1.3,.5,1)}
+@keyframes chipin{from{opacity:0;transform:translateY(8px) scale(.96)}}
+.chip:hover{border-color:var(--line2);background:rgba(255,255,255,.07);transform:translateY(-1px)}
+.chip .cid{font-size:9.5px;color:var(--tx3);font-variant-numeric:tabular-nums;display:flex;justify-content:space-between}
+.chip .cid .ow{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle}
+.chip .ti{font-size:11.5px;font-weight:550;margin-top:3px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chip.active{border-color:rgba(90,200,250,.5);animation:glow 2.2s infinite}
+.chip.dim{opacity:.22;filter:saturate(.3)}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(90,200,250,0)}50%{box-shadow:0 0 14px -4px rgba(90,200,250,.55)}}
+.chip.done{opacity:.45;filter:saturate(.4)}
+.chip .tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:8px;margin-top:5px;background:rgba(255,255,255,.06);color:var(--tx2)}
+
+/* ── 事件流 ── */
+.feed{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;flex:1;display:flex;flex-direction:column;min-height:0}
+.feed .list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;scrollbar-width:thin}
+.ev{display:flex;gap:9px;padding:7px 6px;border-radius:8px;animation:evin .5s cubic-bezier(.3,1.2,.5,1);align-items:flex-start}
+@keyframes evin{from{opacity:0;transform:translateX(14px)}}
+.ev:hover{background:rgba(255,255,255,.04)}
+.ev .tm{font-size:9.5px;color:var(--tx3);font-variant-numeric:tabular-nums;flex-shrink:0;width:34px;margin-top:2px}
+.ev .bd{font-size:11px;line-height:1.45;color:var(--tx2)}
+.ev .bd b{color:var(--tx);font-weight:600}
+.ev .bd .who{font-weight:600}
+.ev.first{background:linear-gradient(90deg,rgba(90,200,250,.08),transparent);border-left:2px solid var(--zwen)}
+
+/* ── 任务详情抽屉 ── */
+#drawer{position:fixed;inset:0;background:rgba(4,6,10,.55);backdrop-filter:blur(3px);z-index:50;display:none;align-items:center;justify-content:center}
+#drawer.open{display:flex;animation:fadein .2s}
+@keyframes fadein{from{opacity:0}}
+.sheet{width:min(720px,92vw);max-height:82vh;overflow-y:auto;background:var(--bg1);border:1px solid var(--line2);border-radius:16px;
+  padding:22px 24px;animation:up .3s cubic-bezier(.3,1.2,.5,1);scrollbar-width:thin}
+@keyframes up{from{opacity:0;transform:translateY(24px) scale(.98)}}
+.sheet .hd{display:flex;align-items:flex-start;gap:10px;margin-bottom:4px}
+.sheet .hd h2{font-size:16px;font-weight:650;line-height:1.35}
+.sheet .hd .cid{font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.x{margin-left:auto;cursor:pointer;color:var(--tx3);font-size:18px;line-height:1;padding:2px 6px;border-radius:6px}
+.x:hover{color:var(--tx);background:rgba(255,255,255,.06)}
+.ownerline{font-size:11.5px;color:var(--tx2);margin:6px 0 16px}
+.ownerline .who{color:var(--oc);font-weight:600}
+.steps{display:flex;gap:4px;margin:14px 0 4px}
+.step{flex:1;text-align:center;position:relative}
+.step .pt{height:5px;border-radius:5px;background:rgba(255,255,255,.07);margin-bottom:6px;position:relative;overflow:hidden}
+.step.done .pt{background:var(--ok)}
+.step.cur .pt{background:var(--oc)}
+.step.cur .pt::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.6s infinite}
+.step .sn{font-size:9.5px;color:var(--tx3)}
+.step.cur .sn{color:var(--oc);font-weight:600}
+.step.done .sn{color:var(--ok)}
+.tl{margin-top:16px;border-left:1.5px solid var(--line2);padding-left:16px;display:flex;flex-direction:column;gap:12px}
+.tle{position:relative}
+.tle::before{content:"";position:absolute;left:-21px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--rc);border:2px solid var(--bg1);box-shadow:0 0 0 1.5px var(--rc)}
+.tle .h{font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.tle .b{font-size:12px;line-height:1.5;color:var(--tx2);margin-top:2px}
+.tle .b b{color:var(--rc)}
+.hint{font-size:10.5px;color:var(--tx3);text-align:center;padding:8px 0 0;letter-spacing:.5px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:5px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>研发工作流 · 数字孪生<span class="en">BeeVast R&amp;D Workflow Twin</span></h1>
+    <span class="badge">MOCK DATA</span>
+    <div class="spacer"></div>
+    <div class="kpis" id="kpis"></div>
+    <div id="clock"></div>
+  </header>
+  <main>
+    <div class="col">
+      <div class="col-title">角色 WORKFORCE</div>
+      <div id="roles" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div class="hint" style="text-align:left;padding:2px 4px">点击角色卡可高亮其任务</div>
+    </div>
+    <div class="col">
+      <div class="col-title">任务泳道 PIPELINE（点击任务看单任务协同流）</div>
+      <div class="lanes" id="lanes"></div>
+    </div>
+    <div class="col">
+      <div class="col-title">协作事件流 EVENT STREAM</div>
+      <div class="feed"><div class="list" id="feed"></div></div>
+    </div>
+  </main>
+</div>
+
+<div id="drawer" onclick="if(event.target===this)closeDrawer()">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+/* ═══ Mock 数据（取材自 1019 真实工作流运行现场） ═══ */
+const ROLES = {
+  admin5:   {name:"杨道利",  title:"拍板 · 验收",   c:"#f5c451", busy:15, st:"待命",      on:false, cur:"等待 v1.3 验收"},
+  zwen:     {name:"主脑·仲文",title:"编排 · 执行",   c:"#5ac8fa", busy:82, st:"执行中 ×4", on:true,  cur:"WF-016 工作流看板 demo"},
+  qareview: {name:"qa-review",title:"质量安全审查",  c:"#b07dff", busy:46, st:"队列扫描",  on:true,  cur:"盲评 #1990/#1992"},
+  te:       {name:"test-engineer",title:"测试工程师",c:"#4ade80", busy:30, st:"待派发",    on:false, cur:"等阶段 2 定稿"},
+  qaarch:   {name:"qa-arch",  title:"架构评审",      c:"#ff8a5c", busy:95, st:"评审中",    on:true,  cur:"RFC-0220 方案评审 22:30 触发"},
+  ocr:      {name:"ocr",      title:"代码评审 open CR",c:"#ff6b8a",busy:55,st:"闸值守",   on:true,  cur:"High/Medium 清零闸"},
+};
+const STAGES = ["入口归账","方案","拍板 ★","执行","评审合并","部署回归","验收闭环 ★"];
+const TASKS = [
+  {id:"WF-016", ti:"工作流角色协同看板 demo 页", st:3, ow:"zwen",  active:true,  tag:"轻卡 · dogfood"},
+  {id:"RFC-0220", ti:"qa-review 合并前挡板",     st:2, ow:"qaarch", active:false, tag:"RFC级 · M1→M3"},
+  {id:"RFC-0221", ti:"master-brain 运维能力票",  st:5, ow:"zwen",  active:false, tag:"敏感面 · 已合并"},
+  {id:"RFC-0215", ti:"配额墙自动续跑",           st:4, ow:"qareview",active:false,tag:"fde 试点"},
+  {id:"SENT-07",  ti:"舆情监控 per-user 脱敏",   st:3, ow:"zwen",  active:false, tag:"验收⑧前闸"},
+  {id:"KB-0212",  ti:"知识治理 enforced 切换",   st:6, ow:"admin5",active:false, tag:"待验收"},
+  {id:"WF-013",   ti:"研发工作流 v1.3 收敛",     st:6, ow:"admin5",active:false, tag:"已关单", done:true},
+];
+const ROLE_ALIAS = {admin5:"admin5", zwen:"仲文", qareview:"qa-review", te:"test-engineer", qaarch:"qa-arch", ocr:"ocr"};
+
+/* 每任务的角色时间线（drawer 数据） */
+const TASK_TL = {
+  "WF-016":[
+    ["22:15","admin5","<b>/goal</b> 下发 demo 需求 → 台账 id16 自动建单"],
+    ["22:15","仲文","阶段0 归账 ✓ · 轻卡分级：一句话方案+验收项 3 条"],
+    ["22:16","仲文","阶段3 执行：单文件 mock 页开写（无后端依赖）"],
+    ["22:2x","test-engineer","待阶段 5：独立四查+证据报告"],
+  ],
+  "RFC-0220":[
+    ["21:40","仲文","方案 RFC-0220 写毕 → PR <b>#1990</b>"],
+    ["21:5x","仲文","派发 qa-arch 被三权限面拦 → 立项 RFC-0221 补授权"],
+    ["22:33","admin5","「现在重启」→ RFC-0221 当晚合并生效"],
+    ["22:36","仲文→qa-arch","ops 面建排程 <b>sch_467d234b</b>，22:30/23:00 触发方案评审"],
+  ],
+  "RFC-0221":[
+    ["22:05","admin5","「给 master-brain 补平台配置专用授权，我拍板」"],
+    ["22:0x","仲文","TDD：谓词单测红→绿 · 敏感面标记=权限边界"],
+    ["22:1x","ocr","gatekeeper 全量单测 <b>1060/1060</b> 绿 · High/Medium 零"],
+    ["22:2x","admin5","「1」→ 合并 bc6683e8 + gk 重启 56657"],
+  ],
+  "RFC-0215":[
+    ["1016","仲文","PR #1950 合并（quota-watch 双证据检测）"],
+    ["1019","qa-review","队列扫描中：fde 单 agent 试点观察"],
+    ["—","quota-watch","自愈闭环：配额墙→自动登记→串行续跑"],
+  ],
+  "SENT-07":[
+    ["1005","仲文","双 org 并跑 35090+36420"],
+    ["1019","qa-review","「没有找到」=合法空语义对齐"],
+    ["—","admin5","验收⑧前闸：per-user 脱敏只活在 wip 分支"],
+  ],
+  "KB-0212":[
+    ["1010","qa-arch","enforced 切换演练全过（PR#1929）"],
+    ["1019","仲文","面板 scope 唯一源 #1993 已合"],
+    ["—","admin5","待验收：prod EW 发版即生效"],
+  ],
+  "WF-013":[
+    ["1017","admin5","v1.2 条款全量采纳"],
+    ["1018","qa-arch","4 blocker 修订吸收 · v1.2.1 生效"],
+    ["1019","admin5","「现在收敛掉不等了」→ v1.3 五收敛件全落"],
+    ["22:0x","admin5","验收确认「<b>1 2 3 4 5</b>」→ 主线关单 ✓"],
+  ],
+};
+
+/* ═══ 渲染 ═══ */
+const $ = s=>document.querySelector(s);
+const esc = s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function renderRoles(sel){
+  $("#roles").innerHTML = Object.entries(ROLES).map(([k,r])=>`
+    <div class="role ${k===sel?'sel':''} ${r.on?'on':''}" style="--rc:${r.c};--rc-glow:${r.c}44" onclick="toggleRole('${k}')">
+      <div class="top">
+        <div class="avatar" style="background:${r.c}">${r.name[0]}</div>
+        <div><div class="nm">${r.name}</div>
+        <div class="st"><span class="dot ${r.on?'on':''}" style="background:${r.on?r.c:'var(--tx3)'}"></span>${r.st}</div></div>
+      </div>
+      <div class="busy"><div class="lbl"><span>繁忙度</span><b>${r.busy}%</b></div>
+      <div class="bar"><i style="--rc:${r.c}" data-w="${r.busy}"></i></div></div>
+      <div class="cur">▸ <b>${r.cur}</b></div>
+    </div>`).join("");
+  requestAnimationFrame(()=>document.querySelectorAll(".bar i").forEach(i=>i.style.width=i.dataset.w+"%"));
+}
+
+function renderLanes(){
+  $("#lanes").innerHTML = STAGES.map((t,i)=>`
+    <div class="lane ${t.includes('★')?'star':''}">
+      <div class="hd"><div class="n">${String(i).padStart(2,"0")}</div><div class="t">${t}</div>
+      <div class="cnt">${TASKS.filter(x=>x.st===i&&!x.done).length||""}</div></div>
+      <div class="body">${TASKS.filter(x=>x.st===i).map(chip).join("")}</div>
+    </div>`).join("");
+}
+const chip = t=>`
+  <div class="chip ${t.active?'active':''} ${t.done?'done':''}" onclick="openDrawer('${t.id}')">
+    <div class="cid"><span><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</span><span>${t.done?"✓":"⏳"}</span></div>
+    <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span>
+  </div>`;
+
+function renderKpis(){
+  const doing = TASKS.filter(t=>!t.done).length;
+  const wait  = TASKS.filter(t=>t.st===2||t.st===6).length;
+  $("#kpis").innerHTML = `
+    <div class="kpi"><b>${doing}</b><span>在办任务</span></div>
+    <div class="kpi hot"><b>${wait}</b><span>待拍板/验收</span></div>
+    <div class="kpi ok"><b>2</b><span>今日关单</span></div>
+    <div class="kpi"><b id="evcnt">0</b><span>今日事件</span></div>`;
+}
+
+/* ═══ 事件流 ═══ */
+const EVPOOL = [
+  ["仲文","qa-arch","送审 RFC-0220 方案（排程 sch_467d234b）"],
+  ["qa-review","仲文","盲评 #1992：敏感面标记齐全，无 High/Medium"],
+  ["admin5","仲文","★ 拍板：v1.3「现在收敛掉不等了」"],
+  ["test-engineer","仲文","WF-016 验收用例独立设计中（与实现互不可见）"],
+  ["preflight","仲文","✓ 三闸绿：typecheck / test / collide"],
+  ["ocr","仲文","闸值守：High/Medium 清零才许合"],
+  ["admin5","仲文","✓ 验收「1 2 3 4 5」→ v1.3 主线关单"],
+  ["仲文","台账","/goal → id16 自动建单（0.3s）"],
+  ["gk 56657","主脑 99039","cap:platform-ops 票注册下发 ✓"],
+  ["仲文","ops 面","schedule.create → qa-arch 评审派发"],
+  ["qa-review","进展群","盲评报告自动投递（日 5 tick）"],
+  ["quota-watch","仲文","配额墙双证据检测：本次未触发"],
+  ["main-guard","仲文","✓ main 健康守卫：本轮零回归"],
+  ["仲文","qa-review","request review：RFC-0220 双跑方案"],
+  ["admin5","仲文","「停」字守卫就位：急停 5s 内进程消失"],
+];
+let evIdx = 0, evCount = 0;
+function pushEv(custom){
+  const [who, to, what] = custom || EVPOOL[evIdx++ % EVPOOL.length];
+  const rc = ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===who)]?.c || "var(--zwen)";
+  const d = new Date();
+  const el = document.createElement("div");
+  el.className = "ev first";
+  el.innerHTML = `<div class="tm">${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</div>
+    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>${what}</div>`;
+  const feed = $("#feed");
+  feed.querySelectorAll(".ev.first").forEach(e=>e.classList.remove("first"));
+  feed.prepend(el);
+  evCount++; const c = $("#evcnt"); if(c) c.textContent = evCount;
+  while(feed.children.length > 40) feed.lastChild.remove();
+}
+
+/* ═══ 任务详情 ═══ */
+let roleSel = null;
+function toggleRole(k){
+  roleSel = roleSel===k ? null : k;
+  renderRoles(roleSel);
+  document.querySelectorAll(".chip").forEach(c=>{
+    const id = c.querySelector(".cid").textContent.trim().split(/\s/)[0];
+    const t = TASKS.find(x=>x.id===id);
+    c.classList.toggle("dim", !!roleSel && t && t.ow!==roleSel && !t.done);
+  });
+}
+window.openDrawer = function(id){
+  const t = TASKS.find(x=>x.id===id); if(!t) return;
+  const r = ROLES[t.ow];
+  const tl = TASK_TL[id] || [];
+  $("#sheet").innerHTML = `
+    <div class="hd"><div><div class="cid">${t.id} · ${t.tag}</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
+      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 协作角色 ${Object.keys(TASK_TL[id]||{}).length||1} 方</div>
+    <div class="steps">${STAGES.map((s,i)=>`
+      <div class="step ${i<t.st?'done':i===t.st&&!t.done?'cur':''}"><div class="pt"></div><div class="sn">${s}</div></div>`).join("")}
+    </div>
+    <div class="tl">${tl.map(([h,w,b])=>`
+      <div class="tle" style="--rc:${Object.entries(ROLE_ALIAS).find(([k,v])=>v===w.split(" ")[0].split("→")[0])?.[1]!==undefined?ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===w.split(" ")[0].split("→")[0])]?.c:'var(--zwen)'}">
+      <div class="h">${h} · ${w}</div><div class="b">${b}</div></div>`).join("")}
+    </div>`;
+  $("#drawer").classList.add("open");
+};
+window.closeDrawer = ()=>$("#drawer").classList.remove("open");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+window.toggleRole = toggleRole;
+
+/* ═══ 启动 ═══ */
+renderRoles(); renderLanes(); renderKpis();
+setInterval(()=>{const d=new Date();$("#clock").textContent=
+  d.toLocaleDateString("zh-CN",{month:"2-digit",day:"2-digit"})+" "+
+  d.toLocaleTimeString("zh-CN",{hour12:false});},1000);
+/* 预填事件流：历史倒序 */
+for(let i=0;i<6;i++) pushEv();
+setInterval(()=>pushEv(), 5000);
+/* 定时推进一个 mock 任务（泳道流动感） */
+setInterval(()=>{
+  const moving = TASKS.find(t=>!t.done && t.st<6 && !t.active && t.id!=="RFC-0220");
+  if(moving && Math.random()<0.5){ moving.st++; renderLanes();
+    pushEv([ROLE_ALIAS[moving.ow],"工作流",`${moving.id}「${moving.ti.slice(0,10)}…」推进 → ${STAGES[moving.st]}`]); }
+}, 9000);
+</script>
+</body>
+</html>
