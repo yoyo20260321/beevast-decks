@@ -174,6 +174,23 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .evtask:hover{background:rgba(90,200,250,.14)}
 .rdetail{margin-left:auto;cursor:pointer;color:var(--tx3);font-size:13px;padding:2px 7px;border-radius:6px;flex-shrink:0}
 .rdetail:hover{color:var(--tx);background:rgba(255,255,255,.08)}
+/* ── v4 行动按钮 / 图谱 ── */
+.acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.abtn{cursor:pointer;font-size:11px;color:var(--tx2);border:1px solid var(--line2);border-radius:9px;padding:6px 12px;transition:border-color .2s,color .2s,background .2s}
+.abtn:hover{color:var(--tx);border-color:var(--zwen);background:rgba(90,200,250,.08)}
+#toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(8px);background:#141a26;border:1px solid rgba(90,200,250,.45);
+  color:var(--tx);font-size:12px;border-radius:10px;padding:9px 16px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:99;max-width:80vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.lnk{margin-left:auto;cursor:pointer;color:var(--tx3);letter-spacing:1px}
+.lnk:hover{color:var(--zwen)}
+.gwrap{width:100%;height:auto}
+.gwrap text{font-family:inherit}
+.gn{cursor:pointer}
+.gn:hover circle{stroke-width:2.5}
+.gedge{stroke:rgba(255,255,255,.16);stroke-width:1.2;fill:none}
+.glbl{font-size:8.5px;fill:var(--tx3)}
+.gnode-t{font-size:10px;fill:var(--tx);font-weight:550}
+.gnode-e{font-size:7.5px;fill:var(--tx3)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:5px}
 </style>
@@ -189,7 +206,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
   </header>
   <main>
     <div class="col">
-      <div class="col-title">角色 WORKFORCE</div>
+      <div class="col-title">角色 WORKFORCE<span class="lnk" onclick="openGraph()">关系图谱</span></div>
       <div id="roles" style="display:flex;flex-direction:column;gap:8px"></div>
       <div class="hint" style="text-align:left;padding:2px 4px">点角色卡高亮其任务 · 点 ▸ 看角色详情</div>
     </div>
@@ -207,6 +224,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 <div id="drawer" onclick="if(event.target===this)closeDrawer()">
   <div class="sheet" id="sheet"></div>
 </div>
+<div id="toast"></div>
 
 <script>
 /* ═══ Mock 数据（取材自 1019 真实工作流运行现场） ═══ */
@@ -389,7 +407,13 @@ window.openDrawer = function(id, fromKpi){
     <div class="tl">${tl.map(([h,w,b])=>`
       <div class="tle" style="--rc:${Object.entries(ROLE_ALIAS).find(([k,v])=>v===w.split(" ")[0].split("→")[0])?.[1]!==undefined?ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===w.split(" ")[0].split("→")[0])]?.c:'var(--zwen)'}">
       <div class="h">${h} · ${w}</div><div class="b">${linkify(b)}</div></div>`).join("")}
-    </div>`;
+    </div>
+    ${t.done?"":`<div class="acts">
+      <span class="abtn" onclick="actCopy('${t.id}','urge')">催办</span>
+      <span class="abtn" onclick="actCopy('${t.id}','block')">标记阻塞</span>
+      <span class="abtn" onclick="actCopy('${t.id}','reassign')">转派…</span>
+      <span style="font-size:9.5px;color:var(--tx3);align-self:center">B 先行：复制指令到群里 @仲文 即执行 · 真写接口见 id21 RFC</span>
+    </div>`}`;
   $("#drawer").classList.add("open");
 };
 window.closeDrawer = ()=>$("#drawer").classList.remove("open");
@@ -423,6 +447,81 @@ const linkify = s => s
   .replace(/台账 (id\d+)/g, '台账 <span class="ent" onclick="openEnt(\'ledger\',\'$1\')">$1</span>')
   .replace(/(RFC-\d{4})/g, m=>TASKS.some(t=>t.id===m)?`<span class="ent" onclick="openDrawer('${m}')">${m}</span>`:m)
   .replace(/(仲文2?|qa-review|qa-arch|test-engineer|admin5|ocr)/g, m=>{const k=Object.keys(ROLE_ALIAS).find(x=>ROLE_ALIAS[x]===m);return k?`<span class="ent" onclick="openRole('${k}',1)">${m}</span>`:m});
+/* ═══ v4 行动指令（B 先行）+ 关系图谱 ═══ */
+let toastTimer = null;
+window.toast = function(msg){
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove("show"), 2600);
+};
+window.actCopy = function(id, act){
+  const t = TASKS.find(x=>x.id===id); if(!t) return;
+  const msg = act==="urge" ? `@仲文 催办 ${t.id}「${t.ti}」：现处「${STAGES[t.st]}」，请推进并回报`
+    : act==="block" ? `@仲文 ${t.id}「${t.ti}」标记阻塞，原因：（一句话原因）`
+    : `@仲文 ${t.id}「${t.ti}」转派给 ___（角色），交接要点：___`;
+  copyText(msg);
+};
+window.copyText = function(s){
+  const done = ()=>toast("已复制——粘贴到群里发送即可执行");
+  const fb = ()=>{ const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){ toast("复制失败："+s.slice(0,36)+"…"); } ta.remove(); };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(s).then(done, fb); } else fb();
+};
+const GRAPH_NODES = [
+  {k:"admin5",   x:260, y:40},
+  {k:"qareview", x:84,  y:150},
+  {k:"zwen",     x:260, y:150},
+  {k:"qaarch",   x:436, y:150},
+  {k:"ocr",      x:84,  y:296},
+  {k:"te",       x:260, y:296},
+  {k:"ledger",   x:436, y:296},
+];
+const GRAPH_EDGES = [
+  {f:"admin5",t:"zwen",l:"派单 · 拍板 · 验收"},
+  {f:"admin5",t:"ledger",l:"/goal 建单",bend:1},
+  {f:"zwen",t:"ledger",l:"归账 · 分级"},
+  {f:"zwen",t:"qareview",l:"送审盲评"},
+  {f:"qareview",t:"zwen",l:"P0-P3 报告",bend:1},
+  {f:"zwen",t:"qaarch",l:"送审方案"},
+  {f:"qaarch",t:"zwen",l:"评审结论",bend:1},
+  {f:"zwen",t:"te",l:"派测试",bend:1},
+  {f:"te",t:"zwen",l:"测试证据"},
+  {f:"zwen",t:"ocr",l:"合并前送审"},
+  {f:"ocr",t:"zwen",l:"High/Med 闸",bend:1},
+];
+window.openGraph = function(){
+  const P = Object.fromEntries(GRAPH_NODES.map(n=>[n.k,n]));
+  const epath = (a,b,bend)=>{
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2, dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const off=(bend?-1:1)*16;
+    return `M${a.x},${a.y} Q${(mx-dy/len*off).toFixed(1)},${(my+dx/len*off).toFixed(1)} ${b.x},${b.y}`;
+  };
+  const edges = GRAPH_EDGES.map(e=>{
+    const a=P[e.f], b=P[e.t];
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2, dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const off=(e.bend?-1:1)*16, cx=mx-dy/len*off, cy=my+dx/len*off;
+    return `<path class="gedge" d="${epath(a,b,e.bend)}" marker-end="url(#ar)"/>
+      <text class="glbl" x="${cx.toFixed(1)}" y="${(cy-3).toFixed(1)}" text-anchor="middle">${e.l}</text>`;
+  }).join("");
+  const nodes = GRAPH_NODES.map(n=>{
+    if(n.k==="ledger") return `<g class="gn" onclick="openEnt('ledger','id16')">
+      <rect x="${n.x-42}" y="${n.y-20}" width="84" height="40" rx="10" fill="rgba(245,196,81,.10)" stroke="rgba(245,196,81,.55)"/>
+      <text class="gnode-t" x="${n.x}" y="${n.y-2}" text-anchor="middle">台账</text>
+      <text class="gnode-e" x="${n.x}" y="${n.y+11}" text-anchor="middle">demand_runs</text></g>`;
+    const r = ROLES[n.k];
+    return `<g class="gn" onclick="openRole('${n.k}',0)">
+      ${r.on?`<circle cx="${n.x}" cy="${n.y}" r="31" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
+      <circle cx="${n.x}" cy="${n.y}" r="24" fill="${r.c}22" stroke="${r.c}" stroke-width="1.5"/>
+      <text class="gnode-t" x="${n.x}" y="${n.y-2}" text-anchor="middle">${r.cn||r.name}</text>
+      <text class="gnode-e" x="${n.x}" y="${n.y+11}" text-anchor="middle">${r.en||""}</text></g>`;
+  }).join("");
+  $("#sheet").innerHTML = `
+    <div class="hd"><div><div class="cid">协作关系图谱 · mock（点节点看角色详情 · 线上文字=协作关系）</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <svg class="gwrap" viewBox="0 0 520 356">
+      <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.35)"/></marker></defs>
+      ${edges}${nodes}
+    </svg>`;
+  $("#drawer").classList.add("open");
+};
 window.openEnt = function(kind, id){
   const e = (ENT[kind]||{})[id.split("-")[0]]; if(!e) return;
   $("#sheet").innerHTML = `
