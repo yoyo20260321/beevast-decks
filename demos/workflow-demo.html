@@ -159,6 +159,13 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .empty{color:var(--tx3);font-size:11px;text-align:center;padding:18px 0}
 .backlnk{font-size:10.5px;color:var(--tx3);cursor:pointer;display:inline-block;margin-top:12px}
 .backlnk:hover{color:var(--tx)}
+/* ── v3 动线闭环 ── */
+.ent{cursor:pointer;color:var(--zwen);text-decoration:underline dotted;text-underline-offset:3px}
+.ent:hover{color:#fff}
+.evtask{cursor:pointer;color:var(--zwen);border:1px solid rgba(90,200,250,.35);border-radius:8px;padding:1px 7px;font-size:9px;margin-left:6px;white-space:nowrap}
+.evtask:hover{background:rgba(90,200,250,.14)}
+.rdetail{margin-left:auto;cursor:pointer;color:var(--tx3);font-size:13px;padding:2px 7px;border-radius:6px;flex-shrink:0}
+.rdetail:hover{color:var(--tx);background:rgba(255,255,255,.08)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:5px}
 </style>
@@ -167,7 +174,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 <div id="app">
   <header>
     <h1>研发工作流 · 数字孪生<span class="en">BeeVast R&amp;D Workflow Twin</span></h1>
-    <span class="badge">MOCK DATA</span>
+    <span class="badge" title="Mock 快照 · 故事日 2026-10-20（今日类 KPI 按此日计）">MOCK DATA</span>
     <div class="spacer"></div>
     <div class="kpis" id="kpis"></div>
     <div id="clock"></div>
@@ -176,7 +183,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
     <div class="col">
       <div class="col-title">角色 WORKFORCE</div>
       <div id="roles" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div class="hint" style="text-align:left;padding:2px 4px">点击角色卡可高亮其任务</div>
+      <div class="hint" style="text-align:left;padding:2px 4px">点角色卡高亮其任务 · 点 ▸ 看角色详情</div>
     </div>
     <div class="col">
       <div class="col-title">任务泳道 PIPELINE（点击任务看单任务协同流）</div>
@@ -269,6 +276,7 @@ function renderRoles(sel){
         <div class="avatar" style="background:${r.c}">${r.name[0]}</div>
         <div><div class="nm">${r.name}</div>
         <div class="st"><span class="dot ${r.on?'on':''}" style="background:${r.on?r.c:'var(--tx3)'}"></span>${r.st}</div></div>
+        <span class="rdetail" title="角色详情" onclick="event.stopPropagation();openRole('${k}',0)">▸</span>
       </div>
       <div class="busy"><div class="lbl"><span>繁忙度</span><b>${r.busy}%</b></div>
       <div class="bar"><i style="--rc:${r.c}" data-w="${r.busy}"></i></div></div>
@@ -292,11 +300,12 @@ const chip = t=>`
   </div>`;
 
 const mmdd = ()=>{const d=new Date();return String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")};
+const STORY_DAY = "1020"; /* mock 故事日：今日类 KPI 锚定此日，真实数据版改回 mmdd() */
 const KPI_SETS = {
   doing:  {ti:"在办任务",     hint:"存量 · 此刻未关单", get:()=>TASKS.filter(t=>!t.done)},
   wait:   {ti:"待拍板/验收",  hint:"存量 · 停在拍板/验收闸", get:()=>TASKS.filter(t=>!t.done&&(t.st===2||t.st===6))},
-  created:{ti:"今日新建",     hint:"今日 · 新建任务", get:()=>TASKS.filter(t=>t.created===mmdd())},
-  closed: {ti:"今日关单",     hint:"今日 · 验收关单", get:()=>TASKS.filter(t=>t.done&&t.closed===mmdd())},
+  created:{ti:"今日新建",     hint:"今日 · 新建任务", get:()=>TASKS.filter(t=>t.created===STORY_DAY)},
+  closed: {ti:"今日关单",     hint:"今日 · 验收关单", get:()=>TASKS.filter(t=>t.done&&t.closed===STORY_DAY)},
 };
 function renderKpis(){
   $("#kpis").innerHTML = Object.entries(KPI_SETS).map(([k,s],i)=>`
@@ -307,31 +316,31 @@ function renderKpis(){
 
 /* ═══ 事件流 ═══ */
 const EVPOOL = [
-  ["仲文","qa-arch","送审 RFC-0220 方案（排程 sch_467d234b）"],
-  ["qa-review","仲文","盲评 #1992：敏感面标记齐全，无 High/Medium"],
-  ["admin5","仲文","★ 拍板：v1.3「现在收敛掉不等了」"],
-  ["test-engineer","仲文","WF-016 验收用例独立设计中（与实现互不可见）"],
-  ["preflight","仲文","✓ 三闸绿：typecheck / test / collide"],
-  ["ocr","仲文","闸值守：High/Medium 清零才许合"],
-  ["admin5","仲文","✓ 验收「1 2 3 4 5」→ v1.3 主线关单"],
-  ["仲文","台账","/goal → id16 自动建单（0.3s）"],
-  ["gk 56657","主脑 99039","cap:platform-ops 票注册下发 ✓"],
-  ["仲文","ops 面","schedule.create → qa-arch 评审派发"],
-  ["qa-review","进展群","盲评报告自动投递（日 5 tick）"],
-  ["quota-watch","仲文","配额墙双证据检测：本次未触发"],
-  ["main-guard","仲文","✓ main 健康守卫：本轮零回归"],
-  ["仲文","qa-review","request review：RFC-0220 双跑方案"],
-  ["admin5","仲文","「停」字守卫就位：急停 5s 内进程消失"],
+  ["仲文","qa-arch","送审 RFC-0220 方案（排程 sch_467d234b）","RFC-0220"],
+  ["qa-review","仲文","盲评 #1992：敏感面标记齐全，无 High/Medium","RFC-0221"],
+  ["admin5","仲文","★ 拍板：v1.3「现在收敛掉不等了」","WF-013"],
+  ["test-engineer","仲文","WF-016 验收用例独立设计中（与实现互不可见）","WF-016"],
+  ["preflight","仲文","✓ 三闸绿：typecheck / test / collide",null],
+  ["ocr","仲文","闸值守：High/Medium 清零才许合","RFC-0221"],
+  ["admin5","仲文","✓ 验收「1 2 3 4 5」→ v1.3 主线关单","WF-013"],
+  ["仲文","台账","/goal → id16 自动建单（0.3s）","WF-016"],
+  ["gk 56657","主脑 99039","cap:platform-ops 票注册下发 ✓","RFC-0221"],
+  ["仲文","ops 面","schedule.create → qa-arch 评审派发","RFC-0220"],
+  ["qa-review","进展群","盲评报告自动投递（日 5 tick）",null],
+  ["quota-watch","仲文","配额墙双证据检测：本次未触发","RFC-0215"],
+  ["main-guard","仲文","✓ main 健康守卫：本轮零回归",null],
+  ["仲文","qa-review","request review：RFC-0220 双跑方案","RFC-0220"],
+  ["admin5","仲文","「停」字守卫就位：急停 5s 内进程消失",null],
 ];
 let evIdx = 0, evCount = 0;
 function pushEv(custom){
-  const [who, to, what] = custom || EVPOOL[evIdx++ % EVPOOL.length];
+  const [who, to, what, task] = custom || EVPOOL[evIdx++ % EVPOOL.length];
   const rc = ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===who)]?.c || "var(--zwen)";
   const d = new Date();
   const el = document.createElement("div");
   el.className = "ev first";
   el.innerHTML = `<div class="tm">${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</div>
-    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>${what}</div>`;
+    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>${what}${task?` <span class="evtask" onclick="openDrawer('${task}')">→ ${task}</span>`:""}</div>`;
   const feed = $("#feed");
   feed.querySelectorAll(".ev.first").forEach(e=>e.classList.remove("first"));
   feed.prepend(el);
@@ -352,6 +361,7 @@ function toggleRole(k){
 }
 window.openDrawer = function(id, fromKpi){
   const t = TASKS.find(x=>x.id===id); if(!t) return;
+  curTaskId = id;
   const r = ROLES[t.ow];
   const tl = TASK_TL[id] || [];
   $("#sheet").innerHTML = `
@@ -364,7 +374,7 @@ window.openDrawer = function(id, fromKpi){
     </div>
     <div class="tl">${tl.map(([h,w,b])=>`
       <div class="tle" style="--rc:${Object.entries(ROLE_ALIAS).find(([k,v])=>v===w.split(" ")[0].split("→")[0])?.[1]!==undefined?ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===w.split(" ")[0].split("→")[0])]?.c:'var(--zwen)'}">
-      <div class="h">${h} · ${w}</div><div class="b">${b}</div></div>`).join("")}
+      <div class="h">${h} · ${w}</div><div class="b">${linkify(b)}</div></div>`).join("")}
     </div>`;
   $("#drawer").classList.add("open");
 };
@@ -372,6 +382,60 @@ window.closeDrawer = ()=>$("#drawer").classList.remove("open");
 
 /* ═══ KPI 下钻清单 ═══ */
 let kpiKind = null;
+let curTaskId = null;
+
+/* ═══ v3 动线闭环：实体下探 ═══ */
+const ENT = {
+  pr:{
+    "1990":{ti:"PR #1990 · RFC-0220 方案",rows:[["状态","open · 待 qa-arch 方案评审"],["内容","docs/rfcs/0220-qa-review-premerge-gate.md"],["关联","RFC-0220 · 台账 id14"]]},
+    "1992":{ti:"PR #1992 · RFC-0221 运维能力票",rows:[["状态","已合并 bc6683e8"],["测试","gatekeeper 1060/1060 绿 · High/Medium 零"],["关联","RFC-0221 · 台账 id15"]]},
+    "1950":{ti:"PR #1950 · quota-watch 双证据",rows:[["状态","已合并"],["关联","RFC-0215"]]},
+    "1993":{ti:"PR #1993 · 面板 scope 唯一源",rows:[["状态","已合并"],["关联","KB-0212"]]}
+  },
+  sch:{
+    "sch_467d234b":{ti:"排程 sch_467d234b-aa6",rows:[["动作","派 RFC-0220 进 qa-arch 方案评审"],["触发","1019 23:00（ops 契约无 oneShot，年撞 cron）"],["结果","撞 codex 配额墙未产出 · 排程已删"]]},
+    "sch_230dda2a":{ti:"排程 sch_230dda2a-05e",rows:[["动作","retry2：1020 21:58 派 qa-arch"],["结果","上游流劣化零输出 · admin5 确认后已删"]]},
+    "sch_4e70320e":{ti:"排程 sch_4e70320e-ae5",rows:[["动作","retry3：10-21 09:32 派 qa-arch"],["状态","enabled · 待触发"]]}
+  },
+  ledger:{
+    "id16":{ti:"台账 id16 · WF-016 demo 页",rows:[["状态","candidate · 待 admin5 验收"],["入口","/goal 钩子自动建单（0.3s）"]]},
+    "id14":{ti:"台账 id14 · RFC-0220",rows:[["状态","candidate · 待评审结论落地"]]},
+    "id15":{ti:"台账 id15 · RFC-0221",rows:[["状态","candidate · 随 id14 同步关"]]}
+  }
+};
+const linkify = s => s
+  .replace(/sch_[0-9a-f]{8}/g, m=>`<span class="ent" onclick="openEnt('sch','${m}')">${m}</span>`)
+  .replace(/#(19\d{2}|20\d{2})/g, '<span class="ent" onclick="openEnt(\'pr\',\'$1\')">#$1</span>')
+  .replace(/台账 (id\d+)/g, '台账 <span class="ent" onclick="openEnt(\'ledger\',\'$1\')">$1</span>')
+  .replace(/(RFC-\d{4})/g, m=>TASKS.some(t=>t.id===m)?`<span class="ent" onclick="openDrawer('${m}')">${m}</span>`:m)
+  .replace(/(仲文2?|qa-review|qa-arch|test-engineer|admin5|ocr)/g, m=>{const k=Object.keys(ROLE_ALIAS).find(x=>ROLE_ALIAS[x]===m);return k?`<span class="ent" onclick="openRole('${k}',1)">${m}</span>`:m});
+window.openEnt = function(kind, id){
+  const e = (ENT[kind]||{})[id.split("-")[0]]; if(!e) return;
+  $("#sheet").innerHTML = `
+    <span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>
+    <div class="hd"><div><div class="cid">实体详情 · ${kind==="pr"?"Pull Request":kind==="sch"?"排程":"台账卡"}</div><h2>${e.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="rows">${e.rows.map(([k,v])=>`
+      <div class="row" style="cursor:default"><div class="ti" style="flex:0 0 52px;color:var(--tx3);font-weight:500">${k}</div>
+      <div class="ti" style="font-weight:400">${v}</div></div>`).join("")}</div>`;
+};
+window.openRole = function(k, from){
+  const r = ROLES[k], nm = ROLE_ALIAS[k];
+  const doing = TASKS.filter(t=>t.ow===k && !t.done);
+  const evs = EVPOOL.filter(e=>e[0]===nm || e[0]===nm+"2").slice(-3).reverse();
+  $("#sheet").innerHTML = `
+    ${from?`<span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>`:""}
+    <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${r.name[0]}</div>
+      <div><div class="cid">${r.title}</div><h2>${r.name}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="ownerline">状态 <b>${r.st}</b> · 繁忙度 <b>${r.busy}%</b> · 焦点 ${r.cur}</div>
+    <div class="col-title" style="padding-left:0">在办任务 ${doing.length}</div>
+    <div class="rows">${doing.length?doing.map(t=>`
+      <div class="row" onclick="openDrawer('${t.id}')">
+        <div class="cid"><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</div>
+        <div class="ti">${t.ti}</div><span class="sg">${t.done?"✓":STAGES[t.st]}</span><span class="tg">${t.tag}</span>
+      </div>`).join(""):`<div class="empty">当前无在办任务</div>`}</div>
+    ${evs.length?`<div class="col-title" style="padding-left:0;margin-top:12px">最近经手事件</div>
+    <div class="rows">${evs.map(e=>`<div class="row" style="cursor:default"><div class="ti" style="color:var(--tx2);font-weight:400">→ ${e[1]} · ${e[2]}</div></div>`).join("")}</div>`:""}`;
+};
 window.openKpi = function(kind){
   kpiKind = kind;
   const s = KPI_SETS[kind];
@@ -416,7 +480,7 @@ setInterval(()=>pushEv(), 5000);
 setInterval(()=>{
   const moving = TASKS.find(t=>!t.done && t.st<6 && !t.active && t.id!=="RFC-0220");
   if(moving && Math.random()<0.5){ moving.st++; renderLanes();
-    pushEv([ROLE_ALIAS[moving.ow],"工作流",`${moving.id}「${moving.ti.slice(0,10)}…」推进 → ${STAGES[moving.st]}`]); }
+    pushEv([ROLE_ALIAS[moving.ow],"工作流",`${moving.id}「${moving.ti.slice(0,10)}…」推进 → ${STAGES[moving.st]}`, moving.id]); }
 }, 9000);
 </script>
 </body>
