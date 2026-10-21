@@ -38,6 +38,9 @@ h1 .en{color:var(--tx3);font-weight:400;font-size:12px;margin-left:10px}
 .kpi span{font-size:10px;color:var(--tx3);letter-spacing:1px}
 .kpi.hot b{color:var(--warn)}
 .kpi.ok b{color:var(--ok)}
+.kpi.click{cursor:pointer;transition:border-color .2s,background .2s}
+.kpi.click:hover{border-color:var(--line2);background:var(--panel2)}
+.kpi-div{width:1px;align-self:stretch;background:var(--line2);margin:2px 4px}
 
 main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-height:0}
 .col{display:flex;flex-direction:column;gap:10px;min-height:0}
@@ -139,6 +142,23 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .tle .b{font-size:12px;line-height:1.5;color:var(--tx2);margin-top:2px}
 .tle .b b{color:var(--rc)}
 .hint{font-size:10.5px;color:var(--tx3);text-align:center;padding:8px 0 0;letter-spacing:.5px}
+/* ── KPI 清单下钻 ── */
+.fbar{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;align-items:center}
+.fbar select,.fbar input{background:var(--panel);border:1px solid var(--line2);border-radius:8px;color:var(--tx);font-size:11px;padding:5px 8px;outline:none}
+.fbar select option{background:var(--bg1)}
+.fbar input{flex:1;min-width:120px}
+.fbar .fc{font-size:10.5px;color:var(--tx3);margin-left:auto;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;transition:border-color .2s,background .2s}
+.row:hover{border-color:var(--line2);background:rgba(255,255,255,.07)}
+.row .cid{font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums;width:78px;flex-shrink:0;display:flex;align-items:center;gap:5px}
+.row .ow{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.row .ti{font-size:12px;font-weight:550;flex:1;line-height:1.3;min-width:0}
+.row .sg{font-size:9.5px;color:var(--tx2);white-space:nowrap}
+.row .tg{font-size:9px;color:var(--tx2);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:8px;white-space:nowrap}
+.empty{color:var(--tx3);font-size:11px;text-align:center;padding:18px 0}
+.backlnk{font-size:10.5px;color:var(--tx3);cursor:pointer;display:inline-block;margin-top:12px}
+.backlnk:hover{color:var(--tx)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:5px}
 </style>
@@ -163,7 +183,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
       <div class="lanes" id="lanes"></div>
     </div>
     <div class="col">
-      <div class="col-title">协作事件流 EVENT STREAM</div>
+      <div class="col-title">协作事件流 EVENT STREAM<span id="evtoday" style="margin-left:auto;color:var(--tx2);font-variant-numeric:tabular-nums"></span></div>
       <div class="feed"><div class="list" id="feed"></div></div>
     </div>
   </main>
@@ -185,13 +205,13 @@ const ROLES = {
 };
 const STAGES = ["入口归账","方案","拍板 ★","执行","评审合并","部署回归","验收闭环 ★"];
 const TASKS = [
-  {id:"WF-016", ti:"工作流角色协同看板 demo 页", st:3, ow:"zwen",  active:true,  tag:"轻卡 · dogfood"},
-  {id:"RFC-0220", ti:"qa-review 合并前挡板",     st:2, ow:"qaarch", active:false, tag:"RFC级 · M1→M3"},
-  {id:"RFC-0221", ti:"master-brain 运维能力票",  st:5, ow:"zwen",  active:false, tag:"敏感面 · 已合并"},
-  {id:"RFC-0215", ti:"配额墙自动续跑",           st:4, ow:"qareview",active:false,tag:"fde 试点"},
-  {id:"SENT-07",  ti:"舆情监控 per-user 脱敏",   st:3, ow:"zwen",  active:false, tag:"验收⑧前闸"},
-  {id:"KB-0212",  ti:"知识治理 enforced 切换",   st:6, ow:"admin5",active:false, tag:"待验收"},
-  {id:"WF-013",   ti:"研发工作流 v1.3 收敛",     st:6, ow:"admin5",active:false, tag:"已关单", done:true},
+  {id:"WF-016", ti:"工作流角色协同看板 demo 页", st:3, ow:"zwen",  active:true,  tag:"轻卡 · dogfood", created:"1020"},
+  {id:"RFC-0220", ti:"qa-review 合并前挡板",     st:2, ow:"qaarch", active:false, tag:"RFC级 · M1→M3", created:"1019"},
+  {id:"RFC-0221", ti:"master-brain 运维能力票",  st:5, ow:"zwen",  active:false, tag:"敏感面 · 已合并", created:"1019"},
+  {id:"RFC-0215", ti:"配额墙自动续跑",           st:4, ow:"qareview",active:false,tag:"fde 试点", created:"1014"},
+  {id:"SENT-07",  ti:"舆情监控 per-user 脱敏",   st:3, ow:"zwen",  active:false, tag:"验收⑧前闸", created:"1005"},
+  {id:"KB-0212",  ti:"知识治理 enforced 切换",   st:6, ow:"admin5",active:false, tag:"待验收", created:"1008"},
+  {id:"WF-013",   ti:"研发工作流 v1.3 收敛",     st:6, ow:"admin5",active:false, tag:"已关单", done:true, created:"1013", closed:"1020"},
 ];
 const ROLE_ALIAS = {admin5:"admin5", zwen:"仲文", qareview:"qa-review", te:"test-engineer", qaarch:"qa-arch", ocr:"ocr"};
 
@@ -271,14 +291,18 @@ const chip = t=>`
     <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span>
   </div>`;
 
+const mmdd = ()=>{const d=new Date();return String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")};
+const KPI_SETS = {
+  doing:  {ti:"在办任务",     hint:"存量 · 此刻未关单", get:()=>TASKS.filter(t=>!t.done)},
+  wait:   {ti:"待拍板/验收",  hint:"存量 · 停在拍板/验收闸", get:()=>TASKS.filter(t=>!t.done&&(t.st===2||t.st===6))},
+  created:{ti:"今日新建",     hint:"今日 · 新建任务", get:()=>TASKS.filter(t=>t.created===mmdd())},
+  closed: {ti:"今日关单",     hint:"今日 · 验收关单", get:()=>TASKS.filter(t=>t.done&&t.closed===mmdd())},
+};
 function renderKpis(){
-  const doing = TASKS.filter(t=>!t.done).length;
-  const wait  = TASKS.filter(t=>t.st===2||t.st===6).length;
-  $("#kpis").innerHTML = `
-    <div class="kpi"><b>${doing}</b><span>在办任务</span></div>
-    <div class="kpi hot"><b>${wait}</b><span>待拍板/验收</span></div>
-    <div class="kpi ok"><b>2</b><span>今日关单</span></div>
-    <div class="kpi"><b id="evcnt">0</b><span>今日事件</span></div>`;
+  $("#kpis").innerHTML = Object.entries(KPI_SETS).map(([k,s],i)=>`
+    ${i===2?'<div class="kpi-div" title="存量 | 今日"></div>':''}
+    <div class="kpi ${k==='wait'?'hot':k==='closed'?'ok':''} click" title="${s.hint} · 点击看清单" onclick="openKpi('${k}')">
+      <b>${s.get().length}</b><span>${s.ti}</span></div>`).join("");
 }
 
 /* ═══ 事件流 ═══ */
@@ -311,7 +335,7 @@ function pushEv(custom){
   const feed = $("#feed");
   feed.querySelectorAll(".ev.first").forEach(e=>e.classList.remove("first"));
   feed.prepend(el);
-  evCount++; const c = $("#evcnt"); if(c) c.textContent = evCount;
+  evCount++; const c = $("#evtoday"); if(c) c.textContent = "实时 +"+evCount;
   while(feed.children.length > 40) feed.lastChild.remove();
 }
 
@@ -326,11 +350,12 @@ function toggleRole(k){
     c.classList.toggle("dim", !!roleSel && t && t.ow!==roleSel && !t.done);
   });
 }
-window.openDrawer = function(id){
+window.openDrawer = function(id, fromKpi){
   const t = TASKS.find(x=>x.id===id); if(!t) return;
   const r = ROLES[t.ow];
   const tl = TASK_TL[id] || [];
   $("#sheet").innerHTML = `
+    ${fromKpi?`<span class="backlnk" onclick="openKpi(kpiKind)" style="margin:-6px 0 6px">← 返回清单</span>`:""}
     <div class="hd"><div><div class="cid">${t.id} · ${t.tag}</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
       · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 协作角色 ${Object.keys(TASK_TL[id]||{}).length||1} 方</div>
@@ -344,6 +369,38 @@ window.openDrawer = function(id){
   $("#drawer").classList.add("open");
 };
 window.closeDrawer = ()=>$("#drawer").classList.remove("open");
+
+/* ═══ KPI 下钻清单 ═══ */
+let kpiKind = null;
+window.openKpi = function(kind){
+  kpiKind = kind;
+  const s = KPI_SETS[kind];
+  $("#sheet").innerHTML = `
+    <div class="hd"><div><div class="cid">KPI 下钻 · ${s.hint}</div><h2 id="fti"></h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="fbar">
+      <select id="fstage" onchange="renderKpiList()"><option value="">全部阶段</option>${STAGES.map((t,i)=>`<option value="${i}">${t.replace(" ★","")}</option>`).join("")}</select>
+      <select id="frole" onchange="renderKpiList()"><option value="">全部负责人</option>${Object.entries(ROLE_ALIAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+      <input id="fq" placeholder="搜标题 / 标签…" oninput="renderKpiList()">
+      <span class="fc" id="fcnt"></span>
+    </div>
+    <div class="rows" id="frows"></div>`;
+  renderKpiList();
+  $("#drawer").classList.add("open");
+};
+window.renderKpiList = function(){
+  const st = $("#fstage").value, ow = $("#frole").value, q = $("#fq").value.trim().toLowerCase();
+  const all = KPI_SETS[kpiKind].get();
+  const rows = all.filter(t=>(st===""||t.st===+st)&&(!ow||t.ow===ow)&&(!q||t.ti.toLowerCase().includes(q)||t.tag.toLowerCase().includes(q)));
+  $("#fti").textContent = `${KPI_SETS[kpiKind].ti} · ${rows.length}/${all.length}`;
+  $("#fcnt").textContent = `筛选 ${rows.length} / 共 ${all.length}`;
+  $("#frows").innerHTML = rows.length ? rows.map(t=>`
+    <div class="row" onclick="openDrawer('${t.id}',1)">
+      <div class="cid"><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</div>
+      <div class="ti">${t.ti}</div>
+      <span class="sg">${t.done?"✓ 已关单":STAGES[t.st]}</span>
+      <span class="tg">${t.tag}</span>
+    </div>`).join("") : `<div class="empty">无匹配任务——放宽筛选条件试试</div>`;
+};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
 window.toggleRole = toggleRole;
 
