@@ -49,7 +49,7 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 
 /* ── 角色卡 ── */
 .role{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;
-  transition:border-color .25s,background .25s,transform .15s;position:relative;overflow:hidden}
+  transition:border-color .25s,background .25s,transform .15s;position:relative}
 .role:hover{border-color:var(--line2);background:var(--panel2)}
 .role.sel{border-color:var(--rc);box-shadow:0 0 0 1px var(--rc),0 0 18px -6px var(--rc)}
 .role .top{display:flex;align-items:center;gap:9px}
@@ -58,7 +58,15 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .avatar::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px solid var(--rc);opacity:.35}
 .role.on .avatar::after{opacity:1;animation:ringpulse 1.8s infinite}
 @keyframes ringpulse{0%,100%{box-shadow:0 0 0 0 var(--rc-glow)}50%{box-shadow:0 0 0 5px transparent}}
-.role .nm{font-size:12.5px;font-weight:600;line-height:1.2}
+.role .nm{font-size:12.5px;font-weight:600;line-height:1.2;display:flex;align-items:center}
+.role .nmen{font-size:9.5px;color:var(--tx3);font-weight:400;margin-left:2px}
+.info{position:relative;cursor:help;color:var(--tx3);font-size:10px;margin-left:auto;padding-left:4px;flex-shrink:0}
+.info:hover{color:var(--zwen)}
+.info::after{content:attr(data-tip);position:absolute;left:calc(100% + 8px);top:-6px;width:200px;
+  background:#141a26;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;font-size:10px;line-height:1.55;
+  color:var(--tx);text-align:left;font-weight:400;opacity:0;pointer-events:none;transition:opacity .15s;z-index:30;
+  box-shadow:0 6px 18px rgba(0,0,0,.5);white-space:normal}
+.info:hover::after{opacity:1}
 .role .st{font-size:10.5px;color:var(--tx2);margin-top:1px;display:flex;align-items:center;gap:5px}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .dot.on{animation:blink 1.6s infinite}
@@ -203,12 +211,18 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 <script>
 /* ═══ Mock 数据（取材自 1019 真实工作流运行现场） ═══ */
 const ROLES = {
-  admin5:   {name:"杨道利",  title:"拍板 · 验收",   c:"#f5c451", busy:15, st:"待命",      on:false, cur:"等待 v1.3 验收"},
-  zwen:     {name:"主脑·仲文",title:"编排 · 执行",   c:"#5ac8fa", busy:82, st:"执行中 ×4", on:true,  cur:"WF-016 工作流看板 demo"},
-  qareview: {name:"qa-review",title:"质量安全审查",  c:"#b07dff", busy:46, st:"队列扫描",  on:true,  cur:"盲评 #1990/#1992"},
-  te:       {name:"test-engineer",title:"测试工程师",c:"#4ade80", busy:30, st:"待派发",    on:false, cur:"等阶段 2 定稿"},
-  qaarch:   {name:"qa-arch",  title:"架构评审",      c:"#ff8a5c", busy:95, st:"评审中",    on:true,  cur:"RFC-0220 方案评审 22:30 触发"},
-  ocr:      {name:"ocr",      title:"代码评审 open CR",c:"#ff6b8a",busy:55,st:"闸值守",   on:true,  cur:"High/Medium 清零闸"},
+  admin5:   {name:"杨道利",  cn:"杨道利",    en:"admin5",       title:"拍板 · 验收",     c:"#f5c451", busy:15, st:"待命",      on:false, cur:"等待 v1.3 验收",
+             desc:"拍板人与验收人：方案拍板（阶段2）、验收序号确认（阶段6）、「停」一票急停"},
+  zwen:     {name:"主脑·仲文",cn:"仲文",      en:"master-brain", title:"编排 · 执行",     c:"#5ac8fa", busy:82, st:"执行中 ×4", on:true,  cur:"WF-016 工作流看板 demo",
+             desc:"主脑/编排者：入口归账与分级（阶段0）、七阶段推进、任务派发、执行与汇总汇报"},
+  qareview: {name:"qa-review",cn:"质量审查",  en:"qa-review",    title:"质量安全审查",    c:"#b07dff", busy:46, st:"队列扫描",  on:true,  cur:"盲评 #1990/#1992",
+             desc:"质量安全审查：盲评扫描出 P0-P3 问题清单，敏感面仲裁归其所有；v0 为合并后评审"},
+  te:       {name:"test-engineer",cn:"测试工程师",en:"test-engineer",title:"测试工程师", c:"#4ade80", busy:30, st:"待派发",    on:false, cur:"等阶段 2 定稿",
+             desc:"独立测试（阶段5）：测试设计与代码实现互不可见，产出可复现证据报告"},
+  qaarch:   {name:"qa-arch",  cn:"架构评审",  en:"qa-arch",      title:"架构评审",        c:"#ff8a5c", busy:95, st:"评审中",    on:true,  cur:"RFC-0220 方案评审 22:30 触发",
+             desc:"方案级评审（RFC 级任务）：口径一致性 / 遗漏角色 / 方案合理性 / 实施风险四维"},
+  ocr:      {name:"ocr",      cn:"代码评审",  en:"ocr",          title:"代码评审 open CR",c:"#ff6b8a", busy:55, st:"闸值守",    on:true,  cur:"High/Medium 清零闸",
+             desc:"代码评审闸值守：High/Medium 问题清零才放行合并；承接 open CR 例行审查"},
 };
 const STAGES = ["入口归账","方案","拍板 ★","执行","评审合并","部署回归","验收闭环 ★"];
 const TASKS = [
@@ -273,8 +287,8 @@ function renderRoles(sel){
   $("#roles").innerHTML = Object.entries(ROLES).map(([k,r])=>`
     <div class="role ${k===sel?'sel':''} ${r.on?'on':''}" style="--rc:${r.c};--rc-glow:${r.c}44" onclick="toggleRole('${k}')">
       <div class="top">
-        <div class="avatar" style="background:${r.c}">${r.name[0]}</div>
-        <div><div class="nm">${r.name}</div>
+        <div class="avatar" style="background:${r.c}">${(r.cn||r.name)[0]}</div>
+        <div><div class="nm">${r.cn||r.name}${r.en?` <span class="nmen">(${r.en})</span>`:""}<span class="info" data-tip="${r.desc}">ⓘ</span></div>
         <div class="st"><span class="dot ${r.on?'on':''}" style="background:${r.on?r.c:'var(--tx3)'}"></span>${r.st}</div></div>
         <span class="rdetail" title="角色详情" onclick="event.stopPropagation();openRole('${k}',0)">▸</span>
       </div>
@@ -424,9 +438,10 @@ window.openRole = function(k, from){
   const evs = EVPOOL.filter(e=>e[0]===nm || e[0]===nm+"2").slice(-3).reverse();
   $("#sheet").innerHTML = `
     ${from?`<span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>`:""}
-    <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${r.name[0]}</div>
-      <div><div class="cid">${r.title}</div><h2>${r.name}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
-    <div class="ownerline">状态 <b>${r.st}</b> · 繁忙度 <b>${r.busy}%</b> · 焦点 ${r.cur}</div>
+    <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${(r.cn||r.name)[0]}</div>
+      <div><div class="cid">${r.title}</div><h2>${r.cn||r.name}${r.en?` <span style="font-size:12px;color:var(--tx3);font-weight:400">(${r.en})</span>`:""}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="ownerline">${r.desc||""}</div>
+    <div class="ownerline" style="margin-top:-10px">状态 <b>${r.st}</b> · 繁忙度 <b>${r.busy}%</b> · 焦点 ${r.cur}</div>
     <div class="col-title" style="padding-left:0">在办任务 ${doing.length}</div>
     <div class="rows">${doing.length?doing.map(t=>`
       <div class="row" onclick="openDrawer('${t.id}')">
