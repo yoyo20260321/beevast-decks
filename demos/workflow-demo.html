@@ -187,8 +187,12 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .gwrap text{font-family:inherit}
 .gn{cursor:pointer}
 .gn:hover circle{stroke-width:2.5}
-.gedge{stroke:rgba(255,255,255,.16);stroke-width:1.2;fill:none}
-.glbl{font-size:8.5px;fill:var(--tx3)}
+.gedge{fill:none;transition:opacity .2s}
+.glbl{font-size:8.5px;fill:var(--tx3);paint-order:stroke;stroke:#0a0e15;stroke-width:3px;transition:opacity .2s}
+.gwrap.hasfocus .gedge{opacity:.07}
+.gwrap.hasfocus .glbl{opacity:.1}
+.gwrap.hasfocus .gedge.hi{opacity:1}
+.gwrap.hasfocus .glbl.hi{opacity:1}
 .gnode-t{font-size:10px;fill:var(--tx);font-weight:550}
 .gnode-e{font-size:7.5px;fill:var(--tx3)}
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -467,59 +471,79 @@ window.copyText = function(s){
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(s).then(done, fb); } else fb();
 };
 const GRAPH_NODES = [
-  {k:"admin5",   x:260, y:40},
-  {k:"qareview", x:84,  y:150},
-  {k:"zwen",     x:260, y:150},
-  {k:"qaarch",   x:436, y:150},
-  {k:"ocr",      x:84,  y:296},
-  {k:"te",       x:260, y:296},
-  {k:"ledger",   x:436, y:296},
+  {k:"admin5",   x:70,  y:200},
+  {k:"zwen",     x:270, y:200, hub:1},
+  {k:"qareview", x:470, y:74},
+  {k:"qaarch",   x:470, y:158},
+  {k:"te",       x:470, y:242},
+  {k:"ocr",      x:470, y:326},
+  {k:"ledger",   x:270, y:356},
 ];
 const GRAPH_EDGES = [
-  {f:"admin5",t:"zwen",l:"派单 · 拍板 · 验收"},
-  {f:"admin5",t:"ledger",l:"/goal 建单",bend:1},
-  {f:"zwen",t:"ledger",l:"归账 · 分级"},
-  {f:"zwen",t:"qareview",l:"送审盲评"},
-  {f:"qareview",t:"zwen",l:"P0-P3 报告",bend:1},
-  {f:"zwen",t:"qaarch",l:"送审方案"},
-  {f:"qaarch",t:"zwen",l:"评审结论",bend:1},
-  {f:"zwen",t:"te",l:"派测试",bend:1},
-  {f:"te",t:"zwen",l:"测试证据"},
-  {f:"zwen",t:"ocr",l:"合并前送审"},
-  {f:"ocr",t:"zwen",l:"High/Med 闸",bend:1},
+  {f:"admin5",t:"zwen",l:"派单 · 拍板",c:"#f5c451",w:2.4},
+  {f:"zwen",t:"qareview",l:"送审盲评",c:"#b07dff"},
+  {f:"qareview",t:"zwen",l:"P0-P3 报告",c:"#b07dff",dash:1,bend:1},
+  {f:"zwen",t:"qaarch",l:"送审方案",c:"#ff8a5c"},
+  {f:"qaarch",t:"zwen",l:"评审结论",c:"#ff8a5c",dash:1,bend:1},
+  {f:"zwen",t:"te",l:"派测试",c:"#4ade80"},
+  {f:"te",t:"zwen",l:"测试证据",c:"#4ade80",dash:1,bend:1},
+  {f:"zwen",t:"ocr",l:"合并前送审",c:"#ff8a5c"},
+  {f:"ocr",t:"zwen",l:"High/Med 闸",c:"#ff6b6b",dash:1,bend:1},
+  {f:"admin5",t:"ledger",l:"/goal 建单",c:"#f5c451"},
+  {f:"zwen",t:"ledger",l:"归账 · 分级",c:"#f5c451"},
 ];
 window.openGraph = function(){
   const P = Object.fromEntries(GRAPH_NODES.map(n=>[n.k,n]));
+  const cols = [...new Set(GRAPH_EDGES.map(e=>e.c))];
   const epath = (a,b,bend)=>{
     const mx=(a.x+b.x)/2, my=(a.y+b.y)/2, dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
-    const off=(bend?-1:1)*16;
+    const off=(bend?-1:1)*18;
     return `M${a.x},${a.y} Q${(mx-dy/len*off).toFixed(1)},${(my+dx/len*off).toFixed(1)} ${b.x},${b.y}`;
   };
-  const edges = GRAPH_EDGES.map(e=>{
+  const edges = GRAPH_EDGES.map((e,i)=>{
     const a=P[e.f], b=P[e.t];
     const mx=(a.x+b.x)/2, my=(a.y+b.y)/2, dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
-    const off=(e.bend?-1:1)*16, cx=mx-dy/len*off, cy=my+dx/len*off;
-    return `<path class="gedge" d="${epath(a,b,e.bend)}" marker-end="url(#ar)"/>
-      <text class="glbl" x="${cx.toFixed(1)}" y="${(cy-3).toFixed(1)}" text-anchor="middle">${e.l}</text>`;
+    const off=(e.bend?-1:1)*18, cx=mx-dy/len*off, cy=my+dx/len*off;
+    return `<path class="gedge" data-e="${i}" d="${epath(a,b,e.bend)}" stroke="${e.c}" stroke-width="${e.w||1.7}"
+      ${e.dash?'stroke-dasharray="6 5"':""} opacity=".55" marker-end="url(#ar-${cols.indexOf(e.c)})"/>
+      <text class="glbl" data-e="${i}" x="${cx.toFixed(1)}" y="${(cy-4).toFixed(1)}" text-anchor="middle">${e.l}</text>`;
   }).join("");
   const nodes = GRAPH_NODES.map(n=>{
-    if(n.k==="ledger") return `<g class="gn" onclick="openEnt('ledger','id16')">
-      <rect x="${n.x-42}" y="${n.y-20}" width="84" height="40" rx="10" fill="rgba(245,196,81,.10)" stroke="rgba(245,196,81,.55)"/>
+    if(n.k==="ledger") return `<g class="gn" data-k="ledger" onclick="openEnt('ledger','id16')">
+      <rect x="${n.x-44}" y="${n.y-21}" width="88" height="42" rx="11" fill="rgba(245,196,81,.10)" stroke="rgba(245,196,81,.6)" stroke-width="1.4"/>
       <text class="gnode-t" x="${n.x}" y="${n.y-2}" text-anchor="middle">台账</text>
-      <text class="gnode-e" x="${n.x}" y="${n.y+11}" text-anchor="middle">demand_runs</text></g>`;
-    const r = ROLES[n.k];
-    return `<g class="gn" onclick="openRole('${n.k}',0)">
-      ${r.on?`<circle cx="${n.x}" cy="${n.y}" r="31" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
-      <circle cx="${n.x}" cy="${n.y}" r="24" fill="${r.c}22" stroke="${r.c}" stroke-width="1.5"/>
-      <text class="gnode-t" x="${n.x}" y="${n.y-2}" text-anchor="middle">${r.cn||r.name}</text>
-      <text class="gnode-e" x="${n.x}" y="${n.y+11}" text-anchor="middle">${r.en||""}</text></g>`;
+      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">demand_runs</text></g>`;
+    const r = ROLES[n.k], hub = n.hub;
+    return `<g class="gn" data-k="${n.k}" onclick="openRole('${n.k}',0)">
+      ${r.on?`<circle cx="${n.x}" cy="${n.y}" r="${hub?37:32}" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
+      <circle cx="${n.x}" cy="${n.y}" r="${hub?30:25}" fill="${r.c}22" stroke="${r.c}" stroke-width="1.6"/>
+      <text class="gnode-t" x="${n.x}" y="${n.y-1}" text-anchor="middle" font-size="${hub?11:10}">${r.cn||r.name}</text>
+      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">${r.en||""}</text></g>`;
   }).join("");
   $("#sheet").innerHTML = `
-    <div class="hd"><div><div class="cid">协作关系图谱 · mock（点节点看角色详情 · 线上文字=协作关系）</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
-    <svg class="gwrap" viewBox="0 0 520 356">
-      <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.35)"/></marker></defs>
+    <div class="hd"><div><div class="cid">协作关系图谱 · 实线＝派发方向 / 虚线＝回件方向 · 悬停节点只看它的关系</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <svg class="gwrap" id="gsvg" viewBox="0 0 560 400">
+      <defs>${cols.map((c,i)=>`<marker id="ar-${i}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${c}"/></marker>`).join("")}</defs>
       ${edges}${nodes}
-    </svg>`;
+    </svg>
+    <div style="display:flex;gap:14px;font-size:9.5px;color:var(--tx3);margin-top:6px;flex-wrap:wrap">
+      <span><b style="color:#f5c451">━</b> 决策 / 台账</span>
+      <span><b style="color:#b07dff">━</b> 盲评</span>
+      <span><b style="color:#ff8a5c">━</b> 方案评审 / 送审</span>
+      <span><b style="color:#4ade80">━</b> 测试</span>
+      <span><b style="color:#ff6b6b">━</b> 合并闸</span>
+      <span>点节点看角色详情</span>
+    </div>`;
+  const svg = $("#gsvg");
+  svg.querySelectorAll(".gn").forEach(g=>{
+    const k = g.dataset.k;
+    g.addEventListener("mouseenter",()=>{ svg.classList.add("hasfocus");
+      svg.querySelectorAll(".gedge,.glbl").forEach(el=>{
+        const e = GRAPH_EDGES[+el.dataset.e];
+        el.classList.toggle("hi", !!e && (e.f===k || e.t===k)); });});
+    g.addEventListener("mouseleave",()=>{ svg.classList.remove("hasfocus");
+      svg.querySelectorAll(".hi").forEach(el=>el.classList.remove("hi")); });
+  });
   $("#drawer").classList.add("open");
 };
 window.openEnt = function(kind, id){
