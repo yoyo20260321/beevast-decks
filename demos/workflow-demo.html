@@ -239,7 +239,7 @@ button:disabled{opacity:.5;cursor:default}button:focus-visible,[tabindex]:focus-
 </div>
 
 <div id="drawer" onclick="if(event.target===this)closeDrawer()">
-  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="模拟地图详情"></div>
+  <div class="sheet" id="sheet" tabindex="-1" role="dialog" aria-modal="true" aria-label="模拟地图详情"></div>
 </div>
 <div id="toast"></div>
 
@@ -421,7 +421,7 @@ window.openDrawer = function(id, fromKpi){
   curTaskId = id;
   const r = ROLES[t.ow];
   const tl = TASK_TL[id] || [];
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     ${fromKpi?`<span class="backlnk" onclick="openKpi(kpiKind)" style="margin:-6px 0 6px">← 返回清单</span>`:""}
     <div class="hd"><div><div class="cid">${t.id} · ${t.tag} · 非实时</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
@@ -439,10 +439,48 @@ window.openDrawer = function(id, fromKpi){
       <span class="abtn" onclick="actCopy('${t.id}','block')">复制模拟阻塞说明</span>
       <span class="abtn" onclick="actCopy('${t.id}','reassign')">复制模拟交接说明</span>
       <span style="font-size:9.5px;color:var(--tx3);align-self:center">仅复制不可执行的演示说明；不发送、不派发、不调用平台</span>
-    </div>`}`;
-  $("#drawer").classList.add("open");
+    </div>`}`);
 };
-window.closeDrawer = ()=>$("#drawer").classList.remove("open");
+const FOCUSABLE = 'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex]:not([tabindex="-1"])';
+let drawerOpener=null, backgroundWasInert=false;
+function drawerControls(){
+  return Array.from($("#sheet").querySelectorAll(FOCUSABLE)).filter(el=>!el.disabled && !el.closest('[hidden], [inert]'));
+}
+function focusKey(el){return el?.id || el?.getAttribute("onclick");}
+function setDrawerContent(content){
+  const drawer=$("#drawer"), sheet=$("#sheet"), app=$("#app");
+  const focused=document.activeElement;
+  const previousKey=sheet.contains(focused)?focusKey(focused):null;
+  if(!drawer.classList.contains("open")){
+    drawerOpener=focused;
+    backgroundWasInert=app.inert;
+  }
+  sheet.innerHTML=content;
+  prepareControls();
+  drawer.classList.add("open");
+  app.inert=true;
+  const controls=drawerControls();
+  const target=previousKey && controls.find(el=>focusKey(el)===previousKey);
+  (target || controls[0] || sheet).focus();
+}
+window.closeDrawer = function(){
+  if(!$("#drawer").classList.contains("open")) return;
+  $("#drawer").classList.remove("open");
+  $("#app").inert=backgroundWasInert;
+  const target=drawerOpener?.isConnected && !drawerOpener.disabled && !drawerOpener.closest('[hidden], [inert]')
+    ? drawerOpener : $("#app").querySelector(FOCUSABLE);
+  drawerOpener=null;
+  target?.focus();
+};
+function trapDrawerTab(e){
+  if(e.key!=="Tab" || !$("#drawer").classList.contains("open")) return;
+  const controls=drawerControls(), first=controls[0], last=controls.at(-1);
+  const active=document.activeElement;
+  if(!first){e.preventDefault();$("#sheet").focus();}
+  else if(!controls.includes(active) || (e.shiftKey?active===first:active===last)){
+    e.preventDefault();(e.shiftKey?last:first).focus();
+  }
+}
 
 /* ═══ KPI 下钻清单 ═══ */
 let kpiKind = null;
@@ -505,7 +543,7 @@ window.openGraph = function(){
       <text class="gnode-t" x="${n.x}" y="${n.y-1}" text-anchor="middle" font-size="${hub?11:10}">${r.cn||r.name}</text>
       <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">${n.k==="support"?"FDE / PMO / ops":r.en||""}</text></g>`;
   }).join("");
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     <div class="hd"><div><div class="cid">模拟协作关系图谱 · 实线＝派发方向 / 虚线＝回件方向 · 悬停节点只看它的关系</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <svg class="gwrap" id="gsvg" viewBox="0 0 560 400">
       <defs>${cols.map((c,i)=>`<marker id="ar-${i}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${c}"/></marker>`).join("")}</defs>
@@ -519,7 +557,7 @@ window.openGraph = function(){
       <span><b style="color:#ff6b8a">━</b> 按需支持 / 授权执行者</span>
       <span>点节点看角色详情</span>
     </div>
-    <div class="graph-text"><h3>模拟关系 · 可点角色</h3><div class="acts">${Object.entries(ROLES).map(([k,r])=>`<button onclick="openRole('${k}',0)">${r.cn} (${r.en})</button>`).join("")}</div><ul>${GRAPH_EDGES.map(e=>`<li>${ROLES[e.f]?.cn||"证据台账"} → ${ROLES[e.t]?.cn||"证据台账"}：${e.l}${e.dash?"（独立回件）":""}</li>`).join("")}</ul></div>`;
+    <div class="graph-text"><h3>模拟关系 · 可点角色</h3><div class="acts">${Object.entries(ROLES).map(([k,r])=>`<button onclick="openRole('${k}',0)">${r.cn} (${r.en})</button>`).join("")}</div><ul>${GRAPH_EDGES.map(e=>`<li>${ROLES[e.f]?.cn||"证据台账"} → ${ROLES[e.t]?.cn||"证据台账"}：${e.l}${e.dash?"（独立回件）":""}</li>`).join("")}</ul></div>`);
   const svg = $("#gsvg");
   svg.querySelectorAll(".gn").forEach(g=>{
     const k = g.dataset.k;
@@ -530,22 +568,21 @@ window.openGraph = function(){
     g.addEventListener("mouseleave",()=>{ svg.classList.remove("hasfocus");
       svg.querySelectorAll(".hi").forEach(el=>el.classList.remove("hi")); });
   });
-  $("#drawer").classList.add("open");
 };
 window.openEnt = function(kind, id){
   const e = (ENT[kind]||{})[id.split("-")[0]]; if(!e) return;
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     <span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>
     <div class="hd"><div><div class="cid">模拟实体详情 · ${kind==="pr"?"Pull Request":kind==="sch"?"排程":"台账卡"}</div><h2>${e.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="rows">${e.rows.map(([k,v])=>`
       <div class="row" style="cursor:default"><div class="ti" style="flex:0 0 52px;color:var(--tx3);font-weight:500">${k}</div>
-      <div class="ti" style="font-weight:400">${v}</div></div>`).join("")}</div>`;
+      <div class="ti" style="font-weight:400">${v}</div></div>`).join("")}</div>`);
 };
 window.openRole = function(k, from){
   const r = ROLES[k], nm = ROLE_ALIAS[k];
   const doing = TASKS.filter(t=>t.ow===k && !t.done);
   const evs = EVPOOL.filter(e=>e[0]===nm || e[0]===nm+"2").slice(-3).reverse();
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     ${from?`<span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>`:""}
     <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${(r.cn||r.name)[0]}</div>
       <div><div class="cid">${r.title}</div><h2>${r.cn||r.name}${r.en?` <span style="font-size:12px;color:var(--tx3);font-weight:400">(${r.en})</span>`:""}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
@@ -558,13 +595,12 @@ window.openRole = function(k, from){
         <div class="ti">${t.ti}</div><span class="sg">${t.done?"✓":STAGES[t.st]}</span><span class="tg">${t.tag}</span>
       </div>`).join(""):`<div class="empty">当前无在办任务</div>`}</div>
     ${evs.length?`<div class="col-title" style="padding-left:0;margin-top:12px">模拟事件</div>
-    <div class="rows">${evs.map(e=>`<div class="row" style="cursor:default"><div class="ti" style="color:var(--tx2);font-weight:400">→ ${e[1]} · ${e[2]}</div></div>`).join("")}</div>`:""}`;
-  $("#drawer").classList.add("open");
+    <div class="rows">${evs.map(e=>`<div class="row" style="cursor:default"><div class="ti" style="color:var(--tx2);font-weight:400">→ ${e[1]} · ${e[2]}</div></div>`).join("")}</div>`:""}`);
 };
 window.openKpi = function(kind){
   kpiKind = kind;
   const s = KPI_SETS[kind];
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     <div class="hd"><div><div class="cid">模拟 KPI 下钻 · ${s.hint}</div><h2 id="fti"></h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="fbar">
       <select id="fstage" onchange="renderKpiList()"><option value="">全部阶段</option>${STAGES.map((t,i)=>`<option value="${i}">${t.replace(" ★","")}</option>`).join("")}</select>
@@ -572,9 +608,8 @@ window.openKpi = function(kind){
       <input id="fq" placeholder="搜标题 / 标签…" oninput="renderKpiList()">
       <span class="fc" id="fcnt"></span>
     </div>
-    <div class="rows" id="frows"></div>`;
+    <div class="rows" id="frows"></div>`);
   renderKpiList();
-  $("#drawer").classList.add("open");
 };
 window.renderKpiList = function(){
   const st = $("#fstage").value, ow = $("#frole").value, q = $("#fq").value.trim().toLowerCase();
@@ -591,6 +626,7 @@ window.renderKpiList = function(){
     </div>`).join("") : `<div class="empty">无匹配任务——放宽筛选条件试试</div>`;
 };
 document.addEventListener("keydown",e=>{
+  trapDrawerTab(e);
   if(e.key==="Escape") closeDrawer();
   if((e.key==="Enter"||e.key===" ") && e.target.matches('[role="button"]')) {e.preventDefault();e.target.click();}
 });
@@ -609,8 +645,7 @@ function phaseHtml(i){
   return `<h3>模拟阶段 ${i+1} · ${STAGES[i]}</h3><dl>${[["责任角色",p.role],["进入输入",p.input],["输出/证据",p.output],["人工决策",p.human],["退出门",p.gate],["失败回流",p.failure]].map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
 }
 window.openPhase=function(i){
-  $("#sheet").innerHTML=`<div class="hd"><h2>八环节 · 纯模拟 v1.4</h2><button class="x" onclick="closeDrawer()" aria-label="关闭">✕</button></div>${phaseHtml(i)}<h3>任务包</h3><ul>${TASK_PACKAGE.map(v=>`<li>${v}</li>`).join("")}</ul><h3>交接</h3><ul>${HANDOFF.map(v=>`<li>${v}</li>`).join("")}</ul><h3>七项DoD</h3><ol>${DOD.map(v=>`<li>${v}</li>`).join("")}</ol><p>N/A须理由和对应质量角色复核。适用门未完成不关单。</p>`;
-  $("#drawer").classList.add("open");
+  setDrawerContent(`<div class="hd"><h2>八环节 · 纯模拟 v1.4</h2><button class="x" onclick="closeDrawer()" aria-label="关闭">✕</button></div>${phaseHtml(i)}<h3>任务包</h3><ul>${TASK_PACKAGE.map(v=>`<li>${v}</li>`).join("")}</ul><h3>交接</h3><ul>${HANDOFF.map(v=>`<li>${v}</li>`).join("")}</ul><h3>七项DoD</h3><ol>${DOD.map(v=>`<li>${v}</li>`).join("")}</ol><p>N/A须理由和对应质量角色复核。适用门未完成不关单。</p>`);
 };
 function taskGateHtml(t){
   const p=PHASES[t.st];

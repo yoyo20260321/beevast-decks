@@ -203,3 +203,53 @@ test('QA-01: role selection dims seven non-PD chips, toggles off, and preserves 
   c.toggleRole('dev');assert.equal(chips()[2].classList.contains('dim'),false);
   assert.equal(chips().filter(chip=>chip.classList.contains('dim')).length,7);
 });
+test('QA-02: drawer initial focus, Tab boundaries, background inert and Escape restore opener',()=>{
+  const {context:c,nodes,element,key}=renderHarness(),doc=c.document;
+  const opener=element();opener.focus();
+  c.openDrawer('SIM-03');
+  const sheet=nodes.get('#sheet'),controls=sheet.querySelectorAll();
+  assert.ok(sheet.contains(doc.activeElement));assert.equal(nodes.get('#app').inert,true);
+  controls[0].focus();assert.equal(key('Tab',true).prevented,true);
+  assert.equal(doc.activeElement,controls.at(-1));
+  assert.equal(key('Tab').prevented,true);assert.equal(doc.activeElement,controls[0]);
+  key('Escape');assert.equal(nodes.get('#app').inert,false);assert.equal(doc.activeElement,opener);
+});
+test('QA-02: refresh retains action focus; nested drawers keep original opener; fallback and backdrop close',()=>{
+  const {context:c,nodes,element}=renderHarness(),doc=c.document;
+  const opener=element();opener.focus();c.openDrawer('SIM-03');
+  const sheet=nodes.get('#sheet');
+  const action=sheet.controls.find(el=>el.getAttribute('onclick')==="simulate('SIM-03','proof','implementation')");
+  action.focus();c.simulate('SIM-03','proof','implementation');
+  assert.notEqual(doc.activeElement,action);assert.equal(action.isConnected,false);
+  assert.equal(doc.activeElement.getAttribute('onclick'),action.getAttribute('onclick'));
+  c.openRole('dev',0);assert.ok(sheet.contains(doc.activeElement));
+  c.openGraph();assert.ok(sheet.contains(doc.activeElement));
+  // Execute the real backdrop handler with mocked targets, without a browser.
+  const handler=html.match(/id="drawer" onclick="([^"]+)"/)[1];
+  c.mockBackdrop=nodes.get('#drawer');c.mockTarget=sheet;
+  vm.runInContext(`(function(event){${handler}}).call(mockBackdrop,{target:mockTarget})`,c);
+  assert.equal(nodes.get('#drawer').classList.contains('open'),true);
+  c.mockTarget=nodes.get('#drawer');
+  vm.runInContext(`(function(event){${handler}}).call(mockBackdrop,{target:mockTarget})`,c);
+  assert.equal(nodes.get('#drawer').classList.contains('open'),false);
+  assert.equal(doc.activeElement,opener);
+  const fallback=element();nodes.get('#app').controls=[fallback];
+  opener.focus();c.openDrawer('SIM-03');opener.isConnected=false;c.closeDrawer();
+  assert.equal(doc.activeElement,fallback);
+});
+test('QA-02: refreshed disabled target falls back; Tab from outside and no-control content stay inside',()=>{
+  const {context:c,nodes,element,key}=renderHarness(),doc=c.document;
+  c.openDrawer('SIM-03');
+  const sheet=nodes.get('#sheet');
+  c.setDrawerContent('<button onclick="testAction()">one</button><button disabled>disabled</button>');
+  assert.equal(sheet.querySelectorAll().length,1);
+  sheet.controls[0].focus();
+  c.setDrawerContent('<button disabled onclick="testAction()">one</button><button onclick="otherAction()">two</button>');
+  assert.equal(doc.activeElement.getAttribute('onclick'),'otherAction()');
+  const outside=element();outside.focus();assert.equal(key('Tab').prevented,true);
+  assert.equal(doc.activeElement,sheet.controls[1]);
+  c.setDrawerContent('<p>No actions</p>');assert.equal(doc.activeElement,sheet);
+  assert.equal(key('Tab').prevented,true);assert.equal(doc.activeElement,sheet);
+  assert.equal(key('Tab',true).prevented,true);assert.equal(doc.activeElement,sheet);
+  c.closeDrawer();
+});
