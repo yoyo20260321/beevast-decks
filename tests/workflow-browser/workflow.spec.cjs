@@ -1,16 +1,37 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');const path=require('node:path');const crypto=require('node:crypto');
-const faults=new WeakMap();
+const {KPI_FILTER_CASES}=require('./filter-cases.cjs');
+const {viewportFits}=require('./viewport-check.cjs');
+const faults=new WeakMap(), geometryActions=new WeakMap();
 async function verifyHTML(response){
  expect(response.status()).toBe(200);
  const expected=JSON.parse(fs.readFileSync(path.join(process.env.MAP_ARTIFACT_DIR,'manifest.json'))).sourceHTMLSHA256;
  expect(crypto.createHash('sha256').update(await response.body()).digest('hex'),'loaded browser HTML matches expected tree').toBe(expected);
 }
+async function geometry(locator){
+ return locator.evaluate(el=>{
+  const box=node=>{if(!node)return null;const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,scrollLeft:node.scrollLeft,scrollTop:node.scrollTop,clientWidth:node.clientWidth,scrollWidth:node.scrollWidth};};
+  const r=el.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y),v=window.visualViewport;
+  return {target:{tag:el.tagName,id:el.id,action:el.getAttribute('onclick'),...box(el)},center:{x,y,hitTag:hit?.tagName,hitID:hit?.id,hitClass:hit?.getAttribute('class'),reachable:!!hit&&(hit===el||el.contains(hit))},viewport:{innerWidth,innerHeight,scrollX,scrollY,devicePixelRatio,visual:v?{width:v.width,height:v.height,scale:v.scale,offsetLeft:v.offsetLeft,offsetTop:v.offsetTop,pageLeft:v.pageLeft,pageTop:v.pageTop}:null},document:box(document.documentElement),body:box(document.body),targetStyle:{fontSize:getComputedStyle(el).fontSize,transform:getComputedStyle(el).transform,position:getComputedStyle(el).position},drawer:box(document.querySelector('#drawer')),sheet:box(document.querySelector('#sheet')),focus:{tag:document.activeElement?.tagName,id:document.activeElement?.id}};
+ });
+}
 async function act(locator,info){
- await locator.scrollIntoViewIfNeeded();await expect(locator).toBeVisible();
- const reachable=await locator.evaluate(el=>{const r=el.getBoundingClientRect();const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return r.width>0&&r.height>0&&(hit===el||el.contains(hit));});
- expect(reachable,'control center is reachable and unobscured').toBe(true);
- await test.step('native '+(info.project.use.hasTouch?'tap':'click')+' '+(await locator.getAttribute('onclick')||await locator.textContent()),async()=>{if(info.project.use.hasTouch)await locator.tap();else await locator.click();});
+ const record={};const records=geometryActions.get(info)||[];geometryActions.set(info,records);records.push(record);
+ try{
+  record.beforeScroll=await geometry(locator);
+  await locator.scrollIntoViewIfNeeded();await expect(locator).toBeVisible();
+  record.beforeAction=await geometry(locator);
+  expect(record.beforeAction.center.reachable,'control center is reachable and unobscured').toBe(true);
+  await test.step('native '+(info.project.use.hasTouch?'tap':'click')+' '+(await locator.getAttribute('onclick')||await locator.textContent()),async()=>{if(info.project.use.hasTouch)await locator.tap();else await locator.click();});
+  record.status='PASS';
+ }catch(error){
+  record.status='FAIL';record.error=error.message;
+  try{record.afterFailure=await geometry(locator);}catch(e){record.geometryError=e.message;}
+  // Capture before the original failure is thrown, while the context and test budget remain available.
+  try{await info.attach('action-failure-screenshot',{body:await locator.page().screenshot({fullPage:true,timeout:5000}),contentType:'image/png'});}catch(e){record.screenshotError=e.message;}
+  await info.attach('action-failure-geometry',{body:JSON.stringify(record),contentType:'application/json'});
+  throw error;
+ }
 }
 const task=(page,id)=>page.locator(`[data-task-id="${id}"]`);
 const action=(page,name)=>page.locator('#sheet').getByRole('button',{name,exact:false});
@@ -19,18 +40,31 @@ async function close(page){await page.keyboard.press('Escape');await expect(page
 async function fill(page,info){const pending=page.locator('#sheet .proofs button').filter({hasText:'待补'});while(await pending.count())await act(pending.first(),info);}
 async function advance(page,info){await act(action(page,'模拟通过当前门'),info);}
 async function snapshot(page){return page.evaluate(()=>JSON.stringify(TASKS));}
-async function layout(page){expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no document horizontal overflow').toBe(true);}
+async function layout(page){
+ const expectedWidth=page.viewportSize().width;
+ const metrics=await page.evaluate(width=>({innerWidth,clientWidth:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,visualScale:visualViewport?.scale,overflowing:Array.from(document.querySelectorAll('body *')).filter(el=>{const r=el.getBoundingClientRect();return el.getClientRects().length&&(r.right>width+1||r.left<0);}).slice(0,30).map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,id:el.id,class:el.getAttribute('class'),x:r.x,right:r.right,width:r.width};})}),expectedWidth);
+ await test.info().attach('layout-viewport',{body:JSON.stringify({expected:page.viewportSize(),actual:metrics}),contentType:'application/json'});
+ expect(viewportFits(metrics,page.viewportSize().width),'layout and scroll widths must fit configured viewport, not an inflated innerWidth').toBe(true);
+}
 test.beforeEach(async({page,context,baseURL})=>{
  const errors=[];faults.set(page,errors);
  page.on('console',msg=>{if(msg.type()==='error')errors.push('console: '+msg.text());});page.on('pageerror',e=>errors.push('pageerror: '+e.message));
- await page.addInitScript(()=>{window.__rejections=[];addEventListener('unhandledrejection',e=>window.__rejections.push(String(e.reason)));});
+ await page.addInitScript(()=>{
+  window.__rejections=[];window.__nativeGeometryEvents=[];
+  addEventListener('unhandledrejection',e=>window.__rejections.push(String(e.reason)));
+  const record=e=>{const v=visualViewport;const t=e.touches?.[0]||e.changedTouches?.[0]||e;window.__nativeGeometryEvents.push({type:e.type,tag:e.target?.tagName,id:e.target?.id,x:t.clientX,y:t.clientY,scrollX,scrollY,scrollTop:e.target?.scrollTop,scrollLeft:e.target?.scrollLeft,visual:v?{width:v.width,height:v.height,scale:v.scale,offsetLeft:v.offsetLeft,offsetTop:v.offsetTop}:null});if(window.__nativeGeometryEvents.length>256)window.__nativeGeometryEvents.shift();};
+  for(const type of ['pointerdown','pointerup','touchstart','touchend','click','scroll'])document.addEventListener(type,record,{capture:true,passive:true});
+  visualViewport?.addEventListener('resize',record,{passive:true});visualViewport?.addEventListener('scroll',record,{passive:true});
+ });
  await context.route('**/*',route=>{const req=route.request();if(req.method()!=='GET'||new URL(req.url()).origin!==new URL(baseURL).origin){errors.push('forbidden request: '+req.method()+' '+req.url());return route.abort();}return route.continue();});
  await verifyHTML(await page.goto(baseURL));
  await expect(page.locator('.phase-btn')).toHaveCount(8);
 });
 test.afterEach(async({page,browser},info)=>{
+ await info.attach('geometry-actions',{body:JSON.stringify(geometryActions.get(info)||[]),contentType:'application/json'});
+ await info.attach('native-geometry-events',{body:JSON.stringify(await page.evaluate(()=>window.__nativeGeometryEvents)),contentType:'application/json'});
  await info.attach('environment',{body:JSON.stringify({viewport:page.viewportSize(),touch:info.project.use.hasTouch,mobile:info.project.use.isMobile,browser:browser.version(),node:process.version,project:info.project.name}),contentType:'application/json'});
- await info.attach('case-screenshot',{body:await page.screenshot({fullPage:true}),contentType:'image/png'});
+ await info.attach('case-screenshot',{body:await page.screenshot({fullPage:true,timeout:5000}),contentType:'image/png'});
  expect(faults.get(page),'no unexpected console/page/network errors').toEqual([]);
  expect(await page.evaluate(()=>window.__rejections),'no unhandled rejections').toEqual([]);
  await layout(page);
@@ -69,11 +103,14 @@ test('D all KPI filters counts graph nodes hover keyboard and touch',async({page
  for(const kind of ['doing','wait','created','closed']){
   await act(page.locator(`.kpi[onclick="openKpi('${kind}')"]`),info);
   const expected=await page.evaluate(k=>KPI_SETS[k].get().length,kind);await expect(page.locator('#fcnt')).toHaveText(`筛选 ${expected} / 共 ${expected}`);
-  for(const st of ['','0','1','2','3','4','5','6','7']){await page.locator('#fstage').selectOption(st);for(const ow of ['','admin5','zwen','pd','dev','qareview','te','support']){
-   await page.locator('#frole').selectOption(ow);
-   const n=await page.evaluate(({kind,st,ow})=>KPI_SETS[kind].get().filter(t=>(st===''||t.st===+st)&&(!ow||taskRoles(t).includes(ow))).length,{kind,st,ow});await expect(page.locator('#fcnt')).toHaveText(`筛选 ${n} / 共 ${expected}`);
-  }}
-  await page.locator('#fq').fill('NO_MATCH');await expect(page.locator('#frows')).toContainText('无匹配');
+  for(const {stage,role,query} of KPI_FILTER_CASES){
+   if(await page.locator('#fstage').inputValue()!==stage)await page.locator('#fstage').selectOption(stage);
+   if(await page.locator('#frole').inputValue()!==role)await page.locator('#frole').selectOption(role);
+   if(await page.locator('#fq').inputValue()!==query)await page.locator('#fq').fill(query);
+   const n=await page.evaluate(({kind,stage,role,query})=>KPI_SETS[kind].get().filter(t=>(stage===''||t.st===+stage)&&(!role||taskRoles(t).includes(role))&&(!query||t.ti.toLowerCase().includes(query.toLowerCase())||t.tag.toLowerCase().includes(query.toLowerCase()))).length,{kind,stage,role,query});
+   await expect(page.locator('#fcnt')).toHaveText(`筛选 ${n} / 共 ${expected}`);
+   if(!n)await expect(page.locator('#frows')).toContainText('无匹配');
+  }
   await page.locator('#fq').fill('');await page.locator('#fstage').selectOption('');await page.locator('#frole').selectOption('');
   if(expected){await act(page.locator('#frows .row').first(),info);await act(page.locator('#sheet .backlnk'),info);await expect(page.locator('#fcnt')).toContainText('共 '+expected);}
   await close(page);
