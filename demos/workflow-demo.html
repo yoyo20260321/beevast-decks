@@ -519,7 +519,7 @@ window.openGraph = function(){
       <span><b style="color:#ff6b8a">━</b> 按需支持 / 授权执行者</span>
       <span>点节点看角色详情</span>
     </div>
-    <div class="graph-text"><h3>模拟关系 · 可点角色</h3><div class="acts">${Object.entries(ROLES).map(([k,r])=>`<button onclick="openRole('${k}',0)">${r.cn} (${r.en})</button>`).join("")}</div><ul>${GRAPH_EDGES.map(e=>`<li>${ROLES[e.f].cn} → ${ROLES[e.t].cn}：${e.l}${e.dash?"（独立回件）":""}</li>`).join("")}</ul></div>`;
+    <div class="graph-text"><h3>模拟关系 · 可点角色</h3><div class="acts">${Object.entries(ROLES).map(([k,r])=>`<button onclick="openRole('${k}',0)">${r.cn} (${r.en})</button>`).join("")}</div><ul>${GRAPH_EDGES.map(e=>`<li>${ROLES[e.f]?.cn||"证据台账"} → ${ROLES[e.t]?.cn||"证据台账"}：${e.l}${e.dash?"（独立回件）":""}</li>`).join("")}</ul></div>`;
   const svg = $("#gsvg");
   svg.querySelectorAll(".gn").forEach(g=>{
     const k = g.dataset.k;
