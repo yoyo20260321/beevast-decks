@@ -24,12 +24,17 @@ jobs:
     timeout-minutes: 15
     env:
       SOURCE_ROOT: ${{ github.workspace }}
-      MAP_ARTIFACT_DIR: ${{ runner.temp }}/workflow-map-evidence
       MAP_MODE: ${{ github.event_name == 'workflow_dispatch' && 'live' || 'candidate' }}
       MAP_PORT: '4173'
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/workflow-map-browsers
-      npm_config_cache: ${{ runner.temp }}/workflow-map-npm-cache
     steps:
+      - name: Initialize disposable runner paths
+        shell: bash
+        run: |
+          {
+            echo "MAP_ARTIFACT_DIR=$RUNNER_TEMP/workflow-map-evidence"
+            echo "PLAYWRIGHT_BROWSERS_PATH=$RUNNER_TEMP/workflow-map-browsers"
+            echo "npm_config_cache=$RUNNER_TEMP/workflow-map-npm-cache"
+          } >> "$GITHUB_ENV"
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}

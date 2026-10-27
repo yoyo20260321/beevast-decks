@@ -6,6 +6,9 @@ const workflow=fs.readFileSync(path.join(root,'.github/workflows/workflow-map-br
 for(const pin of ['actions/checkout@11d5960a326750d5838078e36cf38b85af677262','actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020','actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02'])assert.ok(workflow.includes(pin));
 for(const text of ['ubuntu-24.04','timeout-minutes: 15','contents: read','persist-credentials: false',"node-version: '22.23.4'",'retention-days: 7','if: always()','types: [opened, reopened, synchronize]','expected_sha:'])assert.ok(workflow.includes(text),text);
 assert.doesNotMatch(workflow,/pull_request_target|self-hosted|secrets\.|write-all|contents: write|workflow_run/);
+const jobEnv=workflow.match(/^    env:\n([\s\S]*?)^    steps:/m)?.[1];
+assert.ok(jobEnv,'browser job environment found');
+assert.doesNotMatch(jobEnv,/\$\{\{\s*runner\./,'runner context is unavailable at jobs.<job_id>.env');
 const lock=JSON.parse(fs.readFileSync(path.join(dir,'package-lock.json')));const pkg=JSON.parse(fs.readFileSync(path.join(dir,'package.json')));
 assert.equal(pkg.devDependencies['@playwright/test'],'1.56.1');assert.equal(pkg.engines.node,'22.23.4');
 assert.deepEqual(lock.packages[''].devDependencies,pkg.devDependencies);
