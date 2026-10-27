@@ -237,6 +237,31 @@ test('QA-02: refresh retains action focus; nested drawers keep original opener; 
   opener.focus();c.openDrawer('SIM-03');opener.isConnected=false;c.closeDrawer();
   assert.equal(doc.activeElement,fallback);
 });
+test('concurrency risk: same-head QA and tester cost two workers plus coordinator; dev blocks admission',()=>{
+  const m=model(),dev=m.TASKS[2],quality=m.TASKS[3];
+  assert.equal(m.activeCount(),2);
+  assert.equal(m.startWork(quality),false);assert.equal(quality.active,false);assert.equal(m.activeCount(),2);
+  m.stopWork(dev);assert.equal(m.startWork(quality),true);assert.equal(m.activeCount(),3);
+  assert.equal(m.startWork(dev),false);
+  m.stopWork(quality);assert.equal(m.activeCount(),1);
+});
+test('concurrency risk: both independent roles render active for one parallel quality task',()=>{
+  const {context:c,nodes}=renderHarness();
+  c.simulate('SIM-03','work');c.simulate('SIM-04','work');
+  assert.match(nodes.get('#budget').textContent,/3\/3/);
+  const cards=nodes.get('#roles').innerHTML;
+  for(const k of ['qareview','te']) {
+    const card=cards.split('<div class="role ').find(part=>part.split('>')[0].includes(`onclick="toggleRole('${k}')"`));
+    assert.match(card.split('>')[0],/\bon\b/);
+  }
+  c.openRole('te',0);assert.match(nodes.get('#sheet').innerHTML,/模拟占槽/);
+  assert.match(nodes.get('#sheet').innerHTML,/SIM-04/);
+  c.openGraph();assert.match(nodes.get('#sheet').innerHTML,/cy="294" r="32"/);
+  c.openKpi('doing');nodes.get('#frole').value='te';c.renderKpiList();
+  assert.match(nodes.get('#fti').textContent,/1\/8/);
+  c.toggleRole('te');assert.equal(nodes.get('#lanes').chips.filter(chip=>chip.classList.contains('dim')).length,7);
+});
+
 test('QA-02: refreshed disabled target falls back; Tab from outside and no-control content stay inside',()=>{
   const {context:c,nodes,element,key}=renderHarness(),doc=c.document;
   c.openDrawer('SIM-03');

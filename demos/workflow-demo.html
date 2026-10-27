@@ -279,9 +279,11 @@ function makeTask(stage) {
 }
 const TASKS=STAGES.map((_,i)=>makeTask(i));
 TASKS[2].active=true;
-function activeCount(){return 1+TASKS.filter(t=>t.active).length;}
+function taskRoles(t){return t.st===3?["qareview","te"]:[t.ow];}
+function roleActive(k){return k==="zwen" || TASKS.some(t=>t.active && taskRoles(t).includes(k));}
+function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?taskRoles(t).length:0),0);}
 function startWork(t){
-  if(t.done || t.active || activeCount()>=3) return false;
+  if(t.done || t.active || activeCount()+taskRoles(t).length>3) return false;
   t.active=true;
   return true;
 }
@@ -336,7 +338,7 @@ const $ = s=>document.querySelector(s);
 
 function renderRoles(sel){
   $("#roles").innerHTML = Object.entries(ROLES).map(([k,r])=>{
-    const active=k==="zwen" || TASKS.some(t=>t.ow===k&&t.active);
+    const active=roleActive(k);
     return `
     <div class="role ${k===sel?'sel':''} ${active?'on':''}" style="--rc:${r.c};--rc-glow:${r.c}44" onclick="toggleRole('${k}')">
       <div class="top">
@@ -413,7 +415,7 @@ function toggleRole(k){
   document.querySelectorAll(".chip").forEach(c=>{
     const id = c.dataset.taskId;
     const t = TASKS.find(x=>x.id===id);
-    c.classList.toggle("dim", !!roleSel && t && t.ow!==roleSel && !t.done);
+    c.classList.toggle("dim", !!roleSel && t && !taskRoles(t).includes(roleSel) && !t.done);
   });
 }
 window.openDrawer = function(id, fromKpi){
@@ -425,7 +427,7 @@ window.openDrawer = function(id, fromKpi){
     ${fromKpi?`<span class="backlnk" onclick="openKpi(kpiKind)" style="margin:-6px 0 6px">← 返回清单</span>`:""}
     <div class="hd"><div><div class="cid">${t.id} · ${t.tag} · 非实时</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
-      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 运行 ${t.active?"模拟占槽":"等待/排队（不占槽）"} · 原dev：${t.originalDev}</div>
+      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 运行 ${t.active?"模拟占槽":"等待/排队（不占槽）"} · 原dev：${t.originalDev}<br>模拟执行角色：${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} · ${t.st===3?"同head/base独立并行，两个worker槽":"单角色执行，一个worker槽"}</div>
     ${taskGateHtml(t)}
     <div class="steps">${STAGES.map((s,i)=>`
       <div class="step ${i<t.st?'done':i===t.st&&!t.done?'cur':''}"><div class="pt"></div><div class="sn">${s}</div></div>`).join("")}
@@ -538,7 +540,7 @@ window.openGraph = function(){
       <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">模拟证据台账</text></g>`;
     const r = ROLES[n.k], hub = n.hub;
     return `<g class="gn" data-k="${n.k}" onclick="openRole('${n.k}',0)">
-      ${n.k==="zwen"||TASKS.some(t=>t.ow===n.k&&t.active)?`<circle cx="${n.x}" cy="${n.y}" r="${hub?37:32}" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
+      ${roleActive(n.k)?`<circle cx="${n.x}" cy="${n.y}" r="${hub?37:32}" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
       <circle cx="${n.x}" cy="${n.y}" r="${hub?30:25}" fill="${r.c}22" stroke="${r.c}" stroke-width="1.6"/>
       <text class="gnode-t" x="${n.x}" y="${n.y-1}" text-anchor="middle" font-size="${hub?11:10}">${r.cn||r.name}</text>
       <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">${n.k==="support"?"FDE / PMO / ops":r.en||""}</text></g>`;
@@ -580,14 +582,14 @@ window.openEnt = function(kind, id){
 };
 window.openRole = function(k, from){
   const r = ROLES[k], nm = ROLE_ALIAS[k];
-  const doing = TASKS.filter(t=>t.ow===k && !t.done);
+  const doing = TASKS.filter(t=>taskRoles(t).includes(k) && !t.done);
   const evs = EVPOOL.filter(e=>e[0]===nm || e[0]===nm+"2").slice(-3).reverse();
   setDrawerContent(`
     ${from?`<span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>`:""}
     <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${(r.cn||r.name)[0]}</div>
       <div><div class="cid">${r.title}</div><h2>${r.cn||r.name}${r.en?` <span style="font-size:12px;color:var(--tx3);font-weight:400">(${r.en})</span>`:""}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">${r.desc||""}</div>
-    <div class="ownerline" style="margin-top:-10px">状态 <b>${k==="zwen"||TASKS.some(t=>t.ow===k&&t.active)?"模拟占槽":"模拟等待/按需"}</b> · ${r.core?"核心角色":"人类/按需支持"} · ${r.title}</div>
+    <div class="ownerline" style="margin-top:-10px">状态 <b>${roleActive(k)?"模拟占槽":"模拟等待/按需"}</b> · ${r.core?"核心角色":"人类/按需支持"} · ${r.title}</div>
     <div class="col-title" style="padding-left:0">在办任务 ${doing.length}</div>
     <div class="rows">${doing.length?doing.map(t=>`
       <div class="row" onclick="openDrawer('${t.id}')">
@@ -604,7 +606,7 @@ window.openKpi = function(kind){
     <div class="hd"><div><div class="cid">模拟 KPI 下钻 · ${s.hint}</div><h2 id="fti"></h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="fbar">
       <select id="fstage" onchange="renderKpiList()"><option value="">全部阶段</option>${STAGES.map((t,i)=>`<option value="${i}">${t.replace(" ★","")}</option>`).join("")}</select>
-      <select id="frole" onchange="renderKpiList()"><option value="">全部负责人</option>${Object.entries(ROLE_ALIAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+      <select id="frole" onchange="renderKpiList()"><option value="">全部执行角色</option>${Object.entries(ROLE_ALIAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
       <input id="fq" placeholder="搜标题 / 标签…" oninput="renderKpiList()">
       <span class="fc" id="fcnt"></span>
     </div>
@@ -614,7 +616,7 @@ window.openKpi = function(kind){
 window.renderKpiList = function(){
   const st = $("#fstage").value, ow = $("#frole").value, q = $("#fq").value.trim().toLowerCase();
   const all = KPI_SETS[kpiKind].get();
-  const rows = all.filter(t=>(st===""||t.st===+st)&&(!ow||t.ow===ow)&&(!q||t.ti.toLowerCase().includes(q)||t.tag.toLowerCase().includes(q)));
+  const rows = all.filter(t=>(st===""||t.st===+st)&&(!ow||taskRoles(t).includes(ow))&&(!q||t.ti.toLowerCase().includes(q)||t.tag.toLowerCase().includes(q)));
   $("#fti").textContent = `${KPI_SETS[kpiKind].ti} · ${rows.length}/${all.length}`;
   $("#fcnt").textContent = `筛选 ${rows.length} / 共 ${all.length}`;
   $("#frows").innerHTML = rows.length ? rows.map(t=>`
@@ -685,7 +687,7 @@ window.simulate=function(id,action,key){
   pushEv(["模拟操作","演示状态",ok?"手工模拟状态已更新；无平台动作。":"模拟门禁/槽位阻止操作。",id]);
   toast(ok?"仅本页模拟已更新":"模拟门禁未满足或全局3槽已满");
 };
-function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/3（含协调者1；排队不占槽）`; }
+function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/3（含协调者1；QA+tester并行占2；排队不占槽）`; }
 
 /* ═══ 启动 ═══ */
 renderRoles(); renderLanes(); renderKpis(); renderBudget(); prepareControls();
