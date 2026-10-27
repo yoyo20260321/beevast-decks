@@ -284,3 +284,10 @@ test('QA-02: refreshed disabled target falls back; Tab from outside and no-contr
 test('code child completion cannot satisfy parent written acceptance',()=>{const m=model();assert.equal(m.CODE_CHILD.status,'completed');assert.equal(m.CODE_CHILD.parentStatus,'pending_owner');const t=m.makeTask(6);assert.equal(m.advanceTask(t),false);});
 
 test('native-keyboard click dispatch supports non-HTMLElement SVG role controls',()=>{const h=renderHarness(),control=h.element({role:'button'});control.focus();for(const key of ['Enter',' ']){assert.equal(h.key(key).prevented,true);assert.equal(control.lastEvent.type,'click');assert.equal(control.lastEvent.bubbles,true);}});
+
+test('mobile hidden role tooltip is bounded by its role card instead of inflating layout viewport',()=>{
+  const mobile=html.match(/@media \(max-width:700px\)\{([^\n]+)\}/)[1];
+  assert.match(mobile,/\.role \.info\{position:static\}/);
+  assert.match(mobile,/\.role \.info::after\{[^}]*left:12px;right:12px;[^}]*width:auto;max-width:none/);
+  assert.match(html,/\.role\{[^}]*position:relative/s);
+});

@@ -73,6 +73,11 @@ test('A load layout and reachable panels',async({page},info)=>{
  await expect(page.locator('h1')).toContainText('v1.4');await expect(page.locator('.badge')).toContainText('纯模拟');
  await expect(page.locator('#budget')).toContainText('/4');await expect(page.locator('#budget')).toContainText('2026-10-27.1');
  await expect(page.locator('.role')).toHaveCount(7);await expect(page.locator('.chip')).toHaveCount(8);
+ if(info.project.use.hasTouch){
+  const tooltips=await page.locator('.role .info').evaluateAll(infos=>infos.map(info=>{const role=info.closest('.role'),r=role.getBoundingClientRect(),style=getComputedStyle(info,'::after');return {role:role.getAttribute('onclick'),position:getComputedStyle(info).position,card:{left:r.left,right:r.right},pseudo:{left:parseFloat(style.left),right:parseFloat(style.right),width:parseFloat(style.width)}};}));
+  await info.attach('mobile-tooltip-bounds',{body:JSON.stringify(tooltips),contentType:'application/json'});
+  for(const t of tooltips){expect(t.position).toBe('static');expect(t.pseudo.left).toBe(12);expect(t.pseudo.right).toBe(12);expect(t.pseudo.width).toBeGreaterThan(0);expect(t.pseudo.width+t.pseudo.left+t.pseudo.right).toBeLessThanOrEqual(t.card.right-t.card.left);}
+ }
  for(const id of ['SIM-01','SIM-08']){await openTask(page,id,info);await expect(page.locator('#sheet')).toContainText('进入输入');await close(page);}
  await page.locator('#feed .ev').last().scrollIntoViewIfNeeded();await layout(page);
 });
