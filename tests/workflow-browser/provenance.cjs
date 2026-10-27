@@ -2,6 +2,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
+const {evidenceFiles,missingRequiredEvidence}=require('./evidence-files.cjs');
 const root=process.env.SOURCE_ROOT, out=process.env.MAP_ARTIFACT_DIR;
 if(!root||!out)throw new Error('Source/evidence directories required');
 fs.mkdirSync(out,{recursive:true});
@@ -45,10 +46,14 @@ async function main(){
   const m=fs.existsSync(file)?JSON.parse(fs.readFileSync(file)):{status:'PREPARE_FAILED'};
   m.finishedAt=new Date().toISOString();m.jobStatus=process.env.MAP_JOB_STATUS;
   if(m.status!=='PASS'&&m.status!=='FAIL')m.status='BLOCKED';
-  const paths=[];
-  function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())walk(p);else if(p!==file)paths.push(p);}}
-  walk(out);m.artifactFiles=Object.fromEntries(paths.map(p=>[path.relative(out,p),{bytes:fs.statSync(p).size,sha256:hash(fs.readFileSync(p))}]));
+  const paths=evidenceFiles(out);
+  const missing=missingRequiredEvidence(out,m,paths);
+  m.evidencePolicy='Visible bounded evidence only; exclude transient hidden paths to match upload-artifact include-hidden-files:false. Required hidden/missing attachment paths are errors.';
+  m.evidenceCoverage={missingRequired:missing};
+  if(missing.length)m.status='FAIL';
+  m.artifactFiles=Object.fromEntries(paths.map(name=>{const bytes=fs.readFileSync(path.join(out,name));return [name,{bytes:bytes.length,sha256:hash(bytes)}];}));
   fs.writeFileSync(file,JSON.stringify(m,null,2));
+  if(missing.length)throw new Error('Required uploaded evidence missing: '+missing.join(', '));
  }else throw new Error('Unknown provenance operation');
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

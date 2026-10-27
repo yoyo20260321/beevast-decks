@@ -70,5 +70,6 @@ jobs:
         with:
           name: workflow-map-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/workflow-map-evidence/
+          include-hidden-files: false
           if-no-files-found: error
           retention-days: 7
