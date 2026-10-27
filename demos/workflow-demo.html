@@ -361,7 +361,7 @@ function renderLanes(){
     </div>`).join("");
 }
 const chip = t=>`
-  <div class="chip ${t.active?'active':''} ${t.done?'done':''}" onclick="openDrawer('${t.id}')">
+  <div class="chip ${t.active?'active':''} ${t.done?'done':''}" data-task-id="${t.id}" onclick="openDrawer('${t.id}')">
     <div class="cid"><span><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</span><span>${t.done?"✓":"⏳"}</span></div>
     <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span>
   </div>`;
@@ -411,7 +411,7 @@ function toggleRole(k){
   roleSel = roleSel===k ? null : k;
   renderRoles(roleSel);
   document.querySelectorAll(".chip").forEach(c=>{
-    const id = c.querySelector(".cid").textContent.trim().split(/\s/)[0];
+    const id = c.dataset.taskId;
     const t = TASKS.find(x=>x.id===id);
     c.classList.toggle("dim", !!roleSel && t && t.ow!==roleSel && !t.done);
   });

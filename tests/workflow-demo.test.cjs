@@ -83,19 +83,61 @@ test('copy is non executable; no random progression, live platform claims or net
 });
 
 function renderHarness() {
-  const nodes=new Map(), timers=[];
-  function element() {
-    const classes=new Set();
-    return { innerHTML:'',textContent:'',value:'',children:[],style:{},dataset:{},
-      classList:{add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k),toggle(){}},
-      querySelectorAll:()=>[],addEventListener(){},select(){},remove(){},
-      prepend(el){this.children.unshift(el);el.remove=()=>this.children.splice(this.children.indexOf(el),1);},appendChild(el){this.children.push(el);},get lastChild(){return this.children.at(-1);}
+  // Focus/identity DOM doubles only: no layout, browser engine or native event dispatch.
+  const nodes=new Map(), timers=[], listeners=new Map();
+  let document;
+  function element(attrs={}) {
+    const classes=new Set((attrs.class||'').split(/\s+/).filter(Boolean));
+    let markup='';
+    const el={id:attrs.id||'',textContent:'',value:'',children:[],style:{},dataset:{},attributes:{...attrs},inert:false,hidden:false,disabled:false,isConnected:true,parentElement:null,
+      classList:{add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k),
+        toggle(k,force){const on=force===undefined?!classes.has(k):force;if(on)classes.add(k);else classes.delete(k);}},
+      setAttribute(k,v){this.attributes[k]=v;},getAttribute(k){return this.attributes[k]??null;},
+      focus(){document.activeElement=this;},
+      contains(target){for(let n=target;n;n=n.parentElement)if(n===this)return true;return false;},
+      closest(){for(let n=this;n;n=n.parentElement)if(n.hidden||n.inert)return n;return null;},
+      querySelectorAll(){return this.controls?.filter(c=>!c.disabled)||[];},
+      querySelector(selector){return selector==='.cid'?{textContent:this.cidText}:this.querySelectorAll(selector)[0]||null;},
+      addEventListener(){},select(){},remove(){},
+      prepend(child){this.children.unshift(child);child.remove=()=>this.children.splice(this.children.indexOf(child),1);},
+      appendChild(child){this.children.push(child);},get lastChild(){return this.children.at(-1);}
     };
+    Object.defineProperty(el,'innerHTML',{get:()=>markup,set(value){
+      markup=value;
+      if(el===nodes.get('#sheet')) {
+        for(const old of el.controls||[])old.isConnected=false;
+        if(el.contains(document.activeElement))document.activeElement=document.body;
+        el.controls=[];
+        // Model only the focus targets needed by the actual drawer functions.
+        for(const match of value.matchAll(/<(button|select|input|textarea|summary|span|div|g)\b([^>]*)>/g)) {
+          const [,tag,source]=match;
+          const attrs=Object.fromEntries(Array.from(source.matchAll(/([\w-]+)="([^"]*)"/g),m=>[m[1],m[2]]));
+          if(!['button','select','input','textarea','summary'].includes(tag)&&!attrs.onclick)continue;
+          const control=element(attrs);control.parentElement=el;control.disabled=/\bdisabled(?:\s|$)/.test(source);
+          el.controls.push(control);if(attrs.id)nodes.set('#'+attrs.id,control);
+        }
+      }
+      if(el===nodes.get('#lanes')) {
+        el.chips=Array.from(value.matchAll(/<div class="chip ([^"]*)"([^>]*)>/g),(m,i)=>{
+          const chip=element({class:'chip '+m[1]});
+          chip.dataset.taskId=/data-task-id="([^"]+)"/.exec(m[2])?.[1];
+          chip.cidText='SIM-0'+(i+1)+'⏳';
+          return chip;
+        });
+      }
+    }});
+    return el;
   }
-  const context={document:{querySelector:s=>{if(!nodes.has(s))nodes.set(s,element());return nodes.get(s);},querySelectorAll:()=>[],getElementById:()=>element(),createElement:element,addEventListener(){},body:element(),execCommand:()=>false},
-    MutationObserver:class {observe(){}},requestAnimationFrame:fn=>fn(),setInterval:fn=>timers.push(fn),setTimeout:()=>1,clearTimeout(){},navigator:{}};
+  function getNode(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s);}
+  document={querySelector:getNode,querySelectorAll:s=>s==='.chip'?getNode('#lanes').chips||[]:[],
+    getElementById:id=>getNode('#'+id),createElement:()=>element(),
+    addEventListener(type,fn){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(fn);},
+    body:element(),execCommand:()=>false};
+  document.activeElement=document.body;
+  const context={document,MutationObserver:class {observe(){}},requestAnimationFrame:fn=>fn(),setInterval:fn=>timers.push(fn),setTimeout:()=>1,clearTimeout(){},navigator:{}};
   context.window=context; vm.createContext(context); vm.runInContext(script,context);
-  return {context,nodes,timers,snapshot:()=>vm.runInContext('JSON.stringify(TASKS)',context)};
+  return {context,nodes,timers,element,snapshot:()=>vm.runInContext('JSON.stringify(TASKS)',context),
+    key(key,shiftKey=false){const e={key,shiftKey,target:document.activeElement,prevented:false,preventDefault(){this.prevented=true;}};for(const fn of listeners.get('keydown')||[])fn(e);return e;}};
 }
 test('actual script startup and all retained drawer renderers execute without undefined state',()=>{
   const {context:c,nodes}=renderHarness();
@@ -148,4 +190,16 @@ test('later gates reject stale upstream evidence and wrong quality/release signa
   clean.evidence.deploymentTest.actor='authorized-executor'; assert.equal(m.advanceTask(clean),false);
   for(const g of m.PHASES[7].checks) m.recordEvidence(close,g.key);
   delete close.evidence.acceptance; assert.equal(m.advanceTask(close),false);
+});
+
+test('QA-01: role selection dims seven non-PD chips, toggles off, and preserves matching dev',()=>{
+  const {context:c,nodes}=renderHarness();
+  const chips=()=>nodes.get('#lanes').chips;
+  assert.ok(chips().every(chip=>chip.dataset.taskId));
+  c.toggleRole('pd');
+  assert.equal(chips().filter(chip=>chip.classList.contains('dim')).length,7);
+  assert.equal(chips()[0].classList.contains('dim'),false);
+  c.toggleRole('pd');assert.equal(chips().filter(chip=>chip.classList.contains('dim')).length,0);
+  c.toggleRole('dev');assert.equal(chips()[2].classList.contains('dim'),false);
+  assert.equal(chips().filter(chip=>chip.classList.contains('dim')).length,7);
 });
