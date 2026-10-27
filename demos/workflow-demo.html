@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>群蜂智能 · v1.4 人+AI作战地图 · 纯模拟</title>
 <style>
@@ -245,6 +246,8 @@ button:disabled{opacity:.5;cursor:default}button:focus-visible,[tabindex]:focus-
 
 <script>
 /* ═══ 纯模拟 v1.4：不连接平台，不代表运行状态或授权 ═══ */
+const DEMO_POLICY = {maxParallel:4,policyVersion:"2026-10-27.1",perAgent:1,singleDev:true};
+const CODE_CHILD = {id:"SIM-CODE-CHILD",status:"completed",parentStatus:"pending_owner"};
 const ROLES = {
   admin5:{cn:"人类 owner",en:"admin5",title:"范围 · 取舍 · 发布 · 书面验收",c:"#f5c451",desc:"人类批准范围、关键取舍、发布；对指定版本书面业务验收，不能由协调者代签。"},
   zwen:{cn:"主脑",en:"master-brain",core:true,title:"唯一协调 · backup 手工承接",c:"#5ac8fa",desc:"唯一负责计划、拆分、依赖、波次、派发、排期和证据汇总；不能代签质量或业务结论。backup 是手工协调，不是自动故障切换。"},
@@ -283,7 +286,7 @@ function taskRoles(t){return t.st===3?["qareview","te"]:[t.ow];}
 function roleActive(k){return k==="zwen" || TASKS.some(t=>t.active && taskRoles(t).includes(k));}
 function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?taskRoles(t).length:0),0);}
 function startWork(t){
-  if(t.done || t.active || activeCount()+taskRoles(t).length>3) return false;
+  if(t.done || t.active || activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel || taskRoles(t).some(roleActive)) return false;
   t.active=true;
   return true;
 }
@@ -384,7 +387,7 @@ function renderKpis(){
 
 /* ═══ 事件流 ═══ */
 const EVPOOL = [
-  ["master-brain","dev","模拟派发：全局≤3含协调者；未确认旧执行停止不得重派。","SIM-03"],
+  ["master-brain","dev",`模拟派发：全局≤${DEMO_POLICY.maxParallel}含协调者；单dev/每角色一个执行者；未确认旧执行停止不得重派。`,"SIM-03"],
   ["pd","admin5","模拟范围变更：回owner决策，不能擅自放宽AC。","SIM-01"],
   ["qa-review","dev","模拟审查：同head/base独立报告，问题回原dev。","SIM-04"],
   ["test-engineer","master-brain","模拟测试：新head/base需复测，旧证据不可沿用。","SIM-04"],
@@ -500,8 +503,8 @@ function demoCopy(t,act){return `【纯模拟 · 不可执行 · 不发送】${t
 window.actCopy = function(id,act){const t=TASKS.find(t=>t.id===id);if(t) copyText(demoCopy(t,act));};
 window.copyText = function(s){
   const done = ()=>toast("已复制模拟说明（不可执行，不发送）");
-  const fb = ()=>{ const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
-    try{ if(document.execCommand("copy")) done(); else toast("复制未成功，请手工选择模拟说明"); }catch(e){ toast("复制失败："+s.slice(0,36)+"…"); } ta.remove(); };
+  const fb = ()=>{ const previous=document.activeElement; const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
+    try{ if(document.execCommand("copy")) done(); else toast("复制未成功，请手工选择模拟说明"); }catch(e){ toast("复制失败："+s.slice(0,36)+"…"); } ta.remove(); if(previous?.isConnected) previous.focus(); };
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(s).then(done, fb); } else fb();
 };
 const GRAPH_NODES = [
@@ -630,7 +633,7 @@ window.renderKpiList = function(){
 document.addEventListener("keydown",e=>{
   trapDrawerTab(e);
   if(e.key==="Escape") closeDrawer();
-  if((e.key==="Enter"||e.key===" ") && e.target.matches('[role="button"]')) {e.preventDefault();e.target.click();}
+  if((e.key==="Enter"||e.key===" ") && e.target.matches('[role="button"]')) {e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}));}
 });
 function prepareControls(){
   document.querySelectorAll('[onclick]:not(button):not(#drawer)').forEach(el=>{
@@ -654,8 +657,9 @@ function taskGateHtml(t){
   const missingUpstream=PHASES.slice(0,t.st).flatMap(p=>p.checks).filter(g=>!evidenceValid(t,g));
   const proofButtons=[...missingUpstream,...p.checks];
   return `${phaseHtml(t.st)}<p>模拟版本：${t.base} / ${t.head} · 不是真实SHA/PR</p>
-    <p>任务包示例：demand_uid=SIM-DEMAND，task_id=${t.id}，需求/计划版本=v1.4-demo；owner=admin5；原dev=${t.originalDev}；repo/worktree/branch=SIM-ONLY（无真实路径）；写面=演示页；AC=八环节与门禁；验证=模拟契约；环境=本页内存；时限/预算=模拟1批/全局3槽；升级=主脑→admin5。完整字段见阶段详情。</p>
+    <p>任务包示例：demand_uid=SIM-DEMAND，task_id=${t.id}，需求/计划版本=v1.4-demo；owner=admin5；原dev=${t.originalDev}；repo/worktree/branch=SIM-ONLY（无真实路径）；写面=演示页；AC=八环节与门禁；验证=模拟契约；环境=本页内存；时限/预算=模拟1批/全局${DEMO_POLICY.maxParallel}槽；升级=主脑→admin5。完整字段见阶段详情。</p>
     <details><summary>完整任务包 / 交接字段</summary><ul>${[...TASK_PACKAGE,...HANDOFF].map(v=>`<li>${v}</li>`).join("")}</ul></details>
+    ${t.st>=6?`<p id="code-child">纯模拟代码子任务 ${CODE_CHILD.id}：${CODE_CHILD.status}（代码交付完成）；业务父需求 ${CODE_CHILD.parentStatus}，缺书面业务验收继续保持待验，不因子任务完成自动关单。</p>`:""}
     <h3>模拟证据门 · ${gateReady(t)?"可手动推进":"缺证据，阻止推进"}</h3>
     <p>点击每项仅模拟该责任角色的证据，均绑定当前head/base。人类验收须单独手工模拟，不由定时器或协调者自动代签。DoD的N/A须理由和质量复核，本演示不提供一键豁免。</p>
     ${t.releaseFailed?"<p class='warning'>模拟发布失败：仍在发布修复/回退，须重新补齐发布授权、投放及独立验证。</p>":""}
@@ -685,9 +689,9 @@ window.simulate=function(id,action,key){
   renderRoles(roleSel);renderLanes();renderKpis();renderBudget();if(roleSel){const selected=roleSel;roleSel=null;toggleRole(selected);}
   openDrawer(id);
   pushEv(["模拟操作","演示状态",ok?"手工模拟状态已更新；无平台动作。":"模拟门禁/槽位阻止操作。",id]);
-  toast(ok?"仅本页模拟已更新":"模拟门禁未满足或全局3槽已满");
+  toast(ok?"仅本页模拟已更新":`模拟门禁/单角色限制未满足或全局${DEMO_POLICY.maxParallel}槽已满`);
 };
-function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/3（含协调者1；QA+tester并行占2；排队不占槽）`; }
+function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/${DEMO_POLICY.maxParallel} · policy${DEMO_POLICY.policyVersion}（含协调者1；QA+tester并行占2；排队不占槽）`; }
 
 /* ═══ 启动 ═══ */
 renderRoles(); renderLanes(); renderKpis(); renderBudget(); prepareControls();

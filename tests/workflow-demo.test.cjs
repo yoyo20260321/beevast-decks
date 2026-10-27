@@ -8,7 +8,7 @@ function model() {
   // Execute the actual inline script, with rendering startup excluded; no browser/layout claim.
   const context = { window: {}, document: { addEventListener() {}, getElementById() {} }, MutationObserver:class {observe(){}}, setTimeout, clearTimeout };
   vm.createContext(context);
-  vm.runInContext(script.split('/* ═══ 启动 ═══ */')[0] + '\nthis.api={STAGES,PHASES,DOD,ROLES,TASKS,makeTask,recordEvidence,gateReady,advanceTask,returnToDev,failRelease,changeRevision,startWork,stopWork,activeCount,demoCopy};', context);
+  vm.runInContext(script.split('/* ═══ 启动 ═══ */')[0] + '\nthis.api={STAGES,PHASES,DOD,ROLES,TASKS,makeTask,recordEvidence,gateReady,advanceTask,returnToDev,failRelease,changeRevision,startWork,stopWork,activeCount,demoCopy,DEMO_POLICY,CODE_CHILD};', context);
   return context.api;
 }
 test('exact eight-stage contract and complete phase details', () => {
@@ -62,14 +62,16 @@ test('release failure stays release, clears release proof and blocks acceptance'
   assert.equal(m.advanceTask(t),true); assert.equal(t.st,6);
   assert.equal(m.advanceTask(t),false);
 });
-test('global simulated budget includes coordinator; queues and stopped work free slots only explicitly', () => {
-  const m=model();
-  for (const t of m.TASKS) m.stopWork(t);
-  assert.equal(m.activeCount(),1);
-  assert.equal(m.startWork(m.TASKS[0]),true); assert.equal(m.startWork(m.TASKS[1]),true);
-  assert.equal(m.activeCount(),3); assert.equal(m.startWork(m.TASKS[2]),false);
-  m.stopWork(m.TASKS[0]); assert.equal(m.startWork(m.TASKS[2]),true);
-  assert.equal(m.activeCount(),3);
+test('fixed policy4 boundary includes coordinator, three single workers, and per-agent/single-dev limits',()=>{
+  const m=model();for(const t of m.TASKS)m.stopWork(t);
+  assert.equal(m.DEMO_POLICY.maxParallel,4);assert.equal(m.DEMO_POLICY.policyVersion,'2026-10-27.1');
+  for(const i of [0,2,5])assert.equal(m.startWork(m.TASKS[i]),true);
+  assert.equal(m.activeCount(),4);assert.equal(m.startWork(m.TASKS[6]),false);
+  m.stopWork(m.TASKS[0]);assert.equal(m.startWork(m.TASKS[6]),true);assert.equal(m.activeCount(),4);
+  for(const t of m.TASKS)m.stopWork(t);
+  assert.equal(m.startWork(m.TASKS[2]),true);
+  const other=m.makeTask(2);other.id="SIM-SECOND-DEV";m.TASKS.push(other);assert.equal(m.startWork(other),false);
+  assert.equal(m.startWork(m.TASKS[1]),false); // active coordinator already owns master-brain
 });
 test('copy is non executable; no random progression, live platform claims or network calls', () => {
   const m=model();
@@ -98,7 +100,7 @@ function renderHarness() {
       closest(){for(let n=this;n;n=n.parentElement)if(n.hidden||n.inert)return n;return null;},
       querySelectorAll(){return this.controls?.filter(c=>!c.disabled)||[];},
       querySelector(selector){return selector==='.cid'?{textContent:this.cidText}:this.querySelectorAll(selector)[0]||null;},
-      addEventListener(){},select(){},remove(){},
+      matches(selector){return selector==='[role="button"]'&&this.attributes.role==='button';},dispatchEvent(event){this.lastEvent=event;return true;},addEventListener(){},select(){},remove(){},
       prepend(child){this.children.unshift(child);child.remove=()=>this.children.splice(this.children.indexOf(child),1);},
       appendChild(child){this.children.push(child);},get lastChild(){return this.children.at(-1);}
     };
@@ -134,14 +136,14 @@ function renderHarness() {
     addEventListener(type,fn){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(fn);},
     body:element(),execCommand:()=>false};
   document.activeElement=document.body;
-  const context={document,MutationObserver:class {observe(){}},requestAnimationFrame:fn=>fn(),setInterval:fn=>timers.push(fn),setTimeout:()=>1,clearTimeout(){},navigator:{}};
+  const context={document,MouseEvent:class {constructor(type,options){this.type=type;Object.assign(this,options);}},MutationObserver:class {observe(){}},requestAnimationFrame:fn=>fn(),setInterval:fn=>timers.push(fn),setTimeout:()=>1,clearTimeout(){},navigator:{}};
   context.window=context; vm.createContext(context); vm.runInContext(script,context);
   return {context,nodes,timers,element,snapshot:()=>vm.runInContext('JSON.stringify(TASKS)',context),
     key(key,shiftKey=false){const e={key,shiftKey,target:document.activeElement,prevented:false,preventDefault(){this.prevented=true;}};for(const fn of listeners.get('keydown')||[])fn(e);return e;}};
 }
 test('actual script startup and all retained drawer renderers execute without undefined state',()=>{
   const {context:c,nodes}=renderHarness();
-  assert.match(nodes.get('#budget').textContent,/2\/3/);
+  assert.match(nodes.get('#budget').textContent,/2\/4/);
   assert.equal((nodes.get('#lanes').innerHTML.match(/phase-btn/g)||[]).length,8);
   for(const role of ['admin5','zwen','pd','dev','qareview','te','support']) {
     c.openRole(role,0);
@@ -237,18 +239,18 @@ test('QA-02: refresh retains action focus; nested drawers keep original opener; 
   opener.focus();c.openDrawer('SIM-03');opener.isConnected=false;c.closeDrawer();
   assert.equal(doc.activeElement,fallback);
 });
-test('concurrency risk: same-head QA and tester cost two workers plus coordinator; dev blocks admission',()=>{
-  const m=model(),dev=m.TASKS[2],quality=m.TASKS[3];
-  assert.equal(m.activeCount(),2);
-  assert.equal(m.startWork(quality),false);assert.equal(quality.active,false);assert.equal(m.activeCount(),2);
-  m.stopWork(dev);assert.equal(m.startWork(quality),true);assert.equal(m.activeCount(),3);
-  assert.equal(m.startWork(dev),false);
-  m.stopWork(quality);assert.equal(m.activeCount(),1);
+test('policy4 projected dual-role admission and stop are explicit',()=>{
+ const m=model(),pd=m.TASKS[0],dev=m.TASKS[2],quality=m.TASKS[3];
+ assert.equal(m.startWork(quality),true);assert.equal(m.activeCount(),4);
+ assert.equal(m.startWork(pd),false);m.stopWork(quality);
+ assert.equal(m.startWork(pd),true);assert.equal(m.activeCount(),3);
+ assert.equal(m.startWork(quality),false);m.stopWork(dev);
+ assert.equal(m.startWork(quality),true);assert.equal(m.activeCount(),4);
 });
 test('concurrency risk: both independent roles render active for one parallel quality task',()=>{
   const {context:c,nodes}=renderHarness();
   c.simulate('SIM-03','work');c.simulate('SIM-04','work');
-  assert.match(nodes.get('#budget').textContent,/3\/3/);
+  assert.match(nodes.get('#budget').textContent,/3\/4/);
   const cards=nodes.get('#roles').innerHTML;
   for(const k of ['qareview','te']) {
     const card=cards.split('<div class="role ').find(part=>part.split('>')[0].includes(`onclick="toggleRole('${k}')"`));
@@ -278,3 +280,7 @@ test('QA-02: refreshed disabled target falls back; Tab from outside and no-contr
   assert.equal(key('Tab',true).prevented,true);assert.equal(doc.activeElement,sheet);
   c.closeDrawer();
 });
+
+test('code child completion cannot satisfy parent written acceptance',()=>{const m=model();assert.equal(m.CODE_CHILD.status,'completed');assert.equal(m.CODE_CHILD.parentStatus,'pending_owner');const t=m.makeTask(6);assert.equal(m.advanceTask(t),false);});
+
+test('native-keyboard click dispatch supports non-HTMLElement SVG role controls',()=>{const h=renderHarness(),control=h.element({role:'button'});control.focus();for(const key of ['Enter',' ']){assert.equal(h.key(key).prevented,true);assert.equal(control.lastEvent.type,'click');assert.equal(control.lastEvent.bubbles,true);}});
