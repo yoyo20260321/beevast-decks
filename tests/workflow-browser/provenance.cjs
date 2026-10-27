@@ -44,6 +44,7 @@ async function main(){
  }else if(process.argv[2]==='finalize'){
   const m=fs.existsSync(file)?JSON.parse(fs.readFileSync(file)):{status:'PREPARE_FAILED'};
   m.finishedAt=new Date().toISOString();m.jobStatus=process.env.MAP_JOB_STATUS;
+  if(m.status!=='PASS'&&m.status!=='FAIL')m.status='BLOCKED';
   const paths=[];
   function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())walk(p);else if(p!==file)paths.push(p);}}
   walk(out);m.artifactFiles=Object.fromEntries(paths.map(p=>[path.relative(out,p),{bytes:fs.statSync(p).size,sha256:hash(fs.readFileSync(p))}]));

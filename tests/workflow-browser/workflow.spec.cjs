@@ -127,13 +127,13 @@ test('H policy4 projected budget per-agent and dual quality role displays',async
  await stop('SIM-06');await page.evaluate(()=>{TASKS[5].ow='dev';});await work('SIM-06');expect(await page.evaluate(()=>TASKS[5].active)).toBe(false);
 });
 test('I native keyboard focus refresh nested dead-opener and clipboard fallback',async({page,context,baseURL},info)=>{
- const opener=task(page,'SIM-03');await opener.scrollIntoViewIfNeeded();await opener.focus();await page.keyboard.press('Enter');
+ const opener=task(page,'SIM-03');await opener.scrollIntoViewIfNeeded();const openerHandle=await opener.elementHandle();await opener.focus();await page.keyboard.press('Enter');
  expect(await page.evaluate(()=>document.querySelector('#sheet').contains(document.activeElement))).toBe(true);expect(await page.locator('#app').evaluate(el=>el.inert)).toBe(true);
  const first=page.locator('#sheet .x');await first.focus();await page.keyboard.press('Shift+Tab');expect(await page.evaluate(()=>document.activeElement===drawerControls().at(-1))).toBe(true);await page.keyboard.press('Tab');await expect(first).toBeFocused();
- await act(action(page,'模拟 · 实现与AC映射'),info);await expect(action(page,'模拟 · 实现与AC映射')).toBeFocused();await fill(page,info);await advance(page,info);expect(await page.evaluate(()=>document.querySelector('#sheet').contains(document.activeElement)&&!document.activeElement.disabled)).toBe(true);await close(page);expect(await page.evaluate(()=>document.activeElement.isConnected&&!document.querySelector('#app').inert)).toBe(true);
- await act(page.locator('.lnk'),info);await act(page.locator('.graph-text button').filter({hasText:'开发工程师'}),info);await close(page);await expect(page.locator('.lnk')).toBeFocused();
+ await act(action(page,'模拟 · 实现与AC映射'),info);await expect(action(page,'模拟 · 实现与AC映射')).toBeFocused();expect(await openerHandle.evaluate(el=>el.isConnected)).toBe(false);await fill(page,info);await advance(page,info);expect(await page.evaluate(()=>document.querySelector('#sheet').contains(document.activeElement)&&!document.activeElement.disabled)).toBe(true);await close(page);expect(await page.evaluate(()=>document.activeElement.isConnected&&!document.querySelector('#app').inert)).toBe(true);
+ await page.locator('.lnk').scrollIntoViewIfNeeded();await page.locator('.lnk').focus();await page.keyboard.press('Space');await act(page.locator('.graph-text button').filter({hasText:'开发工程师'}),info);await close(page);await expect(page.locator('.lnk')).toBeFocused();
  await openTask(page,'SIM-03',info);await context.grantPermissions(['clipboard-read','clipboard-write'],{origin:new URL(baseURL).origin});
- const copy=action(page,'复制模拟催办说明');await act(copy,info);await expect(page.locator('#toast')).toContainText('已复制模拟说明');const text=await page.evaluate(()=>navigator.clipboard.readText());expect(text).toContain('纯模拟 · 不可执行 · 不发送');expect(text).not.toContain('@');
+ const copy=action(page,'复制模拟催办说明');await act(copy,info);await expect(page.locator('#toast')).toContainText('已复制模拟说明');const text=await page.evaluate(()=>navigator.clipboard.readText());expect(text).toBe(await page.evaluate(()=>demoCopy(TASKS.find(t=>t.id==='SIM-03'),'urge')));expect(text).toContain('纯模拟 · 不可执行 · 不发送');expect(text).not.toContain('@');
  for(const mode of ['denied','unavailable']){
   await context.clearPermissions();await page.evaluate(mode=>{
    const native=document.execCommand.bind(document);window.__fallback={calls:0,result:null};document.execCommand=(...args)=>{window.__fallback.calls++;return window.__fallback.result=native(...args);};
