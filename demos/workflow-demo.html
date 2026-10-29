@@ -2,8 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>群蜂智能 · 研发工作流数字孪生 · Mock Demo</title>
+<title>群蜂智能 · v1.4 人+AI作战地图 · 纯模拟</title>
 <style>
 :root{
   --bg0:#080b12;--bg1:#0c111b;--panel:rgba(255,255,255,.035);--panel2:rgba(255,255,255,.055);
@@ -197,190 +198,277 @@ main{flex:1;display:grid;grid-template-columns:212px 1fr 296px;gap:12px;min-heig
 .gnode-e{font-size:7.5px;fill:var(--tx3)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:5px}
+
+/* v1.4 retains the dark panels; narrow lanes become a readable grid. */
+main{grid-template-columns:235px minmax(0,1fr) 260px}.col{min-width:0}.col:first-child{overflow-y:auto}
+header{flex-wrap:wrap}h1{min-width:0}.kpis{flex-wrap:wrap}.kpi{min-width:65px;padding:6px 8px}
+.demo-notice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;color:var(--tx2);line-height:1.6}
+.demo-notice b{color:var(--warn)}button{font:inherit;color:var(--tx);background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 9px;cursor:pointer;white-space:normal}
+button:disabled{opacity:.5;cursor:default}button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--zwen);outline-offset:2px}
+.phase-btn{font-size:12px;width:100%;padding:6px 2px;color:var(--zwen)}.lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow-y:auto;align-content:start}.lanes::before{display:none}.lane{min-height:140px}.lane .body{overflow:visible}
+#slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;font-size:10px;color:var(--tx2);overflow-wrap:anywhere;flex-shrink:0}.signal{font-size:10px;color:var(--tx2);overflow-wrap:anywhere}.sheet select{max-width:100%}.sheet{overflow-wrap:anywhere}.sheet h3{font-size:13px;margin:16px 0 8px;color:var(--zwen)}.sheet p,.sheet li,.sheet dl{font-size:12px;line-height:1.7;color:var(--tx2)}.sheet ul,.sheet ol{padding-left:20px}.sheet dt{color:var(--tx);font-weight:600;margin-top:8px}.sheet dd{margin-left:0}.proofs{display:grid;gap:6px}.proofs button{text-align:left;font-size:11px}.warning{color:var(--warn)!important}.steps{flex-wrap:wrap}.step{min-width:65px}.sheet .hd>div{min-width:0}.row{flex-wrap:wrap}.row .ti{overflow-wrap:anywhere}.role .nm{flex-wrap:wrap}.info::after{left:0;top:20px;max-width:180px}.gwrap{min-height:280px}.gnode-e{font-size:9px;fill:var(--tx2)}
+@media (max-width:1100px){body{overflow:auto}#app{height:auto;min-height:100vh}main{grid-template-columns:220px minmax(0,1fr)}main>.col:last-child{grid-column:1/-1}.feed{min-height:200px;max-height:260px}.col:first-child{overflow:visible}}
+@media (max-width:700px){#app{padding:12px 10px}header{gap:9px}h1{font-size:16px}h1 .en{display:block;margin:4px 0}.spacer{display:none}.kpis{width:100%;gap:6px}.kpi{flex:1;min-width:0;padding:6px}.kpi-div{display:none}main{display:flex;flex-direction:column}.col:first-child{overflow:visible}#roles{display:grid!important;grid-template-columns:1fr;gap:6px!important}.role{padding:10px}.role .cur{white-space:normal}.lanes{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px;overflow:visible}.lane{min-height:150px}.lane .body{overflow:visible}.sheet{width:calc(100vw - 16px);padding:16px 12px;max-height:90dvh}.gwrap{min-height:0}.fbar>*{max-width:100%}.fbar input{min-width:0;width:100%}.row .sg,.row .tg{white-space:normal}.demo-notice{align-items:flex-start}.demo-notice span{width:100%}.role .info{position:static}.role .info::after{left:12px;right:12px;top:calc(100% + 6px);width:auto;max-width:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div id="app">
   <header>
-    <h1>研发工作流 · 数字孪生<span class="en">BeeVast R&amp;D Workflow Twin</span></h1>
-    <span class="badge" title="Mock 快照 · 故事日 2026-10-20（今日类 KPI 按此日计）">MOCK DATA</span>
+    <h1>人+AI作战地图 · v1.4<span class="en">BeeVast R&amp;D · 八环节</span></h1>
+    <span class="badge" title="全部任务、KPI、事件、证据和按钮均为模拟；非实时平台看板">纯模拟 / DEMO</span>
     <div class="spacer"></div>
     <div class="kpis" id="kpis"></div>
     <div id="clock"></div>
   </header>
+  <div class="demo-notice"><b id="budget"></b><span>唯一主脑协调 · backup手工承接；全局原子限流 / 自动故障切换 / 服务冷启动未交付。角色规则不等于平台强沙箱。</span><button id="pause" onclick="togglePause()">暂停模拟事件</button></div>
+  <div id="slots" aria-label="模拟逐槽明细"></div>
   <main>
     <div class="col">
-      <div class="col-title">角色 WORKFORCE<span class="lnk" onclick="openGraph()">关系图谱</span></div>
+      <div class="col-title">模拟角色 WORKFORCE<span class="lnk" onclick="openGraph()">关系图谱</span></div>
       <div id="roles" style="display:flex;flex-direction:column;gap:8px"></div>
       <div class="hint" style="text-align:left;padding:2px 4px">点角色卡高亮其任务 · 点 ▸ 看角色详情</div>
     </div>
     <div class="col">
-      <div class="col-title">任务泳道 PIPELINE（点击任务看单任务协同流）</div>
+      <div class="col-title">模拟任务泳道 PIPELINE（点击任务看单任务协同流）</div>
       <div class="lanes" id="lanes"></div>
     </div>
     <div class="col">
-      <div class="col-title">协作事件流 EVENT STREAM<span id="evtoday" style="margin-left:auto;color:var(--tx2);font-variant-numeric:tabular-nums"></span></div>
+      <div class="col-title">模拟协作事件流 EVENT STREAM<span id="evtoday" style="margin-left:auto;color:var(--tx2);font-variant-numeric:tabular-nums"></span></div>
       <div class="feed"><div class="list" id="feed"></div></div>
     </div>
   </main>
 </div>
 
 <div id="drawer" onclick="if(event.target===this)closeDrawer()">
-  <div class="sheet" id="sheet"></div>
+  <div class="sheet" id="sheet" tabindex="-1" role="dialog" aria-modal="true" aria-label="模拟地图详情"></div>
 </div>
 <div id="toast"></div>
 
 <script>
-/* ═══ Mock 数据（取材自 1019 真实工作流运行现场） ═══ */
+/* ═══ 纯模拟 v1.4：不连接平台，不代表运行状态或授权 ═══ */
+const DEMO_POLICY = {maxParallel:4,policyVersion:"2026-10-27.1",perAgent:1,singleDev:true};
+const CODE_CHILD = {id:"SIM-CODE-CHILD",status:"completed",parentStatus:"pending_owner"};
 const ROLES = {
-  admin5:   {name:"杨道利",  cn:"杨道利",    en:"admin5",       title:"拍板 · 验收",     c:"#f5c451", busy:15, st:"待命",      on:false, cur:"等待 v1.3 验收",
-             desc:"拍板人与验收人：方案拍板（阶段2）、验收序号确认（阶段6）、「停」一票急停"},
-  zwen:     {name:"主脑·仲文",cn:"仲文",      en:"master-brain", title:"编排 · 执行",     c:"#5ac8fa", busy:82, st:"执行中 ×4", on:true,  cur:"WF-016 工作流看板 demo",
-             desc:"主脑/编排者：入口归账与分级（阶段0）、七阶段推进、任务派发、执行与汇总汇报"},
-  qareview: {name:"qa-review",cn:"质量审查",  en:"qa-review",    title:"质量安全审查",    c:"#b07dff", busy:46, st:"队列扫描",  on:true,  cur:"盲评 #1990/#1992",
-             desc:"质量安全审查：盲评扫描出 P0-P3 问题清单，敏感面仲裁归其所有；v0 为合并后评审"},
-  te:       {name:"test-engineer",cn:"测试工程师",en:"test-engineer",title:"测试工程师", c:"#4ade80", busy:30, st:"待派发",    on:false, cur:"等阶段 2 定稿",
-             desc:"独立测试（阶段5）：测试设计与代码实现互不可见，产出可复现证据报告"},
-  qaarch:   {name:"qa-arch",  cn:"架构评审",  en:"qa-arch",      title:"架构评审",        c:"#ff8a5c", busy:95, st:"评审中",    on:true,  cur:"RFC-0220 方案评审 22:30 触发",
-             desc:"方案级评审（RFC 级任务）：口径一致性 / 遗漏角色 / 方案合理性 / 实施风险四维"},
-  ocr:      {name:"ocr",      cn:"代码评审",  en:"ocr",          title:"代码评审 open CR",c:"#ff6b8a", busy:55, st:"闸值守",    on:true,  cur:"High/Medium 清零闸",
-             desc:"代码评审闸值守：High/Medium 问题清零才放行合并；承接 open CR 例行审查"},
+  admin5:{cn:"人类 owner",en:"admin5",title:"范围 · 取舍 · 发布 · 书面验收",c:"#f5c451",desc:"人类批准范围、关键取舍、发布；对指定版本书面业务验收，不能由协调者代签。"},
+  zwen:{cn:"主脑",en:"master-brain",core:true,title:"唯一协调 · backup 手工承接",c:"#5ac8fa",desc:"唯一负责计划、拆分、依赖、波次、派发、排期和证据汇总；不能代签质量或业务结论。backup 是手工协调，不是自动故障切换。"},
+  pd:{cn:"产品需求",en:"pd",core:true,title:"需求 · 范围 · AC · 版本",c:"#ff8a5c",desc:"解释需求、范围、非目标和AC；范围变化回owner，不替人类决定业务取舍。"},
+  dev:{cn:"开发工程师",en:"dev",core:true,title:"唯一实现 · 自测 · PR",c:"#54b8eb",desc:"独立分支单写、开发自测、提交固定head/base；只交ready_for_review，不合并自己的PR。缺陷回原dev。"},
+  qareview:{cn:"质量审查",en:"qa-review",core:true,title:"独立七维审查 · P0–P3",c:"#b07dff",desc:"与tester独立检查同一固定head/base；未解P0/P1阻断，修复新head重新审查。"},
+  te:{cn:"测试工程师",en:"test-engineer",core:true,title:"独立测试 · 部署验证",c:"#4ade80",desc:"对同一固定head/base独立设计、执行测试并留证；发布后独立核验目标版本、健康、冒烟及回归。"},
+  support:{cn:"按需支持",en:"FDE / PMO / ops / specialists",title:"按需 · 非固定主链",c:"#ff6b8a",desc:"FDE客户约束，PMO多项目进度，ops授权发布/回退，专项提供输入。发布须明确授权执行者和独立tester。按需会话是目标姿态，未声称服务已冷启动改造。"}
 };
-const STAGES = ["入口归账","方案","拍板 ★","执行","评审合并","部署回归","验收闭环 ★"];
-const TASKS = [
-  {id:"WF-016", ti:"工作流角色协同看板 demo 页", st:3, ow:"zwen",  active:true,  tag:"轻卡 · dogfood", created:"1020"},
-  {id:"RFC-0220", ti:"qa-review 合并前挡板",     st:2, ow:"qaarch", active:false, tag:"RFC级 · M1→M3", created:"1019"},
-  {id:"RFC-0221", ti:"master-brain 运维能力票",  st:5, ow:"zwen",  active:false, tag:"敏感面 · 已合并", created:"1019"},
-  {id:"RFC-0215", ti:"配额墙自动续跑",           st:4, ow:"qareview",active:false,tag:"fde 试点", created:"1014"},
-  {id:"SENT-07",  ti:"舆情监控 per-user 脱敏",   st:3, ow:"zwen",  active:false, tag:"验收⑧前闸", created:"1005"},
-  {id:"KB-0212",  ti:"知识治理 enforced 切换",   st:6, ow:"admin5",active:false, tag:"待验收", created:"1008"},
-  {id:"WF-013",   ti:"研发工作流 v1.3 收敛",     st:6, ow:"admin5",active:false, tag:"已关单", done:true, created:"1013", closed:"1020"},
+const ROLE_ALIAS = Object.fromEntries(Object.entries(ROLES).map(([k,r])=>[k,r.en]));
+const STAGES = ["需求","计划","开发","测试／审查","合并","发布","验收","关单"];
+const STAGE_OWNERS = ["pd","zwen","dev","qareview","zwen","support","admin5","zwen"];
+const DOD = ["需求与AC逐项满足","变更范围符合批准约定","适用自测、独立实测及CI实际通过","异常场景与回归覆盖","审查阻断问题关闭并独立复核","配置、文档、迁移按需更新/演练","证据、变更记录和剩余风险归档"];
+const check = (key,label,actor)=>({key,label,actor});
+const PHASES = [
+  {role:"PD定义，owner批准，主脑归账",input:"来源问题、目标、demand_uid",output:"范围/非目标、AC、需求版本和完成层级",human:"admin5批准范围及关键取舍",gate:"AC可判定且人类已批准",failure:"缺AC → needs_input；目标变化回PD/owner",checks:[check("scope","范围与AC批准","admin5")]},
+  {role:"主脑唯一主责（backup手工协调）",input:"批准需求版本、依赖、资源现状",output:"计划、拆分、依赖图、波次、关键路径、写面、预算和唯一执行者",human:"冲突或高风险取舍交owner",gate:"任务包冻结、依赖满足、槽位核验且执行者accepted",failure:"材料不足needs_input；资源/版本/写冲突blocked",checks:[check("package","完整任务包冻结","master-brain"),check("admission","依赖/唯一写者/全局槽位核验","master-brain"),check("accepted","执行者接单","dev")]},
+  {role:"原dev唯一实现",input:"冻结任务包、独立worktree/branch、匹配base/head",output:"提交/PR、固定head/base、AC映射、实测日志、风险；ready_for_review",human:"超范围停写上报owner/PD",gate:"允许写面内实现，自测通过并交付当前版本",failure:"缺陷原dev修复；脏区/环境阻塞不覆盖",checks:[check("implementation","实现与AC映射/提交PR","dev"),check("selftest","实际自测与交接证据","dev")]},
+  {role:"qa-review + test-engineer各自独立，可并行",input:"相同不可变head/base、AC、实现与自测产物",output:"七维/P0–P3报告、独立测试/异常回归、适用CI",human:"质量异议交admin5；主脑不能代签",gate:"同head/base独立审查/测试及CI通过，P0/P1清零",failure:"失败回原dev；新head/base使旧证据失效并复审复测",checks:[check("review","独立审查与P0/P1清零","qa-review"),check("test","独立测试/异常回归","test-engineer"),check("ci","适用CI通过","CI")]},
+  {role:"获授权且非实现者的合并者（通常主脑）",input:"当前head/base质量证据、目标分支授权",output:"精确head合并回执与merge提交",human:"按目标分支授权，不由dev自合",gate:"操作前重核head/base、门禁和mergeability；SHA锁定实际合并",failure:"版本变化退质量门；冲突回原dev；无授权blocked",checks:[check("merge","授权非作者精确head合并回执","authorized-non-author")]},
+  {role:"授权ops/执行者发布，tester独立部署验证",input:"已合并提交、环境/范围批准、产物摘要与配置迁移差异",output:"命令/日志、目标实际版本/digest、健康冒烟回归、回退证据",human:"admin5发布授权；客户生产由人执行",gate:"授权、备份回退、实际投放和独立版本/健康核验均齐备",failure:"发布失败留发布修复/回滚；不得进入验收或写active",checks:[check("releaseAuth","目标环境/范围发布授权","admin5"),check("rollback","版本digest/配置迁移/备份回退方案","authorized-executor"),check("deploy","实际命令日志及投放版本","authorized-executor"),check("deploymentTest","独立版本/健康/冒烟/适用回归验证","test-engineer")]},
+  {role:"人类owner验收；PD解释AC，主脑汇总",input:"成功发布与独立验证、版本及逐条AC证据",output:"指定版本的书面业务验收或明确拒绝/待验项",human:"admin5亲自书面确认，技术启用不能代签",gate:"有权人明确验收对应版本/范围的业务结果",failure:"待人验收保持pending；不满足回需求/开发；部署问题回发布",checks:[check("acceptance","owner对应版本书面业务验收","admin5")]},
+  {role:"主脑归档关单",input:"对应完成层级质量、发布、验收和7项DoD",output:"证据索引、遗留负责人/后续任务、关单记录",human:"不替owner签业务验收；N/A须理由及质量复核",gate:"全部适用门满足、无阻断遗留；代码子任务不关闭业务父需求",failure:"缺证据退对应阶段；未验收禁止业务关单",checks:DOD.map((label,i)=>check("dod"+i,label,"quality-confirmed"))}
 ];
-const ROLE_ALIAS = {admin5:"admin5", zwen:"仲文", qareview:"qa-review", te:"test-engineer", qaarch:"qa-arch", ocr:"ocr"};
-
-/* 每任务的角色时间线（drawer 数据） */
-const TASK_TL = {
-  "WF-016":[
-    ["22:15","admin5","<b>/goal</b> 下发 demo 需求 → 台账 id16 自动建单"],
-    ["22:15","仲文","阶段0 归账 ✓ · 轻卡分级：一句话方案+验收项 3 条"],
-    ["22:16","仲文","阶段3 执行：单文件 mock 页开写（无后端依赖）"],
-    ["22:2x","test-engineer","待阶段 5：独立四查+证据报告"],
-  ],
-  "RFC-0220":[
-    ["21:40","仲文","方案 RFC-0220 写毕 → PR <b>#1990</b>"],
-    ["21:5x","仲文","派发 qa-arch 被三权限面拦 → 立项 RFC-0221 补授权"],
-    ["22:33","admin5","「现在重启」→ RFC-0221 当晚合并生效"],
-    ["22:36","仲文→qa-arch","ops 面建排程 <b>sch_467d234b</b>，22:30/23:00 触发方案评审"],
-  ],
-  "RFC-0221":[
-    ["22:05","admin5","「给 master-brain 补平台配置专用授权，我拍板」"],
-    ["22:0x","仲文","TDD：谓词单测红→绿 · 敏感面标记=权限边界"],
-    ["22:1x","ocr","gatekeeper 全量单测 <b>1060/1060</b> 绿 · High/Medium 零"],
-    ["22:2x","admin5","「1」→ 合并 bc6683e8 + gk 重启 56657"],
-  ],
-  "RFC-0215":[
-    ["1016","仲文","PR #1950 合并（quota-watch 双证据检测）"],
-    ["1019","qa-review","队列扫描中：fde 单 agent 试点观察"],
-    ["—","quota-watch","自愈闭环：配额墙→自动登记→串行续跑"],
-  ],
-  "SENT-07":[
-    ["1005","仲文","双 org 并跑 35090+36420"],
-    ["1019","qa-review","「没有找到」=合法空语义对齐"],
-    ["—","admin5","验收⑧前闸：per-user 脱敏只活在 wip 分支"],
-  ],
-  "KB-0212":[
-    ["1010","qa-arch","enforced 切换演练全过（PR#1929）"],
-    ["1019","仲文","面板 scope 唯一源 #1993 已合"],
-    ["—","admin5","待验收：prod EW 发版即生效"],
-  ],
-  "WF-013":[
-    ["1017","admin5","v1.2 条款全量采纳"],
-    ["1018","qa-arch","4 blocker 修订吸收 · v1.2.1 生效"],
-    ["1019","admin5","「现在收敛掉不等了」→ v1.3 五收敛件全落"],
-    ["22:0x","admin5","验收确认「<b>1 2 3 4 5</b>」→ 主线关单 ✓"],
-  ],
-};
+const TASK_PACKAGE = ["demand_uid / task_id / 需求版本 / 计划版本","批准来源 / 责任人 / 唯一执行者 / 升级对象","目标 / 范围 / 非目标 / AC / 完成层级","repo / worktree / branch / base_sha / head_sha","允许写面 / 接口契约 / 依赖 / 集成顺序","验证命令 / 环境 / 样例数据 / 时限 / 预算"];
+const HANDOFF = ["当前base/head、commit、PR与变更清单","逐项AC映射；接口/配置/文档/迁移影响","实际验证命令、结果、日志/产物位置；未验证项","缺陷回应、剩余风险、遗留负责人和后续任务","交接对象、待办、运行终态与非空结果/证据"];
+function makeTask(stage) {
+  const t={id:"SIM-"+(stage+1).toString().padStart(2,"0"),ti:"模拟 · "+STAGES[stage]+"门禁示例",st:stage,ow:STAGE_OWNERS[stage],originalDev:"dev",active:false,done:false,tag:"模拟 · 待门禁",created:"DEMO",head:"SIM-HEAD-A",base:"SIM-BASE-A",evidence:{},staleQuality:{},blockers:0,releaseFailed:false,wait:"",unknown:false,lastHeartbeat:"SIM-T+0000s",handoff:{state:"待派发",from:"zwen",to:STAGE_OWNERS[stage],runId:"SIM-RUN-"+(stage+1)+"-1",attempt:1,deliveries:0,receipts:0}};
+  // Prior stages are explicitly simulated fixture evidence, never platform receipts.
+  for(let i=0;i<stage;i++) for(const g of PHASES[i].checks) t.evidence[g.key]={head:t.head,base:t.base,actor:g.actor,simulated:true};
+  return t;
+}
+const TASKS=STAGES.map((_,i)=>makeTask(i));
+TASKS[2].active=true;
+TASKS[2].handoff.state="执行中";
+const INITIAL_TASKS=JSON.stringify(TASKS);
+let simTick=0;
+const WAIT_REASONS={dependency:"依赖未满足",approval:"待批准",resource:"资源冲突",unreachable:"角色不可达"};
+function simTime(){return "SIM-T+"+String(simTick).padStart(4,"0")+"s";}
+function taskRoles(t){return t.st===3?["qareview","te"]:[t.ow];}
+function roleActive(k){return k==="zwen" || TASKS.some(t=>t.active && taskRoles(t).includes(k));}
+function workerRoles(t){return taskRoles(t).filter(role=>role!=="zwen");}
+function roleConflict(t){return TASKS.some(other=>other.active && taskRoles(t).some(role=>taskRoles(other).includes(role)));}
+function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?workerRoles(t).length:0),0);}
+function waitReason(t){
+  if(t.unknown) return "未知／待核对：未确认旧执行停止，保留槽位";
+  if(t.wait) return WAIT_REASONS[t.wait];
+  if(t.done || t.active || ["已交件","已接收"].includes(t.handoff.state)) return "";
+  if(roleConflict(t)) return "资源冲突：同角色／单dev已占槽";
+  if(activeCount()+workerRoles(t).length>DEMO_POLICY.maxParallel) return "资源冲突：模拟容量已满（不部分准入）";
+  return "等待手工模拟派发";
+}
+function setWait(t,reason){
+  if(t.active || t.unknown || (reason!=="" && !WAIT_REASONS[reason])) return false;
+  t.wait=reason;return true;
+}
+function startWork(t){
+  if(t.done || t.active || t.unknown || t.wait || ["已交件","已接收"].includes(t.handoff.state) || activeCount()+workerRoles(t).length>DEMO_POLICY.maxParallel || roleConflict(t)) return false;
+  t.active=true;t.handoff.state="已接单";t.lastHeartbeat=simTime();
+  return true;
+}
+function stopWork(t){if(t.unknown) return false;t.active=false;return true;}
+function nextHandoff(t){
+  const attempt=t.handoff.attempt+1;
+  t.handoff={state:"待派发",from:"zwen",to:t.ow,runId:"SIM-RUN-"+t.id.slice(4)+"-"+attempt,attempt,deliveries:0,receipts:0};
+}
+function confirmStopped(t){
+  if(!t.active) return false;
+  t.unknown=false;t.active=false;nextHandoff(t);return true;
+}
+function heartbeat(t){
+  if(!t.active || t.unknown) return false;
+  simTick++;t.lastHeartbeat=simTime();return true;
+}
+function markUnknown(t){
+  if(!t.active || t.unknown) return false;
+  t.unknown=true;return true;
+}
+function handoffAction(t,action){
+  if(t.done || t.unknown || t.wait) return false;
+  const h=t.handoff;
+  if(action==="accept" && h.state==="待派发") {
+    if(!startWork(t)) return false;
+  } else if(action==="start" && h.state==="已接单" && t.active) h.state="执行中";
+  else if(action==="submit" && h.state==="执行中" && t.active) {
+    stopWork(t);h.state="已交件";h.deliveries++;
+  } else if(action==="receive" && h.state==="已交件") {h.state="已接收";h.receipts++;}
+  else return false;
+  simTick++;return true;
+}
+function slotRows(){
+  const coordinator=TASKS.find(t=>t.active && taskRoles(t).includes("zwen"));
+  return [{role:"zwen",task:coordinator?.id||"SIM-COORDINATOR",runId:coordinator?.handoff.runId||"SIM-RUN-COORDINATOR",unknown:coordinator?.unknown||false},
+    ...TASKS.filter(t=>t.active).flatMap(t=>workerRoles(t).map(role=>({role,task:t.id,runId:t.handoff.runId,unknown:t.unknown})))];
+}
+function resetDemo(){
+  TASKS.splice(0,TASKS.length,...JSON.parse(INITIAL_TASKS));simTick=0;evIdx=0;evCount=0;
+}
+function recordEvidence(t,key){
+  const g=PHASES[t.st].checks.find(g=>g.key===key);
+  if(!g || t.done) return false;
+  t.evidence[key]={head:t.head,base:t.base,actor:g.actor,simulated:true};
+  return true;
+}
+function evidenceValid(t,g){
+  const e=t.evidence[g.key];
+  return !!e && e.simulated===true && e.head===t.head && e.base===t.base && e.actor===g.actor;
+}
+function gateReady(t){
+  if(t.done || t.blockers>0 || t.wait || t.unknown) return false;
+  // Recheck all upstream proofs: stale head/base can never pass a later gate.
+  return PHASES.slice(0,t.st+1).every(p=>p.checks.every(g=>evidenceValid(t,g)));
+}
+function advanceTask(t){
+  if(!gateReady(t)) return false;
+  stopWork(t);
+  if(t.st===7){
+    t.done=true;
+    t.closed="DEMO";
+  } else {
+    t.st++;
+    t.ow=STAGE_OWNERS[t.st];
+    nextHandoff(t);
+  }
+  t.releaseFailed=false; return true;
+}
+function returnToDev(t){
+  if(t.unknown || t.wait || (t.st!==3 && t.st!==4)) return false;
+  stopWork(t); t.st=2;t.ow=t.originalDev;t.done=false;nextHandoff(t);
+  for(const p of PHASES.slice(2)) for(const g of p.checks) delete t.evidence[g.key];
+  return true;
+}
+function changeRevision(t,kind="head"){
+  if(t.unknown || t.wait) return false;
+  stopWork(t);
+  for(const g of PHASES[3].checks) if(t.evidence[g.key]) t.staleQuality[g.key]=t.evidence[g.key];
+  if(kind==="base") t.base+="-NEXT";else t.head+="-NEXT";
+  t.st=2;t.ow=t.originalDev;t.done=false;t.blockers=0;
+  // Old quality is display-only; no gate reads staleQuality.
+  t.evidence={};t.releaseFailed=false;nextHandoff(t);return true;
+}
+function failRelease(t){
+  if(t.unknown || t.wait || (t.st!==5 && t.st!==6)) return false;
+  stopWork(t);t.st=5;t.ow="support";t.done=false;t.releaseFailed=true;nextHandoff(t);
+  for(const p of PHASES.slice(5)) for(const g of p.checks) delete t.evidence[g.key];
+  return true;
+}
+const TASK_TL=Object.fromEntries(TASKS.map(t=>[t.id,[["模拟","master-brain","虚构快照；上游证据仅为模拟夹具。逐项模拟补证，再手工尝试通过门禁；无平台写入。"]]]));
 
 /* ═══ 渲染 ═══ */
 const $ = s=>document.querySelector(s);
-const esc = s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 function renderRoles(sel){
-  $("#roles").innerHTML = Object.entries(ROLES).map(([k,r])=>`
-    <div class="role ${k===sel?'sel':''} ${r.on?'on':''}" style="--rc:${r.c};--rc-glow:${r.c}44" onclick="toggleRole('${k}')">
+  $("#roles").innerHTML = Object.entries(ROLES).map(([k,r])=>{
+    const active=roleActive(k);
+    return `
+    <div class="role ${k===sel?'sel':''} ${active?'on':''}" style="--rc:${r.c};--rc-glow:${r.c}44" onclick="toggleRole('${k}')">
       <div class="top">
         <div class="avatar" style="background:${r.c}">${(r.cn||r.name)[0]}</div>
         <div><div class="nm">${r.cn||r.name}${r.en?` <span class="nmen">(${r.en})</span>`:""}<span class="info" data-tip="${r.desc}">ⓘ</span></div>
-        <div class="st"><span class="dot ${r.on?'on':''}" style="background:${r.on?r.c:'var(--tx3)'}"></span>${r.st}</div></div>
+        <div class="st"><span class="dot ${active?'on':''}" style="background:${active?r.c:'var(--tx3)'}"></span>模拟 · ${active?"占用槽位":"等待/按需"}</div></div>
         <span class="rdetail" title="角色详情" onclick="event.stopPropagation();openRole('${k}',0)">▸</span>
       </div>
-      <div class="busy"><div class="lbl"><span>繁忙度</span><b>${r.busy}%</b></div>
-      <div class="bar"><i style="--rc:${r.c}" data-w="${r.busy}"></i></div></div>
-      <div class="cur">▸ <b>${r.cur}</b></div>
-    </div>`).join("");
+      <div class="busy"><div class="lbl"><span>${r.core?"核心角色":"人类/按需支持"}</span><b>模拟</b></div>
+      <div class="bar"><i style="--rc:${r.c}" data-w="${active?100:0}"></i></div></div>
+      <div class="cur">▸ <b>${r.title}</b></div>
+    </div>`;}).join("");
   requestAnimationFrame(()=>document.querySelectorAll(".bar i").forEach(i=>i.style.width=i.dataset.w+"%"));
 }
 
 function renderLanes(){
   $("#lanes").innerHTML = STAGES.map((t,i)=>`
-    <div class="lane ${t.includes('★')?'star':''}">
-      <div class="hd"><div class="n">${String(i).padStart(2,"0")}</div><div class="t">${t}</div>
+    <div class="lane">
+      <div class="hd"><div class="n">${String(i+1).padStart(2,"0")}</div><button class="phase-btn" onclick="openPhase(${i})">${t} ⓘ</button>
       <div class="cnt">${TASKS.filter(x=>x.st===i&&!x.done).length||""}</div></div>
       <div class="body">${TASKS.filter(x=>x.st===i).map(chip).join("")}</div>
     </div>`).join("");
 }
 const chip = t=>`
-  <div class="chip ${t.active?'active':''} ${t.done?'done':''}" onclick="openDrawer('${t.id}')">
+  <div class="chip ${t.active?'active':''} ${t.done?'done':''}" data-task-id="${t.id}" onclick="openDrawer('${t.id}')">
     <div class="cid"><span><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</span><span>${t.done?"✓":"⏳"}</span></div>
-    <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span>
+    <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span><div class="signal">模拟接棒：${t.handoff.state} · ${waitReason(t)||"无等待"}</div>
   </div>`;
 
-const mmdd = ()=>{const d=new Date();return String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")};
-const STORY_DAY = "1020"; /* mock 故事日：今日类 KPI 锚定此日，真实数据版改回 mmdd() */
+const STORY_DAY = "DEMO";
 const KPI_SETS = {
-  doing:  {ti:"在办任务",     hint:"存量 · 此刻未关单", get:()=>TASKS.filter(t=>!t.done)},
-  wait:   {ti:"待拍板/验收",  hint:"存量 · 停在拍板/验收闸", get:()=>TASKS.filter(t=>!t.done&&(t.st===2||t.st===6))},
-  created:{ti:"今日新建",     hint:"今日 · 新建任务", get:()=>TASKS.filter(t=>t.created===STORY_DAY)},
-  closed: {ti:"今日关单",     hint:"今日 · 验收关单", get:()=>TASKS.filter(t=>t.done&&t.closed===STORY_DAY)},
+  doing:  {ti:"模拟在办",     hint:"存量 · 演示快照未关单", get:()=>TASKS.filter(t=>!t.done)},
+  wait:   {ti:"模拟待人决策",  hint:"存量 · 停在需求/发布授权/验收闸", get:()=>TASKS.filter(t=>!t.done&&(t.st===0||t.st===5||t.st===6))},
+  created:{ti:"模拟样例",     hint:"虚构样例总数", get:()=>TASKS.filter(t=>t.created===STORY_DAY)},
+  closed: {ti:"模拟关单",     hint:"本页手工通过关单门的样例", get:()=>TASKS.filter(t=>t.done&&t.closed===STORY_DAY)},
 };
 function renderKpis(){
   $("#kpis").innerHTML = Object.entries(KPI_SETS).map(([k,s],i)=>`
-    ${i===2?'<div class="kpi-div" title="存量 | 今日"></div>':''}
+    ${i===2?'<div class="kpi-div" title="模拟存量 | 样例"></div>':''}
     <div class="kpi ${k==='wait'?'hot':k==='closed'?'ok':''} click" title="${s.hint} · 点击看清单" onclick="openKpi('${k}')">
       <b>${s.get().length}</b><span>${s.ti}</span></div>`).join("");
 }
 
 /* ═══ 事件流 ═══ */
 const EVPOOL = [
-  ["仲文","qa-arch","送审 RFC-0220 方案（排程 sch_467d234b）","RFC-0220"],
-  ["qa-review","仲文","盲评 #1992：敏感面标记齐全，无 High/Medium","RFC-0221"],
-  ["admin5","仲文","★ 拍板：v1.3「现在收敛掉不等了」","WF-013"],
-  ["test-engineer","仲文","WF-016 验收用例独立设计中（与实现互不可见）","WF-016"],
-  ["preflight","仲文","✓ 三闸绿：typecheck / test / collide",null],
-  ["ocr","仲文","闸值守：High/Medium 清零才许合","RFC-0221"],
-  ["admin5","仲文","✓ 验收「1 2 3 4 5」→ v1.3 主线关单","WF-013"],
-  ["仲文","台账","/goal → id16 自动建单（0.3s）","WF-016"],
-  ["gk 56657","主脑 99039","cap:platform-ops 票注册下发 ✓","RFC-0221"],
-  ["仲文","ops 面","schedule.create → qa-arch 评审派发","RFC-0220"],
-  ["qa-review","进展群","盲评报告自动投递（日 5 tick）",null],
-  ["quota-watch","仲文","配额墙双证据检测：本次未触发","RFC-0215"],
-  ["main-guard","仲文","✓ main 健康守卫：本轮零回归",null],
-  ["仲文","qa-review","request review：RFC-0220 双跑方案","RFC-0220"],
-  ["admin5","仲文","「停」字守卫就位：急停 5s 内进程消失",null],
+  ["master-brain","dev",`模拟派发：全局≤${DEMO_POLICY.maxParallel}含协调者；单dev/每角色一个执行者；未确认旧执行停止不得重派。`,"SIM-03"],
+  ["pd","admin5","模拟范围变更：回owner决策，不能擅自放宽AC。","SIM-01"],
+  ["qa-review","dev","模拟审查：同head/base独立报告，问题回原dev。","SIM-04"],
+  ["test-engineer","master-brain","模拟测试：新head/base需复测，旧证据不可沿用。","SIM-04"],
+  ["admin5","authorized-executor","模拟发布授权；发布失败留发布修复/回退。","SIM-06"],
+  ["master-brain","admin5","模拟待书面业务验收；未验收不关单。","SIM-07"]
 ];
 let evIdx = 0, evCount = 0;
 function pushEv(custom){
   const [who, to, what, task] = custom || EVPOOL[evIdx++ % EVPOOL.length];
   const rc = ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===who)]?.c || "var(--zwen)";
-  const d = new Date();
+  const eventTime=simTime();
   const el = document.createElement("div");
   el.className = "ev first";
-  el.innerHTML = `<div class="tm">${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</div>
-    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>${what}${task?` <span class="evtask" onclick="openDrawer('${task}')">→ ${task}</span>`:""}</div>`;
+  el.innerHTML = `<div class="tm">${eventTime}</div>
+    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>来源 SIM-DEMO · ${what}${task?` <span class="evtask" onclick="openDrawer('${task}')">→ ${task}</span>`:""}</div>`;
   const feed = $("#feed");
   feed.querySelectorAll(".ev.first").forEach(e=>e.classList.remove("first"));
   feed.prepend(el);
-  evCount++; const c = $("#evtoday"); if(c) c.textContent = "实时 +"+evCount;
+  evCount++; const c = $("#evtoday"); if(c) c.textContent = "模拟事件 +"+evCount;
   while(feed.children.length > 40) feed.lastChild.remove();
 }
 
@@ -390,9 +478,9 @@ function toggleRole(k){
   roleSel = roleSel===k ? null : k;
   renderRoles(roleSel);
   document.querySelectorAll(".chip").forEach(c=>{
-    const id = c.querySelector(".cid").textContent.trim().split(/\s/)[0];
+    const id = c.dataset.taskId;
     const t = TASKS.find(x=>x.id===id);
-    c.classList.toggle("dim", !!roleSel && t && t.ow!==roleSel && !t.done);
+    c.classList.toggle("dim", !!roleSel && t && !taskRoles(t).includes(roleSel) && !t.done);
   });
 }
 window.openDrawer = function(id, fromKpi){
@@ -400,97 +488,102 @@ window.openDrawer = function(id, fromKpi){
   curTaskId = id;
   const r = ROLES[t.ow];
   const tl = TASK_TL[id] || [];
-  $("#sheet").innerHTML = `
+  let slotDescription="单角色执行，一个worker槽";
+  if(t.st===3) slotDescription="同head/base独立并行，两个worker槽";
+  else if(t.ow==="zwen") slotDescription="复用已计数的协调者槽，不新增worker槽";
+  setDrawerContent(`
     ${fromKpi?`<span class="backlnk" onclick="openKpi(kpiKind)" style="margin:-6px 0 6px">← 返回清单</span>`:""}
-    <div class="hd"><div><div class="cid">${t.id} · ${t.tag}</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="hd"><div><div class="cid">${t.id} · ${t.tag} · 非实时</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
-      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 协作角色 ${Object.keys(TASK_TL[id]||{}).length||1} 方</div>
+      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 运行 ${t.active?"模拟占槽":"等待/排队（不占槽）"} · 原dev：${t.originalDev}<br>模拟执行角色：${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} · ${slotDescription}</div>
+    ${taskGateHtml(t)}
     <div class="steps">${STAGES.map((s,i)=>`
       <div class="step ${i<t.st?'done':i===t.st&&!t.done?'cur':''}"><div class="pt"></div><div class="sn">${s}</div></div>`).join("")}
     </div>
     <div class="tl">${tl.map(([h,w,b])=>`
-      <div class="tle" style="--rc:${Object.entries(ROLE_ALIAS).find(([k,v])=>v===w.split(" ")[0].split("→")[0])?.[1]!==undefined?ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===w.split(" ")[0].split("→")[0])]?.c:'var(--zwen)'}">
-      <div class="h">${h} · ${w}</div><div class="b">${linkify(b)}</div></div>`).join("")}
+      <div class="tle" style="--rc:${ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===w)]?.c||"var(--zwen)"}">
+      <div class="h">${h} · ${w}</div><div class="b">${b}</div></div>`).join("")}
     </div>
     ${t.done?"":`<div class="acts">
-      <span class="abtn" onclick="actCopy('${t.id}','urge')">催办</span>
-      <span class="abtn" onclick="actCopy('${t.id}','block')">标记阻塞</span>
-      <span class="abtn" onclick="actCopy('${t.id}','reassign')">转派…</span>
-      <span style="font-size:9.5px;color:var(--tx3);align-self:center">B 先行：复制指令到群里 @仲文 即执行 · 真写接口见 id21 RFC</span>
-    </div>`}`;
-  $("#drawer").classList.add("open");
+      <span class="abtn" onclick="actCopy('${t.id}','urge')">复制模拟催办说明</span>
+      <span class="abtn" onclick="actCopy('${t.id}','block')">复制模拟阻塞说明</span>
+      <span class="abtn" onclick="actCopy('${t.id}','reassign')">复制模拟交接说明</span>
+      <span style="font-size:9.5px;color:var(--tx3);align-self:center">仅复制不可执行的演示说明；不发送、不派发、不调用平台</span>
+    </div>`}`);
 };
-window.closeDrawer = ()=>$("#drawer").classList.remove("open");
+const FOCUSABLE = 'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex]:not([tabindex="-1"])';
+let drawerOpener=null, backgroundWasInert=false;
+function drawerControls(){
+  return Array.from($("#sheet").querySelectorAll(FOCUSABLE)).filter(el=>!el.disabled && !el.closest('[hidden], [inert]'));
+}
+function focusKey(el){return el?.id || el?.getAttribute("onclick");}
+function setDrawerContent(content){
+  const drawer=$("#drawer"), sheet=$("#sheet"), app=$("#app");
+  const focused=document.activeElement;
+  const previousKey=sheet.contains(focused)?focusKey(focused):null;
+  if(!drawer.classList.contains("open")){
+    drawerOpener=focused;
+    backgroundWasInert=app.inert;
+  }
+  sheet.innerHTML=content;
+  prepareControls();
+  drawer.classList.add("open");
+  app.inert=true;
+  const controls=drawerControls();
+  const target=previousKey && controls.find(el=>focusKey(el)===previousKey);
+  (target || controls[0] || sheet).focus();
+}
+window.closeDrawer = function(){
+  if(!$("#drawer").classList.contains("open")) return;
+  $("#drawer").classList.remove("open");
+  $("#app").inert=backgroundWasInert;
+  const target=drawerOpener?.isConnected && !drawerOpener.disabled && !drawerOpener.closest('[hidden], [inert]')
+    ? drawerOpener : $("#app").querySelector(FOCUSABLE);
+  drawerOpener=null;
+  target?.focus();
+};
+function trapDrawerTab(e){
+  if(e.key!=="Tab" || !$("#drawer").classList.contains("open")) return;
+  const controls=drawerControls(), first=controls[0], last=controls.at(-1);
+  const active=document.activeElement;
+  if(!first){e.preventDefault();$("#sheet").focus();}
+  else if(!controls.includes(active) || (e.shiftKey?active===first:active===last)){
+    e.preventDefault();(e.shiftKey?last:first).focus();
+  }
+}
 
 /* ═══ KPI 下钻清单 ═══ */
 let kpiKind = null;
 let curTaskId = null;
 
 /* ═══ v3 动线闭环：实体下探 ═══ */
-const ENT = {
-  pr:{
-    "1990":{ti:"PR #1990 · RFC-0220 方案",rows:[["状态","open · 待 qa-arch 方案评审"],["内容","docs/rfcs/0220-qa-review-premerge-gate.md"],["关联","RFC-0220 · 台账 id14"]]},
-    "1992":{ti:"PR #1992 · RFC-0221 运维能力票",rows:[["状态","已合并 bc6683e8"],["测试","gatekeeper 1060/1060 绿 · High/Medium 零"],["关联","RFC-0221 · 台账 id15"]]},
-    "1950":{ti:"PR #1950 · quota-watch 双证据",rows:[["状态","已合并"],["关联","RFC-0215"]]},
-    "1993":{ti:"PR #1993 · 面板 scope 唯一源",rows:[["状态","已合并"],["关联","KB-0212"]]}
-  },
-  sch:{
-    "sch_467d234b":{ti:"排程 sch_467d234b-aa6",rows:[["动作","派 RFC-0220 进 qa-arch 方案评审"],["触发","1019 23:00（ops 契约无 oneShot，年撞 cron）"],["结果","撞 codex 配额墙未产出 · 排程已删"]]},
-    "sch_230dda2a":{ti:"排程 sch_230dda2a-05e",rows:[["动作","retry2：1020 21:58 派 qa-arch"],["结果","上游流劣化零输出 · admin5 确认后已删"]]},
-    "sch_4e70320e":{ti:"排程 sch_4e70320e-ae5",rows:[["动作","retry3：10-21 09:32 派 qa-arch"],["状态","enabled · 待触发"]]}
-  },
-  ledger:{
-    "id16":{ti:"台账 id16 · WF-016 demo 页",rows:[["状态","candidate · 待 admin5 验收"],["入口","/goal 钩子自动建单（0.3s）"]]},
-    "id14":{ti:"台账 id14 · RFC-0220",rows:[["状态","candidate · 待评审结论落地"]]},
-    "id15":{ti:"台账 id15 · RFC-0221",rows:[["状态","candidate · 随 id14 同步关"]]}
-  }
-};
-const linkify = s => s
-  .replace(/sch_[0-9a-f]{8}/g, m=>`<span class="ent" onclick="openEnt('sch','${m}')">${m}</span>`)
-  .replace(/#(19\d{2}|20\d{2})/g, '<span class="ent" onclick="openEnt(\'pr\',\'$1\')">#$1</span>')
-  .replace(/台账 (id\d+)/g, '台账 <span class="ent" onclick="openEnt(\'ledger\',\'$1\')">$1</span>')
-  .replace(/(RFC-\d{4})/g, m=>TASKS.some(t=>t.id===m)?`<span class="ent" onclick="openDrawer('${m}')">${m}</span>`:m)
-  .replace(/(仲文2?|qa-review|qa-arch|test-engineer|admin5|ocr)/g, m=>{const k=Object.keys(ROLE_ALIAS).find(x=>ROLE_ALIAS[x]===m);return k?`<span class="ent" onclick="openRole('${k}',1)">${m}</span>`:m});
-/* ═══ v4 行动指令（B 先行）+ 关系图谱 ═══ */
+const ENT = {ledger:{id16:{ti:"模拟任务包 / 交接台账",rows:[...TASK_PACKAGE.map(v=>["任务包",v]),...HANDOFF.map(v=>["交接",v])]}}};
+/* ═══ 不可执行的模拟说明 + 关系图谱 ═══ */
 let toastTimer = null;
 window.toast = function(msg){
   const el = $("#toast"); el.textContent = msg; el.classList.add("show");
   clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove("show"), 2600);
 };
-window.actCopy = function(id, act){
-  const t = TASKS.find(x=>x.id===id); if(!t) return;
-  const msg = act==="urge" ? `@仲文 催办 ${t.id}「${t.ti}」：现处「${STAGES[t.st]}」，请推进并回报`
-    : act==="block" ? `@仲文 ${t.id}「${t.ti}」标记阻塞，原因：（一句话原因）`
-    : `@仲文 ${t.id}「${t.ti}」转派给 ___（角色），交接要点：___`;
-  copyText(msg);
-};
+function demoCopy(t,act){return `【纯模拟 · 不可执行 · 不发送】${t.id} / ${STAGES[t.st]} / ${act}：仅展示协作说明，不构成指令、授权或平台操作。`;}
+window.actCopy = function(id,act){const t=TASKS.find(t=>t.id===id);if(t) copyText(demoCopy(t,act));};
 window.copyText = function(s){
-  const done = ()=>toast("已复制——粘贴到群里发送即可执行");
-  const fb = ()=>{ const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand("copy"); done(); }catch(e){ toast("复制失败："+s.slice(0,36)+"…"); } ta.remove(); };
+  const done = ()=>toast("已复制模拟说明（不可执行，不发送）");
+  const fb = ()=>{ const previous=document.activeElement; const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
+    try{ if(document.execCommand("copy")) done(); else toast("复制未成功，请手工选择模拟说明"); }catch(e){ toast("复制失败："+s.slice(0,36)+"…"); } ta.remove(); if(previous?.isConnected) previous.focus(); };
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(s).then(done, fb); } else fb();
 };
 const GRAPH_NODES = [
-  {k:"admin5",   x:70,  y:200},
-  {k:"zwen",     x:270, y:200, hub:1},
-  {k:"qareview", x:470, y:74},
-  {k:"qaarch",   x:470, y:158},
-  {k:"te",       x:470, y:242},
-  {k:"ocr",      x:470, y:326},
-  {k:"ledger",   x:270, y:356},
+  {k:"admin5",x:70,y:180},{k:"zwen",x:260,y:180,hub:1},
+  {k:"pd",x:460,y:48},{k:"dev",x:460,y:130},{k:"qareview",x:460,y:212},{k:"te",x:460,y:294},
+  {k:"support",x:70,y:330},{k:"ledger",x:260,y:356}
 ];
 const GRAPH_EDGES = [
-  {f:"admin5",t:"zwen",l:"派单 · 拍板",c:"#f5c451",w:2.4},
-  {f:"zwen",t:"qareview",l:"送审盲评",c:"#b07dff"},
-  {f:"qareview",t:"zwen",l:"P0-P3 报告",c:"#b07dff",dash:1,bend:1},
-  {f:"zwen",t:"qaarch",l:"送审方案",c:"#ff8a5c"},
-  {f:"qaarch",t:"zwen",l:"评审结论",c:"#ff8a5c",dash:1,bend:1},
-  {f:"zwen",t:"te",l:"派测试",c:"#4ade80"},
-  {f:"te",t:"zwen",l:"测试证据",c:"#4ade80",dash:1,bend:1},
-  {f:"zwen",t:"ocr",l:"合并前送审",c:"#ff8a5c"},
-  {f:"ocr",t:"zwen",l:"High/Med 闸",c:"#ff6b6b",dash:1,bend:1},
-  {f:"admin5",t:"ledger",l:"/goal 建单",c:"#f5c451"},
-  {f:"zwen",t:"ledger",l:"归账 · 分级",c:"#f5c451"},
+  {f:"admin5",t:"zwen",l:"范围/发布/书面验收",c:"#f5c451"},
+  ...["pd","dev","qareview","te"].flatMap(k=>[
+    {f:"zwen",t:k,l:{pd:"需求解释",dev:"唯一写者",qareview:"同head送审",te:"同head测试"}[k],c:ROLES[k].c},
+    {f:k,t:"zwen",l:"独立回件/证据",c:ROLES[k].c,dash:1,bend:1}]),
+  {f:"zwen",t:"support",l:"按需/授权发布",c:"#ff6b8a"},
+  {f:"zwen",t:"ledger",l:"计划/证据汇总",c:"#f5c451"}
 ];
 window.openGraph = function(){
   const P = Object.fromEntries(GRAPH_NODES.map(n=>[n.k,n]));
@@ -512,28 +605,29 @@ window.openGraph = function(){
     if(n.k==="ledger") return `<g class="gn" data-k="ledger" onclick="openEnt('ledger','id16')">
       <rect x="${n.x-44}" y="${n.y-21}" width="88" height="42" rx="11" fill="rgba(245,196,81,.10)" stroke="rgba(245,196,81,.6)" stroke-width="1.4"/>
       <text class="gnode-t" x="${n.x}" y="${n.y-2}" text-anchor="middle">台账</text>
-      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">demand_runs</text></g>`;
+      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">模拟证据台账</text></g>`;
     const r = ROLES[n.k], hub = n.hub;
     return `<g class="gn" data-k="${n.k}" onclick="openRole('${n.k}',0)">
-      ${r.on?`<circle cx="${n.x}" cy="${n.y}" r="${hub?37:32}" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
+      ${roleActive(n.k)?`<circle cx="${n.x}" cy="${n.y}" r="${hub?37:32}" fill="none" stroke="${r.c}" stroke-opacity=".3"/>`:""}
       <circle cx="${n.x}" cy="${n.y}" r="${hub?30:25}" fill="${r.c}22" stroke="${r.c}" stroke-width="1.6"/>
       <text class="gnode-t" x="${n.x}" y="${n.y-1}" text-anchor="middle" font-size="${hub?11:10}">${r.cn||r.name}</text>
-      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">${r.en||""}</text></g>`;
+      <text class="gnode-e" x="${n.x}" y="${n.y+12}" text-anchor="middle">${n.k==="support"?"FDE / PMO / ops":r.en||""}</text></g>`;
   }).join("");
-  $("#sheet").innerHTML = `
-    <div class="hd"><div><div class="cid">协作关系图谱 · 实线＝派发方向 / 虚线＝回件方向 · 悬停节点只看它的关系</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+  setDrawerContent(`
+    <div class="hd"><div><div class="cid">模拟协作关系图谱 · 实线＝派发方向 / 虚线＝回件方向 · 悬停节点只看它的关系</div><h2>研发角色怎么协作</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <svg class="gwrap" id="gsvg" viewBox="0 0 560 400">
       <defs>${cols.map((c,i)=>`<marker id="ar-${i}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${c}"/></marker>`).join("")}</defs>
       ${edges}${nodes}
     </svg>
     <div style="display:flex;gap:14px;font-size:9.5px;color:var(--tx3);margin-top:6px;flex-wrap:wrap">
       <span><b style="color:#f5c451">━</b> 决策 / 台账</span>
-      <span><b style="color:#b07dff">━</b> 盲评</span>
-      <span><b style="color:#ff8a5c">━</b> 方案评审 / 送审</span>
+      <span><b style="color:#b07dff">━</b> 独立审查</span>
+      <span><b style="color:#ff8a5c">━</b> 需求解释</span>
       <span><b style="color:#4ade80">━</b> 测试</span>
-      <span><b style="color:#ff6b6b">━</b> 合并闸</span>
+      <span><b style="color:#ff6b8a">━</b> 按需支持 / 授权执行者</span>
       <span>点节点看角色详情</span>
-    </div>`;
+    </div>
+    <div class="graph-text"><h3>模拟关系 · 可点角色</h3><div class="acts">${Object.entries(ROLES).map(([k,r])=>`<button onclick="openRole('${k}',0)">${r.cn} (${r.en})</button>`).join("")}</div><ul>${GRAPH_EDGES.map(e=>`<li>${ROLES[e.f]?.cn||"证据台账"} → ${ROLES[e.t]?.cn||"证据台账"}：${e.l}${e.dash?"（独立回件）":""}</li>`).join("")}</ul></div>`);
   const svg = $("#gsvg");
   svg.querySelectorAll(".gn").forEach(g=>{
     const k = g.dataset.k;
@@ -544,55 +638,53 @@ window.openGraph = function(){
     g.addEventListener("mouseleave",()=>{ svg.classList.remove("hasfocus");
       svg.querySelectorAll(".hi").forEach(el=>el.classList.remove("hi")); });
   });
-  $("#drawer").classList.add("open");
 };
 window.openEnt = function(kind, id){
   const e = (ENT[kind]||{})[id.split("-")[0]]; if(!e) return;
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     <span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>
-    <div class="hd"><div><div class="cid">实体详情 · ${kind==="pr"?"Pull Request":kind==="sch"?"排程":"台账卡"}</div><h2>${e.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+    <div class="hd"><div><div class="cid">模拟实体详情 · ${kind==="pr"?"Pull Request":kind==="sch"?"排程":"台账卡"}</div><h2>${e.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="rows">${e.rows.map(([k,v])=>`
       <div class="row" style="cursor:default"><div class="ti" style="flex:0 0 52px;color:var(--tx3);font-weight:500">${k}</div>
-      <div class="ti" style="font-weight:400">${v}</div></div>`).join("")}</div>`;
+      <div class="ti" style="font-weight:400">${v}</div></div>`).join("")}</div>`);
 };
 window.openRole = function(k, from){
   const r = ROLES[k], nm = ROLE_ALIAS[k];
-  const doing = TASKS.filter(t=>t.ow===k && !t.done);
+  const doing = TASKS.filter(t=>taskRoles(t).includes(k) && !t.done);
   const evs = EVPOOL.filter(e=>e[0]===nm || e[0]===nm+"2").slice(-3).reverse();
-  $("#sheet").innerHTML = `
+  setDrawerContent(`
     ${from?`<span class="backlnk" onclick="openDrawer(curTaskId)" style="margin:-6px 0 8px">← 返回任务</span>`:""}
     <div class="hd"><div class="avatar" style="background:${r.c};width:40px;height:40px;font-size:16px">${(r.cn||r.name)[0]}</div>
       <div><div class="cid">${r.title}</div><h2>${r.cn||r.name}${r.en?` <span style="font-size:12px;color:var(--tx3);font-weight:400">(${r.en})</span>`:""}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">${r.desc||""}</div>
-    <div class="ownerline" style="margin-top:-10px">状态 <b>${r.st}</b> · 繁忙度 <b>${r.busy}%</b> · 焦点 ${r.cur}</div>
+    <div class="ownerline" style="margin-top:-10px">状态 <b>${roleActive(k)?"模拟占槽":"模拟等待/按需"}</b> · ${r.core?"核心角色":"人类/按需支持"} · ${r.title}</div>
     <div class="col-title" style="padding-left:0">在办任务 ${doing.length}</div>
     <div class="rows">${doing.length?doing.map(t=>`
       <div class="row" onclick="openDrawer('${t.id}')">
         <div class="cid"><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</div>
         <div class="ti">${t.ti}</div><span class="sg">${t.done?"✓":STAGES[t.st]}</span><span class="tg">${t.tag}</span>
       </div>`).join(""):`<div class="empty">当前无在办任务</div>`}</div>
-    ${evs.length?`<div class="col-title" style="padding-left:0;margin-top:12px">最近经手事件</div>
-    <div class="rows">${evs.map(e=>`<div class="row" style="cursor:default"><div class="ti" style="color:var(--tx2);font-weight:400">→ ${e[1]} · ${e[2]}</div></div>`).join("")}</div>`:""}`;
+    ${evs.length?`<div class="col-title" style="padding-left:0;margin-top:12px">模拟事件</div>
+    <div class="rows">${evs.map(e=>`<div class="row" style="cursor:default"><div class="ti" style="color:var(--tx2);font-weight:400">→ ${e[1]} · ${e[2]}</div></div>`).join("")}</div>`:""}`);
 };
 window.openKpi = function(kind){
   kpiKind = kind;
   const s = KPI_SETS[kind];
-  $("#sheet").innerHTML = `
-    <div class="hd"><div><div class="cid">KPI 下钻 · ${s.hint}</div><h2 id="fti"></h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
+  setDrawerContent(`
+    <div class="hd"><div><div class="cid">模拟 KPI 下钻 · ${s.hint}</div><h2 id="fti"></h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="fbar">
       <select id="fstage" onchange="renderKpiList()"><option value="">全部阶段</option>${STAGES.map((t,i)=>`<option value="${i}">${t.replace(" ★","")}</option>`).join("")}</select>
-      <select id="frole" onchange="renderKpiList()"><option value="">全部负责人</option>${Object.entries(ROLE_ALIAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+      <select id="frole" onchange="renderKpiList()"><option value="">全部执行角色</option>${Object.entries(ROLE_ALIAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
       <input id="fq" placeholder="搜标题 / 标签…" oninput="renderKpiList()">
       <span class="fc" id="fcnt"></span>
     </div>
-    <div class="rows" id="frows"></div>`;
+    <div class="rows" id="frows"></div>`);
   renderKpiList();
-  $("#drawer").classList.add("open");
 };
 window.renderKpiList = function(){
   const st = $("#fstage").value, ow = $("#frole").value, q = $("#fq").value.trim().toLowerCase();
   const all = KPI_SETS[kpiKind].get();
-  const rows = all.filter(t=>(st===""||t.st===+st)&&(!ow||t.ow===ow)&&(!q||t.ti.toLowerCase().includes(q)||t.tag.toLowerCase().includes(q)));
+  const rows = all.filter(t=>(st===""||t.st===+st)&&(!ow||taskRoles(t).includes(ow))&&(!q||t.ti.toLowerCase().includes(q)||t.tag.toLowerCase().includes(q)));
   $("#fti").textContent = `${KPI_SETS[kpiKind].ti} · ${rows.length}/${all.length}`;
   $("#fcnt").textContent = `筛选 ${rows.length} / 共 ${all.length}`;
   $("#frows").innerHTML = rows.length ? rows.map(t=>`
@@ -603,23 +695,106 @@ window.renderKpiList = function(){
       <span class="tg">${t.tag}</span>
     </div>`).join("") : `<div class="empty">无匹配任务——放宽筛选条件试试</div>`;
 };
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+document.addEventListener("keydown",e=>{
+  trapDrawerTab(e);
+  if(e.key==="Escape") closeDrawer();
+  if((e.key==="Enter"||e.key===" ") && e.target.matches('[role="button"]')) {e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}));}
+});
+function prepareControls(){
+  document.querySelectorAll('[onclick]:not(button):not(#drawer)').forEach(el=>{
+    el.setAttribute("role","button"); el.setAttribute("tabindex","0");
+  });
+}
+const controlObserver = new MutationObserver(prepareControls);
+controlObserver.observe(document.getElementById("app"),{childList:true,subtree:true});
+controlObserver.observe(document.getElementById("sheet"),{childList:true,subtree:true});
 window.toggleRole = toggleRole;
 
+function phaseHtml(i){
+  const p=PHASES[i];
+  return `<h3>模拟阶段 ${i+1} · ${STAGES[i]}</h3><dl>${[["责任角色",p.role],["进入输入",p.input],["输出/证据",p.output],["人工决策",p.human],["退出门",p.gate],["失败回流",p.failure]].map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
+}
+window.openPhase=function(i){
+  setDrawerContent(`<div class="hd"><h2>八环节 · 纯模拟 v1.4</h2><button class="x" onclick="closeDrawer()" aria-label="关闭">✕</button></div>${phaseHtml(i)}<h3>任务包</h3><ul>${TASK_PACKAGE.map(v=>`<li>${v}</li>`).join("")}</ul><h3>交接</h3><ul>${HANDOFF.map(v=>`<li>${v}</li>`).join("")}</ul><h3>七项DoD</h3><ol>${DOD.map(v=>`<li>${v}</li>`).join("")}</ol><p>N/A须理由和对应质量角色复核。适用门未完成不关单。</p>`);
+};
+function semaphoreHtml(t){
+  const h=t.handoff;
+  return `<section aria-label="模拟协作信号"><h3>纯模拟接棒 · ${h.state}</h3>
+    <p>派发发送角色 ${ROLE_ALIAS[h.from]} → 接收角色 ${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")}<br>交件 ${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} → 接收 ${ROLE_ALIAS[h.from]} · 任务 ${t.id}<br>模拟运行ID ${h.runId} · 交件 ${h.deliveries} / 接收 ${h.receipts}<br>模拟时间 ${simTime()} · 最后心跳 ${t.lastHeartbeat} · 来源 SIM-DEMO（本页内存）</p>
+    <p role="status">模拟等待：${waitReason(t)||"无等待"}</p>
+    <div class="acts">${[["accept","待派发","接单"],["start","已接单","开始执行"],["submit","执行中","交件"],["receive","已交件","接收"]].map(([action,state,label])=>`<button onclick="simulate('${t.id}','handoff','${action}')" ${t.done||t.unknown||t.wait||h.state!==state?"disabled":""}>模拟${label}</button>`).join("")}
+    <button onclick="simulate('${t.id}','heartbeat')" ${!t.active||t.unknown?"disabled":""}>模拟心跳</button>
+    <button onclick="simulate('${t.id}','timeout')" ${!t.active||t.unknown?"disabled":""}>模拟心跳超时（保槽）</button></div>
+    <label>模拟等待原因 <select id="wait-${t.id}" aria-label="模拟等待原因" onchange="simulate('${t.id}','wait',this.value)" ${t.active||t.unknown?"disabled":""}><option value="">无显式等待</option>${Object.entries(WAIT_REASONS).map(([key,label])=>`<option value="${key}" ${t.wait===key?"selected":""}>${label}</option>`).join("")}</select></label>
+    <h3>模拟质量信号 · 当前 ${t.head} / ${t.base}</h3>
+    ${PHASES[3].checks.map(g=>{const e=t.evidence[g.key]||t.staleQuality[g.key];return `<p>${{review:"审查",test:"测试",ci:"CI"}[g.key]}：${e?(evidenceValid(t,g)?"模拟通过 · 当前版本适用":"旧证据失效 · 不适用"):"待补 · 无证据"} · actor=${e?.actor||g.actor} · head=${e?.head||"无"} / base=${e?.base||"无"} · 来源 SIM-DEMO</p>`;}).join("")}
+    <p>交件、接收或质量变绿均不代表业务验收，仍须原证据门及人类手工确认。</p>
+    <button onclick="simulate('${t.id}','reset')">重置全部模拟状态</button></section>`;
+}
+function taskGateHtml(t){
+  const p=PHASES[t.st];
+  const missingUpstream=PHASES.slice(0,t.st).flatMap(p=>p.checks).filter(g=>!evidenceValid(t,g));
+  const proofButtons=[...missingUpstream,...p.checks];
+  return `${semaphoreHtml(t)}${phaseHtml(t.st)}<p>模拟版本：${t.base} / ${t.head} · 不是真实SHA/PR</p>
+    <p>任务包示例：demand_uid=SIM-DEMAND，task_id=${t.id}，需求/计划版本=v1.4-demo；owner=admin5；原dev=${t.originalDev}；repo/worktree/branch=SIM-ONLY（无真实路径）；写面=演示页；AC=八环节与门禁；验证=模拟契约；环境=本页内存；时限/预算=模拟1批/全局${DEMO_POLICY.maxParallel}槽；升级=主脑→admin5。完整字段见阶段详情。</p>
+    <details><summary>完整任务包 / 交接字段</summary><ul>${[...TASK_PACKAGE,...HANDOFF].map(v=>`<li>${v}</li>`).join("")}</ul></details>
+    ${t.st>=6?`<p id="code-child">纯模拟代码子任务 ${CODE_CHILD.id}：${CODE_CHILD.status}（代码交付完成）；业务父需求 ${CODE_CHILD.parentStatus}，缺书面业务验收继续保持待验，不因子任务完成自动关单。</p>`:""}
+    <h3>模拟证据门 · ${gateReady(t)?"可手动推进":"缺证据，阻止推进"}</h3>
+    <p>点击每项仅模拟该责任角色的证据，均绑定当前head/base。人类验收须单独手工模拟，不由定时器或协调者自动代签。DoD的N/A须理由和质量复核，本演示不提供一键豁免。</p>
+    ${t.releaseFailed?"<p class='warning'>模拟发布失败：仍在发布修复/回退，须重新补齐发布授权、投放及独立验证。</p>":""}
+    <div class="proofs">${proofButtons.map(g=>`<button ${t.done?"disabled":""} onclick="simulate('${t.id}','proof','${g.key}')">${evidenceValid(t,g)?"✓":"待补"} 模拟 · ${g.label} (${g.actor})</button>`).join("")}</div>
+    <div class="acts">
+    <button onclick="simulate('${t.id}','advance')" ${!gateReady(t)?"disabled":""}>模拟通过当前门${t.st===7?"并关单":"并推进"}</button>
+    <button onclick="simulate('${t.id}','${t.active?"stop":"work"}')" ${t.done?"disabled":""}>${t.active?"模拟确认停止/释放槽":"模拟申请占槽"}</button>
+    ${(t.st===3||t.st===4)?`<button onclick="simulate('${t.id}','defect')">模拟质量失败 → 原dev</button>`:""}
+    ${t.st>=2&&t.st<=4?`<button onclick="simulate('${t.id}','revision')">模拟新head / 旧证据失效</button><button onclick="simulate('${t.id}','baseRevision')">模拟新base / 旧证据失效</button>`:""}
+    ${(t.st===5||t.st===6)?`<button onclick="simulate('${t.id}','releaseFail')">模拟发布失败 → 留发布修复</button>`:""}
+    </div>`;
+}
+window.simulate=function(id,action,key){
+  const t=TASKS.find(t=>t.id===id);if(!t) return;
+  let ok=true;
+  if(action==="proof"){
+    // Stale upstream proof must be explicitly rebound by its original role too.
+    const earlier=PHASES.slice(0,t.st).flatMap(p=>p.checks).find(g=>g.key===key);
+    if(earlier) t.evidence[key]={head:t.head,base:t.base,actor:earlier.actor,simulated:true};
+    else ok=recordEvidence(t,key);
+  }
+  if(action==="advance") ok=advanceTask(t);
+  if(action==="defect") ok=returnToDev(t);
+  if(action==="revision") ok=changeRevision(t);
+  if(action==="baseRevision") ok=changeRevision(t,"base");
+  if(action==="releaseFail") ok=failRelease(t);
+  if(action==="work") ok=handoffAction(t,"accept");
+  if(action==="stop") ok=confirmStopped(t);
+  if(action==="handoff") ok=handoffAction(t,key);
+  if(action==="wait") ok=setWait(t,key);
+  if(action==="timeout") ok=markUnknown(t);
+  if(action==="heartbeat") ok=heartbeat(t);
+  if(action==="reset"){
+    resetDemo();$("#feed").innerHTML="";roleSel=null;paused=false;
+    $("#pause").textContent="暂停模拟事件";
+    for(let i=0;i<6;i++) pushEv();
+  }
+  if(ok && !["reset","handoff","heartbeat","work"].includes(action)) simTick++;
+  renderRoles(roleSel);renderLanes();renderKpis();renderBudget();if(roleSel){const selected=roleSel;roleSel=null;toggleRole(selected);}
+  openDrawer(id);
+  const current=TASKS.find(x=>x.id===id);
+  if(action!=="reset") pushEv(["模拟操作","演示状态",ok?`${current.handoff.state} · ${waitReason(current)||"无等待"} · 手工模拟已更新；无平台动作。`:"模拟门禁/槽位阻止操作。",id]);
+  toast(ok?"仅本页模拟已更新":`模拟门禁/单角色限制未满足或全局${DEMO_POLICY.maxParallel}槽已满`);
+};
+function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/${DEMO_POLICY.maxParallel} · policy${DEMO_POLICY.policyVersion}（可用 ${DEMO_POLICY.maxParallel-activeCount()} · 排队 ${TASKS.filter(t=>!t.active&&!t.done&&t.handoff.state==="待派发").length}；含协调者1；QA+tester并行占2；排队不占槽）`;
+  const rows=slotRows();
+  $("#slots").innerHTML=Array.from({length:DEMO_POLICY.maxParallel},(_,i)=>{const row=rows[i];return `<div>模拟槽 ${i+1} · ${row?`${ROLE_ALIAS[row.role]} / ${row.task} / ${row.runId} · ${row.unknown?"未知／待核对（保留）":"占用"}`:"可用"}</div>`;}).join("");
+}
+
 /* ═══ 启动 ═══ */
-renderRoles(); renderLanes(); renderKpis();
-setInterval(()=>{const d=new Date();$("#clock").textContent=
-  d.toLocaleDateString("zh-CN",{month:"2-digit",day:"2-digit"})+" "+
-  d.toLocaleTimeString("zh-CN",{hour12:false});},1000);
-/* 预填事件流：历史倒序 */
+renderRoles(); renderLanes(); renderKpis(); renderBudget(); prepareControls();
+let paused=false;
+window.togglePause=function(){paused=!paused;$("#pause").textContent=paused?"继续模拟事件":"暂停模拟事件";};
+$("#clock").textContent="纯模拟 · 非平台看板";
 for(let i=0;i<6;i++) pushEv();
-setInterval(()=>pushEv(), 5000);
-/* 定时推进一个 mock 任务（泳道流动感） */
-setInterval(()=>{
-  const moving = TASKS.find(t=>!t.done && t.st<6 && !t.active && t.id!=="RFC-0220");
-  if(moving && Math.random()<0.5){ moving.st++; renderLanes();
-    pushEv([ROLE_ALIAS[moving.ow],"工作流",`${moving.id}「${moving.ti.slice(0,10)}…」推进 → ${STAGES[moving.st]}`, moving.id]); }
-}, 9000);
+setInterval(()=>{if(!paused) pushEv();},5000);
 </script>
 </body>
 </html>
