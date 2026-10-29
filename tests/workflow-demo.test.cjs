@@ -8,7 +8,7 @@ function model() {
   // Execute the actual inline script, with rendering startup excluded; no browser/layout claim.
   const context = { window: {}, document: { addEventListener() {}, getElementById() {} }, MutationObserver:class {observe(){}}, setTimeout, clearTimeout };
   vm.createContext(context);
-  vm.runInContext(script.split('/* ═══ 启动 ═══ */')[0] + '\nthis.api={STAGES,PHASES,DOD,ROLES,TASKS,makeTask,recordEvidence,gateReady,advanceTask,returnToDev,failRelease,changeRevision,startWork,stopWork,activeCount,demoCopy,DEMO_POLICY,CODE_CHILD};', context);
+  vm.runInContext(script.split('/* ═══ 启动 ═══ */')[0] + '\nthis.api={STAGES,PHASES,DOD,ROLES,TASKS,makeTask,recordEvidence,gateReady,advanceTask,returnToDev,failRelease,changeRevision,startWork,stopWork,activeCount,demoCopy,DEMO_POLICY,CODE_CHILD,handoffAction,setWait,markUnknown,confirmStopped,heartbeat,slotRows,resetDemo,waitReason,simTime};', context);
   return context.api;
 }
 test('exact eight-stage contract and complete phase details', () => {
@@ -290,4 +290,90 @@ test('mobile hidden role tooltip is bounded by its role card instead of inflatin
   assert.match(mobile,/\.role \.info\{position:static\}/);
   assert.match(mobile,/\.role \.info::after\{[^}]*left:12px;right:12px;[^}]*width:auto;max-width:none/);
   assert.match(html,/\.role\{[^}]*position:relative/s);
+});
+
+
+test('semaphore: ordered handoff and duplicate actions preserve one run and one delivery',()=>{
+ const m=model(),t=m.TASKS[0];
+ assert.equal(t.handoff.state,'待派发'); assert.equal(m.handoffAction(t,'submit'),false);
+ assert.equal(m.handoffAction(t,'start'),false);
+ for(const [action,state] of [['accept','已接单'],['start','执行中'],['submit','已交件'],['receive','已接收']]) {
+  assert.equal(m.handoffAction(t,action),true); assert.equal(t.handoff.state,state);
+  const before=JSON.stringify(t),count=m.activeCount();
+  assert.equal(m.handoffAction(t,action),false);assert.equal(JSON.stringify(t),before);assert.equal(m.activeCount(),count);
+ }
+ assert.equal(t.handoff.deliveries,1);assert.equal(t.handoff.receipts,1);assert.equal(t.done,false);
+ assert.match(t.handoff.runId,/^SIM-RUN-/);assert.equal(t.handoff.from,'zwen');assert.equal(t.handoff.to,'pd');
+});
+test('semaphore: accepted reserves slots; dual quality admission is atomic at capacity',()=>{
+ const m=model(),pd=m.TASKS[0],q=m.TASKS[3];
+ assert.equal(m.handoffAction(pd,'accept'),true);assert.equal(m.activeCount(),3);
+ assert.equal(m.handoffAction(q,'accept'),false);assert.equal(q.active,false);assert.equal(q.handoff.state,'待派发');
+ m.confirmStopped(pd);assert.equal(m.handoffAction(q,'accept'),true);assert.equal(m.activeCount(),4);
+ const rows=m.slotRows();assert.equal(rows.length,4);assert.equal(rows.filter(r=>r.role==='zwen').length,1);
+ for(const role of ['qareview','te'])assert.equal(rows.filter(r=>r.role===role&&r.task===q.id&&r.runId===q.handoff.runId).length,1);
+ assert.equal(m.startWork(m.makeTask(2)),false);
+});
+test('semaphore: four explicit waiting reasons block handoff and original gates',()=>{
+ for(const reason of ['dependency','approval','resource','unreachable']) {
+  const m=model(),t=m.TASKS[0];m.recordEvidence(t,'scope');
+  assert.equal(m.setWait(t,reason),true);assert.ok(m.waitReason(t));
+  assert.equal(m.handoffAction(t,'accept'),false);assert.equal(m.advanceTask(t),false);assert.equal(t.active,false);
+  assert.equal(m.setWait(t,'invalid'),false);assert.equal(t.wait,reason);
+  assert.equal(m.setWait(t,''),true);assert.equal(m.advanceTask(t),true);
+ }
+});
+test('semaphore: timeout holds slots across every shortcut until explicit stop',()=>{
+ for(const stage of [2,3,5]) {
+  const m=model(),t=m.TASKS[stage];for(const other of m.TASKS)m.stopWork(other);
+  assert.equal(m.startWork(t),true);for(const g of m.PHASES[stage].checks)m.recordEvidence(t,g.key);
+  assert.equal(m.markUnknown(t),true);const before=JSON.stringify(t),count=m.activeCount();
+  for(const action of ['accept','start','submit','receive'])assert.equal(m.handoffAction(t,action),false);
+  assert.equal(m.advanceTask(t),false);assert.equal(m.returnToDev(t),false);assert.equal(m.changeRevision(t),false);assert.equal(m.failRelease(t),false);
+  m.stopWork(t);assert.equal(JSON.stringify(t),before);assert.equal(m.activeCount(),count);assert.equal(m.heartbeat(t),false);
+  assert.equal(m.confirmStopped(t),true);assert.equal(t.active,false);assert.equal(m.activeCount(),1);
+  assert.equal(m.confirmStopped(t),false);assert.equal(m.handoffAction(t,'accept'),true);
+ }
+});
+test('semaphore: current head/base quality proof is separate and never accepts business automatically',()=>{
+ const m=model(),t=m.TASKS[3];
+ for(const g of m.PHASES[3].checks)m.recordEvidence(t,g.key);
+ assert.equal(m.gateReady(t),true);t.base='SIM-BASE-NEW';assert.equal(m.gateReady(t),false);
+ for(const key of ['review','test','ci'])assert.notEqual(t.evidence[key].base,t.base);
+ assert.equal(m.changeRevision(t),true);assert.equal(t.evidence.acceptance,undefined);assert.equal(t.done,false);
+});
+test('semaphore: reset restores exact fixture, slots, handoff, heartbeat and deterministic action time',()=>{
+ const m=model();const snapshot=()=>JSON.stringify({tasks:m.TASKS,slots:m.slotRows(),time:m.simTime()});
+ const initial=snapshot();const sequence=()=>{const t=m.TASKS[0];m.handoffAction(t,'accept');m.handoffAction(t,'start');m.heartbeat(t);m.markUnknown(t);};
+ sequence();const after=snapshot();m.resetDemo();assert.equal(snapshot(),initial);sequence();assert.equal(snapshot(),after);
+ m.resetDemo();m.resetDemo();assert.equal(snapshot(),initial);
+});
+test('semaphore UI: controls, slots, waits, quality applicability and focus use actual renderers',()=>{
+ const {context:c,nodes}=renderHarness();c.openDrawer('SIM-01');
+ assert.match(nodes.get('#sheet').innerHTML,/待派发/);assert.match(nodes.get('#sheet').innerHTML,/SIM-RUN-/);
+ c.simulate('SIM-01','handoff','accept');assert.match(nodes.get('#sheet').innerHTML,/已接单/);
+ assert.match(nodes.get('#budget').textContent,/3\/4/);assert.match(nodes.get('#slots').innerHTML,/SIM-01/);
+ c.simulate('SIM-01','timeout');assert.match(nodes.get('#sheet').innerHTML,/未知／待核对/);
+ c.simulate('SIM-01','work');assert.match(nodes.get('#budget').textContent,/2\/4/);
+ c.simulate('SIM-01','wait','dependency');assert.match(nodes.get('#sheet').innerHTML,/依赖未满足/);
+ c.openDrawer('SIM-04');assert.match(nodes.get('#sheet').innerHTML,/审查.*待补/s);assert.match(nodes.get('#sheet').innerHTML,/CI/);
+ c.simulate('SIM-04','reset');assert.match(nodes.get('#budget').textContent,/2\/4/);
+ assert.ok(nodes.get('#sheet').contains(c.document.activeElement));
+});
+
+test('semaphore UI: version changes retain explicitly stale quality display and invalidate gates',()=>{
+ const {context:c,nodes}=renderHarness();
+ for(const key of ['review','test','ci'])c.simulate('SIM-04','proof',key);
+ assert.match(nodes.get('#sheet').innerHTML,/审查：模拟通过 · 当前版本适用/);
+ c.simulate('SIM-04','baseRevision');
+ assert.match(nodes.get('#sheet').innerHTML,/SIM-BASE-A-NEXT/);
+ assert.match(nodes.get('#sheet').innerHTML,/旧证据失效 · 不适用/);
+ assert.equal(vm.runInContext('TASKS[3].evidence.review',c),undefined);
+ assert.equal(vm.runInContext('gateReady(TASKS[3])',c),false);
+});
+test('semaphore UI: wait selector preserves focus after rendering and event reports task state',()=>{
+ const {context:c,nodes}=renderHarness();c.openDrawer('SIM-01');nodes.get('#wait-SIM-01').focus();
+ c.simulate('SIM-01','wait','unreachable');assert.equal(c.document.activeElement.id,'wait-SIM-01');
+ assert.match(nodes.get('#feed').children[0].innerHTML,/SIM-T\+0001s/);
+ assert.match(nodes.get('#feed').children[0].innerHTML,/角色不可达/);
 });

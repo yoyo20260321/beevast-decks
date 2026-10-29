@@ -206,7 +206,7 @@ header{flex-wrap:wrap}h1{min-width:0}.kpis{flex-wrap:wrap}.kpi{min-width:65px;pa
 .demo-notice b{color:var(--warn)}button{font:inherit;color:var(--tx);background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 9px;cursor:pointer;white-space:normal}
 button:disabled{opacity:.5;cursor:default}button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--zwen);outline-offset:2px}
 .phase-btn{font-size:12px;width:100%;padding:6px 2px;color:var(--zwen)}.lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow-y:auto;align-content:start}.lanes::before{display:none}.lane{min-height:140px}.lane .body{overflow:visible}
-.sheet{overflow-wrap:anywhere}.sheet h3{font-size:13px;margin:16px 0 8px;color:var(--zwen)}.sheet p,.sheet li,.sheet dl{font-size:12px;line-height:1.7;color:var(--tx2)}.sheet ul,.sheet ol{padding-left:20px}.sheet dt{color:var(--tx);font-weight:600;margin-top:8px}.sheet dd{margin-left:0}.proofs{display:grid;gap:6px}.proofs button{text-align:left;font-size:11px}.warning{color:var(--warn)!important}.steps{flex-wrap:wrap}.step{min-width:65px}.sheet .hd>div{min-width:0}.row{flex-wrap:wrap}.row .ti{overflow-wrap:anywhere}.role .nm{flex-wrap:wrap}.info::after{left:0;top:20px;max-width:180px}.gwrap{min-height:280px}.gnode-e{font-size:9px;fill:var(--tx2)}
+#slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;font-size:10px;color:var(--tx2);overflow-wrap:anywhere;flex-shrink:0}.signal{font-size:10px;color:var(--tx2);overflow-wrap:anywhere}.sheet select{max-width:100%}.sheet{overflow-wrap:anywhere}.sheet h3{font-size:13px;margin:16px 0 8px;color:var(--zwen)}.sheet p,.sheet li,.sheet dl{font-size:12px;line-height:1.7;color:var(--tx2)}.sheet ul,.sheet ol{padding-left:20px}.sheet dt{color:var(--tx);font-weight:600;margin-top:8px}.sheet dd{margin-left:0}.proofs{display:grid;gap:6px}.proofs button{text-align:left;font-size:11px}.warning{color:var(--warn)!important}.steps{flex-wrap:wrap}.step{min-width:65px}.sheet .hd>div{min-width:0}.row{flex-wrap:wrap}.row .ti{overflow-wrap:anywhere}.role .nm{flex-wrap:wrap}.info::after{left:0;top:20px;max-width:180px}.gwrap{min-height:280px}.gnode-e{font-size:9px;fill:var(--tx2)}
 @media (max-width:1100px){body{overflow:auto}#app{height:auto;min-height:100vh}main{grid-template-columns:220px minmax(0,1fr)}main>.col:last-child{grid-column:1/-1}.feed{min-height:200px;max-height:260px}.col:first-child{overflow:visible}}
 @media (max-width:700px){#app{padding:12px 10px}header{gap:9px}h1{font-size:16px}h1 .en{display:block;margin:4px 0}.spacer{display:none}.kpis{width:100%;gap:6px}.kpi{flex:1;min-width:0;padding:6px}.kpi-div{display:none}main{display:flex;flex-direction:column}.col:first-child{overflow:visible}#roles{display:grid!important;grid-template-columns:1fr;gap:6px!important}.role{padding:10px}.role .cur{white-space:normal}.lanes{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px;overflow:visible}.lane{min-height:150px}.lane .body{overflow:visible}.sheet{width:calc(100vw - 16px);padding:16px 12px;max-height:90dvh}.gwrap{min-height:0}.fbar>*{max-width:100%}.fbar input{min-width:0;width:100%}.row .sg,.row .tg{white-space:normal}.demo-notice{align-items:flex-start}.demo-notice span{width:100%}.role .info{position:static}.role .info::after{left:12px;right:12px;top:calc(100% + 6px);width:auto;max-width:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -222,6 +222,7 @@ button:disabled{opacity:.5;cursor:default}button:focus-visible,[tabindex]:focus-
     <div id="clock"></div>
   </header>
   <div class="demo-notice"><b id="budget"></b><span>唯一主脑协调 · backup手工承接；全局原子限流 / 自动故障切换 / 服务冷启动未交付。角色规则不等于平台强沙箱。</span><button id="pause" onclick="togglePause()">暂停模拟事件</button></div>
+  <div id="slots" aria-label="模拟逐槽明细"></div>
   <main>
     <div class="col">
       <div class="col-title">模拟角色 WORKFORCE<span class="lnk" onclick="openGraph()">关系图谱</span></div>
@@ -275,22 +276,75 @@ const PHASES = [
 const TASK_PACKAGE = ["demand_uid / task_id / 需求版本 / 计划版本","批准来源 / 责任人 / 唯一执行者 / 升级对象","目标 / 范围 / 非目标 / AC / 完成层级","repo / worktree / branch / base_sha / head_sha","允许写面 / 接口契约 / 依赖 / 集成顺序","验证命令 / 环境 / 样例数据 / 时限 / 预算"];
 const HANDOFF = ["当前base/head、commit、PR与变更清单","逐项AC映射；接口/配置/文档/迁移影响","实际验证命令、结果、日志/产物位置；未验证项","缺陷回应、剩余风险、遗留负责人和后续任务","交接对象、待办、运行终态与非空结果/证据"];
 function makeTask(stage) {
-  const t={id:"SIM-"+(stage+1).toString().padStart(2,"0"),ti:"模拟 · "+STAGES[stage]+"门禁示例",st:stage,ow:STAGE_OWNERS[stage],originalDev:"dev",active:false,done:false,tag:"模拟 · 待门禁",created:"DEMO",head:"SIM-HEAD-A",base:"SIM-BASE-A",evidence:{},blockers:0,releaseFailed:false};
+  const t={id:"SIM-"+(stage+1).toString().padStart(2,"0"),ti:"模拟 · "+STAGES[stage]+"门禁示例",st:stage,ow:STAGE_OWNERS[stage],originalDev:"dev",active:false,done:false,tag:"模拟 · 待门禁",created:"DEMO",head:"SIM-HEAD-A",base:"SIM-BASE-A",evidence:{},staleQuality:{},blockers:0,releaseFailed:false,wait:"",unknown:false,lastHeartbeat:"SIM-T+0000s",handoff:{state:"待派发",from:"zwen",to:STAGE_OWNERS[stage],runId:"SIM-RUN-"+(stage+1)+"-1",attempt:1,deliveries:0,receipts:0}};
   // Prior stages are explicitly simulated fixture evidence, never platform receipts.
   for(let i=0;i<stage;i++) for(const g of PHASES[i].checks) t.evidence[g.key]={head:t.head,base:t.base,actor:g.actor,simulated:true};
   return t;
 }
 const TASKS=STAGES.map((_,i)=>makeTask(i));
 TASKS[2].active=true;
+TASKS[2].handoff.state="执行中";
+const INITIAL_TASKS=JSON.stringify(TASKS);
+let simTick=0;
+const WAIT_REASONS={dependency:"依赖未满足",approval:"待批准",resource:"资源冲突",unreachable:"角色不可达"};
+function simTime(){return "SIM-T+"+String(simTick).padStart(4,"0")+"s";}
 function taskRoles(t){return t.st===3?["qareview","te"]:[t.ow];}
 function roleActive(k){return k==="zwen" || TASKS.some(t=>t.active && taskRoles(t).includes(k));}
 function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?taskRoles(t).length:0),0);}
+function waitReason(t){
+  if(t.unknown) return "未知／待核对：未确认旧执行停止，保留槽位";
+  if(t.wait) return WAIT_REASONS[t.wait];
+  if(t.done || t.active || ["已交件","已接收"].includes(t.handoff.state)) return "";
+  if(taskRoles(t).some(roleActive)) return "资源冲突：同角色／单dev已占槽";
+  if(activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel) return "资源冲突：模拟容量已满（不部分准入）";
+  return "等待手工模拟派发";
+}
+function setWait(t,reason){
+  if(t.active || t.unknown || (reason!=="" && !WAIT_REASONS[reason])) return false;
+  t.wait=reason;return true;
+}
 function startWork(t){
-  if(t.done || t.active || activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel || taskRoles(t).some(roleActive)) return false;
-  t.active=true;
+  if(t.done || t.active || t.unknown || t.wait || ["已交件","已接收"].includes(t.handoff.state) || activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel || taskRoles(t).some(roleActive)) return false;
+  t.active=true;t.handoff.state="执行中";t.lastHeartbeat=simTime();
   return true;
 }
-function stopWork(t){t.active=false;}
+function stopWork(t){if(t.unknown) return false;t.active=false;return true;}
+function nextHandoff(t){
+  const attempt=t.handoff.attempt+1;
+  t.handoff={state:"待派发",from:"zwen",to:t.ow,runId:"SIM-RUN-"+t.id.slice(4)+"-"+attempt,attempt,deliveries:0,receipts:0};
+}
+function confirmStopped(t){
+  if(!t.active) return false;
+  t.unknown=false;t.active=false;nextHandoff(t);return true;
+}
+function heartbeat(t){
+  if(!t.active || t.unknown) return false;
+  simTick++;t.lastHeartbeat=simTime();return true;
+}
+function markUnknown(t){
+  if(!t.active || t.unknown) return false;
+  t.unknown=true;return true;
+}
+function handoffAction(t,action){
+  if(t.done || t.unknown || t.wait) return false;
+  const h=t.handoff;
+  if(action==="accept" && h.state==="待派发") {
+    if(!startWork(t)) return false;
+    h.state="已接单";
+  } else if(action==="start" && h.state==="已接单" && t.active) h.state="执行中";
+  else if(action==="submit" && h.state==="执行中" && t.active) {
+    stopWork(t);h.state="已交件";h.deliveries++;
+  } else if(action==="receive" && h.state==="已交件") {h.state="已接收";h.receipts++;}
+  else return false;
+  simTick++;return true;
+}
+function slotRows(){
+  return [{role:"zwen",task:"SIM-COORDINATOR",runId:"SIM-RUN-COORDINATOR",unknown:false},
+    ...TASKS.filter(t=>t.active).flatMap(t=>taskRoles(t).map(role=>({role,task:t.id,runId:t.handoff.runId,unknown:t.unknown})))];
+}
+function resetDemo(){
+  TASKS.splice(0,TASKS.length,...JSON.parse(INITIAL_TASKS));simTick=0;evIdx=0;evCount=0;
+}
 function recordEvidence(t,key){
   const g=PHASES[t.st].checks.find(g=>g.key===key);
   if(!g || t.done) return false;
@@ -302,7 +356,7 @@ function evidenceValid(t,g){
   return !!e && e.simulated===true && e.head===t.head && e.base===t.base && e.actor===g.actor;
 }
 function gateReady(t){
-  if(t.done || t.blockers>0) return false;
+  if(t.done || t.blockers>0 || t.wait || t.unknown) return false;
   // Recheck all upstream proofs: stale head/base can never pass a later gate.
   return PHASES.slice(0,t.st+1).every(p=>p.checks.every(g=>evidenceValid(t,g)));
 }
@@ -315,22 +369,28 @@ function advanceTask(t){
   } else {
     t.st++;
     t.ow=STAGE_OWNERS[t.st];
+    nextHandoff(t);
   }
   t.releaseFailed=false; return true;
 }
 function returnToDev(t){
-  if(t.st!==3 && t.st!==4) return false;
-  stopWork(t); t.st=2;t.ow=t.originalDev;t.done=false;
+  if(t.unknown || t.wait || (t.st!==3 && t.st!==4)) return false;
+  stopWork(t); t.st=2;t.ow=t.originalDev;t.done=false;nextHandoff(t);
   for(const p of PHASES.slice(2)) for(const g of p.checks) delete t.evidence[g.key];
   return true;
 }
-function changeRevision(t){
-  stopWork(t);t.head+="-NEXT";t.st=2;t.ow=t.originalDev;t.done=false;t.blockers=0;
-  t.evidence={}; t.releaseFailed=false; // New version requires explicit proof rebinding, never reuse old results.
+function changeRevision(t,kind="head"){
+  if(t.unknown || t.wait) return false;
+  stopWork(t);
+  for(const g of PHASES[3].checks) if(t.evidence[g.key]) t.staleQuality[g.key]=t.evidence[g.key];
+  if(kind==="base") t.base+="-NEXT";else t.head+="-NEXT";
+  t.st=2;t.ow=t.originalDev;t.done=false;t.blockers=0;
+  // Old quality is display-only; no gate reads staleQuality.
+  t.evidence={};t.releaseFailed=false;nextHandoff(t);return true;
 }
 function failRelease(t){
-  if(t.st!==5 && t.st!==6) return false;
-  stopWork(t);t.st=5;t.ow="support";t.done=false;t.releaseFailed=true;
+  if(t.unknown || t.wait || (t.st!==5 && t.st!==6)) return false;
+  stopWork(t);t.st=5;t.ow="support";t.done=false;t.releaseFailed=true;nextHandoff(t);
   for(const p of PHASES.slice(5)) for(const g of p.checks) delete t.evidence[g.key];
   return true;
 }
@@ -368,7 +428,7 @@ function renderLanes(){
 const chip = t=>`
   <div class="chip ${t.active?'active':''} ${t.done?'done':''}" data-task-id="${t.id}" onclick="openDrawer('${t.id}')">
     <div class="cid"><span><span class="ow" style="background:${ROLES[t.ow].c}"></span>${t.id}</span><span>${t.done?"✓":"⏳"}</span></div>
-    <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span>
+    <div class="ti">${t.ti}</div><span class="tag">${t.tag}</span><div class="signal">模拟接棒：${t.handoff.state} · ${waitReason(t)||"无等待"}</div>
   </div>`;
 
 const STORY_DAY = "DEMO";
@@ -398,11 +458,11 @@ let evIdx = 0, evCount = 0;
 function pushEv(custom){
   const [who, to, what, task] = custom || EVPOOL[evIdx++ % EVPOOL.length];
   const rc = ROLES[Object.keys(ROLE_ALIAS).find(k=>ROLE_ALIAS[k]===who)]?.c || "var(--zwen)";
-  const d = new Date();
+  const eventTime=simTime();
   const el = document.createElement("div");
   el.className = "ev first";
-  el.innerHTML = `<div class="tm">${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</div>
-    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>${what}${task?` <span class="evtask" onclick="openDrawer('${task}')">→ ${task}</span>`:""}</div>`;
+  el.innerHTML = `<div class="tm">${eventTime}</div>
+    <div class="bd"><span class="who" style="color:${rc}">${who}</span> → ${to}<br>来源 SIM-DEMO · ${what}${task?` <span class="evtask" onclick="openDrawer('${task}')">→ ${task}</span>`:""}</div>`;
   const feed = $("#feed");
   feed.querySelectorAll(".ev.first").forEach(e=>e.classList.remove("first"));
   feed.prepend(el);
@@ -652,11 +712,25 @@ function phaseHtml(i){
 window.openPhase=function(i){
   setDrawerContent(`<div class="hd"><h2>八环节 · 纯模拟 v1.4</h2><button class="x" onclick="closeDrawer()" aria-label="关闭">✕</button></div>${phaseHtml(i)}<h3>任务包</h3><ul>${TASK_PACKAGE.map(v=>`<li>${v}</li>`).join("")}</ul><h3>交接</h3><ul>${HANDOFF.map(v=>`<li>${v}</li>`).join("")}</ul><h3>七项DoD</h3><ol>${DOD.map(v=>`<li>${v}</li>`).join("")}</ol><p>N/A须理由和对应质量角色复核。适用门未完成不关单。</p>`);
 };
+function semaphoreHtml(t){
+  const h=t.handoff;
+  return `<section aria-label="模拟协作信号"><h3>纯模拟接棒 · ${h.state}</h3>
+    <p>派发发送角色 ${ROLE_ALIAS[h.from]} → 接收角色 ${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")}<br>交件 ${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} → 接收 ${ROLE_ALIAS[h.from]} · 任务 ${t.id}<br>模拟运行ID ${h.runId} · 交件 ${h.deliveries} / 接收 ${h.receipts}<br>模拟时间 ${simTime()} · 最后心跳 ${t.lastHeartbeat} · 来源 SIM-DEMO（本页内存）</p>
+    <p role="status">模拟等待：${waitReason(t)||"无等待"}</p>
+    <div class="acts">${[["accept","待派发","接单"],["start","已接单","开始执行"],["submit","执行中","交件"],["receive","已交件","接收"]].map(([action,state,label])=>`<button onclick="simulate('${t.id}','handoff','${action}')" ${t.done||t.unknown||t.wait||h.state!==state?"disabled":""}>模拟${label}</button>`).join("")}
+    <button onclick="simulate('${t.id}','heartbeat')" ${!t.active||t.unknown?"disabled":""}>模拟心跳</button>
+    <button onclick="simulate('${t.id}','timeout')" ${!t.active||t.unknown?"disabled":""}>模拟心跳超时（保槽）</button></div>
+    <label>模拟等待原因 <select id="wait-${t.id}" aria-label="模拟等待原因" onchange="simulate('${t.id}','wait',this.value)" ${t.active||t.unknown?"disabled":""}><option value="">无显式等待</option>${Object.entries(WAIT_REASONS).map(([key,label])=>`<option value="${key}" ${t.wait===key?"selected":""}>${label}</option>`).join("")}</select></label>
+    <h3>模拟质量信号 · 当前 ${t.head} / ${t.base}</h3>
+    ${PHASES[3].checks.map(g=>{const e=t.evidence[g.key]||t.staleQuality[g.key];return `<p>${{review:"审查",test:"测试",ci:"CI"}[g.key]}：${e?(evidenceValid(t,g)?"模拟通过 · 当前版本适用":"旧证据失效 · 不适用"):"待补 · 无证据"} · actor=${e?.actor||g.actor} · head=${e?.head||"无"} / base=${e?.base||"无"} · 来源 SIM-DEMO</p>`;}).join("")}
+    <p>交件、接收或质量变绿均不代表业务验收，仍须原证据门及人类手工确认。</p>
+    <button onclick="simulate('${t.id}','reset')">重置全部模拟状态</button></section>`;
+}
 function taskGateHtml(t){
   const p=PHASES[t.st];
   const missingUpstream=PHASES.slice(0,t.st).flatMap(p=>p.checks).filter(g=>!evidenceValid(t,g));
   const proofButtons=[...missingUpstream,...p.checks];
-  return `${phaseHtml(t.st)}<p>模拟版本：${t.base} / ${t.head} · 不是真实SHA/PR</p>
+  return `${semaphoreHtml(t)}${phaseHtml(t.st)}<p>模拟版本：${t.base} / ${t.head} · 不是真实SHA/PR</p>
     <p>任务包示例：demand_uid=SIM-DEMAND，task_id=${t.id}，需求/计划版本=v1.4-demo；owner=admin5；原dev=${t.originalDev}；repo/worktree/branch=SIM-ONLY（无真实路径）；写面=演示页；AC=八环节与门禁；验证=模拟契约；环境=本页内存；时限/预算=模拟1批/全局${DEMO_POLICY.maxParallel}槽；升级=主脑→admin5。完整字段见阶段详情。</p>
     <details><summary>完整任务包 / 交接字段</summary><ul>${[...TASK_PACKAGE,...HANDOFF].map(v=>`<li>${v}</li>`).join("")}</ul></details>
     ${t.st>=6?`<p id="code-child">纯模拟代码子任务 ${CODE_CHILD.id}：${CODE_CHILD.status}（代码交付完成）；业务父需求 ${CODE_CHILD.parentStatus}，缺书面业务验收继续保持待验，不因子任务完成自动关单。</p>`:""}
@@ -668,7 +742,7 @@ function taskGateHtml(t){
     <button onclick="simulate('${t.id}','advance')" ${!gateReady(t)?"disabled":""}>模拟通过当前门${t.st===7?"并关单":"并推进"}</button>
     <button onclick="simulate('${t.id}','work')" ${t.done?"disabled":""}>${t.active?"模拟确认停止/释放槽":"模拟申请占槽"}</button>
     ${(t.st===3||t.st===4)?`<button onclick="simulate('${t.id}','defect')">模拟质量失败 → 原dev</button>`:""}
-    ${t.st>=2&&t.st<=4?`<button onclick="simulate('${t.id}','revision')">模拟新head / 旧证据失效</button>`:""}
+    ${t.st>=2&&t.st<=4?`<button onclick="simulate('${t.id}','revision')">模拟新head / 旧证据失效</button><button onclick="simulate('${t.id}','baseRevision')">模拟新base / 旧证据失效</button>`:""}
     ${(t.st===5||t.st===6)?`<button onclick="simulate('${t.id}','releaseFail')">模拟发布失败 → 留发布修复</button>`:""}
     </div>`;
 }
@@ -683,15 +757,30 @@ window.simulate=function(id,action,key){
   }
   if(action==="advance") ok=advanceTask(t);
   if(action==="defect") ok=returnToDev(t);
-  if(action==="revision") changeRevision(t);
+  if(action==="revision") ok=changeRevision(t);
+  if(action==="baseRevision") ok=changeRevision(t,"base");
   if(action==="releaseFail") ok=failRelease(t);
-  if(action==="work"){if(t.active) stopWork(t);else ok=startWork(t);}
+  if(action==="work"){if(t.active) ok=confirmStopped(t);else ok=startWork(t);}
+  if(action==="handoff") ok=handoffAction(t,key);
+  if(action==="wait") ok=setWait(t,key);
+  if(action==="timeout") ok=markUnknown(t);
+  if(action==="heartbeat") ok=heartbeat(t);
+  if(action==="reset"){
+    resetDemo();$("#feed").innerHTML="";roleSel=null;paused=false;
+    $("#pause").textContent="暂停模拟事件";
+    for(let i=0;i<6;i++) pushEv();
+  }
+  if(ok && !["reset","handoff","heartbeat"].includes(action)) simTick++;
   renderRoles(roleSel);renderLanes();renderKpis();renderBudget();if(roleSel){const selected=roleSel;roleSel=null;toggleRole(selected);}
   openDrawer(id);
-  pushEv(["模拟操作","演示状态",ok?"手工模拟状态已更新；无平台动作。":"模拟门禁/槽位阻止操作。",id]);
+  const current=TASKS.find(x=>x.id===id);
+  if(action!=="reset") pushEv(["模拟操作","演示状态",ok?`${current.handoff.state} · ${waitReason(current)||"无等待"} · 手工模拟已更新；无平台动作。`:"模拟门禁/槽位阻止操作。",id]);
   toast(ok?"仅本页模拟已更新":`模拟门禁/单角色限制未满足或全局${DEMO_POLICY.maxParallel}槽已满`);
 };
-function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/${DEMO_POLICY.maxParallel} · policy${DEMO_POLICY.policyVersion}（含协调者1；QA+tester并行占2；排队不占槽）`; }
+function renderBudget(){ $("#budget").textContent=`模拟全局预算 ${activeCount()}/${DEMO_POLICY.maxParallel} · policy${DEMO_POLICY.policyVersion}（可用 ${DEMO_POLICY.maxParallel-activeCount()} · 排队 ${TASKS.filter(t=>!t.active&&!t.done&&t.handoff.state==="待派发").length}；含协调者1；QA+tester并行占2；排队不占槽）`;
+  const rows=slotRows();
+  $("#slots").innerHTML=Array.from({length:DEMO_POLICY.maxParallel},(_,i)=>{const row=rows[i];return `<div>模拟槽 ${i+1} · ${row?`${ROLE_ALIAS[row.role]} / ${row.task} / ${row.runId} · ${row.unknown?"未知／待核对（保留）":"占用"}`:"可用"}</div>`;}).join("");
+}
 
 /* ═══ 启动 ═══ */
 renderRoles(); renderLanes(); renderKpis(); renderBudget(); prepareControls();

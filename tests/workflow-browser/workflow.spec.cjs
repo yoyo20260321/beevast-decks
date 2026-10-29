@@ -186,3 +186,43 @@ test('I native keyboard focus refresh nested dead-opener and clipboard fallback'
   await expect(page.locator('#toast')).toContainText(fallback.result?'已复制模拟说明':'复制未成功');
  }
 });
+
+// Current-head definitions only: developer must not launch a local browser for this task.
+test('J simulated handoff order identity duplicates unknown hold stop and reset',async({page},info)=>{
+ await openTask(page,'SIM-01',info);
+ const exact=name=>page.locator('#sheet').getByRole('button',{name,exact:true});
+ const run=await page.evaluate(()=>TASKS[0].handoff.runId);
+ await expect(exact('模拟交件')).toBeDisabled();
+ for(const [name,state] of [['模拟接单','已接单'],['模拟开始执行','执行中']]){
+  await act(exact(name),info);await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · '+state);await expect(exact(name)).toBeDisabled();
+  expect(await page.evaluate(()=>TASKS[0].handoff.runId)).toBe(run);await expect(page.locator('#budget')).toContainText('3/4');
+ }
+ await act(exact('模拟心跳超时（保槽）'),info);await expect(page.locator('#slots')).toContainText('未知／待核对（保留）');
+ await expect(exact('模拟交件')).toBeDisabled();await expect(exact('模拟通过当前门并推进')).toBeDisabled();await expect(page.locator('#budget')).toContainText('3/4');
+ await act(action(page,'模拟确认停止'),info);await expect(page.locator('#budget')).toContainText('2/4');
+ for(const name of ['模拟接单','模拟开始执行','模拟交件','模拟接收'])await act(exact(name),info);
+ await expect(page.locator('#sheet')).toContainText('交件 1 / 接收 1');await expect(exact('模拟接收')).toBeDisabled();
+ await act(exact('重置全部模拟状态'),info);await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · 待派发');await expect(page.locator('#budget')).toContainText('2/4');
+});
+test('K simulated waits keep native select focus and dual quality capacity is atomic',async({page},info)=>{
+ await openTask(page,'SIM-01',info);const select=page.getByLabel('模拟等待原因',{exact:true});
+ for(const reason of ['dependency','approval','resource','unreachable']){
+  await select.focus();await select.selectOption(reason);await expect(select).toBeFocused();await expect(action(page,'模拟接单')).toBeDisabled();
+ }
+ await select.selectOption('');await act(action(page,'模拟接单'),info);await close(page);
+ await openTask(page,'SIM-04',info);await act(action(page,'模拟接单'),info);
+ expect(await page.evaluate(()=>TASKS[3].active)).toBe(false);await expect(page.locator('#sheet')).toContainText('模拟容量已满');
+ await close(page);await openTask(page,'SIM-01',info);await act(action(page,'模拟确认停止'),info);await close(page);
+ await openTask(page,'SIM-04',info);await act(action(page,'模拟接单'),info);await expect(page.locator('#budget')).toContainText('4/4');
+ for(const role of ['qa-review','test-engineer'])await expect(page.locator('#slots')).toContainText(role);
+ await expect(page.locator('#slots')).toContainText(await page.evaluate(()=>TASKS[3].handoff.runId));
+});
+test('L quality signals distinguish review test CI and stale head or base without acceptance',async({page},info)=>{
+ for(const revision of ['模拟新head','模拟新base']){
+  await openTask(page,'SIM-04',info);await fill(page,info);
+  await expect(page.locator('#sheet')).toContainText('审查：模拟通过 · 当前版本适用');await expect(page.locator('#sheet')).toContainText('测试：模拟通过 · 当前版本适用');await expect(page.locator('#sheet')).toContainText('CI：模拟通过 · 当前版本适用');
+  await act(action(page,revision),info);await expect(page.locator('#sheet')).toContainText('旧证据失效 · 不适用');await expect(action(page,'模拟通过当前门')).toBeDisabled();
+  expect(await page.evaluate(()=>TASKS[3].evidence.acceptance)).toBeUndefined();expect(await page.evaluate(()=>TASKS[3].done)).toBe(false);
+  await act(action(page,'重置全部模拟状态'),info);await close(page);
+ }
+});
