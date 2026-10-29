@@ -15,7 +15,9 @@ assert.equal(pkg.devDependencies['@playwright/test'],'1.56.1');assert.equal(pkg.
 assert.deepEqual(lock.packages[''].devDependencies,pkg.devDependencies);
 for(const name of ['@playwright/test','playwright','playwright-core','fsevents']){const p=lock.packages['node_modules/'+name];assert.match(p.integrity,/^sha512-/);assert.ok(p.resolved.startsWith('https://registry.npmjs.org/'));assert.equal(p.version,name==='fsevents'?'2.3.2':'1.56.1');}
 const spec=fs.readFileSync(path.join(dir,'workflow.spec.cjs'),'utf8');
-for(const id of 'ABCDEFGHI')assert.equal((spec.match(new RegExp("test\\('"+id+' ','g'))||[]).length,1);
+const {CASE_TITLES}=require('./reporter.cjs');
+const titles=Array.from(spec.matchAll(/\btest\(\s*['"]([^'"\n]+)['"]/g),m=>m[1]);
+assert.deepEqual(titles,Array.from(CASE_TITLES),'exact A-L definition contract: no missing, duplicate or unexpected cases');
 assert.doesNotMatch(spec,/test\.(skip|fixme|only)|\.evaluate\([^\n]*(advanceTask|recordEvidence|simulate\()/);
 const config=fs.readFileSync(path.join(dir,'playwright.config.cjs'),'utf8');for(const text of ['width:1440,height:1000','width:390,height:844','hasTouch:true','workers:1',"trace:'on'","screenshot:'on'","testMatch:'workflow.spec.cjs'"])assert.ok(config.includes(text),text);
-console.log('PASS: CJS syntax, pinned Actions/permissions/triggers, integrity lock graph, two viewport projects and nine A-I case definitions. CI_NOT_RUN; no browser loaded.');
+console.log('PASS: CJS syntax, pinned Actions/permissions/triggers, integrity lock graph, two viewport projects and exact twelve A-L definitions (24 cases). CI_NOT_RUN; no browser loaded.');

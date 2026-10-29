@@ -290,13 +290,15 @@ const WAIT_REASONS={dependency:"依赖未满足",approval:"待批准",resource:"
 function simTime(){return "SIM-T+"+String(simTick).padStart(4,"0")+"s";}
 function taskRoles(t){return t.st===3?["qareview","te"]:[t.ow];}
 function roleActive(k){return k==="zwen" || TASKS.some(t=>t.active && taskRoles(t).includes(k));}
-function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?taskRoles(t).length:0),0);}
+function workerRoles(t){return taskRoles(t).filter(role=>role!=="zwen");}
+function roleConflict(t){return TASKS.some(other=>other.active && taskRoles(t).some(role=>taskRoles(other).includes(role)));}
+function activeCount(){return 1+TASKS.reduce((total,t)=>total+(t.active?workerRoles(t).length:0),0);}
 function waitReason(t){
   if(t.unknown) return "未知／待核对：未确认旧执行停止，保留槽位";
   if(t.wait) return WAIT_REASONS[t.wait];
   if(t.done || t.active || ["已交件","已接收"].includes(t.handoff.state)) return "";
-  if(taskRoles(t).some(roleActive)) return "资源冲突：同角色／单dev已占槽";
-  if(activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel) return "资源冲突：模拟容量已满（不部分准入）";
+  if(roleConflict(t)) return "资源冲突：同角色／单dev已占槽";
+  if(activeCount()+workerRoles(t).length>DEMO_POLICY.maxParallel) return "资源冲突：模拟容量已满（不部分准入）";
   return "等待手工模拟派发";
 }
 function setWait(t,reason){
@@ -304,8 +306,8 @@ function setWait(t,reason){
   t.wait=reason;return true;
 }
 function startWork(t){
-  if(t.done || t.active || t.unknown || t.wait || ["已交件","已接收"].includes(t.handoff.state) || activeCount()+taskRoles(t).length>DEMO_POLICY.maxParallel || taskRoles(t).some(roleActive)) return false;
-  t.active=true;t.handoff.state="执行中";t.lastHeartbeat=simTime();
+  if(t.done || t.active || t.unknown || t.wait || ["已交件","已接收"].includes(t.handoff.state) || activeCount()+workerRoles(t).length>DEMO_POLICY.maxParallel || roleConflict(t)) return false;
+  t.active=true;t.handoff.state="已接单";t.lastHeartbeat=simTime();
   return true;
 }
 function stopWork(t){if(t.unknown) return false;t.active=false;return true;}
@@ -330,7 +332,6 @@ function handoffAction(t,action){
   const h=t.handoff;
   if(action==="accept" && h.state==="待派发") {
     if(!startWork(t)) return false;
-    h.state="已接单";
   } else if(action==="start" && h.state==="已接单" && t.active) h.state="执行中";
   else if(action==="submit" && h.state==="执行中" && t.active) {
     stopWork(t);h.state="已交件";h.deliveries++;
@@ -339,8 +340,9 @@ function handoffAction(t,action){
   simTick++;return true;
 }
 function slotRows(){
-  return [{role:"zwen",task:"SIM-COORDINATOR",runId:"SIM-RUN-COORDINATOR",unknown:false},
-    ...TASKS.filter(t=>t.active).flatMap(t=>taskRoles(t).map(role=>({role,task:t.id,runId:t.handoff.runId,unknown:t.unknown})))];
+  const coordinator=TASKS.find(t=>t.active && taskRoles(t).includes("zwen"));
+  return [{role:"zwen",task:coordinator?.id||"SIM-COORDINATOR",runId:coordinator?.handoff.runId||"SIM-RUN-COORDINATOR",unknown:coordinator?.unknown||false},
+    ...TASKS.filter(t=>t.active).flatMap(t=>workerRoles(t).map(role=>({role,task:t.id,runId:t.handoff.runId,unknown:t.unknown})))];
 }
 function resetDemo(){
   TASKS.splice(0,TASKS.length,...JSON.parse(INITIAL_TASKS));simTick=0;evIdx=0;evCount=0;
@@ -486,11 +488,14 @@ window.openDrawer = function(id, fromKpi){
   curTaskId = id;
   const r = ROLES[t.ow];
   const tl = TASK_TL[id] || [];
+  let slotDescription="单角色执行，一个worker槽";
+  if(t.st===3) slotDescription="同head/base独立并行，两个worker槽";
+  else if(t.ow==="zwen") slotDescription="复用已计数的协调者槽，不新增worker槽";
   setDrawerContent(`
     ${fromKpi?`<span class="backlnk" onclick="openKpi(kpiKind)" style="margin:-6px 0 6px">← 返回清单</span>`:""}
     <div class="hd"><div><div class="cid">${t.id} · ${t.tag} · 非实时</div><h2>${t.ti}</h2></div><span class="x" onclick="closeDrawer()">✕</span></div>
     <div class="ownerline">当前持有人 <span class="who" style="--oc:${r.c}">${ROLE_ALIAS[t.ow]}</span>
-      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 运行 ${t.active?"模拟占槽":"等待/排队（不占槽）"} · 原dev：${t.originalDev}<br>模拟执行角色：${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} · ${t.st===3?"同head/base独立并行，两个worker槽":"单角色执行，一个worker槽"}</div>
+      · 状态 <b>${t.done?"已关单":STAGES[t.st]}</b> · 运行 ${t.active?"模拟占槽":"等待/排队（不占槽）"} · 原dev：${t.originalDev}<br>模拟执行角色：${taskRoles(t).map(k=>ROLE_ALIAS[k]).join(" + ")} · ${slotDescription}</div>
     ${taskGateHtml(t)}
     <div class="steps">${STAGES.map((s,i)=>`
       <div class="step ${i<t.st?'done':i===t.st&&!t.done?'cur':''}"><div class="pt"></div><div class="sn">${s}</div></div>`).join("")}
@@ -740,7 +745,7 @@ function taskGateHtml(t){
     <div class="proofs">${proofButtons.map(g=>`<button ${t.done?"disabled":""} onclick="simulate('${t.id}','proof','${g.key}')">${evidenceValid(t,g)?"✓":"待补"} 模拟 · ${g.label} (${g.actor})</button>`).join("")}</div>
     <div class="acts">
     <button onclick="simulate('${t.id}','advance')" ${!gateReady(t)?"disabled":""}>模拟通过当前门${t.st===7?"并关单":"并推进"}</button>
-    <button onclick="simulate('${t.id}','work')" ${t.done?"disabled":""}>${t.active?"模拟确认停止/释放槽":"模拟申请占槽"}</button>
+    <button onclick="simulate('${t.id}','${t.active?"stop":"work"}')" ${t.done?"disabled":""}>${t.active?"模拟确认停止/释放槽":"模拟申请占槽"}</button>
     ${(t.st===3||t.st===4)?`<button onclick="simulate('${t.id}','defect')">模拟质量失败 → 原dev</button>`:""}
     ${t.st>=2&&t.st<=4?`<button onclick="simulate('${t.id}','revision')">模拟新head / 旧证据失效</button><button onclick="simulate('${t.id}','baseRevision')">模拟新base / 旧证据失效</button>`:""}
     ${(t.st===5||t.st===6)?`<button onclick="simulate('${t.id}','releaseFail')">模拟发布失败 → 留发布修复</button>`:""}
@@ -760,7 +765,8 @@ window.simulate=function(id,action,key){
   if(action==="revision") ok=changeRevision(t);
   if(action==="baseRevision") ok=changeRevision(t,"base");
   if(action==="releaseFail") ok=failRelease(t);
-  if(action==="work"){if(t.active) ok=confirmStopped(t);else ok=startWork(t);}
+  if(action==="work") ok=handoffAction(t,"accept");
+  if(action==="stop") ok=confirmStopped(t);
   if(action==="handoff") ok=handoffAction(t,key);
   if(action==="wait") ok=setWait(t,key);
   if(action==="timeout") ok=markUnknown(t);
@@ -770,7 +776,7 @@ window.simulate=function(id,action,key){
     $("#pause").textContent="暂停模拟事件";
     for(let i=0;i<6;i++) pushEv();
   }
-  if(ok && !["reset","handoff","heartbeat"].includes(action)) simTick++;
+  if(ok && !["reset","handoff","heartbeat","work"].includes(action)) simTick++;
   renderRoles(roleSel);renderLanes();renderKpis();renderBudget();if(roleSel){const selected=roleSel;roleSel=null;toggleRole(selected);}
   openDrawer(id);
   const current=TASKS.find(x=>x.id===id);

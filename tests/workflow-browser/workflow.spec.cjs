@@ -191,6 +191,10 @@ test('I native keyboard focus refresh nested dead-opener and clipboard fallback'
 test('J simulated handoff order identity duplicates unknown hold stop and reset',async({page},info)=>{
  await openTask(page,'SIM-01',info);
  const exact=name=>page.locator('#sheet').getByRole('button',{name,exact:true});
+ await act(exact('模拟申请占槽'),info);await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · 已接单');
+ await expect(exact('模拟接单')).toBeDisabled();await expect(exact('模拟交件')).toBeDisabled();
+ await act(exact('模拟开始执行'),info);await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · 执行中');
+ await act(exact('重置全部模拟状态'),info);
  const run=await page.evaluate(()=>TASKS[0].handoff.runId);
  await expect(exact('模拟交件')).toBeDisabled();
  for(const [name,state] of [['模拟接单','已接单'],['模拟开始执行','执行中']]){
@@ -203,6 +207,15 @@ test('J simulated handoff order identity duplicates unknown hold stop and reset'
  for(const name of ['模拟接单','模拟开始执行','模拟交件','模拟接收'])await act(exact(name),info);
  await expect(page.locator('#sheet')).toContainText('交件 1 / 接收 1');await expect(exact('模拟接收')).toBeDisabled();
  await act(exact('重置全部模拟状态'),info);await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · 待派发');await expect(page.locator('#budget')).toContainText('2/4');
+ await close(page);
+ for(const id of ['SIM-02','SIM-05','SIM-08']){
+  await openTask(page,id,info);
+  for(const name of ['模拟接单','模拟开始执行','模拟交件','模拟接收']){
+   await act(exact(name),info);await expect(page.locator('#budget')).toContainText('2/4');
+   expect(await page.evaluate(()=>slotRows().filter(r=>r.role==='zwen').length)).toBe(1);
+  }
+  await expect(page.locator('#sheet')).toContainText('纯模拟接棒 · 已接收');await close(page);
+ }
 });
 test('K simulated waits keep native select focus and dual quality capacity is atomic',async({page},info)=>{
  await openTask(page,'SIM-01',info);const select=page.getByLabel('模拟等待原因',{exact:true});

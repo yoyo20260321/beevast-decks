@@ -71,7 +71,9 @@ test('fixed policy4 boundary includes coordinator, three single workers, and per
   for(const t of m.TASKS)m.stopWork(t);
   assert.equal(m.startWork(m.TASKS[2]),true);
   const other=m.makeTask(2);other.id="SIM-SECOND-DEV";m.TASKS.push(other);assert.equal(m.startWork(other),false);
-  assert.equal(m.startWork(m.TASKS[1]),false); // active coordinator already owns master-brain
+  assert.equal(m.startWork(m.TASKS[1]),true); // own task reuses the counted coordinator slot
+  assert.equal(m.activeCount(),2);assert.equal(m.startWork(m.TASKS[4]),false);
+  assert.equal(m.slotRows().filter(r=>r.role==='zwen').length,1);
 });
 test('copy is non executable; no random progression, live platform claims or network calls', () => {
   const m=model();
@@ -249,7 +251,7 @@ test('policy4 projected dual-role admission and stop are explicit',()=>{
 });
 test('concurrency risk: both independent roles render active for one parallel quality task',()=>{
   const {context:c,nodes}=renderHarness();
-  c.simulate('SIM-03','work');c.simulate('SIM-04','work');
+  c.simulate('SIM-03','stop');c.simulate('SIM-04','work');
   assert.match(nodes.get('#budget').textContent,/3\/4/);
   const cards=nodes.get('#roles').innerHTML;
   for(const k of ['qareview','te']) {
@@ -354,7 +356,7 @@ test('semaphore UI: controls, slots, waits, quality applicability and focus use 
  c.simulate('SIM-01','handoff','accept');assert.match(nodes.get('#sheet').innerHTML,/已接单/);
  assert.match(nodes.get('#budget').textContent,/3\/4/);assert.match(nodes.get('#slots').innerHTML,/SIM-01/);
  c.simulate('SIM-01','timeout');assert.match(nodes.get('#sheet').innerHTML,/未知／待核对/);
- c.simulate('SIM-01','work');assert.match(nodes.get('#budget').textContent,/2\/4/);
+ c.simulate('SIM-01','stop');assert.match(nodes.get('#budget').textContent,/2\/4/);
  c.simulate('SIM-01','wait','dependency');assert.match(nodes.get('#sheet').innerHTML,/依赖未满足/);
  c.openDrawer('SIM-04');assert.match(nodes.get('#sheet').innerHTML,/审查.*待补/s);assert.match(nodes.get('#sheet').innerHTML,/CI/);
  c.simulate('SIM-04','reset');assert.match(nodes.get('#budget').textContent,/2\/4/);
@@ -376,4 +378,117 @@ test('semaphore UI: wait selector preserves focus after rendering and event repo
  c.simulate('SIM-01','wait','unreachable');assert.equal(c.document.activeElement.id,'wait-SIM-01');
  assert.match(nodes.get('#feed').children[0].innerHTML,/SIM-T\+0001s/);
  assert.match(nodes.get('#feed').children[0].innerHTML,/角色不可达/);
+});
+
+function reporterFixture(mutate=()=>{},runnerStatus='passed') {
+ const path=require('node:path'), manifest='/SIM-ARTIFACTS/manifest.json';
+ const memory=new Map([[manifest,'{}']]);
+ const context={module:{exports:{}},process:{env:{MAP_ARTIFACT_DIR:'/SIM-ARTIFACTS'}},require(name){
+  if(name==='node:path')return path;
+  if(name==='node:fs')return {readFileSync:file=>{assert.ok(memory.has(file));return memory.get(file);},writeFileSync:(file,data)=>memory.set(file,data)};
+  throw new Error('Unexpected reporter dependency: '+name);
+ }};
+ vm.runInNewContext(readFileSync('tests/workflow-browser/reporter.cjs','utf8'),context);
+ const Reporter=context.module.exports,reporter=new Reporter();
+ const spec=readFileSync('tests/workflow-browser/workflow.spec.cjs','utf8');
+ const titles=Array.from(spec.matchAll(/^test\('([^']+)'/gm),m=>m[1]);
+ const entries=['desktop','mobile'].flatMap(project=>titles.map(title=>({project,title,assertion:true,
+  result:{status:'passed',duration:1,errors:[],attachments:[
+   {name:'environment',contentType:'application/json',body:Buffer.from(JSON.stringify({browser:'fixture-browser',viewport:project==='desktop'?{width:1440,height:1000}:{width:390,height:844}}))},
+   {name:'trace',contentType:'application/zip',path:'/SIM-ARTIFACTS/trace.zip'},
+   {name:'case-screenshot',contentType:'image/png',path:'/SIM-ARTIFACTS/screenshot.png'}
+  ]}})));
+ mutate(entries);
+ for(const entry of entries){
+  const t={title:entry.title,expectedStatus:entry.expectedStatus||'passed',parent:{project:()=>({name:entry.project})}};
+  if(entry.assertion)reporter.onStepEnd(t,entry.result,{category:entry.category||'expect',title:'fixture assertion',duration:1,error:entry.assertionError});
+  reporter.onTestEnd(t,entry.result);
+ }
+ const outcome=reporter.onEnd({status:runnerStatus});
+ return {outcome,manifest:JSON.parse(memory.get(manifest))};
+}
+test('QA144-01: actual reporter accepts exactly A-L in desktop/mobile, 24 complete cases',()=>{
+ const r=reporterFixture();assert.equal(r.manifest.cases.length,24);assert.equal(r.manifest.status,'PASS');assert.equal(r.outcome.status,'passed');
+});
+test('QA144-01: reporter rejects missing, duplicate and unexpected IDs/projects',()=>{
+ for(const mutate of [rows=>rows.pop(),rows=>rows.push(rows[0]),rows=>rows[23]=rows[0],rows=>rows[23].title='M unexpected',rows=>rows[23].title='L unknown title',rows=>rows[23].project='tablet']){
+  const r=reporterFixture(mutate);assert.equal(r.manifest.status,'FAIL');assert.equal(r.outcome.status,'failed');
+ }
+});
+test('QA144-01: reporter requires successful assertion, runner status, browser environment and artifacts',()=>{
+ for(const mutate of [rows=>rows[23].assertion=false,rows=>rows[23].category='test.step',rows=>rows[23].assertionError={message:'failed assertion'},
+  rows=>rows[23].result.status='failed',rows=>rows[23].expectedStatus='failed',
+  rows=>rows[23].result.attachments.pop(),rows=>rows[23].result.attachments.splice(1,1),rows=>rows[23].result.attachments.shift(),
+  rows=>rows[23].result.attachments[0].body=Buffer.from('{}'),rows=>rows[23].result.attachments[1].path='']){
+  const r=reporterFixture(mutate);assert.equal(r.manifest.status,'FAIL');assert.equal(r.outcome.status,'failed');
+ }
+ assert.equal(reporterFixture(()=>{},'failed').manifest.status,'FAIL');
+});
+function sourceCheckFixture(transform) {
+ const fs=require('node:fs'),path=require('node:path');
+ const context={__dirname:path.resolve('tests/workflow-browser'),console:{log(){}},require(name){
+  if(name==='node:fs')return {readdirSync:fs.readdirSync,readFileSync(file,...args){const content=fs.readFileSync(file,...args);return String(file).endsWith('/workflow.spec.cjs')?transform(content):content;}};
+  if(name==='./reporter.cjs')return require('./workflow-browser/reporter.cjs');
+  return require(name);
+ }};
+ vm.runInNewContext(readFileSync('tests/workflow-browser/source-check.cjs','utf8'),context);
+}
+test('QA144-01: source-check rejects missing, duplicate and unexpected browser definitions',()=>{
+ sourceCheckFixture(s=>s);
+ for(const transform of [s=>s.replace("test('L ","test('M "),s=>s.replace("test('L ","test('K "),s=>s.replace("test('L quality","test('L unknown"),s=>s+"\ntest('M extra',()=>{});\n"])
+  assert.throws(()=>sourceCheckFixture(transform));
+});
+test('QA144-02: each coordinator stage completes handoff in its existing single slot',()=>{
+ for(const index of [1,4,7]){
+  const m=model(),t=m.TASKS[index],before=m.activeCount();
+  for(const action of ['accept','start','submit','receive']){
+   assert.equal(m.handoffAction(t,action),true);assert.equal(m.activeCount(),before);
+   assert.equal(m.slotRows().filter(r=>r.role==='zwen').length,1);
+   if(t.active)assert.equal(m.slotRows().find(r=>r.role==='zwen').task,t.id);
+  }
+  assert.equal(t.handoff.state,'已接收');assert.equal(t.handoff.receipts,1);assert.equal(t.done,false);
+ }
+});
+test('QA144-02: coordinator reuse at full capacity is exclusive; unknown ownership survives shortcuts',()=>{
+ const m=model(),first=m.TASKS[1],second=m.TASKS[4];
+ assert.equal(m.startWork(m.TASKS[0]),true);assert.equal(m.startWork(m.TASKS[5]),true);assert.equal(m.activeCount(),4);
+ assert.equal(m.handoffAction(first,'accept'),true);assert.equal(m.handoffAction(second,'accept'),false);
+ assert.equal(m.handoffAction(first,'start'),true);assert.equal(m.markUnknown(first),true);
+ const before=JSON.stringify(first);
+ for(const action of ['accept','start','submit','receive'])assert.equal(m.handoffAction(first,action),false);
+ assert.equal(m.advanceTask(first),false);assert.equal(m.changeRevision(first),false);assert.equal(m.stopWork(first),false);
+ assert.equal(m.handoffAction(second,'accept'),false);assert.equal(JSON.stringify(first),before);
+ assert.equal(m.slotRows().find(r=>r.role==='zwen').unknown,true);assert.equal(m.activeCount(),4);
+ assert.equal(m.confirmStopped(first),true);assert.equal(m.confirmStopped(first),false);
+ assert.equal(m.handoffAction(second,'accept'),true);assert.equal(m.activeCount(),4);
+ m.resetDemo();assert.equal(m.activeCount(),2);assert.equal(m.TASKS[1].handoff.state,'待派发');
+});
+test('QA144-02: coordinator UI reports its real task and unknown state in the reused slot',()=>{
+ const {context:c,nodes}=renderHarness();c.openDrawer('SIM-02');
+ assert.match(nodes.get('#sheet').innerHTML,/复用已计数的协调者槽/);
+ c.simulate('SIM-02','work');assert.match(nodes.get('#sheet').innerHTML,/纯模拟接棒 · 已接单/);
+ assert.match(nodes.get('#slots').innerHTML,/master-brain \/ SIM-02/);assert.match(nodes.get('#budget').textContent,/2\/4/);
+ c.simulate('SIM-05','handoff','accept');assert.equal(vm.runInContext('TASKS[4].active',c),false);
+ c.simulate('SIM-02','handoff','start');c.simulate('SIM-02','timeout');
+ assert.match(nodes.get('#slots').innerHTML,/SIM-02.*未知／待核对（保留）/);
+ c.simulate('SIM-02','work');assert.equal(vm.runInContext('TASKS[1].unknown',c),true);
+ c.simulate('SIM-02','stop');assert.match(nodes.get('#slots').innerHTML,/SIM-COORDINATOR/);
+ c.simulate('SIM-05','work');assert.equal(vm.runInContext('TASKS[4].active',c),true);
+});
+test('QA144-03: both real UI entrances accept first and cross-entry repeats never skip or release',()=>{
+ for(const entrance of ['slot','handoff']){
+  const {context:c,nodes}=renderHarness();c.openDrawer('SIM-01');
+  const button=nodes.get('#sheet').controls.find(el=>el.getAttribute('onclick')===(entrance==='slot'?"simulate('SIM-01','work')":"simulate('SIM-01','handoff','accept')"));
+  const handler=button.getAttribute('onclick');vm.runInContext(handler,c);
+  assert.equal(vm.runInContext('TASKS[0].handoff.state',c),'已接单');
+  const run=vm.runInContext('TASKS[0].handoff.runId',c);
+  c.simulate('SIM-01','handoff','submit');assert.equal(vm.runInContext('TASKS[0].handoff.state',c),'已接单');
+  vm.runInContext(handler,c);c.simulate('SIM-01','handoff','accept');c.simulate('SIM-01','work');
+  assert.equal(vm.runInContext('TASKS[0].handoff.state',c),'已接单');assert.match(nodes.get('#budget').textContent,/3\/4/);
+  c.simulate('SIM-01','handoff','start');assert.equal(vm.runInContext('TASKS[0].handoff.state',c),'执行中');
+  c.simulate('SIM-01','work');assert.equal(vm.runInContext('TASKS[0].handoff.state',c),'执行中');
+  assert.equal(vm.runInContext('TASKS[0].handoff.runId',c),run);
+  c.simulate('SIM-01','handoff','submit');c.simulate('SIM-01','handoff','receive');
+  assert.equal(vm.runInContext('TASKS[0].handoff.receipts',c),1);assert.match(nodes.get('#budget').textContent,/2\/4/);
+ }
 });
