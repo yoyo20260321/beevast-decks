@@ -1,0 +1,43 @@
+{
+  "browser": "local Google Chrome headless/CDP",
+  "results": [
+    {
+      "check": "task keyboard focus survives live render",
+      "pass": true
+    },
+    {
+      "check": "desktop no horizontal overflow",
+      "pass": true
+    },
+    {
+      "check": "desktop node non-overlap",
+      "pass": true
+    },
+    {
+      "check": "actual controls unknown retention and explicit resume",
+      "pass": true
+    },
+    {
+      "check": "task selection and simulated human acceptance button",
+      "pass": true
+    },
+    {
+      "check": "disconnected view freezes single-step and reports stale",
+      "pass": true
+    },
+    {
+      "check": "mobile no horizontal overflow",
+      "pass": true
+    },
+    {
+      "check": "mobile node non-overlap",
+      "pass": true
+    },
+    {
+      "check": "page JavaScript exceptions",
+      "count": 0,
+      "pass": true
+    }
+  ],
+  "errors": []
+}
