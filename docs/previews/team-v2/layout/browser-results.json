@@ -4,6 +4,8 @@
     {
       "viewport": "1920x1080",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -17,6 +19,8 @@
     {
       "viewport": "1440x900",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -30,6 +34,8 @@
     {
       "viewport": "1366x768",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -43,6 +49,8 @@
     {
       "viewport": "1280x720",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -56,6 +64,8 @@
     {
       "viewport": "1024x768",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -69,6 +79,8 @@
     {
       "viewport": "1024x640",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -82,6 +94,8 @@
     {
       "viewport": "390x844",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -96,6 +110,8 @@
     {
       "viewport": "360x640",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
@@ -110,6 +126,8 @@
     {
       "viewport": "720x450",
       "checks": [
+        "expanded controls in viewport/keyboard/pointer",
+        "expanded exception rules keyboard/bounds",
         "initial one screen",
         "selected task",
         "phase explanation",
