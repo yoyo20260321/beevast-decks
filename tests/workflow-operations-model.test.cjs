@@ -13,3 +13,6 @@ test('sampling freezes agent identities/state and whole-page event journal outli
 
 
 test('a stale dependency form cannot clear a replacement block in the same task version',()=>{const {s,c,o}=fixture();const t=c.create(base,'B');t.draft=false;t.stage=2;t.externalBlock={reason:'旧依赖',owner:'产品负责人'};s.sample();const expected={stage:2,revision:1,blockId:t.externalBlock.id};t.externalBlock={reason:'新依赖',owner:'开发负责人'};s.sample();assert.equal(o.resolve(t.id,expected,'旧依赖已补齐').ok,false);assert.equal(t.externalBlock.reason,'新依赖');});
+
+
+test('blocked executions retaining slots count consistently in cards and frozen waiting/used history',()=>{const {s,c,o}=fixture();const t=s.tasks[0];t.externalBlock={reason:'执行中等待契约',owner:'产品负责人'};s.sample();const row=s.history.at(-1);assert.equal(s.waiting(),c.counts().waiting);assert.equal(s.waiting(),row.queue);const waiting=row.tasks.filter(t=>['human','queued','unknown','blocked'].includes(t.state));assert.equal(waiting.length,row.queue);const historic=row.tasks.find(x=>x.id===t.id);assert.equal(historic.state,'blocked');assert.equal(historic.occupied,1);assert.equal(historic.block.reason,'执行中等待契约');assert.ok(row.runs.some(r=>r.taskId===t.id&&r.state==='blocked'));const frozen=JSON.stringify(row);delete t.externalBlock;s.tick();assert.equal(JSON.stringify(row),frozen);});
