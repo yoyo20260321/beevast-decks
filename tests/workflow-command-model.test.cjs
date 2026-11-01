@@ -21,3 +21,6 @@ test('due view uses explicit demo date, excludes closed and invalid brief length
 
 
 test('business rejection records the human acceptance actor and invalidates old evidence',()=>{const {s,c}=fixture();const t=s.tasks[2];assert.equal(c.act(t.id,{stage:6,revision:1},'reject','AC未符合').ok,true);assert.equal(t.stage,2);assert.equal(t.revision,2);assert.equal(Object.keys(t.proof).length,0);assert.ok(s.events.some(e=>e.actor==='人类验收 / 模拟'&&e.text.includes('业务验收退回')));});
+
+
+test('history records paused admission without attributing its queue to resource shortage',()=>{const {s,c}=fixture();c.act('SIM-203',{stage:6,revision:1},'approve','模拟验收通过');s.stop();for(let i=0;i<30;i++)s.tick();s.sample();const row=s.history.at(-1);assert.equal(row.stopped,true);assert.equal(row.used,1);const frozen=JSON.stringify(row);s.stop();s.tick();assert.equal(JSON.stringify(row),frozen);});
