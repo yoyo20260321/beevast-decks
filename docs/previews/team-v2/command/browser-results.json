@@ -1,0 +1,159 @@
+{
+  "browser": "local Chrome/CDP",
+  "results": [
+    {
+      "viewport": "1920x1080",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "1440x900",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "1280x720",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "1024x768",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "1024x640",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "360x640",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    },
+    {
+      "viewport": "720x450",
+      "pass": true,
+      "checks": [
+        "cards/list/AND filters/empty/reset",
+        "list-detail-back retains query",
+        "edit draft stable during clock",
+        "disconnected save rejected",
+        "escaped user content",
+        "create excluded by filter explicit",
+        "more than 4 tasks/dynamic curve axis",
+        "role/chart/global event drill",
+        "critical alert derives unknown occupancy",
+        "open editor crosses breakpoint",
+        "default one screen"
+      ]
+    }
+  ],
+  "errors": []
+}
